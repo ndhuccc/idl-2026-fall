@@ -35,6 +35,8 @@
 - **學生手冊**:[《LabTube 學生使用手冊》](labtube-student-manual/index.md)(課程網站上有網頁版與 [PDF](labtube-student-manual/LabTube-學生使用手冊.pdf))。
 - 手冊的截圖是示範資料,畫面中的課程名稱與 Repo 名稱(`pr-2026-hw-…`)在本課程分別是「深度學習導論」與 `idl-2026-hw-…`;文字內容已改成本課程的設定。
 
+- **AI agent 提示詞**:[ai-agent-prompt.md](ai-agent-prompt.md)。學生複製貼給自己的 AI,它會依規範協助建立 Repo、記錄 AI 使用、準備文件與繳交。
+
 ## 注意
 
 - 學生姓名、學號、成績**只留在 LabTube**,不要寫進這個 Repo。

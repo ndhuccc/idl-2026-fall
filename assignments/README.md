@@ -6,6 +6,8 @@
 > **LabTube(作業與口試系統)**:<http://134.208.2.44:5005>
 >
 > 登記 Repo、上傳執行結果、線上口試與成績都在這裡。**第一次使用請先看 [《LabTube 學生使用手冊》](labtube-student-manual/index.md)**([PDF](labtube-student-manual/LabTube-學生使用手冊.pdf))。老師請看 [LabTube 老師導覽](labtube.md)。
+>
+> **想請 AI agent 帶你做?** 複製 [給 AI agent 的提示詞](ai-agent-prompt.md)貼給你的 AI,它會依規範協助你建立 Repo、記錄 AI 使用、準備文件與繳交。
 
 ## 一、繳交流程(總覽)
 

@@ -42,6 +42,8 @@
 
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
 
+- 2026-10-13 — 老師決定:(1) HW 01 暫時從網站導覽拿掉,等內容定了再放:`assignments/hw01/README.md` 改名為 `README.draft.md`,並在 `mkdocs.yml` 加 `exclude_docs`(還原:改回 `README.md` 並刪除 `exclude_docs` 兩行);(2) 新增給學生的 AI agent 提示詞 `assignments/ai-agent-prompt.md`(建 Repo、習作與 AI 使用紀錄、準備交付文件、繳交、LabTube、口試準備、期末專題),已加到作業說明頁連結與側邊導覽;`scripts/sync_nav.py` 在該檔存在時列入導覽。
+
 - 2026-10-13 — 老師提供 LabTube 網址 http://134.208.2.44:5005;`assignments/README.md`(作業繳交說明頁)加入 LabTube 網址、學生手冊與 PDF 連結,並在繳交流程加上「到 LabTube 登記 Repo 與上傳執行結果」一步。
 
 - 2026-10-13 — 新增 LabTube 學生手冊的課程網站版:`assignments/labtube-student-manual/`(`index.md`、27 張截圖、PDF),內文改成本課程設定(idl-2026-fall、`idl-2026-hw-<學號>`、`ndhuccc/idl-2026-hw-template`),作業說明與老師導覽已加連結。截圖是 pr-2026 示範課程的畫面(課程名稱、`pr-2026-hw-…` 名稱不同),手冊開頭已註明;如要換成 idl 版截圖,需用 LabTube 開發版建立 idl 示範課程重拍。

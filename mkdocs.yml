@@ -40,6 +40,10 @@ validation:
   unrecognized_links: info
   anchors: info
 
+# 暫不公開的草稿頁:HW 01 內容與日期定了之後,把 README.draft.md 改回 README.md,並刪除下面兩行
+exclude_docs: |
+  assignments/hw01/README.draft.md
+
 # --- nav(由 build_docs.py 依 schedule.md 產生,請勿手改)---
 nav:
   - 首頁 Home: index.md
@@ -50,7 +54,7 @@ nav:
           - lec01: lectures/lec01.md
   - 作業 Assignments:
       - 作業繳交說明 Submission Guide: assignments/README.md
-      - HW 01 — 梯度下降與學習率: assignments/hw01/README.md
+      - 請 AI agent 協助 AI Agent Prompt: assignments/ai-agent-prompt.md
   - 專題 Projects: projects/README.md
   - 考試與測驗 Exams & Quizzes: exams/README.md
   - Notebook: notebooks/README.md

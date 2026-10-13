@@ -95,6 +95,8 @@ def render_nav() -> str:
             lines += [f"          - {t}: {p}" for t, p in items]
     lines.append("  - 作業 Assignments:")
     lines.append(f"      - {yq(ASSIGNMENTS_GUIDE[0])}: {ASSIGNMENTS_GUIDE[1]}")
+    if (ROOT / "assignments/ai-agent-prompt.md").exists():
+        lines.append(f"      - {yq('請 AI agent 協助 AI Agent Prompt')}: assignments/ai-agent-prompt.md")
     lines += [f"      - {yq(t)}: {p}" for t, p in assignment_order()]
     # 沒有對應資料夾的項目(例如課程不設實驗而刪除 labs/)就不列入導覽,避免 mkdocs 警告
     lines += [f"  - {t}: {p}" for t, p in FIXED_TAIL if (ROOT / p).parent.exists()]
