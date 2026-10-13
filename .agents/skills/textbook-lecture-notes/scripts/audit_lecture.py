@@ -37,6 +37,7 @@ def slug(h):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("lecture")
+    ap.add_argument("--source", action="append", default=[], help="source text file(s); L10 warns when the lecture repeats long runs of the source (14+ identical CJK characters)")
     ap.add_argument("--max-sections-per-kp", type=int, default=14, help="L8 limit (default 14)")
     args = ap.parse_args()
     text = open(args.lecture, encoding="utf-8").read()
@@ -92,6 +93,16 @@ def main():
     tiny = [t for t, b in zip(titles, secs) if len(re.sub(r"[\s>*#|$-]", "", b)) < 40]
     if len(tiny) > 3: W("L9", f"{len(tiny)} sections are one-line fragments, e.g. {tiny[:3]}")
 
+    if args.source:
+        cj = re.compile(r"[㐀-鿿豈-﫿]")
+        stream = lambda t: "".join(cj.findall(re.sub(r"\$[^$]*\$", "", t)))
+        grams = set()
+        for sp in args.source:
+            st = stream(open(sp, encoding="utf-8").read())
+            grams |= {st[i:i + 14] for i in range(len(st) - 13)}
+        lt = stream(text)
+        hits = sum(1 for i in range(len(lt) - 13) if lt[i:i + 14] in grams)
+        if hits > 30: W("L10", f"{hits} positions start a 14-character run identical to the source: rewrite in your own words")
     for x in fails + warns: print(x)
     print(f"audit_lecture: {args.lecture}  headings {len(heads)}  knowledge points {len(kp_idx)}  FAIL {len(fails)}  WARN {len(warns)}")
     return 1 if fails else 0

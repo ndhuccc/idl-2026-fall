@@ -75,6 +75,8 @@ def main():
     ap.add_argument("--exclude-fig", action="append", default=[], help="lecture figure id the teacher agreed to leave out (repeatable)")
     ap.add_argument("--speaker-notes", action="store_true", help="every content page must carry speaker notes (P1)")
     ap.add_argument("--minutes", type=float, help="class-time budget for the main line (LEVELS.md section 7): warns when the estimate exceeds it (T1); pages whose step label starts with the extension marker are not counted")
+    ap.add_argument("--max-pages-per-kp", type=int, default=6, help="hard cap on the pages of one unit (one knowledge point), extension and continuation pages included (U1)")
+    ap.add_argument("--source", action="append", default=[], help="source text file(s): O2 warns when pages repeat long runs of the source (14+ identical CJK characters)")
     ap.add_argument("--narrative", action="store_true", help="require a bridge node (name contains 'bridge') on every content page and speaker notes that link to the previous and next page (R1, R3); see .agents/skills/NARRATIVE.md")
     ap.add_argument("--outline", action="store_true", help="print the title chain and bridge line of every page, per unit, for the reading test (NARRATIVE.md section 5)")
     ap.add_argument("--kps", type=int, help="number of knowledge points; with --minutes, prints the per-KP budget")
@@ -342,6 +344,26 @@ def main():
             br = [n["text"].split("\n")[0] for n in pages.get(key, []) if "bridge" in n.get("name", "").lower()]
             print(f"  {t['label']}" + (f"   <- {br[0][:60]}" if br else ""))
         print()
+
+    # ------------------------------------------------------------ U1 pages per knowledge point, O2 originality
+    per_scene = Counter(sid for (sid, _idx) in pages)
+    for sid, c in per_scene.items():
+        if c > args.max_pages_per_kp:
+            F("U1", f"{S[sid]['name']!r} has {c} pages; a knowledge point may use at most {args.max_pages_per_kp} (move detail to the lecture)")
+    if args.source:
+        stream = lambda t: "".join(CJK.findall(re.sub(r"\$[^$]*\$", "", t)))
+        grams = set()
+        for sp in args.source:
+            st = stream(open(sp, encoding="utf-8").read())
+            grams |= {st[i:i + 14] for i in range(len(st) - 13)}
+        flagged = 0
+        for (sid, idx), ns in sorted(pages.items()):
+            pt = stream("".join(n.get("text", "") for n in ns if n["type"] in ("text", "shape")))
+            hits = sum(1 for i in range(len(pt) - 13) if pt[i:i + 14] in grams)
+            if hits >= 10:
+                flagged += 1
+                Wn("O2", f"{sid}#p{idx + 1}: {hits} positions repeat the source verbatim; rewrite in your own words")
+        if flagged > 3: Wn("O2", f"{flagged} pages repeat the source verbatim: the deck is not freshly written")
 
     # ------------------------------------------------------------ T1 class-time estimate (LEVELS.md section 7.4)
     if args.minutes:
