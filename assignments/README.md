@@ -31,7 +31,7 @@ idl-2026-hw-<學號>
 
 ### 用範本建立(建議)
 
-課程提供一個作業 Repo **範本**(Template Repository):教師會在課程網站或課堂上公告網址。步驟:
+課程提供一個作業 Repo **範本**(Template Repository):<https://github.com/ndhuccc/idl-2026-hw-template>。步驟:
 
 1. 打開範本頁面,按 **Use this template → Create a new repository**。
 2. **Repository name** 依上面的格式命名,**Visibility 選 Private**,按 Create。

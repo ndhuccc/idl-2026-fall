@@ -33,13 +33,16 @@
 
 - [ ] HW 01–03 的確切發佈與截止日;`assignments/hw01/README.md` 目前仍是範本示範作業(梯度下降),要換成實際的 HW 01「反向傳播與 MLP」(依 `.agents/skills/assignment-design/SKILL.md`)
 - [ ] 期末專題確切截止日;e 學苑繳交說明
-- [ ] 作業與 LabTube:建立學生作業範本 Repo `ndhuccc/idl-2026-hw-template`(內容為 `student-template/`,Public、勾選 Template repository)並把網址寫進 `assignments/README.md`;在 LabTube 建課並把作業 Repo 前綴設為 `idl-2026`;放學生手冊(內文寫死的 `pr-2026`、`ndhuccc` 要改)
+- [ ] LabTube:在 LabTube 建課、匯入修課名單,並把「學生作業 Repo 名稱前綴」設為 `idl-2026`;放學生手冊(內文寫死的 `pr-2026`、`ndhuccc` 要改);向學生公告作業範本網址與 LabTube 網址
+- [ ] 之後修改 `student-template/` 時,要手動同步到 `ndhuccc/idl-2026-hw-template`(學生已建立的 Repo 不會自動更新)
 - [ ] 每週講義與投影片(目前只有範本的 `lec01`)
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
 
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
+
+- 2026-10-13 — 依老師同意建立學生作業範本 Repo `ndhuccc/idl-2026-hw-template`(Public、Template repository,內容為 `student-template/` 目前版本,只含骨架與檢查工具,沒有解答與成績)。網址已寫入 `assignments/README.md`;尚待向學生公告。
 
 - 2026-10-13 — 老師決定:課程簡稱 `idl-2026`(學生作業 Repo 為 `idl-2026-hw-<學號>`);上課地點工A337(每週四下午);助教顏榮興、李哲瑋;Office Hour 週一 10:00–11:00。已寫入 `semester.toml` 並套用,`assignments/README.md`、`hw01`、`SETUP.md`、`student-template/README.md` 的 `<課程簡稱>` 已替換。作業與專題確切截止日待定。
 
