@@ -52,6 +52,8 @@
 
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
 
+- 2026-10-14 — 老師要求把盤點報告的格式與批次處理寫進技能:新增 `.agents/skills/INVENTORY_FORMAT.md`(八部分固定格式:設定、章級知識地圖、備課筆記、頁序與銜接表、講義與檔案、批次建議與子代理、補充與取捨、請你確認或調整)。`view-from-text` 與 `textbook-lecture-notes` 動手前都要交此報告;整章不一次做完,第一批試做 1 個 KP,之後每批 3–4 個 KP,並必須先詢問老師是否使用多個子代理平行處理(未明說同意就依序)。尚未同步到 course-template 與 pr-2026-fall。
+
 - 2026-10-14 — 老師決定:每個 KP 的簡報頁數不得超過 6 頁(含延伸頁與續頁),agent 必須深度消化來源、依學生程度與簡報時長建構章級與 KP 級知識地圖(老師確認)後,再全新撰寫講義與投影片。技能新增:`NARRATIVE.md` §0(知識地圖與全新撰寫);`LEVELS.md` §7.2–§7.3 改為「細度對應 3–6 頁、放不下的細節放講義」,延伸頁計入 6 頁上限並取消獨立成檔;`audit_deck.py` 新增 `--max-pages-per-kp`(U1,預設 6)與 `--source`(O2 原創性);`audit_lecture.py` 新增 `--source`(L10);`AUDIT_CHECKLIST.md` 新增 S10、S11。尚未同步到 course-template 與 pr-2026-fall。
 
 - 2026-10-14 — 依老師審閱 backprop v2 講義與簡報的意見(頁與頁缺乏邏輯脈絡、延伸頁氾濫、空頁與填充頁、備註套話、Frame 標題被截斷、講義是投影片逐頁轉錄)強化技能:新增 `.agents/skills/NARRATIVE.md`(備課五步、單元敘事弧、銜接條、禁止做法);`view-from-text` 新增 §3E、盤點表的備課筆記與頁序銜接表、Frame 短標題、延伸頁上限與獨立成檔、練習頁規範、備註規範、交付時讀三遍與抽樣自讀;`audit_deck.py` 新增 S1–S4、V1、P2、T2、`--narrative`(R1、R3)、`--outline`;`AUDIT_CHECKLIST.md` 新增 R、S 節;`textbook-lecture-notes` 新增 §4.8 與 `scripts/audit_lecture.py`(L1–L9)。尚未同步到 course-template 與 pr-2026-fall。
