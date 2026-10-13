@@ -44,6 +44,8 @@
 
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
 
+- 2026-10-13 — 依老師要求以大學生程度新增 KP02 投影片 `slides/lec03-kp02-gradient-descent-learning-rate-undergrad.jbd.json`(12 個單元、36 頁,中英對照、含講者備註;名詞定義、η=0.05 連續更新表、倍數表與 w² 第三步為補充並已標示)。`view-from-text` 新增規則:不分篇幅,產生簡報前都要先列知識單元表並等老師確認(SKILL §1 第 11 點、AUDIT K1)。與另一份同名主題的 `lec03-kp02-gradient-descent-learning-rate.jbd.json` 並存,檔名以 `-undergrad` 區分。
+
 - 2026-10-13 — 老師決定:講義與投影片技能加入「教材程度」選項(一般大眾、高中生、大學生、研究生、專業人員;預設研究生)。新增共用程度表 `.agents/skills/LEVELS.md`;`textbook-lecture-notes` 與 `view-from-text` 開始前先問程度;`audit_deck.py` 新增 `--level`(檢查每頁公式區塊數與中文正文字數);`AUDIT_CHECKLIST.md` 新增 Q 節;`AGENTS.md` §5.1、§5.11 加提示。尚未同步到 course-template 與 pr-2026-fall。
 
 - 2026-10-13 — KP02／KP03 本機交付驗證完成：主代理重跑內容與結構檢查均無 FAIL，15 張講義附圖全部對應；51 頁近似預覽文字溢出 0，全部 9 張總覽及最後修改的 2 頁完整預覽已人工檢視。保留 KP03 的單一 N3 提醒：原文 0.00001 是高原進展的例示降幅，頁面已標示，並非計算結果。結構檢查只提醒每頁備註會隨下載公開。網站本機建置成功，doctor 無 FAIL。既有 KP01 兩份簡報雜湊未變，未動技能、共用腳本或自動化；尚未提交或同步。
