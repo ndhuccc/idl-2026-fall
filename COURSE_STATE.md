@@ -23,16 +23,15 @@
 - [x] Step 4 完成訪談,產生 `semester.toml`
 - [x] Step 5 套用設定;網站建置無 ERROR;starter 19 失敗、solution 19 通過(Lab 03 因未裝 PyTorch skipped)
 - [x] Step 6 提交並推送
-- [ ] Step 7a 啟用 Pages(Source: GitHub Actions)
-- [ ] Step 7b 開啟 Discussions
-- [ ] Step 7c 手動觸發 `deploy-site` 並確認網站可開
+- [x] Step 7a 啟用 Pages(Source: GitHub Actions),網址 https://ndhuccc.github.io/idl-2026-fall/
+- [x] Step 7b 開啟 Discussions
+- [x] Step 7c 手動觸發 `deploy-site` 並確認網站可開(run 38339534218 成功,網站回應 200)
 - [ ] Step 8 初始化內容(週次主題、保留的 Lab/作業、解答釋出日、課綱)
 - [ ] Step 9 向老師總結
 
 ## 待辦事項
 
 - [ ] 選填欄位:上課時間地點、助教、Office Hour、專題組隊人數、生成式 AI 使用政策(老師決定)、HW01 發佈與截止日
-- [ ] Step 7:啟用課程網站與討論區、第一次發佈
 - [ ] Step 8:依教學計畫表填 `schedule.md` 週次主題(17 週,第 9 週期中、第 17 週期末/專題)與 `syllabus.md` 評分(平時 20%、期中 25%、期末 35%、作業 20%);決定範例 Lab 去留與解答釋出日
 - [ ] 作業與 LabTube:決定課程簡稱、建立學生作業範本 Repo、在 LabTube 建課並設定作業 Repo 前綴、放學生手冊
 
