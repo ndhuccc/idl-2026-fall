@@ -4,22 +4,22 @@
 
 | 項目 | 內容 |
 |---|---|
-| 課程名稱 | {{COURSE_NAME}} |
-| 課號 | {{COURSE_CODE}} |
-| 學期 | {{SEMESTER}} |
-| 學分 / 時數 | {{CREDITS}} |
+| 課程名稱 | 深度學習導論 |
+| 課號 | CSIE3544AA |
+| 學期 | 2026 秋季 |
+| 學分 / 時數 | 3 學分 / 3 小時 |
 | 上課時間地點 | {{CLASS_TIME_LOCATION}} |
-| 授課教師 | {{INSTRUCTOR}}({{EMAIL}}) |
+| 授課教師 | 江政欽 教授(ccchiang@gms.ndhu.edu.tw) |
 | 助教 | {{TA}} |
 | Office Hour | {{OFFICE_HOUR}} |
 
 ## 課程目標
 
-{{COURSE_DESCRIPTION}}
+本課程介紹深度學習之基礎理論與核心技術,內容涵蓋類神經網路基礎、反向傳播演算法、卷積神經網路(CNN)、循環神經網路(RNN)、正則化與最佳化技巧,以及深度生成模型(如自編碼器、生成對抗網路)與注意力機制(Transformer)等主題。透過理論講授與程式實作,使學生具備設計、訓練與應用深度學習模型於影像、文字等資料之能力。
 
 ## 教科書與參考資料
 
-- 主要教材:{{TEXTBOOK}}
+- 主要教材:Ian Goodfellow, Yoshua Bengio, Aaron Courville, Deep Learning, MIT Press, 2016. ISBN: 978-0-262-03561-3
 - 其他參考:見 [`references/`](references/)
 
 ## 評分方式

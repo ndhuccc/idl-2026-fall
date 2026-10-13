@@ -11,7 +11,7 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-仍失敗請開 [Issue(提問)]({{REPO_URL}}/issues/new/choose),並貼上**完整錯誤訊息**與作業系統。
+仍失敗請開 [Issue(提問)](https://github.com/ndhuccc/idl-2026-fall/issues/new/choose),並貼上**完整錯誤訊息**與作業系統。
 
 ### Q2:沒有 GPU 可以完成作業嗎?
 可以。所有作業皆設計為 CPU 可完成;若需要 GPU,可使用 Google Colab 或 Codespaces。

@@ -2,7 +2,7 @@
 
 ## 教科書
 
-- {{TEXTBOOK}}
+- Ian Goodfellow, Yoshua Bengio, Aaron Courville, Deep Learning, MIT Press, 2016. ISBN: 978-0-262-03561-3
 
 ## 論文與文章
 

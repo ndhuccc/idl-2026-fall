@@ -1,9 +1,9 @@
 # 課程網站設定(MkDocs + Material)
 # 注意:網站原始檔由 scripts/build_docs.py 產生於 .site_src/,請勿直接編輯該資料夾。
-site_name: "{{COURSE_NAME}} — {{SEMESTER}}"
-site_description: "{{COURSE_NAME}} 課程網站"
-site_url: "{{SITE_URL}}"
-repo_url: "{{REPO_URL}}"
+site_name: "深度學習導論 — 2026 秋季"
+site_description: "深度學習導論 課程網站"
+site_url: "https://ndhuccc.github.io/idl-2026-fall/"
+repo_url: "https://github.com/ndhuccc/idl-2026-fall"
 docs_dir: .site_src
 
 theme:
@@ -39,3 +39,28 @@ validation:
   absolute_links: info
   unrecognized_links: info
   anchors: info
+
+# --- nav(由 build_docs.py 依 schedule.md 產生,請勿手改)---
+nav:
+  - 首頁 Home: index.md
+  - 課程大綱 Syllabus: syllabus.md
+  - 週次進度表 Schedule: schedule.md
+  - 講義 Lectures:
+      - 第 1 週 Week 1:
+          - lec01: lectures/lec01.md
+  - 作業 Assignments:
+      - 作業繳交說明 Submission Guide: assignments/README.md
+      - HW 01 — 梯度下降與學習率: assignments/hw01/README.md
+  - 專題 Projects: projects/README.md
+  - 考試與測驗 Exams & Quizzes: exams/README.md
+  - 實驗 Labs: labs/README.md
+  - Notebook: notebooks/README.md
+  - 投影片下載 Slides: slides/README.md
+  - 參考資料 References: references/README.md
+  - 自學指引 Study Guide: study-guide/README.md
+  - 常見問題 FAQ: FAQ.md
+  - 術語表 Glossary: glossary.md
+  - 異動紀錄 Changelog: CHANGELOG.md
+  - 貢獻指南 Contributing: CONTRIBUTING.md
+  - 授權 License: LICENSE.md
+# --- nav 結束 ---

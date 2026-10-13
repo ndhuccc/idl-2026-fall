@@ -21,7 +21,7 @@
 2. **設定學生作業 Repo 的名稱前綴**:LabTube →課程節點按右鍵 → 編輯課程 →「學生作業 Repo 名稱前綴」,建議用課程縮寫加學年,例如 `pr-2026`。學生登記的 Repo 名稱必須是「前綴-hw-學號」,不符會被拒絕。
 3. **建立學生作業 Repo 範本**:照 `SETUP.md` 步驟 4,把 `student-template/` 做成獨立的 GitHub 範本 Repo,名稱建議用同一個前綴,例如 `<前綴>-hw-template`。
 4. 把以下兩個網址公告給學生:作業 Repo 範本網址、LabTube 網址。
-5. 在 GitHub 接受學生的協作者邀請(教師帳號 `{{GITHUB_USER}}`);用 Repo 查核工具時需要讀得到學生的 Repo。
+5. 在 GitHub 接受學生的協作者邀請(教師帳號 `ndhuccc`);用 Repo 查核工具時需要讀得到學生的 Repo。
 
 ## 每份新作業
 
