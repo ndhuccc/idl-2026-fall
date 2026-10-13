@@ -235,6 +235,7 @@ gh workflow run deploy-site.yml                                    # 第一次�
 
 ### 5.1 新增或更新某週講義
 - 問:第幾週?主題?要列出哪些重點?有現成的資料(文字、PDF)嗎?
+- **教材程度**:先問「這份教材給誰讀?」(一般大眾、高中生、大學生、研究生、專業人員;預設研究生),依 `.agents/skills/LEVELS.md` 決定寫多深;講義與投影片用同一個程度。
 - 作法:若老師提供教科書章節(PDF、貼上的文本或網址),依 `.agents/skills/textbook-lecture-notes/SKILL.md` 製作**繁體中文與英文對照**的講義(知識點萃取、高中可讀的白話撰寫、公式範例、示意圖與公式圖)。
   沒有章節文本時,在 `lectures/` 新增 `lecNN.md`(NN 為兩位數週次);格式照 `lectures/lec01.md`:開頭有週次、對應實作、學習目標。
   數學式用 `$...$`(行內)與 `$$...$$`(區塊);圖片放 `assets/figures/` 並用相對路徑引用。
@@ -299,6 +300,7 @@ gh workflow run deploy-site.yml                                    # 第一次�
 
 ### 5.11 投影片(JianBauDau JSON、PPTX、PDF、HTML)
 - 問:這週的投影片是哪一種格式?是 JianBauDau 編輯器匯出的 JSON,還是 PPTX、PDF 或 HTML?
+- 若由 agent 產生投影片:先確認**教材程度**(預設承襲該講義的程度,見 `.agents/skills/LEVELS.md`)。
 - 作法:依 `slides/FORMATS.md` 命名為 `lecNN.<格式>`(JSON 為 `lecNN.jbd.json`),放進 `slides/`。同一週可以放多種格式。
 - 若要從講義產生 JianBauDau 投影片草稿(完整 `lecNN.jbd.json`),依 `.agents/skills/view-from-text/SKILL.md`。產出後仍須執行下方的 `check_slides.py` 檢查,並請老師在 JianBauDau 中逐頁確認排版。
 - 若是 JianBauDau JSON,執行 `python3 scripts/check_slides.py`。**FAIL 必須修正**(例如匯入用的 page spec、孤兒節點、`asset:` 伺服器參照);**WARN 請逐項告知老師確認**(講者備註、電子郵件、疑似學號、檔案大小)。

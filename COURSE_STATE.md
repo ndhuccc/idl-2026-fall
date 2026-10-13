@@ -42,6 +42,14 @@
 
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
 
+- 2026-10-13 — 老師決定:講義與投影片技能加入「教材程度」選項(一般大眾、高中生、大學生、研究生、專業人員;預設研究生)。新增共用程度表 `.agents/skills/LEVELS.md`;`textbook-lecture-notes` 與 `view-from-text` 開始前先問程度;`audit_deck.py` 新增 `--level`(檢查每頁公式區塊數與中文正文字數);`AUDIT_CHECKLIST.md` 新增 Q 節;`AGENTS.md` §5.1、§5.11 加提示。尚未同步到 course-template 與 pr-2026-fall。
+
+- 2026-10-13 — KP02／KP03 本機交付驗證完成：主代理重跑內容與結構檢查均無 FAIL，15 張講義附圖全部對應；51 頁近似預覽文字溢出 0，全部 9 張總覽及最後修改的 2 頁完整預覽已人工檢視。保留 KP03 的單一 N3 提醒：原文 0.00001 是高原進展的例示降幅，頁面已標示，並非計算結果。結構檢查只提醒每頁備註會隨下載公開。網站本機建置成功，doctor 無 FAIL。既有 KP01 兩份簡報雜湊未變，未動技能、共用腳本或自動化；尚未提交或同步。
+
+- 2026-10-13 — 依老師確認「好，新增這兩個版本」，由兩個子代理分別以專案 `view-from-text` 製作 KP02「梯度下降與學習率」與 KP03「收斂與停止準則」，主代理整合與人工稽核。新增 `slides/lec03-kp02-gradient-descent-learning-rate.jbd.json`（6 單元、27 內容頁、33 鏡頭）及 `slides/lec03-kp03-convergence-criteria.jbd.json`（4 單元、24 內容頁、28 鏡頭），各有同名講義、附圖與 `assets/figures/src/` 可重現程式。兩者為 16:9、中英對照、自主學習、每頁講者備註，原題全部選項與提示保留，不附選項答案。KP02 的 10 張附圖完整涵蓋原六面板與數值例；無生成資料的原圖保留原始內容，位圖裝入 SVG 容器並非向量重畫。KP03 的 5 張圖區分原 SVG 定性驗證曲線與原公式計算的數值軌跡。澄清原教材 Cauchy 年份、步長與收斂保證條件、一維極大值與鞍點的差別；依原程式核對 Run20：起點 0.02 已達停止條件而更新零次，起點 0.30 在第 11 次更新後停止。第 3 週講義及投影片連結已整合，導覽由既有工具產生。此階段交付本機草稿與近似預覽；講者備註會隨檔案下載，JianBauDau 實際播放、兩種視窗構圖與 PDF 匯出仍待老師確認，尚未提交或同步到雲端。
+
+- 2026-10-13 — 依老師確認，使用專案 `view-from-text` 新增 KP01「最佳化就是參數搜尋」本機草稿：`slides/lec03-kp01-optimization-introduction.jbd.json` 與對應講義 `lectures/lec03-kp01-optimization-introduction.md`。共 3 個知識單元、15 個內容頁（原估 12 頁，4 道檢核題各自拆頁）、18 個鏡頭步驟，中英對照、每頁有講者備註；保留原有 11 頁 KP1 版本。新增 2 張定性曲線圖及可重現程式 `assets/figures/src/lec03-kp01-figures.py`；原教材的三步驟、方法分岔及全章地圖用可編輯節點重建。原文對所有二階方法與平坦度的概括敘述加上適用條件，未加入硬體時間估算。講義及投影片連結已加入第 3 週，網站導覽由既有建置工具產生。結構檢查無 FAIL，內容稽核 FAIL 0、WARN 0，預覽 15 頁、文字溢出 0，網站本機建置成功。預覽是近似渲染；尚待老師在 JianBauDau 確認實際播放、排版及 PDF 匯出。此階段交付本機預覽，尚未同步到雲端。
+
 - 2026-10-13 — 新增 `diagram-design` 技能(`.agents/skills/diagram-design/`,樣式指南已客製為投影片深色色票)與第 3 週 KP1 投影片 `slides/lec03-kp1-parameter-search.jbd.json`(11 頁,中英對照、含講者備註;第 7–10 頁的玩具例子與成本表為補充,已標「[補充]」)。附兩張 diagram-design 圖 `assets/figures/idl-kp1-*`(程式在 `assets/figures/src/`)。老師試用後再決定是否同步到 course-template 與 pr-2026-fall。
 
 - 2026-10-13 — `student-template/` 新增 `AGENTS.md`(給學生的 AI agent 作業助理規範,內容同 `assignments/ai-agent-prompt.md` 並改成 Repo 內使用的版本)、`CLAUDE.md`,README 加一行說明。已推送到 `ndhuccc/idl-2026-hw-template`。

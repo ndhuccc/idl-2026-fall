@@ -1,6 +1,6 @@
 ---
 name: textbook-lecture-notes
-description: Turn a textbook chapter (a PDF, pasted text, or a URL the user gives) into graduate-level lecture notes written in plain language (readable by a high-school student), in bilingual Traditional Chinese and English, with worked examples for formulas and abstract ideas, AI-generated infographic requests, Matplotlib figures for geometric, functional, or statistical content, and KaTeX formula images when a formula must sit inside an image. Use when the user provides a textbook chapter as a PDF, pasted text, or URL and asks for 講義, lecture notes, 教材, or 示意圖 for a course in this repository.
+description: Turn a textbook chapter (a PDF, pasted text, or a URL the user gives) into lecture notes at a teaching level the user picks (public, high school, undergraduate, graduate or professional; default graduate, written in plain language readable by a high-school student), in bilingual Traditional Chinese and English, with worked examples for formulas and abstract ideas, AI-generated infographic requests, Matplotlib figures for geometric, functional, or statistical content, and KaTeX formula images when a formula must sit inside an image. Use when the user provides a textbook chapter as a PDF, pasted text, or URL and asks for 講義, lecture notes, 教材, or 示意圖 for a course in this repository.
 ---
 
 # textbook-lecture-notes
@@ -28,6 +28,7 @@ python -m playwright install chromium     # 只有需要公式圖片時才需要
 4. 讀 `syllabus.md`，確認課程層級與符號。
 5. 讀 `lectures/lec01.md`，沿用其 Markdown 格式（標題、週次引用、`$...$` 與 `$$...$$`）。
 6. 若 `AGENTS.md` 與本技能衝突，以 `AGENTS.md` 為準。
+7. **教材程度（硬規則）**：讀 `.agents/skills/LEVELS.md`，開始前問老師「這份教材給誰讀？」（一般大眾、高中生、大學生、研究生、專業人員；預設研究生 `grad`，也就是下面 §4.1、§4.3 的寫法）。依程度表調整公式量、推導深度、術語、例子與練習；在講義標題下方加一行 `> 程度：研究生（grad）／Level: Graduate (grad)`。
 
 需要向使用者確認的只有：對應週次（若 `schedule.md` 無法判斷）、以及特殊要求。若使用者給的是 PDF 或網址，還要確認檔案或頁面確實是要用的章節。
 
@@ -91,7 +92,7 @@ python -m playwright install chromium     # 只有需要公式圖片時才需要
 
 ### 4.1 讀者與語言
 
-- 讀者是碩士生，但背景可能薄弱。用**高中生能讀懂**的文字寫，中文與英文都一樣。
+- 讀者程度依 `.agents/skills/LEVELS.md`。預設 `grad`：讀者是碩士生，但背景可能薄弱，用**高中生能讀懂**的文字寫，中文與英文都一樣。其他程度依該表調整；本節與 §4.3、§4.4 的條文是 `grad` 的標準寫法，換程度時以程度表的對應欄為準。
 - 一句話只講一件事。中文句子盡量在 30 字內，超過 40 字就拆開。英文句子盡量在 20 個字以內。
 - 一段不超過 4 句。
 - 第一次出現的專有名詞，必須先用白話解釋，例如「**先驗機率**：在還沒看資料前，你對某類事件發生的把握程度。」
@@ -119,7 +120,9 @@ python -m playwright install chromium     # 只有需要公式圖片時才需要
 8. **術語表**：每份講義結尾加一張中英術語對照表，列出本講義所有第一次出現的專有名詞。之後同一術語在全講義要使用同一譯法。
 9. **英文的品質**：英文要符合學術用語的慣例，但仍要淺顯。避免俚語與過度修飾。
 
-### 4.3 深度（碩士程度）
+### 4.3 深度（依程度；以下為預設的研究生程度）
+
+其他程度：把下列要素依 `LEVELS.md` 增減（例如 `public` 不寫推導與公式、`pro` 以「何時該用、何時不該用」取代「為什麼需要它」），但「假設條件」與「何時失效」在所有程度都不可省。
 
 每個知識點都要包含：
 - **為什麼需要它**：它解決什麼問題，沒有它會怎樣。
@@ -349,6 +352,7 @@ python .agents/skills/textbook-lecture-notes/scripts/render_formula.py --batch f
 5. **可讀性檢查**：用腳本找出超過 40 個中文字或 20 個英文單字的句子，以及未定義的專有名詞，逐一修正。
 5a. **補充難度檢查**：確認每個 `[補充]` 內容的前提都在原文或已先解釋的範圍內；若用到原文沒有的進階概念，改寫或移除。
 6. **術語一致性**：同一個術語在全講義使用同一譯法，並與術語表相符。
+6a. **程度檢查**：對照 `LEVELS.md` 第 6 節的清單，確認公式量、推導、術語、例子符合所選程度，且標題下方有程度記錄。
 7. **建置網站**：`python3 scripts/build_docs.py && mkdocs build`，不得有 ERROR，也不得有新的 WARNING。
 8. **推送**：課程 Repo 的變更直接 push 到 `main`，不需逐次確認（老師已授權）。範本的變更仍需先確認。
 9. **圖說與圖形一致性稽核**（每張圖都要做，重新生成後也要重做）：
@@ -370,6 +374,7 @@ python .agents/skills/textbook-lecture-notes/scripts/render_formula.py --batch f
 ## 8. 給使用者的摘要格式
 
 - 來源：PDF 的章節與頁碼範圍、貼上文本的章節名稱，或網址與讀取日期
+- 教材程度（五級之一）與選擇依據
 - 知識點數量與對應的講義檔
 - 圖：知識點圖覆蓋率（必圖知識點 X/Y，無圖者列出理由）；各圖的功能分布（1、2、3）；資訊圖幾張（已生成／未生成）、Matplotlib 幾張（已驗證）、公式圖幾張（已渲染）
 - 雙語檢查結果：中英段落是否成對

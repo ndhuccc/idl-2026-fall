@@ -63,6 +63,10 @@ def lecture_inventory(path):
     return figs, formulas, numbers
 
 
+# (max display-formula blocks per page, max Chinese body characters per page) -- .agents/skills/LEVELS.md section 3
+LEVEL_LIMITS = {"public": (0, 80), "highschool": (1, 100), "undergrad": (2, 120), "grad": (2, 120), "pro": (2, 120)}
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("deck")
@@ -70,6 +74,7 @@ def main():
     ap.add_argument("--lecture", help="the lecture the deck was made from: checks figure coverage (O1) and formula/number coverage (N6)")
     ap.add_argument("--exclude-fig", action="append", default=[], help="lecture figure id the teacher agreed to leave out (repeatable)")
     ap.add_argument("--speaker-notes", action="store_true", help="every content page must carry speaker notes (P1)")
+    ap.add_argument("--level", choices=sorted(LEVEL_LIMITS), help="teaching level (see .agents/skills/LEVELS.md): warns when a page exceeds the level's display-formula and body-text budget (Q1, Q2)")
     args = ap.parse_args()
     doc = json.load(open(args.deck, encoding="utf-8"))
     S, N, ST = doc["scenes"], doc["nodes"], doc["steps"]
@@ -212,6 +217,13 @@ def main():
         t = title[0]
         if "$" in t["text"]: F("D2", f"{tag}: math in the page title (KaTeX line height makes it collide with the subtitle): {t['text']!r}")
         if not (6 <= len(re.sub(r"\s", "", t["text"])) <= 26): Wn("D2", f"{tag}: title length: {t['text']!r}")
+        if args.level:
+            max_blocks, max_chars = LEVEL_LIMITS[args.level]
+            blocks = sum(n["text"].count("$$") // 2 for n in ns if n["type"] in ("text", "shape"))
+            if blocks > max_blocks: Wn("Q1", f"{tag}: {blocks} display formulas; level {args.level} allows {max_blocks}")
+            body = sum(len(CJK.findall(re.sub(r"\$[^$]*\$", "", n["text"]))) for n in ns
+                       if n["type"] in ("text", "shape") and n["style"]["fontSize"] < 40 and n["transform"]["y"] >= 130)
+            if max_chars and body > max_chars: Wn("Q2", f"{tag}: {body} Chinese body characters; level {args.level} allows {max_chars}")
         if not args.monolingual:
             sub = [n for n in ns if n["type"] == "text" and n["style"]["fontSize"] < 40 and n["transform"]["y"] < 130 and n is not t
                    and not CJK.search(n["text"]) and en_words(n["text"]) >= 3]

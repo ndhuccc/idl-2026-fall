@@ -16,6 +16,7 @@ description: Turn a lecture note (lectures/lecNN.md) or pasted text into a compl
 | 檔案 | 用途 | 何時讀 |
 |---|---|---|
 | `SKILL.md` | 本文件:流程、硬規則、交付 | 每次 |
+| `../LEVELS.md` | 教材程度表(一般大眾、高中生、大學生、研究生、專業人員);講義與簡報共用 | 開始前;決定寫多深 |
 | `AUDIT_CHECKLIST.md` | **所有稽核項目**,逐項勾選(A–J) | 交付前必讀並逐項核對 |
 | `AI_AGENT_FILE_FORMAT_SPEC.md` | 格式、欄位、型別、驗證規則、Step、reveal、Connector、Markdown/LaTeX 語法 | 產生 JSON 前 |
 | `PRESENTATION_DESIGN_GUIDE.md` | 巢狀 Scene/Frame 結構、Step 路徑、構圖(瞄準框)、視覺多樣性 | 設計結構前 |
@@ -37,6 +38,7 @@ description: Turn a lecture note (lectures/lecNN.md) or pasted text into a compl
 7. **盤點講義的附圖(硬規則,§4F)**:列出講義每一張圖(`![…](…)` 與「圖說 `<id>`」)、它的繪圖程式 `assets/figures/src/<id>.py` 與圖說全文。講義的圖是內容的一部分,不是可有可無的裝飾。
 8. **使用情境**:本課程第 2 週起的補充教材是**自主學習**用,預設以「學生自己讀、沒有老師講解」為標準(§3A)。只有老師明說是課堂講授用,才可以把說明留給口頭。
 9. **講者備註**:預設**每一頁都寫** `speakerNotes`(§4G),並提醒老師備註會隨檔案公開。
+10. **教材程度(硬規則)**:讀 `../LEVELS.md`,開始前問老師「這份簡報給誰?」(一般大眾、高中生、大學生、研究生、專業人員;預設研究生 `grad`,等於現行寫法)。簡報預設承襲講義的程度;程度與講義不同時依 `LEVELS.md` §5 處理。程度決定公式量、推導與計算頁、術語與符號表、例子與正文字數;中英對照、自讀完整、補充標示等硬規則在所有程度都照舊。盤點表要有一欄寫出程度;交付時寫明程度,並在根層第一個聚焦 Frame 的 step 的 `speakerNotes` 開頭加一行「教材程度:…」。
 
 ## 1A. 長文本流程(篇幅超過門檻時)
 
@@ -53,7 +55,7 @@ description: Turn a lecture note (lectures/lecNN.md) or pasted text into a compl
    - 圖需求:**先列講義的每一張附圖**(§4F:圖 id、放在哪一頁、重畫所用的程式),再依 §4A 圖型對照表補上講義沒有、但內容需要的必圖。講義附圖不得漏列;要省略任何一張,必須寫出理由並經老師同意。
    - 算式與數值例:列出本單元講義中的 `$$` 公式與每個數值例,標明放在哪一頁(§3B)。
    - 跨單元關係(Connector 候選)
-2. 另列**需要老師決定的事項**,例如某段是否保留、某段原文公式是否損壞需還原、**語言(預設中英對照)**、**使用情境(預設自主學習)**、講義附圖是否有任何一張要省略(預設全部採用)。習題預設附提示、預設每頁寫講者備註,老師另有指示才改。
+2. 另列**需要老師決定的事項**,例如**教材程度(預設研究生)**、某段是否保留、某段原文公式是否損壞需還原、**語言(預設中英對照)**、**使用情境(預設自主學習)**、講義附圖是否有任何一張要省略(預設全部採用)。習題預設附提示、預設每頁寫講者備註,老師另有指示才改。
 3. 把表格與事項交給老師,說明可以合併、拆分、刪除或調換順序。
 4. **老師確認前,不得開始批次處理。** 確認後的表格是唯一基準;之後若要改,須重新確認。
 5. 把確認後的表格存成暫存目錄的 `manifest.json`(不放進 repo)。
@@ -292,9 +294,11 @@ def page_step(step_id, label, scene_id, i):
 | `preview_deck.py` | 用瀏覽器加 KaTeX 把每一頁近似渲染成 PNG,回報文字溢出與每個文字框的剩餘高度;`--sheets` 另產生 2×3 縮圖總覽 |
 
 ```bash
-py .agents/skills/view-from-text/tools/audit_deck.py slides/lecNN.jbd.json --lecture lectures/lecNN.md --speaker-notes
+py .agents/skills/view-from-text/tools/audit_deck.py slides/lecNN.jbd.json --lecture lectures/lecNN.md --speaker-notes --level grad
 py .agents/skills/view-from-text/tools/preview_deck.py slides/lecNN.jbd.json --out <暫存資料夾> --sheets
 ```
+
+`--level <public|highschool|undergrad|grad|pro>` 會依 `LEVELS.md` §3 檢查每頁的獨立公式區塊數(Q1)與中文正文字數(Q2),超過只警告;其餘程度項目要人工核對 `AUDIT_CHECKLIST.md` 的 Q 節。
 
 必做順序:產生檔案 → `audit_deck.py`(直到 FAIL 0,WARN 逐項處理或列給老師)→ `preview_deck.py --sheets`(溢出 0,**逐張看縮圖**:字太小、卡片太空、圖例壓到曲線、文字擠在一起)→ 才交給老師。預覽輸出放暫存資料夾,**不要放進 repo**。
 
