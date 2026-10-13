@@ -52,6 +52,8 @@
 
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
 
+- 2026-10-14 — 依新版技能依序完成批次 C(KP06 反向傳播 5 頁、KP07 SGD 4 頁、KP08 小批次與 epoch 4 頁;大學生、4 小時,共 13 頁):全新撰寫講義 `lectures/lec03-kp06-backpropagation.md`、`lec03-kp07-sgd.md`、`lec03-kp08-mini-batch-and-epoch.md`(各附練習、完整解題示範與來源更正)與同名簡報,圖程式 `assets/figures/src/lec03-kp0608-figures.py`(3 張圖)。稽核:三份簡報 `audit_deck.py --lecture --speaker-notes --level undergrad --narrative --minutes --source` FAIL 0;三份講義 `audit_lecture.py --source` FAIL 0、WARN 0。來源更正重點:反向傳播不是梯度下降(只算梯度)、SGD 雜訊幫助逃出鞍點等說法不採為結論、批次方差 σ²/b 僅對獨立抽樣成立(無放回要乘有限母體修正)、刪除「GPU 利用率低於 5%」與「全批次易收斂到尖銳極小值」的無依據說法。v2 講義與簡報待整章完成後再處理。
+
 - 2026-10-14 — 依新版技能依序完成批次 B(KP03 停止準則、KP04 線搜索與最陡下降、KP05 動量;大學生、4 小時、各 4 頁共 12 頁):全新撰寫講義 `lectures/lec03-kp03-stopping-criteria.md`、`lec03-kp04-line-search.md`、`lec03-kp05-momentum.md`(各附練習與完整解題示範、來源更正)與同名簡報,圖程式 `assets/figures/src/lec03-kp0345-figures.py`(5 張圖)。稽核:三份簡報 `audit_deck.py --lecture --speaker-notes --level undergrad --narrative --minutes --source` FAIL 0;三份講義 `audit_lecture.py --source` FAIL 0、WARN 0。已刪除舊的 KP01 與 KP03 檔案(講義、簡報、圖、腳本)。來源更正重點:動量在二次函數上把穩定上限由 2/λmax 放寬為 2(1+α)/λmax(來源「動量不會讓不安全的學習率變安全」過於籠統)、線搜索回溯成功條件為 η ≤ 2(1−c)/L。
 
 - 2026-10-14 — 依新版技能試做第 3 章 KP02(大學生、4 小時、經老師同意用 5 頁):全新撰寫講義 `lectures/lec03-kp02-gradient-descent-and-learning-rate.md`(含兩張圖、誤差倍率表、w² 例子、解題示範與來源更正)與 5 頁簡報 `slides/lec03-kp02-gradient-descent-and-learning-rate.jbd.json`,圖程式 `assets/figures/src/lec03-kp02-lr-figures.py`。稽核:`audit_deck.py --lecture --speaker-notes --level undergrad --narrative --minutes --source` FAIL 0;`audit_lecture.py --source` FAIL 0、WARN 0。已刪除舊的 KP02 檔案(另一個 session 的講義、簡報、備份與圖,以及 `-undergrad` 版)。

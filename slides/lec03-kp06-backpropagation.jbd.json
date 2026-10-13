@@ -1,0 +1,2046 @@
+{
+  "schemaVersion": 3,
+  "rootSceneId": "scene-root",
+  "scenes": {
+    "lec03kp06-scene-u01": {
+      "id": "lec03kp06-scene-u01",
+      "name": "反向傳播",
+      "parentFrameId": "lec03kp06-frame-u01",
+      "nodeIds": [
+        "lec03kp06-u01-p1-title",
+        "lec03kp06-u01-p1-sub",
+        "lec03kp06-u01-p1bridge",
+        "lec03kp06-u01-p1a",
+        "lec03kp06-u01-p1t-h0-c0",
+        "lec03kp06-u01-p1t-h0-c1",
+        "lec03kp06-u01-p1t-h0-c2",
+        "lec03kp06-u01-p1t-r1-c0",
+        "lec03kp06-u01-p1t-r1-c1",
+        "lec03kp06-u01-p1t-r1-c2",
+        "lec03kp06-u01-p1t-r2-c0",
+        "lec03kp06-u01-p1t-r2-c1",
+        "lec03kp06-u01-p1t-r2-c2",
+        "lec03kp06-u01-p1c",
+        "lec03kp06-u01-p2-title",
+        "lec03kp06-u01-p2-sub",
+        "lec03kp06-u01-p2-p2bridge",
+        "lec03kp06-u01-p2-n1",
+        "lec03kp06-u01-p2-n2",
+        "lec03kp06-u01-p2-n3",
+        "lec03kp06-u01-p2-conn1",
+        "lec03kp06-u01-p2-conn2",
+        "lec03kp06-u01-p2-g1",
+        "lec03kp06-u01-p2-g2",
+        "lec03kp06-u01-p3-title",
+        "lec03kp06-u01-p3-sub",
+        "lec03kp06-u01-p3-p3bridge",
+        "lec03kp06-u01-p3-f1",
+        "lec03kp06-u01-p3-f2",
+        "lec03kp06-u01-p3-f3",
+        "lec03kp06-u01-p3-f4",
+        "lec03kp06-u01-p3-f5",
+        "lec03kp06-u01-p3-conn1",
+        "lec03kp06-u01-p3-conn2",
+        "lec03kp06-u01-p3-conn3",
+        "lec03kp06-u01-p3-conn4",
+        "lec03kp06-u01-p3-b1",
+        "lec03kp06-u01-p3-b2",
+        "lec03kp06-u01-p3-b3",
+        "lec03kp06-u01-p3-b4",
+        "lec03kp06-u01-p3-conn5",
+        "lec03kp06-u01-p3-conn6",
+        "lec03kp06-u01-p3-conn7",
+        "lec03kp06-u01-p3-c",
+        "lec03kp06-u01-p4-title",
+        "lec03kp06-u01-p4-sub",
+        "lec03kp06-u01-p4bridge",
+        "lec03kp06-u01-p4-fig1",
+        "lec03kp06-u01-p4a",
+        "lec03kp06-u01-p4b",
+        "lec03kp06-u01-p4c",
+        "lec03kp06-u01-p5-title",
+        "lec03kp06-u01-p5-sub",
+        "lec03kp06-u01-p5bridge",
+        "lec03kp06-u01-p5a",
+        "lec03kp06-u01-p5b",
+        "lec03kp06-u01-p5c"
+      ],
+      "camera": {
+        "x": 640.0,
+        "y": 310.0,
+        "zoom": 0.8780487804878049,
+        "rotation": 0
+      }
+    },
+    "scene-root": {
+      "id": "scene-root",
+      "name": "根畫布",
+      "parentFrameId": null,
+      "nodeIds": [
+        "lec03kp06-frame-u01"
+      ],
+      "camera": {
+        "x": 200,
+        "y": 100,
+        "zoom": 1.2,
+        "rotation": 0
+      }
+    }
+  },
+  "nodes": {
+    "lec03kp06-u01-p1-title": {
+      "id": "lec03kp06-u01-p1-title",
+      "type": "text",
+      "name": "u01-p1-title",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 26,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 65,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#f2ede4",
+        "fontSize": 42,
+        "radius": 0,
+        "fontWeight": 700,
+        "textAlign": "left",
+        "lineHeight": 1.25
+      },
+      "text": "隱藏層看不到標籤,責任怎麼分攤?"
+    },
+    "lec03kp06-u01-p1-sub": {
+      "id": "lec03kp06-u01-p1-sub",
+      "type": "text",
+      "name": "u01-p1-sub",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 88,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 38,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#b7b0a5",
+        "fontSize": 22,
+        "radius": 0,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.2
+      },
+      "text": "A hidden layer never sees the labels: how is responsibility shared?"
+    },
+    "lec03kp06-u01-p1bridge": {
+      "id": "lec03kp06-u01-p1bridge",
+      "type": "shape",
+      "name": "u01-p1bridge",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 136,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 95,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(245,241,233,0.05)",
+        "stroke": "rgba(245,241,233,0.20)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**KP05 之前**梯度被當成已知量。**這頁問**:隱藏層看不到標籤,梯度怎麼算?\n*Until now the gradient was a given. A hidden layer never sees the labels, so how is its gradient computed?*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p1a": {
+      "id": "lec03kp06-u01-p1a",
+      "type": "shape",
+      "name": "u01-p1a",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 243,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 95,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**難處**:隱藏參數經過下游一長串運算才影響損失。\n*A hidden parameter reaches the loss only through a long downstream chain.*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p1t-h0-c0": {
+      "id": "lec03kp06-u01-p1t-h0-c0",
+      "type": "shape",
+      "name": "u01-p1t-h0-c0",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 350,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 260,
+      "height": 66,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 12,
+        "fontWeight": 700,
+        "textAlign": "center",
+        "lineHeight": 1.25,
+        "borderStyle": "solid",
+        "borderWidth": 1
+      },
+      "text": "做法",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p1t-h0-c1": {
+      "id": "lec03kp06-u01-p1t-h0-c1",
+      "type": "shape",
+      "name": "u01-p1t-h0-c1",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 328,
+        "y": 350,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 620,
+      "height": 66,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 12,
+        "fontWeight": 700,
+        "textAlign": "center",
+        "lineHeight": 1.25,
+        "borderStyle": "solid",
+        "borderWidth": 1
+      },
+      "text": "成本($W=10^6$)",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p1t-h0-c2": {
+      "id": "lec03kp06-u01-p1t-h0-c2",
+      "type": "shape",
+      "name": "u01-p1t-h0-c2",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 956,
+        "y": 350,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 250,
+      "height": 66,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 12,
+        "fontWeight": 700,
+        "textAlign": "center",
+        "lineHeight": 1.25,
+        "borderStyle": "solid",
+        "borderWidth": 1
+      },
+      "text": "結論",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p1t-r1-c0": {
+      "id": "lec03kp06-u01-p1t-r1-c0",
+      "type": "shape",
+      "name": "u01-p1t-r1-c0",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 424,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 260,
+      "height": 66,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(245,241,233,0.05)",
+        "stroke": "rgba(245,241,233,0.20)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 12,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.25,
+        "borderStyle": "solid",
+        "borderWidth": 1
+      },
+      "text": "逐一擾動",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p1t-r1-c1": {
+      "id": "lec03kp06-u01-p1t-r1-c1",
+      "type": "shape",
+      "name": "u01-p1t-r1-c1",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 328,
+        "y": 424,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 620,
+      "height": 66,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(245,241,233,0.05)",
+        "stroke": "rgba(245,241,233,0.20)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 12,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.25,
+        "borderStyle": "solid",
+        "borderWidth": 1
+      },
+      "text": "$W$ 次前向 × $O(W)$ = $10^{12}$",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p1t-r1-c2": {
+      "id": "lec03kp06-u01-p1t-r1-c2",
+      "type": "shape",
+      "name": "u01-p1t-r1-c2",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 956,
+        "y": 424,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 250,
+      "height": 66,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(245,241,233,0.05)",
+        "stroke": "rgba(245,241,233,0.20)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 12,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.25,
+        "borderStyle": "solid",
+        "borderWidth": 1
+      },
+      "text": "不可行",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p1t-r2-c0": {
+      "id": "lec03kp06-u01-p1t-r2-c0",
+      "type": "shape",
+      "name": "u01-p1t-r2-c0",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 498,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 260,
+      "height": 66,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(217,119,87,0.12)",
+        "stroke": "rgba(217,119,87,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 12,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.25,
+        "borderStyle": "solid",
+        "borderWidth": 1
+      },
+      "text": "反向傳播",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p1t-r2-c1": {
+      "id": "lec03kp06-u01-p1t-r2-c1",
+      "type": "shape",
+      "name": "u01-p1t-r2-c1",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 328,
+        "y": 498,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 620,
+      "height": 66,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(217,119,87,0.12)",
+        "stroke": "rgba(217,119,87,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 12,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.25,
+        "borderStyle": "solid",
+        "borderWidth": 1
+      },
+      "text": "前向 + 反向 ≈ 數個 $10^6$",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p1t-r2-c2": {
+      "id": "lec03kp06-u01-p1t-r2-c2",
+      "type": "shape",
+      "name": "u01-p1t-r2-c2",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 956,
+        "y": 498,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 250,
+      "height": 66,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(217,119,87,0.12)",
+        "stroke": "rgba(217,119,87,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 12,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.25,
+        "borderStyle": "solid",
+        "borderWidth": 1
+      },
+      "text": "可行",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p1c": {
+      "id": "lec03kp06-u01-p1c",
+      "type": "shape",
+      "name": "u01-p1c",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 572,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 95,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(217,119,87,0.12)",
+        "stroke": "rgba(217,119,87,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**反向傳播**:鏈式法則拆出局部因子;前向存數值,反向分責任。\n*The forward pass stores the values and the backward pass assigns responsibility.*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p2-title": {
+      "id": "lec03kp06-u01-p2-title",
+      "type": "text",
+      "name": "u01-p2-title",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 1500,
+        "y": 26,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 65,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#f2ede4",
+        "fontSize": 42,
+        "radius": 0,
+        "fontWeight": 700,
+        "textAlign": "left",
+        "lineHeight": 1.25
+      },
+      "text": "單一神經元:權重的梯度 = 誤差敏感度 δ × 流入的訊號 z"
+    },
+    "lec03kp06-u01-p2-sub": {
+      "id": "lec03kp06-u01-p2-sub",
+      "type": "text",
+      "name": "u01-p2-sub",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 1500,
+        "y": 88,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 38,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#b7b0a5",
+        "fontSize": 22,
+        "radius": 0,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.2
+      },
+      "text": "One neuron: a weight's gradient = error sensitivity δ × incoming signal z"
+    },
+    "lec03kp06-u01-p2-p2bridge": {
+      "id": "lec03kp06-u01-p2-p2bridge",
+      "type": "shape",
+      "name": "u01-p2-p2bridge",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 1500,
+        "y": 136,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 95,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(245,241,233,0.05)",
+        "stroke": "rgba(245,241,233,0.20)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**上一頁**說鏈式法則拆出局部因子。**這頁問**:單一神經元的偏導怎麼拆?\n*The chain rule splits a derivative into local factors. How does it split for one neuron?*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p2-n1": {
+      "id": "lec03kp06-u01-p2-n1",
+      "type": "shape",
+      "name": "u01-p2-n1",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 1500,
+        "y": 245,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 300,
+      "height": 130,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**前層訊號** $z_\\ell$\n*signal from the previous layer*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p2-n2": {
+      "id": "lec03kp06-u01-p2-n2",
+      "type": "shape",
+      "name": "u01-p2-n2",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 1880,
+        "y": 245,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 360,
+      "height": 130,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(95,184,168,0.12)",
+        "stroke": "rgba(95,184,168,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**加權和** $a_i=\\sum_\\ell w_{i\\ell}z_\\ell$\n*pre-activation weighted sum*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p2-n3": {
+      "id": "lec03kp06-u01-p2-n3",
+      "type": "shape",
+      "name": "u01-p2-n3",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 2320,
+        "y": 245,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 340,
+      "height": 130,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(125,187,140,0.12)",
+        "stroke": "rgba(125,187,140,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**輸出** $z_i=\\sigma(a_i)$\n*output after the activation*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p2-conn1": {
+      "id": "lec03kp06-u01-p2-conn1",
+      "type": "connector",
+      "name": "u01-p2-conn1",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 1440,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "w",
+      "connector": {
+        "sourceNodeId": "lec03kp06-u01-p2-n1",
+        "sourceHook": 4,
+        "targetNodeId": "lec03kp06-u01-p2-n2",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium",
+        "label": {
+          "text": "w",
+          "t": 0.5,
+          "offset": "above"
+        }
+      }
+    },
+    "lec03kp06-u01-p2-conn2": {
+      "id": "lec03kp06-u01-p2-conn2",
+      "type": "connector",
+      "name": "u01-p2-conn2",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 1440,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec03kp06-u01-p2-n2",
+        "sourceHook": 4,
+        "targetNodeId": "lec03kp06-u01-p2-n3",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec03kp06-u01-p2-g1": {
+      "id": "lec03kp06-u01-p2-g1",
+      "type": "shape",
+      "name": "u01-p2-g1",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 1500,
+        "y": 411,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 158,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(217,119,87,0.12)",
+        "stroke": "rgba(217,119,87,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**誤差敏感度** $\\delta_i:=\\partial e/\\partial a_i$:$a_i$ 動一點,損失動多少。\n**權重梯度**:$\\dfrac{\\partial e}{\\partial w_{i\\ell}}=\\dfrac{\\partial e}{\\partial a_i}\\cdot\\dfrac{\\partial a_i}{\\partial w_{i\\ell}}=\\delta_i\\cdot z_\\ell$\n*The gradient of a weight is the sensitivity of this neuron times the signal flowing into the connection.*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p2-g2": {
+      "id": "lec03kp06-u01-p2-g2",
+      "type": "text",
+      "name": "u01-p2-g2",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 1500,
+        "y": 583,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 90,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#b7b0a5",
+        "fontSize": 22,
+        "radius": 0,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4
+      },
+      "text": "為什麼定義在 $a_i$:這樣 $\\partial a_i/\\partial w_{i\\ell}=z_\\ell$ 最乾淨;所以前向要把每層的 $z$ 存下來。\n*Defined at a_i, the second factor is just z_ℓ; that is why the forward pass stores every z.*"
+    },
+    "lec03kp06-u01-p3-title": {
+      "id": "lec03kp06-u01-p3-title",
+      "type": "text",
+      "name": "u01-p3-title",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 2940,
+        "y": 26,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 65,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#f2ede4",
+        "fontSize": 42,
+        "radius": 0,
+        "fontWeight": 700,
+        "textAlign": "left",
+        "lineHeight": 1.25
+      },
+      "text": "手算一遍:前向保存數值,反向分攤責任"
+    },
+    "lec03kp06-u01-p3-sub": {
+      "id": "lec03kp06-u01-p3-sub",
+      "type": "text",
+      "name": "u01-p3-sub",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 2940,
+        "y": 88,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 38,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#b7b0a5",
+        "fontSize": 22,
+        "radius": 0,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.2
+      },
+      "text": "A hand computation: the forward pass stores values, the backward pass assigns responsibility"
+    },
+    "lec03kp06-u01-p3-p3bridge": {
+      "id": "lec03kp06-u01-p3-p3bridge",
+      "type": "shape",
+      "name": "u01-p3-p3bridge",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 2940,
+        "y": 136,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 95,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(245,241,233,0.05)",
+        "stroke": "rgba(245,241,233,0.20)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**上一頁**得到梯度 = δ × z。**這頁問**:代入數字,每個因子的角色是什麼?\n*We have gradient = δ × z. With numbers, what role does each factor play?*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p3-f1": {
+      "id": "lec03kp06-u01-p3-f1",
+      "type": "shape",
+      "name": "u01-p3-f1",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 2940,
+        "y": 245,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 200,
+      "height": 133,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "$x=1$\n*input*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p3-f2": {
+      "id": "lec03kp06-u01-p3-f2",
+      "type": "shape",
+      "name": "u01-p3-f2",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 3180,
+        "y": 245,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 200,
+      "height": 133,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "$a=w_1x=2$\n*w₁ = 2*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p3-f3": {
+      "id": "lec03kp06-u01-p3-f3",
+      "type": "shape",
+      "name": "u01-p3-f3",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 3420,
+        "y": 245,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 200,
+      "height": 133,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "$z=a=2$\n*identity*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p3-f4": {
+      "id": "lec03kp06-u01-p3-f4",
+      "type": "shape",
+      "name": "u01-p3-f4",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 3660,
+        "y": 245,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 200,
+      "height": 133,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "$\\hat y=w_2z=6$\n*w₂ = 3*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p3-f5": {
+      "id": "lec03kp06-u01-p3-f5",
+      "type": "shape",
+      "name": "u01-p3-f5",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 3900,
+        "y": 245,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 200,
+      "height": 133,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "$e=\\tfrac12(6-0)^2=18$\n*y = 0*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p3-conn1": {
+      "id": "lec03kp06-u01-p3-conn1",
+      "type": "connector",
+      "name": "u01-p3-conn1",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 2880,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec03kp06-u01-p3-f1",
+        "sourceHook": 4,
+        "targetNodeId": "lec03kp06-u01-p3-f2",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec03kp06-u01-p3-conn2": {
+      "id": "lec03kp06-u01-p3-conn2",
+      "type": "connector",
+      "name": "u01-p3-conn2",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 2880,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec03kp06-u01-p3-f2",
+        "sourceHook": 4,
+        "targetNodeId": "lec03kp06-u01-p3-f3",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec03kp06-u01-p3-conn3": {
+      "id": "lec03kp06-u01-p3-conn3",
+      "type": "connector",
+      "name": "u01-p3-conn3",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 2880,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec03kp06-u01-p3-f3",
+        "sourceHook": 4,
+        "targetNodeId": "lec03kp06-u01-p3-f4",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec03kp06-u01-p3-conn4": {
+      "id": "lec03kp06-u01-p3-conn4",
+      "type": "connector",
+      "name": "u01-p3-conn4",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 2880,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec03kp06-u01-p3-f4",
+        "sourceHook": 4,
+        "targetNodeId": "lec03kp06-u01-p3-f5",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec03kp06-u01-p3-b1": {
+      "id": "lec03kp06-u01-p3-b1",
+      "type": "shape",
+      "name": "u01-p3-b1",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 3660,
+        "y": 418,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 200,
+      "height": 134,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(217,119,87,0.12)",
+        "stroke": "rgba(217,119,87,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "$\\delta_{out}=\\hat y-y=6$\n*output*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p3-b2": {
+      "id": "lec03kp06-u01-p3-b2",
+      "type": "shape",
+      "name": "u01-p3-b2",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 3420,
+        "y": 418,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 200,
+      "height": 134,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(224,122,112,0.12)",
+        "stroke": "rgba(224,122,112,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "$\\delta_a=6\\cdot3\\cdot1=18$\n*hidden*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p3-b3": {
+      "id": "lec03kp06-u01-p3-b3",
+      "type": "shape",
+      "name": "u01-p3-b3",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 3180,
+        "y": 418,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 200,
+      "height": 134,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(224,122,112,0.12)",
+        "stroke": "rgba(224,122,112,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "$\\partial e/\\partial w_1=18$\n*= δ_a · x*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p3-b4": {
+      "id": "lec03kp06-u01-p3-b4",
+      "type": "shape",
+      "name": "u01-p3-b4",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 3900,
+        "y": 418,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 200,
+      "height": 134,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(224,122,112,0.12)",
+        "stroke": "rgba(224,122,112,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "$\\partial e/\\partial w_2=12$\n*= δ_out · z*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p3-conn5": {
+      "id": "lec03kp06-u01-p3-conn5",
+      "type": "connector",
+      "name": "u01-p3-conn5",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 2880,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec03kp06-u01-p3-b1",
+        "sourceHook": 12,
+        "targetNodeId": "lec03kp06-u01-p3-b2",
+        "targetHook": 4,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec03kp06-u01-p3-conn6": {
+      "id": "lec03kp06-u01-p3-conn6",
+      "type": "connector",
+      "name": "u01-p3-conn6",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 2880,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec03kp06-u01-p3-b2",
+        "sourceHook": 12,
+        "targetNodeId": "lec03kp06-u01-p3-b3",
+        "targetHook": 4,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec03kp06-u01-p3-conn7": {
+      "id": "lec03kp06-u01-p3-conn7",
+      "type": "connector",
+      "name": "u01-p3-conn7",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 2880,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec03kp06-u01-p3-b1",
+        "sourceHook": 4,
+        "targetNodeId": "lec03kp06-u01-p3-b4",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec03kp06-u01-p3-c": {
+      "id": "lec03kp06-u01-p3-c",
+      "type": "shape",
+      "name": "u01-p3-c",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 2940,
+        "y": 576,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 130,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(125,187,140,0.12)",
+        "stroke": "rgba(125,187,140,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**檢查**:中心差分 $\\epsilon=0.001$:$(18.0180045-17.9820045)/0.002=18$〔程式計算〕。每個因子都有因果角色,沒有死背的裝飾。\n*Check: the central difference gives 18, matching the hand result; every factor has a causal role.*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p4-title": {
+      "id": "lec03kp06-u01-p4-title",
+      "type": "text",
+      "name": "u01-p4-title",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 4380,
+        "y": 26,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 65,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#f2ede4",
+        "fontSize": 42,
+        "radius": 0,
+        "fontWeight": 700,
+        "textAlign": "left",
+        "lineHeight": 1.25
+      },
+      "text": "隱藏層的 δ:下游責任加權倒灌,再過局部斜率"
+    },
+    "lec03kp06-u01-p4-sub": {
+      "id": "lec03kp06-u01-p4-sub",
+      "type": "text",
+      "name": "u01-p4-sub",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 4380,
+        "y": 88,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 38,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#b7b0a5",
+        "fontSize": 22,
+        "radius": 0,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.2
+      },
+      "text": "Hidden-layer δ: downstream responsibility flows back, filtered by the local slope"
+    },
+    "lec03kp06-u01-p4bridge": {
+      "id": "lec03kp06-u01-p4bridge",
+      "type": "shape",
+      "name": "u01-p4bridge",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 4380,
+        "y": 136,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 130,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(245,241,233,0.05)",
+        "stroke": "rgba(245,241,233,0.20)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**上一頁**活化是恆等,斜率 1。**這頁問**:有非線性活化時,隱藏層的 $\\delta$ 怎麼遞推?\n*The activation was the identity with slope 1. With a nonlinear activation, how does the hidden-layer δ propagate?*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p4-fig1": {
+      "id": "lec03kp06-u01-p4-fig1",
+      "type": "image",
+      "name": "fig:lec03-kp06-sigmoid",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 4380,
+        "y": 278,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 440,
+      "height": 264.0,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "transparent",
+        "fontSize": 1,
+        "radius": 0
+      },
+      "text": "sigmoid 函數 σ(a)（藍線）與它的斜率 σ′(a)（橘線）：σ′ 最大 0.25（a=0），a=0.5 時 0.2350，a=5 時只剩 0.0066，這就是梯度消失。",
+      "image": {
+        "src": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgd2lkdGg9IjQzMnB0IiBoZWlnaHQ9IjI1OS4ycHQiIHZpZXdCb3g9IjAgMCA0MzIgMjU5LjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIj4KIDxtZXRhZGF0YT4KICA8cmRmOlJERiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+CiAgIDxjYzpXb3JrPgogICAgPGRjOnR5cGUgcmRmOnJlc291cmNlPSJodHRwOi8vcHVybC5vcmcvZGMvZGNtaXR5cGUvU3RpbGxJbWFnZSIvPgogICAgPGRjOmRhdGU+MjAyNi0xMC0xNFQwNjowNzoxMC41MTgzNTA8L2RjOmRhdGU+CiAgICA8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4KICAgIDxkYzpjcmVhdG9yPgogICAgIDxjYzpBZ2VudD4KICAgICAgPGRjOnRpdGxlPk1hdHBsb3RsaWIgdjMuMTEuMSwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy88L2RjOnRpdGxlPgogICAgIDwvY2M6QWdlbnQ+CiAgICA8L2RjOmNyZWF0b3I+CiAgIDwvY2M6V29yaz4KICA8L3JkZjpSREY+CiA8L21ldGFkYXRhPgogPGRlZnM+CiAgPHN0eWxlIHR5cGU9InRleHQvY3NzIj4qe3N0cm9rZS1saW5lam9pbjogcm91bmQ7IHN0cm9rZS1saW5lY2FwOiBidXR0fTwvc3R5bGU+CiA8L2RlZnM+CiA8ZyBpZD0iZmlndXJlXzEiPgogIDxnIGlkPSJwYXRjaF8xIj4KICAgPHBhdGggZD0iTSAwIDI1OS4yIApMIDQzMiAyNTkuMiAKTCA0MzIgMCAKTCAwIDAgCkwgMCAyNTkuMiAKegoiIHN0eWxlPSJmaWxsOiBub25lIi8+CiAgPC9nPgogIDxnIGlkPSJheGVzXzEiPgogICA8ZyBpZD0icGF0Y2hfMiI+CiAgICA8cGF0aCBkPSJNIDU2LjE2IDIxMS42OCAKTCA0MTQuNzIgMjExLjY4IApMIDQxNC43MiAyMC4xNiAKTCA1Ni4xNiAyMC4xNiAKTCA1Ni4xNiAyMTEuNjggCnoKIiBzdHlsZT0iZmlsbDogbm9uZSIvPgogICA8L2c+CiAgIDxnIGlkPSJtYXRwbG90bGliLmF4aXNfMSI+CiAgICA8ZyBpZD0ieHRpY2tfMSI+CiAgICAgPGcgaWQ9ImxpbmUyZF8xIj4KICAgICAgPHBhdGggZD0iTSA1Ni4xNiAyMTEuNjggCkwgNTYuMTYgMjAuMTYgCiIgY2xpcC1wYXRoPSJ1cmwoI3BjZjU3YjEwMmIyKSIgc3R5bGU9ImZpbGw6IG5vbmU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLW9wYWNpdHk6IDAuMTg7IHN0cm9rZS13aWR0aDogMC44OyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgICAgPC9nPgogICAgIDxnIGlkPSJsaW5lMmRfMiI+CiAgICAgIDxkZWZzPgogICAgICAgPHBhdGggaWQ9Im1mOTZkN2Q3Y2UxIiBkPSJNIDAgMCAKTCAwIDMuNSAKIiBzdHlsZT0ic3Ryb2tlOiAjYjdiMGE1OyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2RlZnM+CiAgICAgIDxnPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjbWY5NmQ3ZDdjZTEiIHg9IjU2LjE2IiB5PSIyMTEuNjgiIHN0eWxlPSJmaWxsOiAjYjdiMGE1OyBzdHJva2U6ICNiN2IwYTU7IHN0cm9rZS13aWR0aDogMC44Ii8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICAgPGcgaWQ9InRleHRfMSI+CiAgICAgIDwhLS0g4oiSOCAtLT4KICAgICAgPGcgc3R5bGU9ImZpbGw6ICNiN2IwYTUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ2LjYwNzA2MiAyMjguNTI2NTYyKSBzY2FsZSgwLjEyOTYgLTAuMTI5NikiPgogICAgICAgPGRlZnM+CiAgICAgICAgPHBhdGggaWQ9IkRlamFWdVNhbnMtYzljIiBkPSJNIDY3OCAyMjcyIApMIDQ2ODQgMjI3MiAKTCA0Njg0IDE3NDEgCkwgNjc4IDE3NDEgCkwgNjc4IDIyNzIgCnoKIiB0cmFuc2Zvcm09InNjYWxlKDAuMDE1NjI1KSIvPgogICAgICAgIDxwYXRoIGlkPSJEZWphVnVTYW5zLTFiIiBkPSJNIDIwMzQgMjIxNiAKUSAxNTg0IDIyMTYgMTMyNiAxOTc1IApRIDEwNjkgMTczNCAxMDY5IDEzMTMgClEgMTA2OSA4OTEgMTMyNiA2NTAgClEgMTU4NCA0MDkgMjAzNCA0MDkgClEgMjQ4NCA0MDkgMjc0MyA2NTEgClEgMzAwMyA4OTQgMzAwMyAxMzEzIApRIDMwMDMgMTczNCAyNzQ1IDE5NzUgClEgMjQ4OCAyMjE2IDIwMzQgMjIxNiAKegpNIDE0MDMgMjQ4NCAKUSA5OTcgMjU4NCA3NzAgMjg2MiAKUSA1NDQgMzE0MSA1NDQgMzU0MSAKUSA1NDQgNDEwMCA5NDIgNDQyNSAKUSAxMzQxIDQ3NTAgMjAzNCA0NzUwIApRIDI3MzEgNDc1MCAzMTI4IDQ0MjUgClEgMzUyNSA0MTAwIDM1MjUgMzU0MSAKUSAzNTI1IDMxNDEgMzI5OCAyODYyIApRIDMwNzIgMjU4NCAyNjY5IDI0ODQgClEgMzEyNSAyMzc4IDMzNzkgMjA2OCAKUSAzNjM0IDE3NTkgMzYzNCAxMzEzIApRIDM2MzQgNjM0IDMyMjAgMjcxIApRIDI4MDYgLTkxIDIwMzQgLTkxIApRIDEyNjMgLTkxIDg0OCAyNzEgClEgNDM0IDYzNCA0MzQgMTMxMyAKUSA0MzQgMTc1OSA2OTAgMjA2OCAKUSA5NDcgMjM3OCAxNDAzIDI0ODQgCnoKTSAxMTcyIDM0ODEgClEgMTE3MiAzMTE5IDEzOTggMjkxNiAKUSAxNjI1IDI3MTMgMjAzNCAyNzEzIApRIDI0NDEgMjcxMyAyNjcwIDI5MTYgClEgMjkwMCAzMTE5IDI5MDAgMzQ4MSAKUSAyOTAwIDM4NDQgMjY3MCA0MDQ3IApRIDI0NDEgNDI1MCAyMDM0IDQyNTAgClEgMTYyNSA0MjUwIDEzOTggNDA0NyAKUSAxMTcyIDM4NDQgMTE3MiAzNDgxIAp6CiIgdHJhbnNmb3JtPSJzY2FsZSgwLjAxNTYyNSkiLz4KICAgICAgIDwvZGVmcz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0RlamFWdVNhbnMtYzljIi8+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTFiIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4My43OTY4NzUgMCkiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ4dGlja18yIj4KICAgICA8ZyBpZD0ibGluZTJkXzMiPgogICAgICA8cGF0aCBkPSJNIDEwMC45OCAyMTEuNjggCkwgMTAwLjk4IDIwLjE2IAoiIGNsaXAtcGF0aD0idXJsKCNwY2Y1N2IxMDJiMikiIHN0eWxlPSJmaWxsOiBub25lOyBzdHJva2U6ICNiN2IwYTU7IHN0cm9rZS1vcGFjaXR5OiAwLjE4OyBzdHJva2Utd2lkdGg6IDAuODsgc3Ryb2tlLWxpbmVjYXA6IHNxdWFyZSIvPgogICAgIDwvZz4KICAgICA8ZyBpZD0ibGluZTJkXzQiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI21mOTZkN2Q3Y2UxIiB4PSIxMDAuOTgiIHk9IjIxMS42OCIgc3R5bGU9ImZpbGw6ICNiN2IwYTU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgICA8ZyBpZD0idGV4dF8yIj4KICAgICAgPCEtLSDiiJI2IC0tPgogICAgICA8ZyBzdHlsZT0iZmlsbDogI2I3YjBhNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOTEuNDI3MDYyIDIyOC41MjY1NjIpIHNjYWxlKDAuMTI5NiAtMC4xMjk2KSI+CiAgICAgICA8ZGVmcz4KICAgICAgICA8cGF0aCBpZD0iRGVqYVZ1U2Fucy0xOSIgZD0iTSAyMTEzIDI1ODQgClEgMTY4OCAyNTg0IDE0MzkgMjI5MyAKUSAxMTkxIDIwMDMgMTE5MSAxNDk3IApRIDExOTEgOTk0IDE0MzkgNzAxIApRIDE2ODggNDA5IDIxMTMgNDA5IApRIDI1MzggNDA5IDI3ODYgNzAxIApRIDMwMzQgOTk0IDMwMzQgMTQ5NyAKUSAzMDM0IDIwMDMgMjc4NiAyMjkzIApRIDI1MzggMjU4NCAyMTEzIDI1ODQgCnoKTSAzMzY2IDQ1NjMgCkwgMzM2NiAzOTg4IApRIDMxMjggNDEwMCAyODg2IDQxNTkgClEgMjY0NCA0MjE5IDI0MDYgNDIxOSAKUSAxNzgxIDQyMTkgMTQ1MSAzNzk3IApRIDExMjIgMzM3NSAxMDc1IDI1MjIgClEgMTI1OSAyNzk0IDE1MzcgMjkzOSAKUSAxODE2IDMwODQgMjE1MCAzMDg0IApRIDI4NTMgMzA4NCAzMjYxIDI2NTcgClEgMzY2OSAyMjMxIDM2NjkgMTQ5NyAKUSAzNjY5IDc3OCAzMjQ0IDM0MyAKUSAyODE5IC05MSAyMTEzIC05MSAKUSAxMzAzIC05MSA4NzUgNTI5IApRIDQ0NyAxMTUwIDQ0NyAyMzI4IApRIDQ0NyAzNDM0IDk3MiA0MDkyIApRIDE0OTcgNDc1MCAyMzgxIDQ3NTAgClEgMjYxOSA0NzUwIDI4NjEgNDcwMyAKUSAzMTAzIDQ2NTYgMzM2NiA0NTYzIAp6CiIgdHJhbnNmb3JtPSJzY2FsZSgwLjAxNTYyNSkiLz4KICAgICAgIDwvZGVmcz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0RlamFWdVNhbnMtYzljIi8+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTE5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4My43OTY4NzUgMCkiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ4dGlja18zIj4KICAgICA8ZyBpZD0ibGluZTJkXzUiPgogICAgICA8cGF0aCBkPSJNIDE0NS44IDIxMS42OCAKTCAxNDUuOCAyMC4xNiAKIiBjbGlwLXBhdGg9InVybCgjcGNmNTdiMTAyYjIpIiBzdHlsZT0iZmlsbDogbm9uZTsgc3Ryb2tlOiAjYjdiMGE1OyBzdHJva2Utb3BhY2l0eTogMC4xODsgc3Ryb2tlLXdpZHRoOiAwLjg7IHN0cm9rZS1saW5lY2FwOiBzcXVhcmUiLz4KICAgICA8L2c+CiAgICAgPGcgaWQ9ImxpbmUyZF82Ij4KICAgICAgPGc+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNtZjk2ZDdkN2NlMSIgeD0iMTQ1LjgiIHk9IjIxMS42OCIgc3R5bGU9ImZpbGw6ICNiN2IwYTU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgICA8ZyBpZD0idGV4dF8zIj4KICAgICAgPCEtLSDiiJI0IC0tPgogICAgICA8ZyBzdHlsZT0iZmlsbDogI2I3YjBhNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTM2LjI0NzA2MiAyMjguNTI2NTYyKSBzY2FsZSgwLjEyOTYgLTAuMTI5NikiPgogICAgICAgPGRlZnM+CiAgICAgICAgPHBhdGggaWQ9IkRlamFWdVNhbnMtMTciIGQ9Ik0gMjQxOSA0MTE2IApMIDgyNSAxNjI1IApMIDI0MTkgMTYyNSAKTCAyNDE5IDQxMTYgCnoKTSAyMjUzIDQ2NjYgCkwgMzA0NyA0NjY2IApMIDMwNDcgMTYyNSAKTCAzNzEzIDE2MjUgCkwgMzcxMyAxMTAwIApMIDMwNDcgMTEwMCAKTCAzMDQ3IDAgCkwgMjQxOSAwIApMIDI0MTkgMTEwMCAKTCAzMTMgMTEwMCAKTCAzMTMgMTcwOSAKTCAyMjUzIDQ2NjYgCnoKIiB0cmFuc2Zvcm09InNjYWxlKDAuMDE1NjI1KSIvPgogICAgICAgPC9kZWZzPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjRGVqYVZ1U2Fucy1jOWMiLz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0RlamFWdVNhbnMtMTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDgzLjc5Njg3NSAwKSIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgPC9nPgogICAgPGcgaWQ9Inh0aWNrXzQiPgogICAgIDxnIGlkPSJsaW5lMmRfNyI+CiAgICAgIDxwYXRoIGQ9Ik0gMTkwLjYyIDIxMS42OCAKTCAxOTAuNjIgMjAuMTYgCiIgY2xpcC1wYXRoPSJ1cmwoI3BjZjU3YjEwMmIyKSIgc3R5bGU9ImZpbGw6IG5vbmU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLW9wYWNpdHk6IDAuMTg7IHN0cm9rZS13aWR0aDogMC44OyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgICAgPC9nPgogICAgIDxnIGlkPSJsaW5lMmRfOCI+CiAgICAgIDxnPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjbWY5NmQ3ZDdjZTEiIHg9IjE5MC42MiIgeT0iMjExLjY4IiBzdHlsZT0iZmlsbDogI2I3YjBhNTsgc3Ryb2tlOiAjYjdiMGE1OyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgIDxnIGlkPSJ0ZXh0XzQiPgogICAgICA8IS0tIOKIkjIgLS0+CiAgICAgIDxnIHN0eWxlPSJmaWxsOiAjYjdiMGE1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxODEuMDY3MDYyIDIyOC41MjY1NjIpIHNjYWxlKDAuMTI5NiAtMC4xMjk2KSI+CiAgICAgICA8ZGVmcz4KICAgICAgICA8cGF0aCBpZD0iRGVqYVZ1U2Fucy0xNSIgZD0iTSAxMjI4IDUzMSAKTCAzNDMxIDUzMSAKTCAzNDMxIDAgCkwgNDY5IDAgCkwgNDY5IDUzMSAKUSA4MjggOTAzIDE0NDggMTUyOSAKUSAyMDY5IDIxNTYgMjIyOCAyMzM4IApRIDI1MzEgMjY3OCAyNjUxIDI5MTQgClEgMjc3MiAzMTUwIDI3NzIgMzM3OCAKUSAyNzcyIDM3NTAgMjUxMSAzOTg0IApRIDIyNTAgNDIxOSAxODMxIDQyMTkgClEgMTUzNCA0MjE5IDEyMDQgNDExNiAKUSA4NzUgNDAxMyA1MDAgMzgwMyAKTCA1MDAgNDQ0MSAKUSA4ODEgNDU5NCAxMjEyIDQ2NzIgClEgMTU0NCA0NzUwIDE4MTkgNDc1MCAKUSAyNTQ0IDQ3NTAgMjk3NSA0Mzg3IApRIDM0MDYgNDAyNSAzNDA2IDM0MTkgClEgMzQwNiAzMTMxIDMyOTggMjg3MyAKUSAzMTkxIDI2MTYgMjkwNiAyMjY2IApRIDI4MjggMjE3NSAyNDA5IDE3NDIgClEgMTk5MSAxMzA5IDEyMjggNTMxIAp6CiIgdHJhbnNmb3JtPSJzY2FsZSgwLjAxNTYyNSkiLz4KICAgICAgIDwvZGVmcz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0RlamFWdVNhbnMtYzljIi8+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTE1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4My43OTY4NzUgMCkiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ4dGlja181Ij4KICAgICA8ZyBpZD0ibGluZTJkXzkiPgogICAgICA8cGF0aCBkPSJNIDIzNS40NCAyMTEuNjggCkwgMjM1LjQ0IDIwLjE2IAoiIGNsaXAtcGF0aD0idXJsKCNwY2Y1N2IxMDJiMikiIHN0eWxlPSJmaWxsOiBub25lOyBzdHJva2U6ICNiN2IwYTU7IHN0cm9rZS1vcGFjaXR5OiAwLjE4OyBzdHJva2Utd2lkdGg6IDAuODsgc3Ryb2tlLWxpbmVjYXA6IHNxdWFyZSIvPgogICAgIDwvZz4KICAgICA8ZyBpZD0ibGluZTJkXzEwIj4KICAgICAgPGc+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNtZjk2ZDdkN2NlMSIgeD0iMjM1LjQ0IiB5PSIyMTEuNjgiIHN0eWxlPSJmaWxsOiAjYjdiMGE1OyBzdHJva2U6ICNiN2IwYTU7IHN0cm9rZS13aWR0aDogMC44Ii8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICAgPGcgaWQ9InRleHRfNSI+CiAgICAgIDwhLS0gMCAtLT4KICAgICAgPGcgc3R5bGU9ImZpbGw6ICNiN2IwYTUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzMS4zMTcxIDIyOC41MjY1NjIpIHNjYWxlKDAuMTI5NiAtMC4xMjk2KSI+CiAgICAgICA8ZGVmcz4KICAgICAgICA8cGF0aCBpZD0iRGVqYVZ1U2Fucy0xMyIgZD0iTSAyMDM0IDQyNTAgClEgMTU0NyA0MjUwIDEzMDEgMzc3MCAKUSAxMDU2IDMyOTEgMTA1NiAyMzI4IApRIDEwNTYgMTM2OSAxMzAxIDg4OSAKUSAxNTQ3IDQwOSAyMDM0IDQwOSAKUSAyNTI1IDQwOSAyNzcwIDg4OSAKUSAzMDE2IDEzNjkgMzAxNiAyMzI4IApRIDMwMTYgMzI5MSAyNzcwIDM3NzAgClEgMjUyNSA0MjUwIDIwMzQgNDI1MCAKegpNIDIwMzQgNDc1MCAKUSAyODE5IDQ3NTAgMzIzMyA0MTI5IApRIDM2NDcgMzUwOSAzNjQ3IDIzMjggClEgMzY0NyAxMTUwIDMyMzMgNTI5IApRIDI4MTkgLTkxIDIwMzQgLTkxIApRIDEyNTAgLTkxIDgzNiA1MjkgClEgNDIyIDExNTAgNDIyIDIzMjggClEgNDIyIDM1MDkgODM2IDQxMjkgClEgMTI1MCA0NzUwIDIwMzQgNDc1MCAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgICA8L2RlZnM+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTEzIi8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyBpZD0ieHRpY2tfNiI+CiAgICAgPGcgaWQ9ImxpbmUyZF8xMSI+CiAgICAgIDxwYXRoIGQ9Ik0gMjgwLjI2IDIxMS42OCAKTCAyODAuMjYgMjAuMTYgCiIgY2xpcC1wYXRoPSJ1cmwoI3BjZjU3YjEwMmIyKSIgc3R5bGU9ImZpbGw6IG5vbmU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLW9wYWNpdHk6IDAuMTg7IHN0cm9rZS13aWR0aDogMC44OyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgICAgPC9nPgogICAgIDxnIGlkPSJsaW5lMmRfMTIiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI21mOTZkN2Q3Y2UxIiB4PSIyODAuMjYiIHk9IjIxMS42OCIgc3R5bGU9ImZpbGw6ICNiN2IwYTU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgICA8ZyBpZD0idGV4dF82Ij4KICAgICAgPCEtLSAyIC0tPgogICAgICA8ZyBzdHlsZT0iZmlsbDogI2I3YjBhNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjc2LjEzNzEgMjI4LjUyNjU2Mikgc2NhbGUoMC4xMjk2IC0wLjEyOTYpIj4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0RlamFWdVNhbnMtMTUiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ4dGlja183Ij4KICAgICA8ZyBpZD0ibGluZTJkXzEzIj4KICAgICAgPHBhdGggZD0iTSAzMjUuMDggMjExLjY4IApMIDMyNS4wOCAyMC4xNiAKIiBjbGlwLXBhdGg9InVybCgjcGNmNTdiMTAyYjIpIiBzdHlsZT0iZmlsbDogbm9uZTsgc3Ryb2tlOiAjYjdiMGE1OyBzdHJva2Utb3BhY2l0eTogMC4xODsgc3Ryb2tlLXdpZHRoOiAwLjg7IHN0cm9rZS1saW5lY2FwOiBzcXVhcmUiLz4KICAgICA8L2c+CiAgICAgPGcgaWQ9ImxpbmUyZF8xNCI+CiAgICAgIDxnPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjbWY5NmQ3ZDdjZTEiIHg9IjMyNS4wOCIgeT0iMjExLjY4IiBzdHlsZT0iZmlsbDogI2I3YjBhNTsgc3Ryb2tlOiAjYjdiMGE1OyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgIDxnIGlkPSJ0ZXh0XzciPgogICAgICA8IS0tIDQgLS0+CiAgICAgIDxnIHN0eWxlPSJmaWxsOiAjYjdiMGE1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMjAuOTU3MSAyMjguNTI2NTYyKSBzY2FsZSgwLjEyOTYgLTAuMTI5NikiPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjRGVqYVZ1U2Fucy0xNyIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgPC9nPgogICAgPGcgaWQ9Inh0aWNrXzgiPgogICAgIDxnIGlkPSJsaW5lMmRfMTUiPgogICAgICA8cGF0aCBkPSJNIDM2OS45IDIxMS42OCAKTCAzNjkuOSAyMC4xNiAKIiBjbGlwLXBhdGg9InVybCgjcGNmNTdiMTAyYjIpIiBzdHlsZT0iZmlsbDogbm9uZTsgc3Ryb2tlOiAjYjdiMGE1OyBzdHJva2Utb3BhY2l0eTogMC4xODsgc3Ryb2tlLXdpZHRoOiAwLjg7IHN0cm9rZS1saW5lY2FwOiBzcXVhcmUiLz4KICAgICA8L2c+CiAgICAgPGcgaWQ9ImxpbmUyZF8xNiI+CiAgICAgIDxnPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjbWY5NmQ3ZDdjZTEiIHg9IjM2OS45IiB5PSIyMTEuNjgiIHN0eWxlPSJmaWxsOiAjYjdiMGE1OyBzdHJva2U6ICNiN2IwYTU7IHN0cm9rZS13aWR0aDogMC44Ii8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICAgPGcgaWQ9InRleHRfOCI+CiAgICAgIDwhLS0gNiAtLT4KICAgICAgPGcgc3R5bGU9ImZpbGw6ICNiN2IwYTUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDM2NS43NzcxIDIyOC41MjY1NjIpIHNjYWxlKDAuMTI5NiAtMC4xMjk2KSI+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTE5Ii8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyBpZD0ieHRpY2tfOSI+CiAgICAgPGcgaWQ9ImxpbmUyZF8xNyI+CiAgICAgIDxwYXRoIGQ9Ik0gNDE0LjcyIDIxMS42OCAKTCA0MTQuNzIgMjAuMTYgCiIgY2xpcC1wYXRoPSJ1cmwoI3BjZjU3YjEwMmIyKSIgc3R5bGU9ImZpbGw6IG5vbmU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLW9wYWNpdHk6IDAuMTg7IHN0cm9rZS13aWR0aDogMC44OyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgICAgPC9nPgogICAgIDxnIGlkPSJsaW5lMmRfMTgiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI21mOTZkN2Q3Y2UxIiB4PSI0MTQuNzIiIHk9IjIxMS42OCIgc3R5bGU9ImZpbGw6ICNiN2IwYTU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgICA8ZyBpZD0idGV4dF85Ij4KICAgICAgPCEtLSA4IC0tPgogICAgICA8ZyBzdHlsZT0iZmlsbDogI2I3YjBhNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDEwLjU5NzEgMjI4LjUyNjU2Mikgc2NhbGUoMC4xMjk2IC0wLjEyOTYpIj4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0RlamFWdVNhbnMtMWIiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ0ZXh0XzEwIj4KICAgICA8IS0tIHByZS1hY3RpdmF0aW9uICRhJCAtLT4KICAgICA8ZyBzdHlsZT0iZmlsbDogI2YyZWRlNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTg0LjgzMTIgMjQ1LjQ4OTYpIHNjYWxlKDAuMTI5NiAtMC4xMjk2KSI+CiAgICAgIDxkZWZzPgogICAgICAgPHBhdGggaWQ9IkRlamFWdVNhbnMtNTMiIGQ9Ik0gMTE1OSA1MjUgCkwgMTE1OSAtMTMzMSAKTCA1ODEgLTEzMzEgCkwgNTgxIDM1MDAgCkwgMTE1OSAzNTAwIApMIDExNTkgMjk2OSAKUSAxMzQxIDMyODEgMTYxNyAzNDMyIApRIDE4OTQgMzU4NCAyMjc4IDM1ODQgClEgMjkxNiAzNTg0IDMzMTQgMzA3OCAKUSAzNzEzIDI1NzIgMzcxMyAxNzQ3IApRIDM3MTMgOTIyIDMzMTQgNDE1IApRIDI5MTYgLTkxIDIyNzggLTkxIApRIDE4OTQgLTkxIDE2MTcgNjEgClEgMTM0MSAyMTMgMTE1OSA1MjUgCnoKTSAzMTE2IDE3NDcgClEgMzExNiAyMzgxIDI4NTUgMjc0MiAKUSAyNTk0IDMxMDMgMjEzOCAzMTAzIApRIDE2ODEgMzEwMyAxNDIwIDI3NDIgClEgMTE1OSAyMzgxIDExNTkgMTc0NyAKUSAxMTU5IDExMTMgMTQyMCA3NTIgClEgMTY4MSAzOTEgMjEzOCAzOTEgClEgMjU5NCAzOTEgMjg1NSA3NTIgClEgMzExNiAxMTEzIDMxMTYgMTc0NyAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgICA8cGF0aCBpZD0iRGVqYVZ1U2Fucy01NSIgZD0iTSAyNjMxIDI5NjMgClEgMjUzNCAzMDE5IDI0MjAgMzA0NSAKUSAyMzA2IDMwNzIgMjE2OSAzMDcyIApRIDE2ODEgMzA3MiAxNDIwIDI3NTUgClEgMTE1OSAyNDM4IDExNTkgMTg0NCAKTCAxMTU5IDAgCkwgNTgxIDAgCkwgNTgxIDM1MDAgCkwgMTE1OSAzNTAwIApMIDExNTkgMjk1NiAKUSAxMzQxIDMyNzUgMTYzMSAzNDI5IApRIDE5MjIgMzU4NCAyMzM4IDM1ODQgClEgMjM5NyAzNTg0IDI0NjkgMzU3NiAKUSAyNTQxIDM1NjkgMjYyOCAzNTUzIApMIDI2MzEgMjk2MyAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgICA8cGF0aCBpZD0iRGVqYVZ1U2Fucy00OCIgZD0iTSAzNTk3IDE4OTQgCkwgMzU5NyAxNjEzIApMIDk1MyAxNjEzIApRIDk5MSAxMDE5IDEzMTEgNzA4IApRIDE2MzEgMzk3IDIyMDMgMzk3IApRIDI1MzQgMzk3IDI4NDUgNDc4IApRIDMxNTYgNTU5IDM0NjMgNzIyIApMIDM0NjMgMTc4IApRIDMxNTMgNDcgMjgyOCAtMjIgClEgMjUwMyAtOTEgMjE2OSAtOTEgClEgMTMzMSAtOTEgODQyIDM5NiAKUSAzNTMgODg0IDM1MyAxNzE2IApRIDM1MyAyNTc1IDgxNyAzMDc5IApRIDEyODEgMzU4NCAyMDY5IDM1ODQgClEgMjc3NSAzNTg0IDMxODYgMzEyOSAKUSAzNTk3IDI2NzUgMzU5NyAxODk0IAp6Ck0gMzAyMiAyMDYzIApRIDMwMTYgMjUzNCAyNzU4IDI4MTUgClEgMjUwMCAzMDk3IDIwNzUgMzA5NyAKUSAxNTk0IDMwOTcgMTMwNSAyODI1IApRIDEwMTYgMjU1MyA5NzIgMjA1OSAKTCAzMDIyIDIwNjMgCnoKIiB0cmFuc2Zvcm09InNjYWxlKDAuMDE1NjI1KSIvPgogICAgICAgPHBhdGggaWQ9IkRlamFWdVNhbnMtMTAiIGQ9Ik0gMzEzIDIwMDkgCkwgMTk5NyAyMDA5IApMIDE5OTcgMTQ5NyAKTCAzMTMgMTQ5NyAKTCAzMTMgMjAwOSAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgICA8cGF0aCBpZD0iRGVqYVZ1U2Fucy00NCIgZD0iTSAyMTk0IDE3NTkgClEgMTQ5NyAxNzU5IDEyMjggMTYwMCAKUSA5NTkgMTQ0MSA5NTkgMTA1NiAKUSA5NTkgNzUwIDExNjEgNTcwIApRIDEzNjMgMzkxIDE3MDkgMzkxIApRIDIxODggMzkxIDI0NzcgNzMwIApRIDI3NjYgMTA2OSAyNzY2IDE2MzEgCkwgMjc2NiAxNzU5IApMIDIxOTQgMTc1OSAKegpNIDMzNDEgMTk5NyAKTCAzMzQxIDAgCkwgMjc2NiAwIApMIDI3NjYgNTMxIApRIDI1NjkgMjEzIDIyNzUgNjEgClEgMTk4MSAtOTEgMTU1NiAtOTEgClEgMTAxOSAtOTEgNzAxIDIxMSAKUSAzODQgNTEzIDM4NCAxMDE5IApRIDM4NCAxNjA5IDc3OSAxOTA5IApRIDExNzUgMjIwOSAxOTU5IDIyMDkgCkwgMjc2NiAyMjA5IApMIDI3NjYgMjI2NiAKUSAyNzY2IDI2NjMgMjUwNSAyODgwIApRIDIyNDQgMzA5NyAxNzcyIDMwOTcgClEgMTQ3MiAzMDk3IDExODcgMzAyNSAKUSA5MDMgMjk1MyA2NDEgMjgwOSAKTCA2NDEgMzM0MSAKUSA5NTYgMzQ2MyAxMjUzIDM1MjMgClEgMTU1MCAzNTg0IDE4MzEgMzU4NCAKUSAyNTkxIDM1ODQgMjk2NiAzMTkwIApRIDMzNDEgMjc5NyAzMzQxIDE5OTcgCnoKIiB0cmFuc2Zvcm09InNjYWxlKDAuMDE1NjI1KSIvPgogICAgICAgPHBhdGggaWQ9IkRlamFWdVNhbnMtNDYiIGQ9Ik0gMzEyMiAzMzY2IApMIDMxMjIgMjgyOCAKUSAyODc4IDI5NjMgMjYzMyAzMDMwIApRIDIzODggMzA5NyAyMTM4IDMwOTcgClEgMTU3OCAzMDk3IDEyNjggMjc0MiAKUSA5NTkgMjM4OCA5NTkgMTc0NyAKUSA5NTkgMTEwNiAxMjY4IDc1MSAKUSAxNTc4IDM5NyAyMTM4IDM5NyAKUSAyMzg4IDM5NyAyNjMzIDQ2NCAKUSAyODc4IDUzMSAzMTIyIDY2NiAKTCAzMTIyIDEzNCAKUSAyODgxIDIyIDI2MjMgLTM0IApRIDIzNjYgLTkxIDIwNzUgLTkxIApRIDEyODQgLTkxIDgxOCA0MDYgClEgMzUzIDkwMyAzNTMgMTc0NyAKUSAzNTMgMjYwMyA4MjMgMzA5MyAKUSAxMjk0IDM1ODQgMjExMyAzNTg0IApRIDIzNzggMzU4NCAyNjMxIDM1MjkgClEgMjg4NCAzNDc1IDMxMjIgMzM2NiAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgICA8cGF0aCBpZD0iRGVqYVZ1U2Fucy01NyIgZD0iTSAxMTcyIDQ0OTQgCkwgMTE3MiAzNTAwIApMIDIzNTYgMzUwMCAKTCAyMzU2IDMwNTMgCkwgMTE3MiAzMDUzIApMIDExNzIgMTE1MyAKUSAxMTcyIDcyNSAxMjg5IDYwMyAKUSAxNDA2IDQ4MSAxNzY2IDQ4MSAKTCAyMzU2IDQ4MSAKTCAyMzU2IDAgCkwgMTc2NiAwIApRIDExMDAgMCA4NDcgMjQ4IApRIDU5NCA0OTcgNTk0IDExNTMgCkwgNTk0IDMwNTMgCkwgMTcyIDMwNTMgCkwgMTcyIDM1MDAgCkwgNTk0IDM1MDAgCkwgNTk0IDQ0OTQgCkwgMTE3MiA0NDk0IAp6CiIgdHJhbnNmb3JtPSJzY2FsZSgwLjAxNTYyNSkiLz4KICAgICAgIDxwYXRoIGlkPSJEZWphVnVTYW5zLTRjIiBkPSJNIDYwMyAzNTAwIApMIDExNzggMzUwMCAKTCAxMTc4IDAgCkwgNjAzIDAgCkwgNjAzIDM1MDAgCnoKTSA2MDMgNDg2MyAKTCAxMTc4IDQ4NjMgCkwgMTE3OCA0MTM0IApMIDYwMyA0MTM0IApMIDYwMyA0ODYzIAp6CiIgdHJhbnNmb3JtPSJzY2FsZSgwLjAxNTYyNSkiLz4KICAgICAgIDxwYXRoIGlkPSJEZWphVnVTYW5zLTU5IiBkPSJNIDE5MSAzNTAwIApMIDgwMCAzNTAwIApMIDE4OTQgNTYzIApMIDI5ODggMzUwMCAKTCAzNTk3IDM1MDAgCkwgMjI4NCAwIApMIDE1MDMgMCAKTCAxOTEgMzUwMCAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgICA8cGF0aCBpZD0iRGVqYVZ1U2Fucy01MiIgZD0iTSAxOTU5IDMwOTcgClEgMTQ5NyAzMDk3IDEyMjggMjczNiAKUSA5NTkgMjM3NSA5NTkgMTc0NyAKUSA5NTkgMTExOSAxMjI2IDc1OCAKUSAxNDk0IDM5NyAxOTU5IDM5NyAKUSAyNDE5IDM5NyAyNjg3IDc1OSAKUSAyOTU2IDExMjIgMjk1NiAxNzQ3IApRIDI5NTYgMjM2OSAyNjg3IDI3MzMgClEgMjQxOSAzMDk3IDE5NTkgMzA5NyAKegpNIDE5NTkgMzU4NCAKUSAyNzA5IDM1ODQgMzEzNyAzMDk2IApRIDM1NjYgMjYwOSAzNTY2IDE3NDcgClEgMzU2NiA4ODggMzEzNyAzOTggClEgMjcwOSAtOTEgMTk1OSAtOTEgClEgMTIwNiAtOTEgNzc5IDM5OCAKUSAzNTMgODg4IDM1MyAxNzQ3IApRIDM1MyAyNjA5IDc3OSAzMDk2IApRIDEyMDYgMzU4NCAxOTU5IDM1ODQgCnoKIiB0cmFuc2Zvcm09InNjYWxlKDAuMDE1NjI1KSIvPgogICAgICAgPHBhdGggaWQ9IkRlamFWdVNhbnMtNTEiIGQ9Ik0gMzUxMyAyMTEzIApMIDM1MTMgMCAKTCAyOTM4IDAgCkwgMjkzOCAyMDk0IApRIDI5MzggMjU5MSAyNzQ0IDI4MzcgClEgMjU1MCAzMDg0IDIxNjMgMzA4NCAKUSAxNjk3IDMwODQgMTQyOCAyNzg3IApRIDExNTkgMjQ5MSAxMTU5IDE5NzggCkwgMTE1OSAwIApMIDU4MSAwIApMIDU4MSAzNTAwIApMIDExNTkgMzUwMCAKTCAxMTU5IDI5NTYgClEgMTM2NiAzMjcyIDE2NDUgMzQyOCAKUSAxOTI1IDM1ODQgMjI5MSAzNTg0IApRIDI4OTQgMzU4NCAzMjAzIDMyMTEgClEgMzUxMyAyODM4IDM1MTMgMjExMyAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgICA8cGF0aCBpZD0iRGVqYVZ1U2Fucy0zIiB0cmFuc2Zvcm09InNjYWxlKDAuMDE1NjI1KSIvPgogICAgICAgPHBhdGggaWQ9IkNtbWkxMC03OSIgZD0iTSAxMTEzIC03MiAKUSA3MDkgLTcyIDQ3NiAyMzMgClEgMjQ0IDUzOCAyNDQgOTUzIApRIDI0NCAxMzYzIDQ1NiAxODAzIApRIDY2OSAyMjQ0IDEwMzAgMjUzNiAKUSAxMzkxIDI4MjggMTgwNiAyODI4IApRIDE5OTcgMjgyOCAyMTQ3IDI3MjUgClEgMjI5NyAyNjIyIDIzODEgMjQ0NCAKUSAyNDUzIDI3MDAgMjY2MyAyNzAwIApRIDI3NDQgMjcwMCAyNzk4IDI2NTEgClEgMjg1MyAyNjAzIDI4NTMgMjUyMiAKUSAyODUzIDI1MDMgMjg1MSAyNDkzIApRIDI4NTAgMjQ4NCAyODQ3IDI0NzIgCkwgMjQwMCA2ODQgClEgMjM1NiA0OTQgMjM1NiAzNzIgClEgMjM1NiA5NyAyNTQxIDk3IApRIDI3NDEgOTcgMjg0NSAzNTEgClEgMjk1MCA2MDYgMzAyMiA5NDEgClEgMzAzNCA5NzggMzA3MiA5NzggCkwgMzE1MCA5NzggClEgMzE3NSA5NzggMzE5MCA5NTYgClEgMzIwNiA5MzQgMzIwNiA5MTYgClEgMzA5NCA0NjkgMjk2MSAxOTggClEgMjgyOCAtNzIgMjUyOCAtNzIgClEgMjMxMyAtNzIgMjE0NyA1NCAKUSAxOTgxIDE4MSAxOTQxIDM5MSAKUSAxNTI4IC03MiAxMTEzIC03MiAKegpNIDExMTkgOTcgClEgMTM1MCA5NyAxNTY3IDI3MCAKUSAxNzg0IDQ0NCAxOTQxIDY3OCAKUSAxOTQ3IDY4NCAxOTQ3IDY5NyAKTCAyMjkxIDIwODggCkwgMjI5NyAyMTA2IApRIDIyNTkgMjMzNCAyMTMyIDI0OTggClEgMjAwNiAyNjYzIDE3OTEgMjY2MyAKUSAxNTc1IDI2NjMgMTM4OSAyNDg2IApRIDEyMDMgMjMwOSAxMDc1IDIwNjkgClEgOTUwIDE4MTMgODM2IDEzNjYgClEgNzIyIDkxOSA3MjIgNjcyIApRIDcyMiA0NTAgODE3IDI3MyAKUSA5MTMgOTcgMTExOSA5NyAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgIDwvZGVmcz4KICAgICAgPHVzZSB4bGluazpocmVmPSIjRGVqYVZ1U2Fucy01MyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAwLjAxNTYyNSkiLz4KICAgICAgPHVzZSB4bGluazpocmVmPSIjRGVqYVZ1U2Fucy01NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjMuNDc2NTYyIDAuMDE1NjI1KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTQ4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMDIuNTg5ODQ0IDAuMDE1NjI1KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNjQuMTEzMjgxIDAuMDE1NjI1KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTQ0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDAuMTk3MjY2IDAuMDE1NjI1KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTQ2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNjEuNDc2NTYyIDAuMDE1NjI1KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTU3IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMTYuNDU3MDMxIDAuMDE1NjI1KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTRjIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNTUuNjY2MDE2IDAuMDE1NjI1KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTU5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzODMuNDQ5MjE5IDAuMDE1NjI1KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTQ0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NDIuNjI4OTA2IDAuMDE1NjI1KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTU3IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1MDMuOTA4MjAzIDAuMDE1NjI1KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTRjIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1NDMuMTE3MTg4IDAuMDE1NjI1KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTUyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1NzAuOTAwMzkxIDAuMDE1NjI1KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTUxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MzIuMDgyMDMxIDAuMDE1NjI1KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY5NS40NjA5MzggMC4wMTU2MjUpIi8+CiAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtbWkxMC03OSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzI3LjI0ODA0NyAwLjAxNTYyNSkiLz4KICAgICA8L2c+CiAgICA8L2c+CiAgIDwvZz4KICAgPGcgaWQ9Im1hdHBsb3RsaWIuYXhpc18yIj4KICAgIDxnIGlkPSJ5dGlja18xIj4KICAgICA8ZyBpZD0ibGluZTJkXzE5Ij4KICAgICAgPHBhdGggZD0iTSA1Ni4xNiAyMDYuMzYgCkwgNDE0LjcyIDIwNi4zNiAKIiBjbGlwLXBhdGg9InVybCgjcGNmNTdiMTAyYjIpIiBzdHlsZT0iZmlsbDogbm9uZTsgc3Ryb2tlOiAjYjdiMGE1OyBzdHJva2Utb3BhY2l0eTogMC4xODsgc3Ryb2tlLXdpZHRoOiAwLjg7IHN0cm9rZS1saW5lY2FwOiBzcXVhcmUiLz4KICAgICA8L2c+CiAgICAgPGcgaWQ9ImxpbmUyZF8yMCI+CiAgICAgIDxkZWZzPgogICAgICAgPHBhdGggaWQ9Im05NGEzMDEyMDBmIiBkPSJNIDAgMCAKTCAtMy41IDAgCiIgc3R5bGU9InN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9kZWZzPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI205NGEzMDEyMDBmIiB4PSI1Ni4xNiIgeT0iMjA2LjM2IiBzdHlsZT0iZmlsbDogI2I3YjBhNTsgc3Ryb2tlOiAjYjdiMGE1OyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgIDxnIGlkPSJ0ZXh0XzExIj4KICAgICAgPCEtLSAwLjAgLS0+CiAgICAgIDxnIHN0eWxlPSJmaWxsOiAjYjdiMGE1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOC41NDk1NSAyMTEuMjgzMjgxKSBzY2FsZSgwLjEyOTYgLTAuMTI5NikiPgogICAgICAgPGRlZnM+CiAgICAgICAgPHBhdGggaWQ9IkRlamFWdVNhbnMtMTEiIGQ9Ik0gNjg0IDc5NCAKTCAxMzQ0IDc5NCAKTCAxMzQ0IDAgCkwgNjg0IDAgCkwgNjg0IDc5NCAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgICA8L2RlZnM+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTEzIi8+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTExIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2My42MjUgMCkiLz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0RlamFWdVNhbnMtMTMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDk1LjQwNjI1IDApIi8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyBpZD0ieXRpY2tfMiI+CiAgICAgPGcgaWQ9ImxpbmUyZF8yMSI+CiAgICAgIDxwYXRoIGQ9Ik0gNTYuMTYgMTcwLjg5MzMzMyAKTCA0MTQuNzIgMTcwLjg5MzMzMyAKIiBjbGlwLXBhdGg9InVybCgjcGNmNTdiMTAyYjIpIiBzdHlsZT0iZmlsbDogbm9uZTsgc3Ryb2tlOiAjYjdiMGE1OyBzdHJva2Utb3BhY2l0eTogMC4xODsgc3Ryb2tlLXdpZHRoOiAwLjg7IHN0cm9rZS1saW5lY2FwOiBzcXVhcmUiLz4KICAgICA8L2c+CiAgICAgPGcgaWQ9ImxpbmUyZF8yMiI+CiAgICAgIDxnPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjbTk0YTMwMTIwMGYiIHg9IjU2LjE2IiB5PSIxNzAuODkzMzMzIiBzdHlsZT0iZmlsbDogI2I3YjBhNTsgc3Ryb2tlOiAjYjdiMGE1OyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgIDxnIGlkPSJ0ZXh0XzEyIj4KICAgICAgPCEtLSAwLjIgLS0+CiAgICAgIDxnIHN0eWxlPSJmaWxsOiAjYjdiMGE1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOC41NDk1NSAxNzUuODE2NjE1KSBzY2FsZSgwLjEyOTYgLTAuMTI5NikiPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjRGVqYVZ1U2Fucy0xMyIvPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjRGVqYVZ1U2Fucy0xMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjMuNjI1IDApIi8+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTE1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NS40MDYyNSAwKSIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgPC9nPgogICAgPGcgaWQ9Inl0aWNrXzMiPgogICAgIDxnIGlkPSJsaW5lMmRfMjMiPgogICAgICA8cGF0aCBkPSJNIDU2LjE2IDEzNS40MjY2NjcgCkwgNDE0LjcyIDEzNS40MjY2NjcgCiIgY2xpcC1wYXRoPSJ1cmwoI3BjZjU3YjEwMmIyKSIgc3R5bGU9ImZpbGw6IG5vbmU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLW9wYWNpdHk6IDAuMTg7IHN0cm9rZS13aWR0aDogMC44OyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgICAgPC9nPgogICAgIDxnIGlkPSJsaW5lMmRfMjQiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI205NGEzMDEyMDBmIiB4PSI1Ni4xNiIgeT0iMTM1LjQyNjY2NyIgc3R5bGU9ImZpbGw6ICNiN2IwYTU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgICA8ZyBpZD0idGV4dF8xMyI+CiAgICAgIDwhLS0gMC40IC0tPgogICAgICA8ZyBzdHlsZT0iZmlsbDogI2I3YjBhNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjguNTQ5NTUgMTQwLjM0OTk0OCkgc2NhbGUoMC4xMjk2IC0wLjEyOTYpIj4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0RlamFWdVNhbnMtMTMiLz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0RlamFWdVNhbnMtMTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYzLjYyNSAwKSIvPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjRGVqYVZ1U2Fucy0xNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOTUuNDA2MjUgMCkiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ5dGlja180Ij4KICAgICA8ZyBpZD0ibGluZTJkXzI1Ij4KICAgICAgPHBhdGggZD0iTSA1Ni4xNiA5OS45NiAKTCA0MTQuNzIgOTkuOTYgCiIgY2xpcC1wYXRoPSJ1cmwoI3BjZjU3YjEwMmIyKSIgc3R5bGU9ImZpbGw6IG5vbmU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLW9wYWNpdHk6IDAuMTg7IHN0cm9rZS13aWR0aDogMC44OyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgICAgPC9nPgogICAgIDxnIGlkPSJsaW5lMmRfMjYiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI205NGEzMDEyMDBmIiB4PSI1Ni4xNiIgeT0iOTkuOTYiIHN0eWxlPSJmaWxsOiAjYjdiMGE1OyBzdHJva2U6ICNiN2IwYTU7IHN0cm9rZS13aWR0aDogMC44Ii8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICAgPGcgaWQ9InRleHRfMTQiPgogICAgICA8IS0tIDAuNiAtLT4KICAgICAgPGcgc3R5bGU9ImZpbGw6ICNiN2IwYTUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI4LjU0OTU1IDEwNC44ODMyODEpIHNjYWxlKDAuMTI5NiAtMC4xMjk2KSI+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTEzIi8+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTExIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2My42MjUgMCkiLz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0RlamFWdVNhbnMtMTkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDk1LjQwNjI1IDApIi8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyBpZD0ieXRpY2tfNSI+CiAgICAgPGcgaWQ9ImxpbmUyZF8yNyI+CiAgICAgIDxwYXRoIGQ9Ik0gNTYuMTYgNjQuNDkzMzMzIApMIDQxNC43MiA2NC40OTMzMzMgCiIgY2xpcC1wYXRoPSJ1cmwoI3BjZjU3YjEwMmIyKSIgc3R5bGU9ImZpbGw6IG5vbmU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLW9wYWNpdHk6IDAuMTg7IHN0cm9rZS13aWR0aDogMC44OyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgICAgPC9nPgogICAgIDxnIGlkPSJsaW5lMmRfMjgiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI205NGEzMDEyMDBmIiB4PSI1Ni4xNiIgeT0iNjQuNDkzMzMzIiBzdHlsZT0iZmlsbDogI2I3YjBhNTsgc3Ryb2tlOiAjYjdiMGE1OyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgIDxnIGlkPSJ0ZXh0XzE1Ij4KICAgICAgPCEtLSAwLjggLS0+CiAgICAgIDxnIHN0eWxlPSJmaWxsOiAjYjdiMGE1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOC41NDk1NSA2OS40MTY2MTUpIHNjYWxlKDAuMTI5NiAtMC4xMjk2KSI+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTEzIi8+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNEZWphVnVTYW5zLTExIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2My42MjUgMCkiLz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0RlamFWdVNhbnMtMWIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDk1LjQwNjI1IDApIi8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyBpZD0ieXRpY2tfNiI+CiAgICAgPGcgaWQ9ImxpbmUyZF8yOSI+CiAgICAgIDxwYXRoIGQ9Ik0gNTYuMTYgMjkuMDI2NjY3IApMIDQxNC43MiAyOS4wMjY2NjcgCiIgY2xpcC1wYXRoPSJ1cmwoI3BjZjU3YjEwMmIyKSIgc3R5bGU9ImZpbGw6IG5vbmU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLW9wYWNpdHk6IDAuMTg7IHN0cm9rZS13aWR0aDogMC44OyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgICAgPC9nPgogICAgIDxnIGlkPSJsaW5lMmRfMzAiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI205NGEzMDEyMDBmIiB4PSI1Ni4xNiIgeT0iMjkuMDI2NjY3IiBzdHlsZT0iZmlsbDogI2I3YjBhNTsgc3Ryb2tlOiAjYjdiMGE1OyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgIDxnIGlkPSJ0ZXh0XzE2Ij4KICAgICAgPCEtLSAxLjAgLS0+CiAgICAgIDxnIHN0eWxlPSJmaWxsOiAjYjdiMGE1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOC41NDk1NSAzMy45NDk5NDgpIHNjYWxlKDAuMTI5NiAtMC4xMjk2KSI+CiAgICAgICA8ZGVmcz4KICAgICAgICA8cGF0aCBpZD0iRGVqYVZ1U2Fucy0xNCIgZD0iTSA3OTQgNTMxIApMIDE4MjUgNTMxIApMIDE4MjUgNDA5MSAKTCA3MDMgMzg2NiAKTCA3MDMgNDQ0MSAKTCAxODE5IDQ2NjYgCkwgMjQ1MCA0NjY2IApMIDI0NTAgNTMxIApMIDM0ODEgNTMxIApMIDM0ODEgMCAKTCA3OTQgMCAKTCA3OTQgNTMxIAp6CiIgdHJhbnNmb3JtPSJzY2FsZSgwLjAxNTYyNSkiLz4KICAgICAgIDwvZGVmcz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0RlamFWdVNhbnMtMTQiLz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0RlamFWdVNhbnMtMTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYzLjYyNSAwKSIvPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjRGVqYVZ1U2Fucy0xMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOTUuNDA2MjUgMCkiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgIDwvZz4KICAgPC9nPgogICA8ZyBpZD0ibGluZTJkXzMxIj4KICAgIDxwYXRoIGQ9Ik0gNTYuMTYgMjA2LjMwMDUzMSAKTCA4OC41MTEyNzggMjA2LjEwODM2NiAKTCAxMDYuNDg0MjExIDIwNS43OTk4MzIgCkwgMTE5LjA2NTI2MyAyMDUuMzgwMjgzIApMIDEyOC45NTAzNzYgMjA0Ljg0MTc1OCAKTCAxMzcuMDM4MTk1IDIwNC4xODk5NjkgCkwgMTQ0LjIyNzM2OCAyMDMuMzgyOTcyIApMIDE1MC41MTc4OTUgMjAyLjQzOTU2OCAKTCAxNTUuOTA5Nzc0IDIwMS40MDI5NjUgCkwgMTYwLjQwMzAwOCAyMDAuMzM5NzkgCkwgMTY0Ljg5NjI0MSAxOTkuMDU4MjQ3IApMIDE2OS4zODk0NzQgMTk3LjUxNzk3NiAKTCAxNzIuOTg0MDYgMTk2LjA2ODkwMiAKTCAxNzYuNTc4NjQ3IDE5NC4zOTkyMDQgCkwgMTgwLjE3MzIzMyAxOTIuNDgxMTExIApMIDE4My43Njc4MiAxOTAuMjg1MzIyIApMIDE4Ny4zNjI0MDYgMTg3Ljc4MTYyMiAKTCAxOTAuOTU2OTkyIDE4NC45Mzk3NTggCkwgMTk0LjU1MTU3OSAxODEuNzMwNjI3IApMIDE5OC4xNDYxNjUgMTc4LjEyNzc3IApMIDIwMS43NDA3NTIgMTc0LjEwOTE4NiAKTCAyMDUuMzM1MzM4IDE2OS42NTkzOTIgCkwgMjA4LjkyOTkyNSAxNjQuNzcxNjMzIApMIDIxMi41MjQ1MTEgMTU5LjQ1MDA1OCAKTCAyMTYuMTE5MDk4IDE1My43MTE2NDUgCkwgMjE5LjcxMzY4NCAxNDcuNTg3NTg5IApMIDIyNC4yMDY5MTcgMTM5LjQ2MTY3IApMIDIyOS41OTg3OTcgMTI5LjE4MzkwNyAKTCAyNDguNDcwMzc2IDkyLjYxODA3NyAKTCAyNTIuOTYzNjA5IDg0LjY5MTM3MiAKTCAyNTYuNTU4MTk1IDc4Ljc1NTMxNSAKTCAyNjAuMTUyNzgyIDczLjIyMjMzNSAKTCAyNjMuNzQ3MzY4IDY4LjExNjM4OCAKTCAyNjcuMzQxOTU1IDYzLjQ0NzgyMyAKTCAyNzAuOTM2NTQxIDU5LjIxNTA3NyAKTCAyNzQuNTMxMTI4IDU1LjQwNjc0OSAKTCAyNzguMTI1NzE0IDUyLjAwMzgzIApMIDI4MS43MjAzMDEgNDguOTgxODQ0IApMIDI4NS4zMTQ4ODcgNDYuMzEyODAzIApMIDI4OC45MDk0NzQgNDMuOTY2ODYyIApMIDI5Mi41MDQwNiA0MS45MTM2NTggCkwgMjk2LjA5ODY0NyA0MC4xMjMzNDIgCkwgMjk5LjY5MzIzMyAzOC41NjczMTQgCkwgMzAzLjI4NzgyIDM3LjIxODcyNyAKTCAzMDcuNzgxMDUzIDM1Ljc4NzEzNiAKTCAzMTIuMjc0Mjg2IDM0LjU5NzQ4MiAKTCAzMTcuNjY2MTY1IDMzLjQzNTgxIApMIDMyMy4wNTgwNDUgMzIuNTExNDY0IApMIDMyOS4zNDg1NzEgMzEuNjcxMjkyIApMIDMzNi41Mzc3NDQgMzAuOTUzNDA1IApMIDM0NC42MjU1NjQgMzAuMzc0MTI5IApMIDM1NC41MTA2NzcgMjkuODk1ODgxIApMIDM2Ny4wOTE3MjkgMjkuNTIzNTIgCkwgMzg0LjE2NjAxNSAyOS4yNTg5MzMgCkwgNDExLjEyNTQxNCAyOS4wOTY0NzggCkwgNDE0LjcyIDI5LjA4NjEzNSAKTCA0MTQuNzIgMjkuMDg2MTM1IAoiIGNsaXAtcGF0aD0idXJsKCNwY2Y1N2IxMDJiMikiIHN0eWxlPSJmaWxsOiBub25lOyBzdHJva2U6ICM2YTlmZDY7IHN0cm9rZS13aWR0aDogMi42OyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgIDwvZz4KICAgPGcgaWQ9ImxpbmUyZF8zMiI+CiAgICA8cGF0aCBkPSJNIDU2LjE2IDIwNi4zMDA1NTEgCkwgODguNTExMjc4IDIwNi4xMDg3MjMgCkwgMTA2LjQ4NDIxMSAyMDUuODAxNjAyIApMIDExOS4wNjUyNjMgMjA1LjM4NTY5NSAKTCAxMjguOTUwMzc2IDIwNC44NTQ3NTYgCkwgMTM3LjAzODE5NSAyMDQuMjE2NTI0IApMIDE0NC4yMjczNjggMjAzLjQzMjk1IApMIDE1MC41MTc4OTUgMjAyLjUyNjI0IApMIDE1NS45MDk3NzQgMjAxLjU0MTUzIApMIDE2MS4zMDE2NTQgMjAwLjMyMjk5NSAKTCAxNjUuNzk0ODg3IDE5OS4wOTY5NCAKTCAxNzAuMjg4MTIgMTk3LjY1MDY4NiAKTCAxNzQuNzgxMzUzIDE5NS45NTc3MDIgCkwgMTc5LjI3NDU4NiAxOTMuOTk0MjA4IApMIDE4My43Njc4MiAxOTEuNzQyNDM4IApMIDE4OC4yNjEwNTMgMTg5LjE5NDk2MSAKTCAxOTIuNzU0Mjg2IDE4Ni4zNTk5OTkgCkwgMTk3LjI0NzUxOSAxODMuMjY3Mzk3IApMIDIwMy41MzgwNDUgMTc4LjYyMDEzNyAKTCAyMTQuMzIxODA1IDE3MC41NzY0OTMgCkwgMjE3LjkxNjM5MSAxNjguMTY4Mzc0IApMIDIyMS41MTA5NzcgMTY2LjA0NzE0OCAKTCAyMjQuMjA2OTE3IDE2NC42OTg4MTIgCkwgMjI2LjkwMjg1NyAxNjMuNTk3MDEzIApMIDIyOS41OTg3OTcgMTYyLjc3MTIxNSAKTCAyMzIuMjk0NzM3IDE2Mi4yNDQyNzUgCkwgMjM0Ljk5MDY3NyAxNjIuMDMxMTIyIApMIDIzNy42ODY2MTcgMTYyLjEzNzg3IApMIDI0MC4zODI1NTYgMTYyLjU2MTQ1MSAKTCAyNDMuMDc4NDk2IDE2My4yODk4MDEgCkwgMjQ1Ljc3NDQzNiAxNjQuMzAyNTc4IApMIDI0OC40NzAzNzYgMTY1LjU3MjM1MyAKTCAyNTEuMTY2MzE2IDE2Ny4wNjYxMzkgCkwgMjU0Ljc2MDkwMiAxNjkuMzQyMzc0IApMIDI1OS4yNTQxMzUgMTcyLjUxNTA4NiAKTCAyNjcuMzQxOTU1IDE3OC42MjAxMzcgCkwgMjczLjYzMjQ4MSAxODMuMjY3Mzk3IApMIDI3OC4xMjU3MTQgMTg2LjM1OTk5OSAKTCAyODIuNjE4OTQ3IDE4OS4xOTQ5NjEgCkwgMjg3LjExMjE4IDE5MS43NDI0MzggCkwgMjkxLjYwNTQxNCAxOTMuOTk0MjA4IApMIDI5Ni4wOTg2NDcgMTk1Ljk1NzcwMiAKTCAzMDAuNTkxODggMTk3LjY1MDY4NiAKTCAzMDUuMDg1MTEzIDE5OS4wOTY5NCAKTCAzMDkuNTc4MzQ2IDIwMC4zMjI5OTUgCkwgMzE0Ljk3MDIyNiAyMDEuNTQxNTMgCkwgMzIwLjM2MjEwNSAyMDIuNTI2MjQgCkwgMzI2LjY1MjYzMiAyMDMuNDMyOTUgCkwgMzMzLjg0MTgwNSAyMDQuMjE2NTI0IApMIDM0MS45Mjk2MjQgMjA0Ljg1NDc1NiAKTCAzNTEuODE0NzM3IDIwNS4zODU2OTUgCkwgMzYzLjQ5NzE0MyAyMDUuNzc4OTA1IApMIDM3OS42NzI3ODIgMjA2LjA3NjcwNCAKTCA0MDMuMDM3NTk0IDIwNi4yNTk5MjEgCkwgNDE0LjcyIDIwNi4zMDA1NTEgCkwgNDE0LjcyIDIwNi4zMDA1NTEgCiIgY2xpcC1wYXRoPSJ1cmwoI3BjZjU3YjEwMmIyKSIgc3R5bGU9ImZpbGw6IG5vbmU7IHN0cm9rZTogI2Q5Nzc1Nzsgc3Ryb2tlLXdpZHRoOiAyLjY7IHN0cm9rZS1saW5lY2FwOiBzcXVhcmUiLz4KICAgPC9nPgogICA8ZyBpZD0ibGluZTJkXzMzIj4KICAgIDxkZWZzPgogICAgIDxwYXRoIGlkPSJtNWZiMTVjOTdhNyIgZD0iTSAwIDQuNSAKQyAxLjE5MzQxNCA0LjUgMi4zMzgxMDkgNC4wMjU4NTIgMy4xODE5ODEgMy4xODE5ODEgCkMgNC4wMjU4NTIgMi4zMzgxMDkgNC41IDEuMTkzNDE0IDQuNSAwIApDIDQuNSAtMS4xOTM0MTQgNC4wMjU4NTIgLTIuMzM4MTA5IDMuMTgxOTgxIC0zLjE4MTk4MSAKQyAyLjMzODEwOSAtNC4wMjU4NTIgMS4xOTM0MTQgLTQuNSAwIC00LjUgCkMgLTEuMTkzNDE0IC00LjUgLTIuMzM4MTA5IC00LjAyNTg1MiAtMy4xODE5ODEgLTMuMTgxOTgxIApDIC00LjAyNTg1MiAtMi4zMzgxMDkgLTQuNSAtMS4xOTM0MTQgLTQuNSAwIApDIC00LjUgMS4xOTM0MTQgLTQuMDI1ODUyIDIuMzM4MTA5IC0zLjE4MTk4MSAzLjE4MTk4MSAKQyAtMi4zMzgxMDkgNC4wMjU4NTIgLTEuMTkzNDE0IDQuNSAwIDQuNSAKegoiIHN0eWxlPSJzdHJva2U6ICM1ZmI4YTgiLz4KICAgIDwvZGVmcz4KICAgIDxnIGNsaXAtcGF0aD0idXJsKCNwY2Y1N2IxMDJiMikiPgogICAgIDx1c2UgeGxpbms6aHJlZj0iI201ZmIxNWM5N2E3IiB4PSIyNDYuNjQ1IiB5PSIxNjQuNjg2MDA4IiBzdHlsZT0iZmlsbDogIzVmYjhhODsgc3Ryb2tlOiAjNWZiOGE4Ii8+CiAgICA8L2c+CiAgIDwvZz4KICAgPGcgaWQ9ImxpbmUyZF8zNCI+CiAgICA8ZGVmcz4KICAgICA8cGF0aCBpZD0ibWFhMTkzOTIyMDQiIGQ9Ik0gMCA0LjUgCkMgMS4xOTM0MTQgNC41IDIuMzM4MTA5IDQuMDI1ODUyIDMuMTgxOTgxIDMuMTgxOTgxIApDIDQuMDI1ODUyIDIuMzM4MTA5IDQuNSAxLjE5MzQxNCA0LjUgMCAKQyA0LjUgLTEuMTkzNDE0IDQuMDI1ODUyIC0yLjMzODEwOSAzLjE4MTk4MSAtMy4xODE5ODEgCkMgMi4zMzgxMDkgLTQuMDI1ODUyIDEuMTkzNDE0IC00LjUgMCAtNC41IApDIC0xLjE5MzQxNCAtNC41IC0yLjMzODEwOSAtNC4wMjU4NTIgLTMuMTgxOTgxIC0zLjE4MTk4MSAKQyAtNC4wMjU4NTIgLTIuMzM4MTA5IC00LjUgLTEuMTkzNDE0IC00LjUgMCAKQyAtNC41IDEuMTkzNDE0IC00LjAyNTg1MiAyLjMzODEwOSAtMy4xODE5ODEgMy4xODE5ODEgCkMgLTIuMzM4MTA5IDQuMDI1ODUyIC0xLjE5MzQxNCA0LjUgMCA0LjUgCnoKIiBzdHlsZT0ic3Ryb2tlOiAjZTA3YTcwIi8+CiAgICA8L2RlZnM+CiAgICA8ZyBjbGlwLXBhdGg9InVybCgjcGNmNTdiMTAyYjIpIj4KICAgICA8dXNlIHhsaW5rOmhyZWY9IiNtYWExOTM5MjIwNCIgeD0iMzQ3LjQ5IiB5PSIyMDUuMTgxMDc4IiBzdHlsZT0iZmlsbDogI2UwN2E3MDsgc3Ryb2tlOiAjZTA3YTcwIi8+CiAgICA8L2c+CiAgIDwvZz4KICAgPGcgaWQ9InBhdGNoXzMiPgogICAgPHBhdGggZD0iTSA1Ni4xNiAyMTEuNjggCkwgNTYuMTYgMjAuMTYgCiIgc3R5bGU9ImZpbGw6IG5vbmU7IHN0cm9rZTogI2I3YjBhNTsgc3Ryb2tlLXdpZHRoOiAxLjY7IHN0cm9rZS1saW5lam9pbjogbWl0ZXI7IHN0cm9rZS1saW5lY2FwOiBzcXVhcmUiLz4KICAgPC9nPgogICA8ZyBpZD0icGF0Y2hfNCI+CiAgICA8cGF0aCBkPSJNIDU2LjE2IDIxMS42OCAKTCA0MTQuNzIgMjExLjY4IAoiIHN0eWxlPSJmaWxsOiBub25lOyBzdHJva2U6ICNiN2IwYTU7IHN0cm9rZS13aWR0aDogMS42OyBzdHJva2UtbGluZWpvaW46IG1pdGVyOyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgIDwvZz4KICAgPGcgaWQ9InRleHRfMTciPgogICAgPCEtLSAkXHNpZ21hJygwLjUpPTAuMjM1MCQgLS0+CiAgICA8ZyBzdHlsZT0iZmlsbDogIzVmYjhhOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjU2LjY0NSAxNTAuNjg2MDA4KSBzY2FsZSgwLjEzIC0wLjEzKSI+CiAgICAgPGRlZnM+CiAgICAgIDxwYXRoIGlkPSJDbW1pMTAtMTUiIGQ9Ik0gMTE5NyAtNzIgClEgOTEzIC03MiA2OTIgNjQgClEgNDcyIDIwMCAzNTEgNDMxIApRIDIzMSA2NjMgMjMxIDk0MSAKUSAyMzEgMTIzOCAzNjUgMTU2NiAKUSA1MDAgMTg5NCA3MzMgMjE2NiAKUSA5NjYgMjQzOCAxMjU5IDI1OTggClEgMTU1MyAyNzU5IDE4NjMgMjc1OSAKTCAzNDc1IDI3NTkgClEgMzU0MSAyNzU5IDM1ODcgMjcxNSAKUSAzNjM0IDI2NzIgMzYzNCAyNTk3IApRIDM2MzQgMjUwMyAzNTY3IDI0MzMgClEgMzUwMCAyMzYzIDM0MDYgMjM2MyAKTCAyNjI1IDIzNjMgClEgMjgwOSAyMDg4IDI4MDkgMTY5NyAKUSAyODA5IDEzNzUgMjY4NCAxMDYyIApRIDI1NTkgNzUwIDIzMzcgNDkyIApRIDIxMTYgMjM0IDE4MjAgODEgClEgMTUyNSAtNzIgMTE5NyAtNzIgCnoKTSAxMjAzIDk3IApRIDE1NTMgOTcgMTgyMyAzNzAgClEgMjA5NCA2NDQgMjIzNyAxMDM5IApRIDIzODEgMTQzNCAyMzgxIDE3NzIgClEgMjM4MSAyMDQ3IDIyMjkgMjIwNSAKUSAyMDc4IDIzNjMgMTgwNiAyMzYzIApRIDE0MzQgMjM2MyAxMTczIDIxMTMgClEgOTEzIDE4NjMgNzgzIDE0ODQgClEgNjUzIDExMDYgNjUzIDc1NiAKUSA2NTMgNDgxIDc5OCAyODkgClEgOTQ0IDk3IDEyMDMgOTcgCnoKIiB0cmFuc2Zvcm09InNjYWxlKDAuMDE1NjI1KSIvPgogICAgICA8cGF0aCBpZD0iQ21zeTEwLTQ5IiBkPSJNIDIyNSAzNDcgClEgMTg0IDM1OSAxODQgNDA5IApMIDk2NiAzMzE2IApRIDEwMDMgMzQzNCAxMDkzIDM1MDYgClEgMTE4NCAzNTc4IDEzMDAgMzU3OCAKUSAxNDUwIDM1NzggMTU2NCAzNDc5IApRIDE2NzggMzM4MSAxNjc4IDMyMzEgClEgMTY3OCAzMTY2IDE2NDQgMzA4NCAKTCA0ODggMzE5IApRIDQ2NiAyNzUgNDI4IDI3NSAKUSAzOTQgMjc1IDMyMCAzMDYgClEgMjQ3IDMzOCAyMjUgMzQ3IAp6CiIgdHJhbnNmb3JtPSJzY2FsZSgwLjAxNTYyNSkiLz4KICAgICAgPHBhdGggaWQ9IkNtcjEwLTc3IiBkPSJNIDE5ODQgLTE1ODggClEgMTYyOCAtMTMwNiAxMzcwIC05NDIgClEgMTExMyAtNTc4IDk0OCAtMTY1IApRIDc4NCAyNDcgNzAzIDY5NyAKUSA2MjIgMTE0NyA2MjIgMTYwMCAKUSA2MjIgMjA1OSA3MDMgMjUwOSAKUSA3ODQgMjk1OSA5NTEgMzM3NSAKUSAxMTE5IDM3OTEgMTM3OCA0MTUzIApRIDE2MzggNDUxNiAxOTg0IDQ3ODggClEgMTk4NCA0ODAwIDIwMTYgNDgwMCAKTCAyMDc1IDQ4MDAgClEgMjA5NCA0ODAwIDIxMDkgNDc4MyAKUSAyMTI1IDQ3NjYgMjEyNSA0NzQ0IApRIDIxMjUgNDcxNiAyMTEzIDQ3MDMgClEgMTgwMCA0Mzk3IDE1OTIgNDA0NyAKUSAxMzg0IDM2OTcgMTI1NyAzMzAxIApRIDExMzEgMjkwNiAxMDc1IDI0ODIgClEgMTAxOSAyMDU5IDEwMTkgMTYwMCAKUSAxMDE5IC00MzQgMjEwNiAtMTQ5MSAKUSAyMTI1IC0xNTA5IDIxMjUgLTE1NDQgClEgMjEyNSAtMTU1OSAyMTA4IC0xNTc5IApRIDIwOTEgLTE2MDAgMjA3NSAtMTYwMCAKTCAyMDE2IC0xNjAwIApRIDE5ODQgLTE2MDAgMTk4NCAtMTU4OCAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgIDxwYXRoIGlkPSJDbXIxMC0yOCIgZD0iTSAxNjAwIC0xNDEgClEgODE2IC0xNDEgNTMzIDUwNCAKUSAyNTAgMTE1MCAyNTAgMjA0MSAKUSAyNTAgMjU5NyAzNTEgMzA4NyAKUSA0NTMgMzU3OCA3NTQgMzkyMCAKUSAxMDU2IDQyNjMgMTYwMCA0MjYzIApRIDIwMjIgNDI2MyAyMjkwIDQwNTYgClEgMjU1OSAzODUwIDI3MDAgMzUyMyAKUSAyODQxIDMxOTcgMjg5MiAyODIzIApRIDI5NDQgMjQ1MCAyOTQ0IDIwNDEgClEgMjk0NCAxNDkxIDI4NDIgMTAxMSAKUSAyNzQxIDUzMSAyNDQ0IDE5NSAKUSAyMTQ3IC0xNDEgMTYwMCAtMTQxIAp6Ck0gMTYwMCAyNSAKUSAxOTU2IDI1IDIxMzEgMzkwIApRIDIzMDYgNzU2IDIzNDcgMTIwMCAKUSAyMzg4IDE2NDQgMjM4OCAyMTQ0IApRIDIzODggMjYyNSAyMzQ3IDMwMzEgClEgMjMwNiAzNDM4IDIxMzIgMzc2NyAKUSAxOTU5IDQwOTcgMTYwMCA0MDk3IApRIDEyMzggNDA5NyAxMDYzIDM3NjUgClEgODg4IDM0MzQgODQ3IDMwMjkgClEgODA2IDI2MjUgODA2IDIxNDQgClEgODA2IDE3ODggODIzIDE0NzIgClEgODQxIDExNTYgOTE2IDgyMCAKUSA5OTEgNDg0IDExNTggMjU0IApRIDEzMjUgMjUgMTYwMCAyNSAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgIDxwYXRoIGlkPSJDbW1pMTAtMzMiIGQ9Ik0gNTM4IDM1MyAKUSA1MzggNDk3IDY0NCA2MDAgClEgNzUwIDcwMyA4OTEgNzAzIApRIDk3OCA3MDMgMTA2MiA2NTYgClEgMTE0NyA2MDkgMTE5NCA1MjUgClEgMTI0MSA0NDEgMTI0MSAzNTMgClEgMTI0MSAyMTMgMTEzNyAxMDYgClEgMTAzNCAwIDg5MSAwIApRIDc1MCAwIDY0NCAxMDYgClEgNTM4IDIxMyA1MzggMzUzIAp6CiIgdHJhbnNmb3JtPSJzY2FsZSgwLjAxNTYyNSkiLz4KICAgICAgPHBhdGggaWQ9IkNtcjEwLTc4IiBkPSJNIDU1NiA3MjggClEgNjIyIDU0MSA3NTggMzg3IApRIDg5NCAyMzQgMTA4MCAxNDggClEgMTI2NiA2MyAxNDY2IDYzIApRIDE5MjggNjMgMjEwMyA0MjIgClEgMjI3OCA3ODEgMjI3OCAxMjk0IApRIDIyNzggMTUxNiAyMjcwIDE2NjcgClEgMjI2MyAxODE5IDIyMjggMTk1OSAKUSAyMTY5IDIxODQgMjAyMCAyMzUzIApRIDE4NzIgMjUyMiAxNjU2IDI1MjIgClEgMTQ0MSAyNTIyIDEyODYgMjQ1NiAKUSAxMTMxIDIzOTEgMTAzNCAyMzAzIApRIDkzOCAyMjE2IDg2MyAyMTE5IApRIDc4OCAyMDIyIDc2OSAyMDE2IApMIDY5NyAyMDE2IApRIDY4MSAyMDE2IDY1NyAyMDM2IApRIDYzNCAyMDU2IDYzNCAyMDc1IApMIDYzNCA0MjEzIApRIDYzNCA0MjI4IDY1NCA0MjQ1IApRIDY3NSA0MjYzIDY5NyA0MjYzIApMIDcxNiA0MjYzIApRIDExNDcgNDA1NiAxNjMxIDQwNTYgClEgMjEwNiA0MDU2IDI1NDcgNDI2MyAKTCAyNTY2IDQyNjMgClEgMjU4OCA0MjYzIDI2MDYgNDI0NyAKUSAyNjI1IDQyMzEgMjYyNSA0MjEzIApMIDI2MjUgNDE1MyAKUSAyNjI1IDQxMjIgMjYxMyA0MTIyIApRIDIzOTQgMzgzMSAyMDY0IDM2NjggClEgMTczNCAzNTA2IDEzODEgMzUwNiAKUSAxMTI1IDM1MDYgODU2IDM1NzggCkwgODU2IDIzNjkgClEgMTA2OSAyNTQxIDEyMzYgMjYxNCAKUSAxNDAzIDI2ODggMTY2MyAyNjg4IApRIDIwMTYgMjY4OCAyMjk1IDI0ODQgClEgMjU3NSAyMjgxIDI3MjUgMTk1NCAKUSAyODc1IDE2MjggMjg3NSAxMjg4IApRIDI4NzUgOTAzIDI2ODYgNTc1IApRIDI0OTcgMjQ3IDIxNzIgNTMgClEgMTg0NyAtMTQxIDE0NjYgLTE0MSAKUSAxMTUwIC0xNDEgODg2IDIxIApRIDYyMiAxODQgNDcwIDQ1OSAKUSAzMTkgNzM0IDMxOSAxMDQ0IApRIDMxOSAxMTg4IDQxMiAxMjc4IApRIDUwNiAxMzY5IDY0NyAxMzY5IApRIDc4OCAxMzY5IDg4MyAxMjc2IApRIDk3OCAxMTg0IDk3OCAxMDQ0IApRIDk3OCA5MDYgODgzIDgxMSAKUSA3ODggNzE2IDY0NyA3MTYgClEgNjI1IDcxNiA1OTcgNzIwIApRIDU2OSA3MjUgNTU2IDcyOCAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgIDxwYXRoIGlkPSJDbXIxMC00NCIgZD0iTSA0MTYgLTE2MDAgClEgMzU5IC0xNjAwIDM1OSAtMTU0NCAKUSAzNTkgLTE1MTYgMzcyIC0xNTAzIApRIDE0NjYgLTQzNCAxNDY2IDE2MDAgClEgMTQ2NiAzNjM0IDM4NCA0NjkxIApRIDM1OSA0NzA2IDM1OSA0NzQ0IApRIDM1OSA0NzY2IDM3NiA0NzgzIApRIDM5NCA0ODAwIDQxNiA0ODAwIApMIDQ3NSA0ODAwIApRIDQ5NCA0ODAwIDUwNiA0Nzg4IApRIDk2NiA0NDI1IDEyNzIgMzkwNiAKUSAxNTc4IDMzODggMTcyMCAyODAwIApRIDE4NjMgMjIxMyAxODYzIDE2MDAgClEgMTg2MyAxMTQ3IDE3ODYgNzA4IApRIDE3MDkgMjY5IDE1NDIgLTE1NyAKUSAxMzc1IC01ODQgMTExOSAtOTQ1IApRIDg2MyAtMTMwNiA1MDYgLTE1ODggClEgNDk0IC0xNjAwIDQ3NSAtMTYwMCAKTCA0MTYgLTE2MDAgCnoKIiB0cmFuc2Zvcm09InNjYWxlKDAuMDE1NjI1KSIvPgogICAgICA8cGF0aCBpZD0iQ21yMTAtMjkiIGQ9Ik0gNDgxIDg1MCAKUSA0MjggODUwIDM5MyA4OTAgClEgMzU5IDkzMSAzNTkgOTc4IApRIDM1OSAxMDMxIDM5MyAxMDY4IApRIDQyOCAxMTA2IDQ4MSAxMTA2IApMIDQ1MDAgMTEwNiAKUSA0NTQ3IDExMDYgNDU4MSAxMDY4IApRIDQ2MTYgMTAzMSA0NjE2IDk3OCAKUSA0NjE2IDkzMSA0NTgxIDg5MCAKUSA0NTQ3IDg1MCA0NTAwIDg1MCAKTCA0ODEgODUwIAp6Ck0gNDgxIDIwOTQgClEgNDI4IDIwOTQgMzkzIDIxMzEgClEgMzU5IDIxNjkgMzU5IDIyMjIgClEgMzU5IDIyNjkgMzkzIDIzMDkgClEgNDI4IDIzNTAgNDgxIDIzNTAgCkwgNDUwMCAyMzUwIApRIDQ1NDcgMjM1MCA0NTgxIDIzMDkgClEgNDYxNiAyMjY5IDQ2MTYgMjIyMiAKUSA0NjE2IDIxNjkgNDU4MSAyMTMxIApRIDQ1NDcgMjA5NCA0NTAwIDIwOTQgCkwgNDgxIDIwOTQgCnoKIiB0cmFuc2Zvcm09InNjYWxlKDAuMDE1NjI1KSIvPgogICAgICA8cGF0aCBpZD0iQ21yMTAtMzEiIGQ9Ik0gMzE5IDAgCkwgMzE5IDE3MiAKUSAzMTkgMTg4IDMzMSAyMDYgCkwgMTMyNSAxMzA2IApRIDE1NTAgMTU1MCAxNjkwIDE3MTUgClEgMTgzMSAxODgxIDE5NjggMjA5NyAKUSAyMTA2IDIzMTMgMjE4NiAyNTM2IApRIDIyNjYgMjc1OSAyMjY2IDMwMDkgClEgMjI2NiAzMjcyIDIxNjkgMzUxMSAKUSAyMDcyIDM3NTAgMTg4MCAzODk0IApRIDE2ODggNDAzOCAxNDE2IDQwMzggClEgMTEzOCA0MDM4IDkxNiAzODcwIApRIDY5NCAzNzAzIDYwMyAzNDM4IApRIDYyOCAzNDQ0IDY3MiAzNDQ0IApRIDgxNiAzNDQ0IDkxNyAzMzQ3IApRIDEwMTkgMzI1MCAxMDE5IDMwOTcgClEgMTAxOSAyOTUwIDkxNyAyODQ4IApRIDgxNiAyNzQ3IDY3MiAyNzQ3IApRIDUyMiAyNzQ3IDQyMCAyODUxIApRIDMxOSAyOTU2IDMxOSAzMDk3IApRIDMxOSAzMzM4IDQwOSAzNTQ4IApRIDUwMCAzNzU5IDY3MCAzOTIzIApRIDg0MSA0MDg4IDEwNTUgNDE3NSAKUSAxMjY5IDQyNjMgMTUwOSA0MjYzIApRIDE4NzUgNDI2MyAyMTkwIDQxMDggClEgMjUwNiAzOTUzIDI2OTAgMzY3MCAKUSAyODc1IDMzODggMjg3NSAzMDA5IApRIDI4NzUgMjczMSAyNzUzIDI0ODEgClEgMjYzMSAyMjMxIDI0NDAgMjAyNiAKUSAyMjUwIDE4MjIgMTk1MyAxNTYyIApRIDE2NTYgMTMwMyAxNTYzIDEyMTYgCkwgODM4IDUxOSAKTCAxNDUzIDUxOSAKUSAxOTA2IDUxOSAyMjExIDUyNiAKUSAyNTE2IDUzNCAyNTM0IDU1MCAKUSAyNjA5IDYzMSAyNjg4IDExNDEgCkwgMjg3NSAxMTQxIApMIDI2OTQgMCAKTCAzMTkgMCAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgIDxwYXRoIGlkPSJDbXIxMC02ZSIgZD0iTSA2MDkgNDk0IApRIDc1OSAyNzUgMTAxMiAxNjkgClEgMTI2NiA2MyAxNTU2IDYzIApRIDE5MjggNjMgMjA4NCAzODAgClEgMjI0MSA2OTcgMjI0MSAxMTAwIApRIDIyNDEgMTI4MSAyMjA4IDE0NjIgClEgMjE3NSAxNjQ0IDIwOTcgMTgwMCAKUSAyMDE5IDE5NTYgMTg4MyAyMDUwIApRIDE3NDcgMjE0NCAxNTUwIDIxNDQgCkwgMTEyNSAyMTQ0IApRIDEwNjkgMjE0NCAxMDY5IDIyMDMgCkwgMTA2OSAyMjU5IApRIDEwNjkgMjMwOSAxMTI1IDIzMDkgCkwgMTQ3OCAyMzM4IApRIDE3MDMgMjMzOCAxODUxIDI1MDYgClEgMjAwMCAyNjc1IDIwNjkgMjkxNyAKUSAyMTM4IDMxNTkgMjEzOCAzMzc4IApRIDIxMzggMzY4NCAxOTk0IDM4ODEgClEgMTg1MCA0MDc4IDE1NTYgNDA3OCAKUSAxMzEzIDQwNzggMTA5MSAzOTg2IApRIDg2OSAzODk0IDczOCAzNzA2IApRIDc1MCAzNzA5IDc1OSAzNzExIApRIDc2OSAzNzEzIDc4MSAzNzEzIApRIDkyNSAzNzEzIDEwMjIgMzYxMyAKUSAxMTE5IDM1MTMgMTExOSAzMzcyIApRIDExMTkgMzIzNCAxMDIyIDMxMzQgClEgOTI1IDMwMzQgNzgxIDMwMzQgClEgNjQxIDMwMzQgNTQxIDMxMzQgClEgNDQxIDMyMzQgNDQxIDMzNzIgClEgNDQxIDM2NDcgNjA2IDM4NTAgClEgNzcyIDQwNTMgMTAzMyA0MTU4IApRIDEyOTQgNDI2MyAxNTU2IDQyNjMgClEgMTc1MCA0MjYzIDE5NjUgNDIwNSAKUSAyMTgxIDQxNDcgMjM1NiA0MDM5IApRIDI1MzEgMzkzMSAyNjQyIDM3NjIgClEgMjc1MyAzNTk0IDI3NTMgMzM3OCAKUSAyNzUzIDMxMDkgMjYzMyAyODgxIApRIDI1MTMgMjY1MyAyMzAzIDI0ODcgClEgMjA5NCAyMzIyIDE4NDQgMjI0MSAKUSAyMTIyIDIxODggMjM3MiAyMDMxIApRIDI2MjIgMTg3NSAyNzczIDE2MzEgClEgMjkyNSAxMzg4IDI5MjUgMTEwNiAKUSAyOTI1IDc1MyAyNzMxIDQ2NyAKUSAyNTM4IDE4MSAyMjIyIDIwIApRIDE5MDYgLTE0MSAxNTU2IC0xNDEgClEgMTI1NiAtMTQxIDk1NCAtMjYgClEgNjUzIDg4IDQ2MSAzMTYgClEgMjY5IDU0NCAyNjkgODYzIApRIDI2OSAxMDIyIDM3NSAxMTI4IApRIDQ4MSAxMjM0IDY0MSAxMjM0IApRIDc0NCAxMjM0IDgzMCAxMTg2IApRIDkxNiAxMTM4IDk2NCAxMDUwIApRIDEwMTMgOTYzIDEwMTMgODYzIApRIDEwMTMgNzA2IDkwMyA2MDAgClEgNzk0IDQ5NCA2NDEgNDk0IApMIDYwOSA0OTQgCnoKIiB0cmFuc2Zvcm09InNjYWxlKDAuMDE1NjI1KSIvPgogICAgIDwvZGVmcz4KICAgICA8dXNlIHhsaW5rOmhyZWY9IiNDbW1pMTAtMTUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgMC41NzYzOTEpIi8+CiAgICAgPHVzZSB4bGluazpocmVmPSIjQ21zeTEwLTQ5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2OC4xMTM4NTQgNDEuODY1NjI1KSBzY2FsZSgwLjcpIi8+CiAgICAgPHVzZSB4bGluazpocmVmPSIjQ21yMTAtNzciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDkzLjA3NzQzMyAwLjU3NjM5MSkiLz4KICAgICA8dXNlIHhsaW5rOmhyZWY9IiNDbXIxMC0yOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTMxLjg5NTc5MyAwLjU3NjM5MSkiLz4KICAgICA8dXNlIHhsaW5rOmhyZWY9IiNDbW1pMTAtMzMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE4MS44OTU3OTMgMC41NzYzOTEpIi8+CiAgICAgPHVzZSB4bGluazpocmVmPSIjQ21yMTAtNzgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwOS41ODEzNCAwLjU3NjM5MSkiLz4KICAgICA8dXNlIHhsaW5rOmhyZWY9IiNDbXIxMC00NCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjU5LjU4MTM0IDAuNTc2MzkxKSIvPgogICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtcjEwLTI5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMTguMzk5NzU2IDAuNTc2MzkxKSIvPgogICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtcjEwLTI4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MTYuMDg1MzYgMC41NzYzOTEpIi8+CiAgICAgPHVzZSB4bGluazpocmVmPSIjQ21taTEwLTMzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NjYuMDg1MzYgMC41NzYzOTEpIi8+CiAgICAgPHVzZSB4bGluazpocmVmPSIjQ21yMTAtMzEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ5My43NzA5MDcgMC41NzYzOTEpIi8+CiAgICAgPHVzZSB4bGluazpocmVmPSIjQ21yMTAtNmUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU0My43NzA5MDcgMC41NzYzOTEpIi8+CiAgICAgPHVzZSB4bGluazpocmVmPSIjQ21yMTAtNzgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU5My43NzA5MDcgMC41NzYzOTEpIi8+CiAgICAgPHVzZSB4bGluazpocmVmPSIjQ21yMTAtMjgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY0My43NzA5MDcgMC41NzYzOTEpIi8+CiAgICA8L2c+CiAgIDwvZz4KICAgPGcgaWQ9InRleHRfMTgiPgogICAgPCEtLSAkXHNpZ21hJyg1KT0wLjAwNjYkIC0tPgogICAgPGcgc3R5bGU9ImZpbGw6ICNlMDdhNzAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1Ny4yOCAxOTEuMTgxMDc4KSBzY2FsZSgwLjEzIC0wLjEzKSI+CiAgICAgPGRlZnM+CiAgICAgIDxwYXRoIGlkPSJDbXIxMC00NSIgZD0iTSAxNjAwIC0xNDEgClEgMTIwMyAtMTQxIDkzNyA3MCAKUSA2NzIgMjgxIDUyNiA2MTcgClEgMzgxIDk1MyAzMjUgMTMyMiAKUSAyNjkgMTY5MSAyNjkgMjA2OSAKUSAyNjkgMjU3NSA0NjYgMzA4NCAKUSA2NjMgMzU5NCAxMDQ1IDM5MjggClEgMTQyOCA0MjYzIDE5NTMgNDI2MyAKUSAyMTcyIDQyNjMgMjM2MSA0MTgwIApRIDI1NTAgNDA5NyAyNjU4IDM5MzYgClEgMjc2NiAzNzc1IDI3NjYgMzU0NyAKUSAyNzY2IDM0MTYgMjY3NyAzMzI3IApRIDI1ODggMzIzOCAyNDU2IDMyMzggClEgMjMzMSAzMjM4IDIyNDAgMzMyOCAKUSAyMTUwIDM0MTkgMjE1MCAzNTQ3IApRIDIxNTAgMzY3MiAyMjQwIDM3NjIgClEgMjMzMSAzODUzIDI0NTYgMzg1MyAKTCAyNDkxIDM4NTMgClEgMjQwOSAzOTY5IDIyNjEgNDAyMyAKUSAyMTEzIDQwNzggMTk1MyA0MDc4IApRIDE3NTkgNDA3OCAxNTk1IDM5OTMgClEgMTQzMSAzOTA5IDEzMDAgMzc2NSAKUSAxMTY5IDM2MjIgMTA4MSAzNDQ4IApRIDk5NCAzMjc1IDk0NSAzMDUzIApRIDg5NyAyODMxIDg4NCAyNjM3IApRIDg3MiAyNDQ0IDg3MiAyMTUwIApRIDk4NCAyNDEzIDExOTAgMjU4MCAKUSAxMzk3IDI3NDcgMTY1NiAyNzQ3IApRIDE5NDEgMjc0NyAyMTc1IDI2MzEgClEgMjQwOSAyNTE2IDI1NzggMjMxMSAKUSAyNzQ3IDIxMDYgMjgzNiAxODQzIApRIDI5MjUgMTU4MSAyOTI1IDEzMTMgClEgMjkyNSA5MzggMjc1OCA1OTggClEgMjU5MSAyNTkgMjI4NyA1OSAKUSAxOTg0IC0xNDEgMTYwMCAtMTQxIAp6Ck0gMTYwMCA2MyAKUSAxODQ3IDYzIDE5OTcgMTc1IApRIDIxNDcgMjg4IDIyMTcgNDczIApRIDIyODggNjU5IDIzMDUgODQ4IApRIDIzMjIgMTAzOCAyMzIyIDEzMTMgClEgMjMyMiAxNjc1IDIyODcgMTkzMSAKUSAyMjUzIDIxODggMjEwMCAyMzgzIApRIDE5NDcgMjU3OCAxNjMxIDI1NzggClEgMTM3MiAyNTc4IDEyMDUgMjQwMyAKUSAxMDM4IDIyMjggOTYxIDE5NjEgClEgODg0IDE2OTQgODg0IDE0NDcgClEgODg0IDEzNjMgODkxIDEzMTkgClEgODkxIDEzMDkgODg5IDEzMDMgClEgODg4IDEyOTcgODg0IDEyODggClEgODg0IDEwMTMgOTQwIDczMSAKUSA5OTcgNDUwIDExNTYgMjU2IApRIDEzMTYgNjMgMTYwMCA2MyAKegoiIHRyYW5zZm9ybT0ic2NhbGUoMC4wMTU2MjUpIi8+CiAgICAgPC9kZWZzPgogICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtbWkxMC0xNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAwLjU3NjM5MSkiLz4KICAgICA8dXNlIHhsaW5rOmhyZWY9IiNDbXN5MTAtNDkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY4LjExMzg1NCA0MS44NjU2MjUpIHNjYWxlKDAuNykiLz4KICAgICA8dXNlIHhsaW5rOmhyZWY9IiNDbXIxMC03NyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOTMuMDc3NDMzIDAuNTc2MzkxKSIvPgogICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtcjEwLTc4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzEuODk1NzkzIDAuNTc2MzkxKSIvPgogICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtcjEwLTQ0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxODEuODk1NzkzIDAuNTc2MzkxKSIvPgogICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtcjEwLTI5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNDAuNzE0MjA5IDAuNTc2MzkxKSIvPgogICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtcjEwLTI4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMzguMzk5ODEzIDAuNTc2MzkxKSIvPgogICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtbWkxMC0zMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzg4LjM5OTgxMyAwLjU3NjM5MSkiLz4KICAgICA8dXNlIHhsaW5rOmhyZWY9IiNDbXIxMC0yOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDE2LjA4NTM2IDAuNTc2MzkxKSIvPgogICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtcjEwLTI4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NjYuMDg1MzYgMC41NzYzOTEpIi8+CiAgICAgPHVzZSB4bGluazpocmVmPSIjQ21yMTAtNDUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUxNi4wODUzNiAwLjU3NjM5MSkiLz4KICAgICA8dXNlIHhsaW5rOmhyZWY9IiNDbXIxMC00NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTY2LjA4NTM2IDAuNTc2MzkxKSIvPgogICAgPC9nPgogICA8L2c+CiAgIDxnIGlkPSJsZWdlbmRfMSI+CiAgICA8ZyBpZD0ibGluZTJkXzM1Ij4KICAgICA8cGF0aCBkPSJNIDY4Ljc2IDEwMy42Njg5MDYgCkwgODIuNzYgMTAzLjY2ODkwNiAKTCA5Ni43NiAxMDMuNjY4OTA2IAoiIHN0eWxlPSJmaWxsOiBub25lOyBzdHJva2U6ICM2YTlmZDY7IHN0cm9rZS13aWR0aDogMi42OyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgICA8L2c+CiAgICA8ZyBpZD0idGV4dF8xOSI+CiAgICAgPCEtLSAkXHNpZ21hKGEpJCAtLT4KICAgICA8ZyBzdHlsZT0iZmlsbDogI2YyZWRlNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTA3Ljk2IDEwOC41Njg5MDYpIHNjYWxlKDAuMTQgLTAuMTQpIj4KICAgICAgPHVzZSB4bGluazpocmVmPSIjQ21taTEwLTE1Ii8+CiAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtcjEwLTc3IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1Ny4wODAwNzggMCkiLz4KICAgICAgPHVzZSB4bGluazpocmVmPSIjQ21taTEwLTc5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NS44OTg0MzggMCkiLz4KICAgICAgPHVzZSB4bGluazpocmVmPSIjQ21yMTAtNDQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0OC42ODE2NDEgMCkiLz4KICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyBpZD0ibGluZTJkXzM2Ij4KICAgICA8cGF0aCBkPSJNIDY4Ljc2IDEyNS41MDg5MDYgCkwgODIuNzYgMTI1LjUwODkwNiAKTCA5Ni43NiAxMjUuNTA4OTA2IAoiIHN0eWxlPSJmaWxsOiBub25lOyBzdHJva2U6ICNkOTc3NTc7IHN0cm9rZS13aWR0aDogMi42OyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgICA8L2c+CiAgICA8ZyBpZD0idGV4dF8yMCI+CiAgICAgPCEtLSAkXHNpZ21hJyhhKSQgLS0+CiAgICAgPGcgc3R5bGU9ImZpbGw6ICNmMmVkZTQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwNy45NiAxMzAuNDA4OTA2KSBzY2FsZSgwLjE0IC0wLjE0KSI+CiAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtbWkxMC0xNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAwLjU3NjM5MSkiLz4KICAgICAgPHVzZSB4bGluazpocmVmPSIjQ21zeTEwLTQ5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2OC4xMTM4NTQgNDEuODY1NjI1KSBzY2FsZSgwLjcpIi8+CiAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtcjEwLTc3IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5My4wNzc0MzMgMC41NzYzOTEpIi8+CiAgICAgIDx1c2UgeGxpbms6aHJlZj0iI0NtbWkxMC03OSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTMxLjg5NTc5MyAwLjU3NjM5MSkiLz4KICAgICAgPHVzZSB4bGluazpocmVmPSIjQ21yMTAtNDQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE4NC42Nzg5OTYgMC41NzYzOTEpIi8+CiAgICAgPC9nPgogICAgPC9nPgogICA8L2c+CiAgPC9nPgogPC9nPgogPGRlZnM+CiAgPGNsaXBQYXRoIGlkPSJwY2Y1N2IxMDJiMiI+CiAgIDxyZWN0IHg9IjU2LjE2IiB5PSIyMC4xNiIgd2lkdGg9IjM1OC41NiIgaGVpZ2h0PSIxOTEuNTIiLz4KICA8L2NsaXBQYXRoPgogPC9kZWZzPgo8L3N2Zz4K",
+        "alt": "sigmoid 函數 σ(a)（藍線）與它的斜率 σ′(a)（橘線）：σ′ 最大 0.25（a=0），a=0.5 時 0.2350，a=5 時只剩 0.0066，這就是梯度消失。",
+        "fit": "contain"
+      }
+    },
+    "lec03kp06-u01-p4a": {
+      "id": "lec03kp06-u01-p4a",
+      "type": "shape",
+      "name": "u01-p4a",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 4860,
+        "y": 278,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 720,
+      "height": 163,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "$\\delta_i=\\sigma'(a_i)\\sum_j\\delta_j\\,w_{ji}$\n下游責任加權倒灌,再乘自己的斜率。\n*Downstream responsibility flows back, then is filtered by the local slope.*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p4b": {
+      "id": "lec03kp06-u01-p4b",
+      "type": "shape",
+      "name": "u01-p4b",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 4860,
+        "y": 453,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 720,
+      "height": 130,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(95,184,168,0.12)",
+        "stroke": "rgba(95,184,168,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**sigmoid 例**:$\\delta_{out}=0.2449$,$\\sigma'(0.5)=0.2350$,$\\delta_a=0.1151$〔程式計算〕。\n*The hidden sensitivity is 0.1151.*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p4c": {
+      "id": "lec03kp06-u01-p4c",
+      "type": "shape",
+      "name": "u01-p4c",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 4860,
+        "y": 595,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 720,
+      "height": 100,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(224,122,112,0.12)",
+        "stroke": "rgba(224,122,112,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**梯度消失**:$\\sigma'(5)=0.0066$,飽和時責任傳不進去。\n*Vanishing gradient: at saturation nothing passes.*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p5-title": {
+      "id": "lec03kp06-u01-p5-title",
+      "type": "text",
+      "name": "u01-p5-title",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 5820,
+        "y": 26,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 65,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#f2ede4",
+        "fontSize": 42,
+        "radius": 0,
+        "fontWeight": 700,
+        "textAlign": "left",
+        "lineHeight": 1.25
+      },
+      "text": "梯度檢查:中心差分當獨立證人,反向傳播只負責算梯度"
+    },
+    "lec03kp06-u01-p5-sub": {
+      "id": "lec03kp06-u01-p5-sub",
+      "type": "text",
+      "name": "u01-p5-sub",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 5820,
+        "y": 88,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 38,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#b7b0a5",
+        "fontSize": 22,
+        "radius": 0,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.2
+      },
+      "text": "Gradient checking: a central difference as an independent witness; backpropagation only computes the gradient"
+    },
+    "lec03kp06-u01-p5bridge": {
+      "id": "lec03kp06-u01-p5bridge",
+      "type": "shape",
+      "name": "u01-p5bridge",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 5820,
+        "y": 136,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 99,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(245,241,233,0.05)",
+        "stroke": "rgba(245,241,233,0.20)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**上一頁**推出了 $\\delta$ 的遞推。**這頁問**:怎麼確定算對了?誰負責什麼?\n*We derived the recursion for δ. How do we know it is right, and who is responsible for what?*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p5a": {
+      "id": "lec03kp06-u01-p5a",
+      "type": "shape",
+      "name": "u01-p5a",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 5820,
+        "y": 247,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 123,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**中心差分**:$\\dfrac{\\partial e}{\\partial w}\\approx\\dfrac{e(w+\\epsilon)-e(w-\\epsilon)}{2\\epsilon}$,誤差 $O(\\epsilon^2)$;$\\epsilon$ 常取 $10^{-4}$。\n*The central difference cancels even-order terms; epsilon cannot be tiny because round-off then dominates.*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p5b": {
+      "id": "lec03kp06-u01-p5b",
+      "type": "shape",
+      "name": "u01-p5b",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 5820,
+        "y": 382,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 95,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(125,187,140,0.12)",
+        "stroke": "rgba(125,187,140,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**檢查三方**:手算梯度、autograd、有限差分互相比對;人負責檢視差異並能解釋。\n*Compare the hand gradient, autograd and finite differences; the human reviews and explains any mismatch.*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-u01-p5c": {
+      "id": "lec03kp06-u01-p5c",
+      "type": "shape",
+      "name": "u01-p5c",
+      "sceneId": "lec03kp06-scene-u01",
+      "transform": {
+        "x": 5820,
+        "y": 489,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 130,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(217,119,87,0.12)",
+        "stroke": "rgba(217,119,87,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**分工**:反向傳播只算梯度 $\\nabla L$;怎麼用它是最佳化器的事。**留給 KP07**:資料太多,完整梯度太貴怎麼辦?\n*Backpropagation only computes the gradient; the optimizer uses it. Left for KP07: with huge data even one full gradient is too expensive.*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp06-frame-u01": {
+      "id": "lec03kp06-frame-u01",
+      "type": "frame",
+      "name": "lec03kp06-frame-u01",
+      "sceneId": "scene-root",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 400,
+      "height": 200,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 0
+      },
+      "text": "反向傳播",
+      "frame": {
+        "childSceneId": "lec03kp06-scene-u01",
+        "previewMode": "live",
+        "padding": 18,
+        "clip": true
+      }
+    }
+  },
+  "steps": [
+    {
+      "id": "lec03kp06-root-step-u01",
+      "order": 0,
+      "label": "反向傳播",
+      "durationMs": 900,
+      "holdMs": 500,
+      "easing": "smooth",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "scene-root",
+        "point": {
+          "x": 200,
+          "y": 100
+        },
+        "zoom": 2.6666666666666665,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "speakerNotes": "教材程度:大學生(undergrad)。簡報時長:4 小時(淨授課 200 分鐘,每 KP 12.5 分鐘,細度:精簡,每 KP 3–4 頁;KP06 為樞紐,經老師同意用 5 頁)。本 KP 共 5 頁。"
+    },
+    {
+      "id": "lec03kp06-u01-step1",
+      "order": 1,
+      "label": "隱藏層看不到標籤",
+      "durationMs": 900,
+      "holdMs": 500,
+      "easing": "smooth",
+      "speakerNotes": "這一頁承接 KP05:前面五個 KP 都把梯度當成已經算好,現在打開這個黑盒子。問題是隱藏層的神經元只把訊號傳給下游,從不直接接觸標籤與損失,它的參數透過下游一連串運算才影響損失,那每個參數該負多少責任,也就是梯度,怎麼算?最直接的辦法是逐一擾動參數:每個參數都要重跑一次完整前向,前向的成本是 O(W),W 個參數就是 O(W) 平方。W 是一百萬時,是 10 的 12 次方次運算,只為算一步的梯度,不可行。反向傳播用鏈式法則解決:一次前向保存數值,一次反向由後往前分責任,成本和前向同一個量級,約是前向的兩三倍。上一頁(KP05)有了更新式,這一頁問梯度怎麼來。接下來第二頁先拆解單一神經元。",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "lec03kp06-scene-u01",
+        "point": {
+          "x": 640.0,
+          "y": 310.0
+        },
+        "zoom": 0.8780487804878049,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "lec03kp06-u01-step2",
+      "order": 2,
+      "label": "單一神經元:梯度 = δ × z",
+      "durationMs": 900,
+      "holdMs": 500,
+      "easing": "smooth",
+      "speakerNotes": "這一頁拆解單一神經元。前向兩步:活化前加權和 a_i 等於各個輸入 z 乘上權重的總和,再過活化函數得到輸出 z_i。損失 e 對權重的偏導,先經過 a_i,所以等於 e 對 a_i 的偏導乘上 a_i 對權重的偏導。第二個因子很乾淨,就是流入這條連線的 z;第一個因子我們命名為誤差敏感度 δ_i,意思是 a_i 動一點損失動多少。所以權重的梯度等於 δ 乘 z,這句話不論神經元在輸出層或第十個隱藏層都成立。這也是前向要存下每層 z 的原因。上一頁說要拆成局部因子,這一頁拆出了公式。接下來第三頁用具體數字手算一遍。",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "lec03kp06-scene-u01",
+        "point": {
+          "x": 2080.0,
+          "y": 310.0
+        },
+        "zoom": 0.8780487804878049,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "lec03kp06-u01-step3",
+      "order": 3,
+      "label": "手算一遍,每個因子都有角色",
+      "durationMs": 900,
+      "holdMs": 500,
+      "easing": "smooth",
+      "speakerNotes": "這一頁用最小的例子手算。輸入 x 是 1,兩個權重 w1 是 2、w2 是 3,目標 y 是 0,活化函數取恆等。前向由左往右並保存數值:a 等於 2,z 等於 2,輸出 ŷ 等於 6,損失 e 等於二分之一乘 6 的平方,等於 18。反向由右往左分責任:輸出端敏感度是 ŷ 減 y,等於 6;w2 的梯度是 6 乘 z,等於 12;隱藏單元的敏感度是 6 乘 w2 乘活化斜率 1,等於 18;w1 的梯度是 18 乘 x,等於 18。用中心差分檢查 w1 的梯度,得到 18,相符。每個因子都有角色:6 是輸出差多少,3 是 z 透過 w2 影響輸出的強度。上一頁有公式,這一頁有數字。接下來第四頁問:如果有活化函數,隱藏層的 δ 怎麼遞推?",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "lec03kp06-scene-u01",
+        "point": {
+          "x": 3520.0,
+          "y": 310.0
+        },
+        "zoom": 0.8780487804878049,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "lec03kp06-u01-step4",
+      "order": 4,
+      "label": "隱藏層的 δ:下游責任倒灌",
+      "durationMs": 900,
+      "holdMs": 500,
+      "easing": "smooth",
+      "speakerNotes": "這一頁看多層的情形。隱藏神經元 i 的 a_i 動一點,先改變 z_i,再透過連到每個下游神經元 j 的權重改變 a_j。多變數鏈式法則把所有下游加起來:δ_i 等於 σ 撇 a_i 乘上下游 δ_j 乘 w_ji 的總和。矩陣寫法是整層一起算。輸出層沒有下游,δ 直接來自損失。用 sigmoid 算一個數字:x 是 1,w1 是 0.5,w2 是 2,目標是 1。前向 a 是 0.5,z 約 0.6225,輸出 1.2449;δ_out 是 0.2449,w2 的梯度 0.1525;sigmoid 的斜率 0.2350,所以 δ_a 是 0.1151,w1 的梯度也是 0.1151。圖顯示斜率最大 0.25,a 等於 5 時只剩 0.0066,這就是梯度消失:飽和時下游的責任再大也傳不進去。上一頁是恆等活化,這一頁加入非線性。接下來第五頁問:怎麼確定算對了?",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "lec03kp06-scene-u01",
+        "point": {
+          "x": 4960.0,
+          "y": 310.0
+        },
+        "zoom": 0.8780487804878049,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    {
+      "id": "lec03kp06-u01-step5",
+      "order": 5,
+      "label": "梯度檢查與分工",
+      "durationMs": 900,
+      "holdMs": 500,
+      "easing": "smooth",
+      "speakerNotes": "最後談怎麼確定算對了,以及分工。反向傳播的公式很容易實作錯,所以用中心差分當獨立檢查:損失在 w 加減 ε 的差,除以 2ε。為什麼用中心而不是前向差分?泰勒展開時偶數階項互相抵消,誤差是 ε 平方量級;ε 不能無限小,因為浮點數的捨入誤差會壓過。常取 10 的負 4 次方。手算、autograd、有限差分三者互相比對。強調分工:反向傳播只負責算出梯度,怎麼使用這個梯度是最佳化器的事,也就是 KP01 到 KP05。autograd 是獨立證人,不取代理解。上一頁有公式與數字,這一頁問怎麼驗證。接下來進入 KP07:資料有上百萬筆時,連算一次完整的梯度都很貴,怎麼辦?",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "lec03kp06-scene-u01",
+        "point": {
+          "x": 6400.0,
+          "y": 310.0
+        },
+        "zoom": 0.8780487804878049,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "title": "深度學習導論 第3週 KP06:反向傳播(大學生・4小時)",
+    "createdAt": "2026-10-13T00:00:00.000Z",
+    "updatedAt": "2026-10-13T00:00:00.000Z",
+    "aspectRatio": "16:9"
+  }
+}
