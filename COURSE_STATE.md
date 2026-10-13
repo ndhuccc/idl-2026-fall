@@ -52,6 +52,8 @@
 
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
 
+- 2026-10-14 — 依新版技能試做第 3 章 KP02(大學生、4 小時、經老師同意用 5 頁):全新撰寫講義 `lectures/lec03-kp02-gradient-descent-and-learning-rate.md`(含兩張圖、誤差倍率表、w² 例子、解題示範與來源更正)與 5 頁簡報 `slides/lec03-kp02-gradient-descent-and-learning-rate.jbd.json`,圖程式 `assets/figures/src/lec03-kp02-lr-figures.py`。稽核:`audit_deck.py --lecture --speaker-notes --level undergrad --narrative --minutes --source` FAIL 0;`audit_lecture.py --source` FAIL 0、WARN 0。已刪除舊的 KP02 檔案(另一個 session 的講義、簡報、備份與圖,以及 `-undergrad` 版)。
+
 - 2026-10-14 — 依新版技能試做第 3 章 KP01(大學生、4 小時):老師確認盤點後,全新撰寫講義 `lectures/lec03-kp01-optimization-as-search.md`(含兩張圖、成本表、解題示範)與 4 頁簡報 `slides/lec03-kp01-optimization-as-search.jbd.json`(每頁有銜接條、講者備註),圖程式 `assets/figures/src/lec03-kp01-search-figures.py`。稽核:`audit_deck.py --lecture --speaker-notes --level undergrad --narrative --minutes 200 --kps 16 --source` FAIL 0;`audit_lecture.py --source` FAIL 0、WARN 0。取代舊的 `lec03-kp1-parameter-search.jbd.json`(已刪除)。尚未加入 `schedule.md`/導覽。
 
 - 2026-10-14 — 老師要求把盤點報告的格式與批次處理寫進技能:新增 `.agents/skills/INVENTORY_FORMAT.md`(八部分固定格式:設定、章級知識地圖、備課筆記、頁序與銜接表、講義與檔案、批次建議與子代理、補充與取捨、請你確認或調整)。`view-from-text` 與 `textbook-lecture-notes` 動手前都要交此報告;整章不一次做完,第一批試做 1 個 KP,之後每批 3–4 個 KP,並必須先詢問老師是否使用多個子代理平行處理(未明說同意就依序)。尚未同步到 course-template 與 pr-2026-fall。
