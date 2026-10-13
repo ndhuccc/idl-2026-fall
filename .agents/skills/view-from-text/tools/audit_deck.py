@@ -74,6 +74,8 @@ def main():
     ap.add_argument("--lecture", help="the lecture the deck was made from: checks figure coverage (O1) and formula/number coverage (N6)")
     ap.add_argument("--exclude-fig", action="append", default=[], help="lecture figure id the teacher agreed to leave out (repeatable)")
     ap.add_argument("--speaker-notes", action="store_true", help="every content page must carry speaker notes (P1)")
+    ap.add_argument("--minutes", type=float, help="class-time budget for the main line (LEVELS.md section 7): warns when the estimate exceeds it (T1); pages whose step label starts with the extension marker are not counted")
+    ap.add_argument("--kps", type=int, help="number of knowledge points; with --minutes, prints the per-KP budget")
     ap.add_argument("--level", choices=sorted(LEVEL_LIMITS), help="teaching level (see .agents/skills/LEVELS.md): warns when a page exceeds the level's display-formula and body-text budget (Q1, Q2)")
     args = ap.parse_args()
     doc = json.load(open(args.deck, encoding="utf-8"))
@@ -270,6 +272,26 @@ def main():
         for v in sorted(set(x.lstrip("-") for x in NUM3.findall(txt))):
             if v not in derived:
                 Wn("N3", f"{key[0]}#p{key[1] + 1}: {v} appears with no derivation line anywhere in the deck (write the steps, or mark the page 〔程式計算〕)")
+
+    # ------------------------------------------------------------ T1 class-time estimate (LEVELS.md section 7.4)
+    if args.minutes:
+        core = ext = 0
+        total = 0.0
+        for t in ST:
+            tg = t["target"]
+            if tg["sceneId"] == root: continue
+            idx = int((tg["point"]["x"]) // PITCH)
+            ns = pages.get((tg["sceneId"], idx), [])
+            if t["label"].startswith(("延伸:", "延伸:")):
+                ext += 1
+                continue
+            text = "\n".join(n.get("text", "") for n in ns if n["type"] in ("text", "shape"))
+            heavy = any(n["type"] == "image" for n in ns) or t["label"].startswith("練習") or text.count("$") >= 6
+            total += 4.0 if heavy else 2.5
+            core += 1
+        per = f"; per-KP budget {args.minutes / args.kps:.1f} min ({args.kps} KPs)" if args.kps else ""
+        print(f"time estimate: main line {core} pages ~{total:.0f} min, extension pages {ext} (not counted); budget {args.minutes:.0f} min{per}")
+        if total > args.minutes: Wn("T1", f"main line ~{total:.0f} min exceeds the {args.minutes:.0f} min budget: move pages to the extension group (label starts with 延伸:) or trim")
 
     # ------------------------------------------------------------ lecture coverage: O1 figures, N6 formulas and numbers
     if args.lecture:

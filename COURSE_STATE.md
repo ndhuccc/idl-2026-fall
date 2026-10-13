@@ -44,6 +44,8 @@
 
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
 
+- 2026-10-13 — 老師決定:`view-from-text` 加入「簡報時長」。盤點出 KP 數後依 `n × 25` 分鐘建議時長(≤6 個 KP 3 小時、7–9 個 4.5 小時、≥10 個 6 小時),由老師決定後算每 KP 預算並決定細度(完整、標準、精簡);主線放不下的內容做成「延伸:」頁,不刪。`LEVELS.md` 新增 §7;`audit_deck.py` 新增 `--minutes`、`--kps`;`AUDIT_CHECKLIST.md` 新增 T 節。尚未同步到 course-template 與 pr-2026-fall。
+
 - 2026-10-13 — 依老師要求以大學生程度新增 KP02 投影片 `slides/lec03-kp02-gradient-descent-learning-rate-undergrad.jbd.json`(12 個單元、36 頁,中英對照、含講者備註;名詞定義、η=0.05 連續更新表、倍數表與 w² 第三步為補充並已標示)。`view-from-text` 新增規則:不分篇幅,產生簡報前都要先列知識單元表並等老師確認(SKILL §1 第 11 點、AUDIT K1)。與另一份同名主題的 `lec03-kp02-gradient-descent-learning-rate.jbd.json` 並存,檔名以 `-undergrad` 區分。
 
 - 2026-10-13 — 老師決定:講義與投影片技能加入「教材程度」選項(一般大眾、高中生、大學生、研究生、專業人員;預設研究生)。新增共用程度表 `.agents/skills/LEVELS.md`;`textbook-lecture-notes` 與 `view-from-text` 開始前先問程度;`audit_deck.py` 新增 `--level`(檢查每頁公式區塊數與中文正文字數);`AUDIT_CHECKLIST.md` 新增 Q 節;`AGENTS.md` §5.1、§5.11 加提示。尚未同步到 course-template 與 pr-2026-fall。
