@@ -52,6 +52,8 @@
 
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
 
+- 2026-10-14 — 依新版技能依序完成批次 B(KP03 停止準則、KP04 線搜索與最陡下降、KP05 動量;大學生、4 小時、各 4 頁共 12 頁):全新撰寫講義 `lectures/lec03-kp03-stopping-criteria.md`、`lec03-kp04-line-search.md`、`lec03-kp05-momentum.md`(各附練習與完整解題示範、來源更正)與同名簡報,圖程式 `assets/figures/src/lec03-kp0345-figures.py`(5 張圖)。稽核:三份簡報 `audit_deck.py --lecture --speaker-notes --level undergrad --narrative --minutes --source` FAIL 0;三份講義 `audit_lecture.py --source` FAIL 0、WARN 0。已刪除舊的 KP01 與 KP03 檔案(講義、簡報、圖、腳本)。來源更正重點:動量在二次函數上把穩定上限由 2/λmax 放寬為 2(1+α)/λmax(來源「動量不會讓不安全的學習率變安全」過於籠統)、線搜索回溯成功條件為 η ≤ 2(1−c)/L。
+
 - 2026-10-14 — 依新版技能試做第 3 章 KP02(大學生、4 小時、經老師同意用 5 頁):全新撰寫講義 `lectures/lec03-kp02-gradient-descent-and-learning-rate.md`(含兩張圖、誤差倍率表、w² 例子、解題示範與來源更正)與 5 頁簡報 `slides/lec03-kp02-gradient-descent-and-learning-rate.jbd.json`,圖程式 `assets/figures/src/lec03-kp02-lr-figures.py`。稽核:`audit_deck.py --lecture --speaker-notes --level undergrad --narrative --minutes --source` FAIL 0;`audit_lecture.py --source` FAIL 0、WARN 0。已刪除舊的 KP02 檔案(另一個 session 的講義、簡報、備份與圖,以及 `-undergrad` 版)。
 
 - 2026-10-14 — 依新版技能試做第 3 章 KP01(大學生、4 小時):老師確認盤點後,全新撰寫講義 `lectures/lec03-kp01-optimization-as-search.md`(含兩張圖、成本表、解題示範)與 4 頁簡報 `slides/lec03-kp01-optimization-as-search.jbd.json`(每頁有銜接條、講者備註),圖程式 `assets/figures/src/lec03-kp01-search-figures.py`。稽核:`audit_deck.py --lecture --speaker-notes --level undergrad --narrative --minutes 200 --kps 16 --source` FAIL 0;`audit_lecture.py --source` FAIL 0、WARN 0。取代舊的 `lec03-kp1-parameter-search.jbd.json`(已刪除)。尚未加入 `schedule.md`/導覽。
