@@ -52,6 +52,8 @@
 
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
 
+- 2026-10-14 — 依新版技能試做第 3 章 KP01(大學生、4 小時):老師確認盤點後,全新撰寫講義 `lectures/lec03-kp01-optimization-as-search.md`(含兩張圖、成本表、解題示範)與 4 頁簡報 `slides/lec03-kp01-optimization-as-search.jbd.json`(每頁有銜接條、講者備註),圖程式 `assets/figures/src/lec03-kp01-search-figures.py`。稽核:`audit_deck.py --lecture --speaker-notes --level undergrad --narrative --minutes 200 --kps 16 --source` FAIL 0;`audit_lecture.py --source` FAIL 0、WARN 0。取代舊的 `lec03-kp1-parameter-search.jbd.json`(已刪除)。尚未加入 `schedule.md`/導覽。
+
 - 2026-10-14 — 老師要求把盤點報告的格式與批次處理寫進技能:新增 `.agents/skills/INVENTORY_FORMAT.md`(八部分固定格式:設定、章級知識地圖、備課筆記、頁序與銜接表、講義與檔案、批次建議與子代理、補充與取捨、請你確認或調整)。`view-from-text` 與 `textbook-lecture-notes` 動手前都要交此報告;整章不一次做完,第一批試做 1 個 KP,之後每批 3–4 個 KP,並必須先詢問老師是否使用多個子代理平行處理(未明說同意就依序)。尚未同步到 course-template 與 pr-2026-fall。
 
 - 2026-10-14 — 老師決定:每個 KP 的簡報頁數不得超過 6 頁(含延伸頁與續頁),agent 必須深度消化來源、依學生程度與簡報時長建構章級與 KP 級知識地圖(老師確認)後,再全新撰寫講義與投影片。技能新增:`NARRATIVE.md` §0(知識地圖與全新撰寫);`LEVELS.md` §7.2–§7.3 改為「細度對應 3–6 頁、放不下的細節放講義」,延伸頁計入 6 頁上限並取消獨立成檔;`audit_deck.py` 新增 `--max-pages-per-kp`(U1,預設 6)與 `--source`(O2 原創性);`audit_lecture.py` 新增 `--source`(L10);`AUDIT_CHECKLIST.md` 新增 S10、S11。尚未同步到 course-template 與 pr-2026-fall。
