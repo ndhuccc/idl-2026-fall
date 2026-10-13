@@ -1,0 +1,48 @@
+# 檢查 Markdown 內的失效連結(每週一次 + 文件變更時)
+name: link-check
+
+on:
+  push:
+    paths:
+      - "**/*.md"
+  pull_request:
+    paths:
+      - "**/*.md"
+  schedule:
+    - cron: "0 1 * * 1" # 每週一 01:00 UTC(台北 09:00)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write # 失效時建立 Issue
+
+jobs:
+  lychee:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 檢查連結
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # 排除:尚未替換的 {{佔位符}}、GitHub 網頁相對路徑(issues/new 等)、.github 內部檔案
+          args: >-
+            --no-progress
+            --accept 200,206,429
+            --exclude '\{\{'
+            --exclude '%7B%7B'
+            --exclude 'issues/new'
+            --exclude 'github\.com/ndhuccc/course-template'
+            --exclude-path .github
+            --exclude-path PLAN.md
+            './**/*.md'
+          fail: false # 不讓整個流程失敗,改以 Issue 通知
+
+      - name: 有失效連結時建立 Issue
+        if: steps.lychee.outputs.exit_code != 0 && github.event_name == 'schedule'
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "🔗 連結檢查報告:發現失效連結"
+          content-filepath: ./lychee/out.md
+          labels: erratum

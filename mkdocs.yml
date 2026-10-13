@@ -1,0 +1,41 @@
+# 課程網站設定(MkDocs + Material)
+# 注意:網站原始檔由 scripts/build_docs.py 產生於 .site_src/,請勿直接編輯該資料夾。
+site_name: "{{COURSE_NAME}} — {{SEMESTER}}"
+site_description: "{{COURSE_NAME}} 課程網站"
+site_url: "{{SITE_URL}}"
+repo_url: "{{REPO_URL}}"
+docs_dir: .site_src
+
+theme:
+  name: material
+  language: custom
+  custom_dir: overrides
+  features:
+    - navigation.top
+    - search.suggest
+    - content.code.copy
+
+plugins:
+  - search
+
+# LaTeX:搭配 .site_src/javascripts/mathjax.js
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+# 連結問題僅提示、不中斷建置(README 內有 GitHub 網頁專用的相對連結)
+validation:
+  omitted_files: info
+  absolute_links: info
+  unrecognized_links: info
+  anchors: info

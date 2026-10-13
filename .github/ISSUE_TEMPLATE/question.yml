@@ -1,0 +1,41 @@
+name: ❓ 課程提問
+description: 針對課程內容、作業、環境的提問
+title: "[提問] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提問前請先查閱 [FAQ](../blob/main/FAQ.md)。
+        **請勿張貼個資、成績或完整作業解答。**
+  - type: dropdown
+    id: category
+    attributes:
+      label: 問題類別
+      options:
+        - 講義 / 概念
+        - 實驗 (Lab)
+        - 作業 (HW)
+        - 期末專題
+        - 環境 / 安裝
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: 你的問題
+      description: 請具體描述,數學式可用 `$...$` 或 `$$...$$`。
+    validations:
+      required: true
+  - type: textarea
+    id: tried
+    attributes:
+      label: 已嘗試的方法
+      description: 你已經做了什麼?預期結果與實際結果為何?
+  - type: textarea
+    id: env
+    attributes:
+      label: 環境資訊(環境問題請填)
+      description: 作業系統、Python 版本、完整錯誤訊息
+      render: shell

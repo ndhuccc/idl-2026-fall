@@ -1,0 +1,70 @@
+# 建置並發佈課程網站到 GitHub Pages
+# - 內容變更時重建
+# - 每天自動重建一次:讓 release_schedule.toml 中「到期的解答」自動上線
+name: deploy-site
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "**/*.md"
+      - "slides/**"
+      - "assets/figures/**"
+      - "labs/**"
+      - "release_schedule.toml"
+      - "mkdocs.yml"
+      - "scripts/build_docs.py"
+      - ".github/workflows/deploy-site.yml"
+  schedule:
+    - cron: "10 16 * * *" # 16:10 UTC = 台北隔日 00:10,剛過午夜即可釋出當日解答
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同時只跑一個部署,新的取代舊的
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    # 範本 Repo 的 mkdocs.yml 仍是 {{佔位符}}(site_url 無效,建置必然失敗)。
+    # 只在套用過 scripts/new_semester.py 的學期 Repo 執行。
+    if: github.event.repository.is_template != true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-site.txt
+
+      - name: 安裝網站相依套件
+        run: pip install -r requirements-site.txt
+
+      - name: 整理網站原始檔(含解答釋出判斷)
+        run: python scripts/build_docs.py
+
+      - name: 建置網站
+        run: mkdocs build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

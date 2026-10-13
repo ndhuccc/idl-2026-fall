@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# 網站建置輸出
+site/
+
+# 私有資料(絕對不要公開)
+grades/
+private/
+*.secret
+.env
+
+# 大型資料與模型權重(改用下載腳本)
+assets/data/*.zip
+*.pt
+*.pth
+*.ckpt
+
+# 系統檔
+.DS_Store
+Thumbs.db
+.site_src/
+semester.toml

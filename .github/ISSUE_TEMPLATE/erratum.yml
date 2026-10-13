@@ -1,0 +1,27 @@
+name: 🐞 勘誤回報
+description: 講義、投影片、Notebook 或作業說明的錯誤
+title: "[勘誤] "
+labels: ["erratum"]
+body:
+  - type: input
+    id: location
+    attributes:
+      label: 錯誤位置
+      description: 檔案路徑與章節 / 行號,例如 `lectures/lec03.md` 第 2 節
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: 目前的內容
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: 建議修正
+      description: 若方便,也歡迎直接發 Pull Request。
+  - type: textarea
+    id: reason
+    attributes:
+      label: 理由 / 參考來源

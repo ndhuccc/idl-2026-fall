@@ -1,0 +1,29 @@
+# 新學期設定檔範例:複製為 semester.toml 後填寫,再執行 scripts/new_semester.py
+# 字串用雙引號;日期直接寫 YYYY-MM-DD(不加引號)。
+
+# ---- 必填 ----
+course_name = "深度學習導論"
+course_code = "CSIE0000"
+semester    = "2026 秋季"
+university  = "OO 大學"
+department  = "資訊工程學系"
+instructor  = "OOO 教授"
+email       = "teacher@example.edu.tw"
+github_user = "your-github-id"
+repo_name   = "dl-2026-fall"
+start_date  = 2026-09-14        # 第 1 週的起始日,W01~W18 由此推算
+
+# ---- 選填(沒填的佔位符會保留,並在執行後列出)----
+course_description  = "介紹深度學習的數學基礎、核心模型與實作。"
+credits             = "3 學分 / 3 小時"
+class_time_location = "週二 10:10–13:00,OO 館 000"
+ta                  = "OOO"
+office_hour         = "週四 14:00–16:00(研究室 000,或事先 Email 預約)"
+textbook            = "Goodfellow et al., Deep Learning (MIT Press)"
+team_size           = "3–4"
+ai_policy           = "允許使用生成式 AI 輔助,但須於作業末尾聲明工具、用途與驗證方式;不得直接提交未理解的 AI 產出。"
+
+# ---- 額外自訂佔位符(名稱會轉為大寫)----
+[extra]
+hw01_release = "2026-09-28"
+hw01_due     = "2026-10-12"

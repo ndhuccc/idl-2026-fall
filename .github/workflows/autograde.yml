@@ -1,0 +1,82 @@
+# 自動評分 / 測試
+# - 學生作業 Repo(GitHub Classroom 由本範本產生):對學生的 starter/ 實作執行測試
+# - 教師範本 Repo:額外驗證「solution 全過」,確保測試本身正確
+name: autograde
+
+on:
+  push:
+    paths:
+      - "labs/**"
+      - "requirements*.txt"
+      - ".github/workflows/autograde.yml"
+  pull_request:
+    paths:
+      - "labs/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  grade:
+    name: 執行測試(學生實作)
+    # 範本 Repo 的 starter 尚未完成,測試必然失敗;只在學生作業 Repo 執行
+    if: github.event.repository.is_template != true
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: 安裝相依套件
+        run: pip install -r requirements.txt
+
+      # 學生尚未完成時測試會失敗,屬正常;結果會顯示在 Actions 與 Summary
+      - name: 執行 pytest 並產生報告
+        run: |
+          set -o pipefail
+          if [ -z "$(find labs -name 'test_*.py' -print -quit)" ]; then
+            echo "目前沒有實驗,略過測試" | tee pytest-report.txt
+            exit 0
+          fi
+          pytest labs -q --tb=short | tee pytest-report.txt
+        continue-on-error: false
+
+      - name: 寫入 Summary
+        if: always()
+        run: |
+          {
+            echo "### 自動評分結果"
+            echo '```'
+            tail -n 30 pytest-report.txt || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  verify-solution:
+    name: 驗證參考解答(僅教師範本 Repo)
+    # 只在標記為 Template 的 Repo 執行;學生作業 Repo 不會(也不應)含有 solution
+    if: github.event.repository.is_template == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: pip install -r requirements.txt
+      - name: solution 必須全數通過
+        env:
+          LAB_TARGET: solution
+        run: |
+          if [ -z "$(find labs -name 'test_*.py' -print -quit)" ]; then
+            echo "目前沒有實驗,略過 solution 驗證"
+            exit 0
+          fi
+          pytest labs -q

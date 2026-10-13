@@ -1,0 +1,9 @@
+# 關閉空白 Issue,引導同學使用範本;並提供其他聯絡管道
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 開放式討論 / 心得分享
+    url: https://github.com/{{GITHUB_USER}}/{{REPO_NAME}}/discussions
+    about: 非明確問題(例如學習心得、同儕互助)請到 Discussions。
+  - name: 🔒 涉及個資或成績的問題
+    url: mailto:{{EMAIL}}
+    about: 請勿在公開 Issue 填寫學號、成績或個資,改以 Email 聯絡。
