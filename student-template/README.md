@@ -11,6 +11,7 @@
 >
 > 完整規範請看課程網站的「作業說明」。
 > **怎麼在 LabTube 登記與繳交,請先看 [`LABTUBE.md`](LABTUBE.md)(一頁版)。**
+> **想請 AI agent 協助?** 把 [`AGENTS.md`](AGENTS.md) 交給你的 AI,說「請依 AGENTS.md 協助我」。
 
 ## 目錄
 
