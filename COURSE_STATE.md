@@ -40,6 +40,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-10-13 — 依老師要求更新課程網站的 JianBauDau 播放器下載連結與顯示版本為 1.0.1，指向 `ndhuccc/IDL115` 的 `player-v1.0.1` 公開下載檔；同步投影片格式說明。本機網站建置成功，doctor 無 FAIL；透過既有課程網站發佈流程更新。
+
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
 
 - 2026-10-13 — 老師決定:講義與投影片技能加入「教材程度」選項(一般大眾、高中生、大學生、研究生、專業人員;預設研究生)。新增共用程度表 `.agents/skills/LEVELS.md`;`textbook-lecture-notes` 與 `view-from-text` 開始前先問程度;`audit_deck.py` 新增 `--level`(檢查每頁公式區塊數與中文正文字數);`AUDIT_CHECKLIST.md` 新增 Q 節;`AGENTS.md` §5.1、§5.11 加提示。尚未同步到 course-template 與 pr-2026-fall。

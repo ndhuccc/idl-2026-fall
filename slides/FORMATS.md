@@ -26,7 +26,7 @@
 ## 播放器下載
 
 學生用的 JianBauDau 播放器(Windows 執行檔)連結會自動出現在網站的投影片下載頁:
-<https://github.com/ndhuccc/IDL115/releases/download/player-v1.0.0/JianBauDau-Player-1.0.0.exe>
+<https://github.com/ndhuccc/IDL115/releases/download/player-v1.0.1/JianBauDau-Player-1.0.1.exe>
 
 換新版時,修改 `scripts/build_docs.py` 的 `PLAYER_URL`。
 
