@@ -42,6 +42,8 @@
 
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
 
+- 2026-10-13 — 老師提供 LabTube 網址 http://134.208.2.44:5005;`assignments/README.md`(作業繳交說明頁)加入 LabTube 網址、學生手冊與 PDF 連結,並在繳交流程加上「到 LabTube 登記 Repo 與上傳執行結果」一步。
+
 - 2026-10-13 — 新增 LabTube 學生手冊的課程網站版:`assignments/labtube-student-manual/`(`index.md`、27 張截圖、PDF),內文改成本課程設定(idl-2026-fall、`idl-2026-hw-<學號>`、`ndhuccc/idl-2026-hw-template`),作業說明與老師導覽已加連結。截圖是 pr-2026 示範課程的畫面(課程名稱、`pr-2026-hw-…` 名稱不同),手冊開頭已註明;如要換成 idl 版截圖,需用 LabTube 開發版建立 idl 示範課程重拍。
 
 - 2026-10-13 — 依老師同意建立學生作業範本 Repo `ndhuccc/idl-2026-hw-template`(Public、Template repository,內容為 `student-template/` 目前版本,只含骨架與檢查工具,沒有解答與成績)。網址已寫入 `assignments/README.md`;尚待向學生公告。
