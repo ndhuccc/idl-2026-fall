@@ -26,18 +26,24 @@
 - [x] Step 7a 啟用 Pages(Source: GitHub Actions),網址 https://ndhuccc.github.io/idl-2026-fall/
 - [x] Step 7b 開啟 Discussions
 - [x] Step 7c 手動觸發 `deploy-site` 並確認網站可開(run 38339534218 成功,網站回應 200)
-- [ ] Step 8 初始化內容(週次主題、保留的 Lab/作業、解答釋出日、課綱)
+- [ ] Step 8 初始化內容:週次(完成)、課綱評分與政策(完成)、範例 Lab 已刪除;HW 與講義內容待補(見待辦)
 - [ ] Step 9 向老師總結
 
 ## 待辦事項
 
-- [ ] 選填欄位:上課時間地點、助教、Office Hour、專題組隊人數、生成式 AI 使用政策(老師決定)、HW01 發佈與截止日
-- [ ] Step 8:依教學計畫表填 `schedule.md` 週次主題(17 週,第 9 週期中、第 17 週期末/專題)與 `syllabus.md` 評分(平時 20%、期中 25%、期末 35%、作業 20%);決定範例 Lab 去留與解答釋出日
-- [ ] 作業與 LabTube:決定課程簡稱、建立學生作業範本 Repo、在 LabTube 建課並設定作業 Repo 前綴、放學生手冊
+- [ ] 選填欄位:上課時間地點、助教、Office Hour(`semester.toml` 補上後重跑 `new_semester.py`)
+- [ ] 期末成績(35%)內部的「期末考」與「期末專題」比例,決定後寫進 `syllabus.md`
+- [ ] HW 01–03 的確切發佈與截止日;`assignments/hw01/README.md` 目前仍是範本示範作業(梯度下降),要換成實際的 HW 01「反向傳播與 MLP」(依 `.agents/skills/assignment-design/SKILL.md`)
+- [ ] 期末專題確切截止日;e 學苑繳交說明
+- [ ] 作業與 LabTube:決定課程簡稱(`idl-2026`?)、建立學生作業範本 Repo、在 LabTube 建課並設定作業 Repo 前綴、放學生手冊
+- [ ] 每週講義與投影片(目前只有範本的 `lec01`)
+- [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
 
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
+
+- 2026-10-13 — 老師決定並已寫入:(1) 評分照教學計畫表:平時(含出缺席與課堂參與)20%、期中 25%、期末考與期末專題 35%、作業 20%;(2) 刪除範例實驗 `labs/`(Lab 01–03 不計分),連同 `release_schedule.toml`、README、lec01、schedule 的相關連結;(3) 第 17 週(12/31)期末考,期末專題改為學生上傳影片(8–12 分鐘,YouTube 不公開,連結繳交 e 學苑)加 GitHub 報告,不做現場發表;(4) 作業 Repo 維持 Private,期末專題另開獨立 Repo,繳交時才設為 Public;(5) 生成式 AI 使用政策採用課程網頁規則(可用任何 AI 工具,commit 訊息須寫 AI-Tool、AI-Prompt、AI-Reason、Human-Judgment 四欄位,多次小量提交,教師可隨機請學生說明 commit)。來源:老師的課程網頁 https://ndhuccc.github.io/CCC-LNS/IDL_115/Ch01-introduction-history/idl115-w1-dl-intro-history.html。網頁的 HW1–3 只有週次時間窗(第 3→6、8→11、12→15 週),沒有確切日期,已照樣寫入課綱與進度表。另小修 `scripts/sync_nav.py`:沒有對應資料夾的固定導覽項(如已刪除的 labs/)不再列入,避免 mkdocs 警告;此修改尚未同步到範本與 pr-2026-fall。
 
 - 2026-10-13 — 老師決定:上課為每週四;`schedule.md` 依教學計畫表改為 17 週(中英對照主題),第 9 週 11/05 期中考、第 17 週 12/31 期末考/專題發表;第 10 週 11/12 全校運動會停課,RNN(一)改為自主學習(做法 A)。範例實驗 Lab 01–03 保留,排在第 1、3、4 週。首頁與課綱加入教學計畫表的課程目標(中英對照),學習目標依週次主題改寫(老師同意)。
 

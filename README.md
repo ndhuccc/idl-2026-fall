@@ -42,7 +42,6 @@
 | [`lectures/`](lectures/) | 每週講義(Markdown + LaTeX) |
 | [`slides/`](slides/) | 投影片(JianBauDau JSON、PPTX、PDF 或 HTML) |
 | [`notebooks/`](notebooks/) | 實作 Notebook(可於 Colab 開啟) |
-| [`labs/`](labs/) | 實驗 Lab 01–03:`starter/`(起始碼)、`tests/`(自動測試) |
 | [`assignments/`](assignments/) | 作業說明與評分標準 |
 | [`projects/`](projects/) | 期末專題說明與里程碑 |
 | [`exams/`](exams/)、[`quizzes/`](quizzes/) | 考試範圍、考古題、測驗 |
@@ -64,7 +63,7 @@ source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
 # 3. 驗證環境
-pytest labs/lab01/tests -q || echo "尚未完成 Lab 01,測試失敗屬正常"
+python -c "import numpy, matplotlib; print('環境 OK')"
 ```
 
 或直接使用 **GitHub Codespaces**(點選 *Code → Codespaces → Create*),環境已自動設定。
