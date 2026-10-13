@@ -8,10 +8,10 @@
 | 課號 | CSIE3544AA |
 | 學期 | 2026 秋季 |
 | 學分 / 時數 | 3 學分 / 3 小時 |
-| 上課時間地點 | {{CLASS_TIME_LOCATION}} |
+| 上課時間地點 | 每週四下午,工A337 |
 | 授課教師 | 江政欽 教授(ccchiang@gms.ndhu.edu.tw) |
-| 助教 | {{TA}} |
-| Office Hour | {{OFFICE_HOUR}} |
+| 助教 | 顏榮興、李哲瑋 |
+| Office Hour | 週一 10:00–11:00(Mon. 10:00–11:00 AM) |
 
 ## 課程目標
 

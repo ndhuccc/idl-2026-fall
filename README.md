@@ -75,7 +75,7 @@ python -c "import numpy, matplotlib; print('環境 OK')"
 | 課程內容提問 | [Issues → 提問](https://github.com/ndhuccc/idl-2026-fall/issues/new/choose) 或 Discussions |
 | 講義/作業勘誤 | [Issues → 勘誤回報](https://github.com/ndhuccc/idl-2026-fall/issues/new/choose) |
 | 請假/補交/成績申請 | [Issues → 申請](https://github.com/ndhuccc/idl-2026-fall/issues/new/choose)(**請勿**在公開 Issue 填寫個資) |
-| 一對一討論 | Office Hour:{{OFFICE_HOUR}} |
+| 一對一討論 | Office Hour:週一 10:00–11:00(Mon. 10:00–11:00 AM) |
 
 ## 授權
 

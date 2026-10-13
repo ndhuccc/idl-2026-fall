@@ -31,16 +31,17 @@
 
 ## 待辦事項
 
-- [ ] 選填欄位:上課時間地點、助教、Office Hour(`semester.toml` 補上後重跑 `new_semester.py`)
 - [ ] HW 01–03 的確切發佈與截止日;`assignments/hw01/README.md` 目前仍是範本示範作業(梯度下降),要換成實際的 HW 01「反向傳播與 MLP」(依 `.agents/skills/assignment-design/SKILL.md`)
 - [ ] 期末專題確切截止日;e 學苑繳交說明
-- [ ] 作業與 LabTube:決定課程簡稱(`idl-2026`?)、建立學生作業範本 Repo、在 LabTube 建課並設定作業 Repo 前綴、放學生手冊
+- [ ] 作業與 LabTube:建立學生作業範本 Repo `ndhuccc/idl-2026-hw-template`(內容為 `student-template/`,Public、勾選 Template repository)並把網址寫進 `assignments/README.md`;在 LabTube 建課並把作業 Repo 前綴設為 `idl-2026`;放學生手冊(內文寫死的 `pr-2026`、`ndhuccc` 要改)
 - [ ] 每週講義與投影片(目前只有範本的 `lec01`)
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
 
 (最新的在最上面。格式:`YYYY-MM-DD — 決定或異動內容`)
+
+- 2026-10-13 — 老師決定:課程簡稱 `idl-2026`(學生作業 Repo 為 `idl-2026-hw-<學號>`);上課地點工A337(每週四下午);助教顏榮興、李哲瑋;Office Hour 週一 10:00–11:00。已寫入 `semester.toml` 並套用,`assignments/README.md`、`hw01`、`SETUP.md`、`student-template/README.md` 的 `<課程簡稱>` 已替換。作業與專題確切截止日待定。
 
 - 2026-10-13 — 老師決定:期末考 15%、期末專題 20%(教學計畫表合計 35%);已寫入 `syllabus.md` 並更新公式。老師要求拿掉先前加的「公開專題 Repo 不得含個資」一條。`scripts/sync_nav.py` 的小修同意同步至範本與 pr-2026-fall;HW 01 內容與日期待內容與日期決定後再做。
 
