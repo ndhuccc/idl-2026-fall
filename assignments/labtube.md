@@ -18,8 +18,8 @@
 ## 開學前,老師要做一次的事
 
 1. **在 LabTube 建立本課程**,匯入修課名單。
-2. **設定學生作業 Repo 的名稱前綴**:LabTube →課程節點按右鍵 → 編輯課程 →「學生作業 Repo 名稱前綴」,建議用課程縮寫加學年,例如 `pr-2026`。學生登記的 Repo 名稱必須是「前綴-hw-學號」,不符會被拒絕。
-3. **建立學生作業 Repo 範本**:照 `SETUP.md` 步驟 4,把 `student-template/` 做成獨立的 GitHub 範本 Repo,名稱建議用同一個前綴,例如 `<前綴>-hw-template`。
+2. **設定學生作業 Repo 的名稱前綴**:LabTube →課程節點按右鍵 → 編輯課程 →「學生作業 Repo 名稱前綴」,本課程是 `idl-2026`。學生登記的 Repo 名稱必須是「前綴-hw-學號」,不符會被拒絕。
+3. **建立學生作業 Repo 範本**:照 `SETUP.md` 步驟 4,把 `student-template/` 做成獨立的 GitHub 範本 Repo,本課程已建立:`ndhuccc/idl-2026-hw-template`。
 4. 把以下兩個網址公告給學生:作業 Repo 範本網址、LabTube 網址。
 5. 在 GitHub 接受學生的協作者邀請(教師帳號 `ndhuccc`);用 Repo 查核工具時需要讀得到學生的 Repo。
 
@@ -31,9 +31,9 @@
 
 ## 給學生的資料
 
-- **作業 Repo 範本**:`student-template/` 的內容,做成獨立範本 Repo 後把網址公告給學生。
-- **學生手冊**:《LabTube 學生使用手冊》(LabTube 專案 `docs/manual/`)。建議複製到本 Repo 的 `assignments/labtube-student-manual/`(`index.md` 加 `images/` 資料夾),課程網站就會有手冊頁;或直接提供 PDF。
-- 手冊中的課程名稱、Repo 前綴與教師帳號是 pr-2026 的範例,**換課程時請對照本學期設定**。
+- **作業 Repo 範本**:<https://github.com/ndhuccc/idl-2026-hw-template>(內容來自 `student-template/`,改了之後要手動同步)。
+- **學生手冊**:[《LabTube 學生使用手冊》](labtube-student-manual/index.md)(課程網站上有網頁版與 [PDF](labtube-student-manual/LabTube-學生使用手冊.pdf))。
+- 手冊的截圖是示範資料,畫面中的課程名稱與 Repo 名稱(`pr-2026-hw-…`)在本課程分別是「深度學習導論」與 `idl-2026-hw-…`;文字內容已改成本課程的設定。
 
 ## 注意
 

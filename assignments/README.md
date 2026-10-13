@@ -3,7 +3,7 @@
 每份作業一個資料夾 `hwNN/`,含題目說明與評分標準(Rubric)。
 本課程**只採用一種繳交流程**:每位學生建立**一個**私人 GitHub Repo 存放**本學期所有作業**,並把教師加為協作者;教師直接讀取 Repo 評分,**不需要另外寄送網址**。
 
-> 作業由 LabTube 系統管理(登記 Repo、上傳執行結果、線上口試與成績)。老師請看 [LabTube 老師導覽](labtube.md);學生手冊的放置方式見該頁。
+> 作業由 LabTube 系統管理(登記 Repo、上傳執行結果、線上口試與成績)。學生請看 [《LabTube 學生使用手冊》](labtube-student-manual/index.md);老師請看 [LabTube 老師導覽](labtube.md)。
 
 ## 一、繳交流程(總覽)
 
