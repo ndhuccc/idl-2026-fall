@@ -8,7 +8,7 @@
 |:---:|---|---|---|---|---|
 | 1 | 09/10 | 課程介紹與機器學習回顧 Course Introduction / Machine Learning Review | [lec01](lectures/lec01.md) |  |  |
 | 2 | 09/17 | 神經網路基礎:感知器與多層感知器 Neural Network Fundamentals – Perceptron & Multilayer Perceptron |  |  |  |
-| 3 | 09/24 | 反向傳播與梯度下降 Backpropagation & Gradient Descent |  | HW 01 發佈 |  |
+| 3 | 09/24 | 反向傳播與梯度下降 Backpropagation & Gradient Descent | [全章新版：大學生・4小時](lectures/lec03-backprop-optimization-v2.md) | HW 01 發佈 | [4小時課堂主線](slides/lec03-backprop-optimization-v2-core.jbd.json)<br>[全章新版投影片](slides/lec03-backprop-optimization-v2.jbd.json) |
 | 4 | 10/01 | 最佳化技巧:SGD、Momentum、Adam Optimization Techniques – SGD, Momentum, Adam |  |  |  |
 | 5 | 10/08 | 正則化技巧:Dropout、Batch Normalization Regularization Techniques – Dropout, Batch Normalization |  |  |  |
 | 6 | 10/15 | 卷積神經網路(一):卷積與池化 Convolutional Neural Networks (1) – Convolution & Pooling |  | HW 01 截止 |  |
