@@ -15,7 +15,9 @@
 
 ## 課程目標
 
-本課程介紹深度學習之基礎理論與核心技術,內容涵蓋類神經網路基礎、反向傳播演算法、卷積神經網路(CNN)、循環神經網路(RNN)、正則化與最佳化技巧,以及深度生成模型(如自編碼器、生成對抗網路)與注意力機制(Transformer)等主題。透過理論講授與程式實作,使學生具備設計、訓練與應用深度學習模型於影像、文字等資料之能力。
+培養學生深度學習技術的理論與實務應用能力,作為日後在機器學習與人工智慧領域研究與開發的專業基礎。
+
+*To teach students the theory and practical application ability related to deep learning technologies as the professional foundation for their future research and development in machine learning and artificial intelligence.*
 
 ## 教科書與參考資料
 

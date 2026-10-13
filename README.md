@@ -10,14 +10,23 @@
 
 本課程介紹深度學習之基礎理論與核心技術,內容涵蓋類神經網路基礎、反向傳播演算法、卷積神經網路(CNN)、循環神經網路(RNN)、正則化與最佳化技巧,以及深度生成模型(如自編碼器、生成對抗網路)與注意力機制(Transformer)等主題。透過理論講授與程式實作,使學生具備設計、訓練與應用深度學習模型於影像、文字等資料之能力。
 
+## 課程目標 Course Objectives
+
+培養學生深度學習技術的理論與實務應用能力,作為日後在機器學習與人工智慧領域研究與開發的專業基礎。
+
+*To teach students the theory and practical application ability related to deep learning technologies as the professional foundation for their future research and development in machine learning and artificial intelligence.*
+
 ## 學習目標
 
 完成本課程後,你將能夠:
 
-1. 說明課程核心概念與數學基礎(例如:$\mathbf{y} = W\mathbf{x} + \mathbf{b}$)
-2. 以 Python / PyTorch 實作並驗證模型
-3. 閱讀與討論相關文獻
-4. 完成一項期末專題
+1. 說明類神經網路與多層感知器的運作,並推導反向傳播與梯度下降。
+2. 使用 SGD、Momentum、Adam 等最佳化方法,以及 Dropout、Batch Normalization 等正則化技巧訓練模型。
+3. 說明卷積神經網路(卷積、池化,以及 LeNet、AlexNet、VGG、ResNet),並應用於影像分類與物件偵測。
+4. 說明 RNN、LSTM、GRU,並用於序列資料建模。
+5. 說明自注意力機制與 Transformer 架構及其應用。
+6. 說明 Autoencoder、VAE 與 GAN 等深度生成模型。
+7. 以 Python / PyTorch 設計、訓練並評估深度學習模型,完成期末專題。
 
 ## 先備知識
 
