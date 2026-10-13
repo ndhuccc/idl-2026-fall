@@ -6,6 +6,8 @@
 
 This is the first knowledge point (KP01) of Chapter 3, "Backpropagation and optimization". It assumes partial derivatives and basic vector and matrix operations; every symbol is defined when it first appears and every number can be recomputed. The text is rewritten from the KP01 material of CCC-LNS Chapter 3 (accessed on 2026-10-13); examples that the source does not contain are marked `[Added]`.
 
+[下載本單元投影片](../slides/lec03-kp01-optimization-as-search.jbd.json)
+
 ## KP01 最佳化即參數搜尋（Optimization as parameter search）
 
 ### 學習目標（Learning objectives）
