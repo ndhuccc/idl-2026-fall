@@ -157,6 +157,20 @@ SLIDE_FORMATS = {
 PLAYER_URL = "https://github.com/ndhuccc/IDL115/releases/download/player-v1.0.1/JianBauDau-Player-1.0.1.exe"
 
 
+SLIDE_SHORT = {"jbd.json": "JianBauDau", "pptx": "PowerPoint", "pdf": "PDF", "html": "HTML"}
+
+
+def lecture_title(stem: str) -> str:
+    """講義(lectures/<stem>.md)第一個標題,去掉「第N週」開頭;找不到回傳空字串。"""
+    p = ROOT / "lectures" / f"{stem}.md"
+    if not p.exists():
+        return ""
+    for line in p.read_text(encoding="utf-8").splitlines():
+        if line.startswith("# "):
+            return re.sub(r"^第\s*\d+\s*週\s*", "", line[2:].strip())
+    return ""
+
+
 def write_slides_index(stage: Path) -> int:
     """產生網站的投影片下載頁(取代 slides/README.md),依週次列出各格式的檔案。
 
@@ -191,14 +205,17 @@ def write_slides_index(stage: Path) -> int:
     if not weeks and not others:
         lines.append("目前尚無投影片。")
     if weeks:
-        lines += ["| 週次 | 教材 | 格式 | 下載 |", "|:---:|---|---|---|"]
+        # 一週一個頁籤、一個頁籤一張表(pymdownx.tabbed);週次多、檔案多時不會擠成一張大表。
+        lines += ["同一週的所有教材在該週的頁籤裡,請點選週次。", ""]
         for lec in sorted(weeks):
             num = int(lec[3:])
+            lines += [f'=== "第 {num} 週"', "", "    | 教材 | 格式 | 下載 |", "    |---|---|---|"]
             for slug in sorted(weeks[lec]):
-                label = "本週正課" if slug == "" else slug
+                stem = lec if slug == "" else f"{lec}-{slug}"
+                label = "本週正課" if slug == "" else lecture_title(stem) or slug
                 for fmt, name in sorted(weeks[lec][slug], key=lambda t: t[0]):
-                    lines.append(f"| 第 {num} 週 | {label} | {SLIDE_FORMATS[fmt]} | [{name}]({name}) |")
-        lines.append("")
+                    lines.append(f"    | {label} | {SLIDE_SHORT.get(fmt, fmt)} | [{name}]({name}) |")
+            lines.append("")
     if others:
         lines += ["## 其他檔案", ""] + [f"- [{name}]({name})" for name in others] + [""]
 
