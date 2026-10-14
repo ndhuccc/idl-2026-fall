@@ -262,6 +262,16 @@ def main():
         if len(ids) > 1 and len({N[i]["image"]["src"] for i in ids}) > 1:
             Wn("G14", f"{len(ids)} different images share one generic alt text {a[:40]!r}: describe what each one shows")
 
+    # ------------------------------------------------------------ G3 formulas must be LaTeX ($...$), not Unicode look-alikes
+    UMATH = re.compile("[⁰-₟ᵀᵢⱼ̂‖Σ∑∫∂∇]")   # sub/superscripts, T, hat, double bar, Sigma, integral, partial, nabla
+    for (sid, idx), ns in pages.items():
+        hits = []
+        for n in ns:
+            if n["type"] in ("text", "shape") and n["style"].get("fontSize", 0) < 40:
+                hits += UMATH.findall(re.sub(r"\$\$.*?\$\$|\$[^$\n]*\$", "", n.get("text", ""), flags=re.S))
+        if hits:
+            Wn("G3", f"{sid}#p{idx}: {len(hits)} Unicode math symbol(s) outside $...$ (e.g. {''.join(sorted(set(hits)))[:12]!r}): write formulas in LaTeX, vectors \mathbf{{}}, norms \|\cdot\| (AUDIT_CHECKLIST G3, G4)")
+
     # ------------------------------------------------------------ N3 results that appear without a derivation
     page_text = {}
     for (sid, idx), ns in pages.items():

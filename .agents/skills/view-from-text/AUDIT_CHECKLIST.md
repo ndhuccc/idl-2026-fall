@@ -107,7 +107,7 @@
 
 - [ ] G1. 判定原生節點或 matplotlib 依 SKILL.md §4A:內容屬於「必圖」類(函數、機率密度、高斯曲線、等機率線、幾何、決策邊界、門檻、面積、統計資料)時必須用 matplotlib;只有「不需圖」類(數字表、公式對照、條列、卡片、流程、概念關係)才用原生節點(版面 4.1)。
 - [ ] G2. 函數曲線、切線、向量等由公式計算,沒有手填座標(版面 4.1、4.4)。
-- [ ] G3. 公式用 LaTeX:原生節點用 `$…$`/`$$`;範數用 `\|\mathbf{w}\|`,不用 `||`。matplotlib 用 mathtext,`mathtext.fontset = "cm"`。`usetex=True` 預設不用(版面 4.2)。
+- [ ] G3. 公式用 LaTeX:原生節點用 `$…$`/`$$`;範數用 `\|\mathbf{w}\|`,不用 `||`。matplotlib 用 mathtext,`mathtext.fontset = "cm"`。`usetex=True` 預設不用(版面 4.2)。**不得用 Unicode 近似字元(下標 ₀₁、上標 ⁻¹、ᵀ、‖、Σ、∂ 等)取代 LaTeX**;`audit_deck.py` 的 G3 會警告。為了避開 T1 計算頁(≥ 6 個 `$`)的時間估算而改寫成 Unicode 也不允許,時間不夠請移到延伸頁或與老師調整預算。
 - [ ] G4. 公式符號全篇一致:向量粗體 `\mathbf{}`,純量斜體,矩陣大寫粗體(版面 4.2)。
 - [ ] G5. 使用 `jbd_figure.py`:`figsize = 節點寬/100, 節點高/100`;字級 `font_pt = font_px × 0.72`;背景透明;色彩取自 E2;`svg.fonttype = "path"`;不用 `bbox_inches="tight"`;邊界左 96、下 76、右 24、上 24(含軸標籤時左 ≥ 90、下 ≥ 70)(版面 4.3)。
 - [ ] G6. `svg_data_uri()` 沒有報錯(它會檢查是否被切掉)(版面 4.3.7)。
