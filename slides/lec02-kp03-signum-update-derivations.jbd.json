@@ -96,7 +96,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "標籤寫成 ±1:猜錯的兩種組合都化簡成 2ηyx"
+      "text": "標籤寫成 ±1：猜錯的兩種組合都化簡成 2ηyx"
     },
     "lec02kp03-u01-p1-sub": {
       "id": "lec02kp03-u01-p1-sub",
@@ -154,7 +154,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP02 留下的問題**:規則要記三種誤差。**這頁問**:改用 ±1 標籤,四種組合各更新多少?\n*KP02 left a question: the rule has three error cases. With ±1 labels, how much does each of the four combinations update?*",
+      "text": "**KP02 留下的問題**：規則要記三種誤差。**這頁問**：改用 ±1 標籤，四種組合各更新多少？\n*KP02 left a question: the rule has three error cases. With ±1 labels, how much does each of the four combinations update?*",
       "shapeKind": "rectangle"
     },
     "lec02kp03-u01-p1t-h0-c0": {
@@ -805,7 +805,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**結論**:猜錯時 $\\mathbf{w}\\leftarrow\\mathbf{w}+2\\eta\\,y\\,\\mathbf{x}$;猜對時不動。係數 2 來自 $y-o=\\pm2$。\n*When wrong, add 2η y x; when right, do nothing. The 2 comes from y − o = ±2.*",
+      "text": "**結論**：猜錯時 $\\large\\mathbf{w}\\leftarrow\\mathbf{w}+2\\eta\\,y\\,\\mathbf{x}$；猜對時不動。係數 2 來自 $y-o=\\pm2$。\n*When wrong, add 2η y x; when right, do nothing. The 2 comes from y − o = ±2.*",
       "shapeKind": "rectangle"
     },
     "lec02kp03-u01-p2-title": {
@@ -834,7 +834,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "w 垂直於邊界,距離 d 的正負就是對錯"
+      "text": "w 垂直於邊界，距離 d 的正負就是對錯"
     },
     "lec02kp03-u01-p2-sub": {
       "id": "lec02kp03-u01-p2-sub",
@@ -892,7 +892,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**上一頁**只用代數。**這頁問**:換成幾何,$\\mathbf{w}$ 與猜錯的點有什麼關係?\n*So far we used algebra only. In geometric terms, how are w and a wrong point related?*",
+      "text": "**上一頁**只用代數。**這頁問**：換成幾何，$\\mathbf{w}$ 與猜錯的點有什麼關係？\n*So far we used algebra only. In geometric terms, how are w and a wrong point related?*",
       "shapeKind": "rectangle"
     },
     "lec02kp03-u01-p2-fig1": {
@@ -953,7 +953,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**法向量**:邊界上兩點相減得 $\\mathbf{w}\\cdot(\\mathbf{x}_1-\\mathbf{x}_2)=0$,所以 $\\mathbf{w}$ 垂直於邊界。\n*So w is perpendicular to the boundary.*",
+      "text": "**法向量**：邊界上兩點相減得 $\\mathbf{w}\\cdot(\\mathbf{x}_1-\\mathbf{x}_2)=0$\n所以 $\\mathbf{w}$ 垂直於邊界。\n*So w is perpendicular to the boundary.*",
       "shapeKind": "rectangle"
     },
     "lec02kp03-u01-p2-g2": {
@@ -969,7 +969,7 @@
         "rotation": 0
       },
       "width": 560,
-      "height": 130,
+      "height": 165,
       "zIndex": 2,
       "locked": false,
       "style": {
@@ -984,7 +984,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**距離**:$d=y(\\mathbf{w}\\cdot\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$;$d\\ge0$ 對,$d<0$ 錯。\n*The sign of d says right or wrong.*",
+      "text": "**距離**：$d=y(\\mathbf{w}\\cdot\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$\n$d\\ge0$ 對，$d<0$ 錯（圖中紅圈）。\n藍空心＝$y=-1$，橘實心＝$y=+1$\n*The sign of d says right or wrong.*",
       "shapeKind": "rectangle"
     },
     "lec02kp03-u01-p2-g3": {
@@ -994,7 +994,7 @@
       "sceneId": "lec02kp03-scene-u01",
       "transform": {
         "x": 2100,
-        "y": 531,
+        "y": 565,
         "scaleX": 1,
         "scaleY": 1,
         "rotation": 0
@@ -1015,7 +1015,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**只看錯分點**:梯度下降得 $\\mathbf{w}+\\eta' y\\mathbf{x}$,與代數只差係數。\n*The same rule, up to a constant.*",
+      "text": "**只看錯分點**：梯度下降得 $\\mathbf{w}+\\eta'y\\mathbf{x}$\n與代數只差係數。\n*The same rule, up to a constant.*",
       "shapeKind": "rectangle"
     },
     "lec02kp03-u01-p3-title": {
@@ -1044,7 +1044,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "兩條路同一條規則:η=½ 的軌跡與 KP02 相同"
+      "text": "兩條路同一條規則：η=½ 的軌跡與 KP02 相同"
     },
     "lec02kp03-u01-p3-sub": {
       "id": "lec02kp03-u01-p3-sub",
@@ -1102,7 +1102,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**上一頁**有了兩條路。**這頁問**:套用在 OR 上,數字真的一樣嗎?\n*We have two routes. Applied to OR, are the numbers really the same?*",
+      "text": "**上一頁**有了兩條路。**這頁問**：套用在 OR 上，數字真的一樣嗎？\n*We have two routes. Applied to OR, are the numbers really the same?*",
       "shapeKind": "rectangle"
     },
     "lec02kp03-u01-p3a": {
@@ -1133,7 +1133,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**一次更新**:$\\mathbf{w}=(1,1)$、$w_0=-1.5$,錯點 $(0,1)$、$\\eta=\\tfrac12$ $\\Rightarrow\\mathbf{w}=(1,2)$、$w_0=-0.5$,$s$ 由 $-0.5$ 變 $1.5$:增加 $2=2\\eta(\\|\\mathbf{x}\\|^2+1)$。\n*After one update the wrong point is right, and the sum rises by exactly 2η(‖x‖²+1).*",
+      "text": "**一次更新**：已知 $\\mathbf{w}=(1,1)$、$w_0=-1.5$，錯點 $(0,1)$，$\\eta=1/2$\n更新後 $\\mathbf{w}=(1,2)$、$w_0=-0.5$，$s$ 由 $-0.5$ 變 $1.5$，增加 $2=2\\eta(\\|\\mathbf{x}\\|^2+1)$\n*After one update the wrong point is right, and the sum rises by exactly 2η(‖x‖²+1).*",
       "shapeKind": "rectangle"
     },
     "lec02kp03-u01-p3b": {
@@ -1164,7 +1164,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**整條軌跡**〔程式計算〕:$(0,0,-1)\\to(0,1,0)\\to(0,1,-1)\\to(1,1,0)\\to(1,1,-1)$,第 4 輪全對,與 KP02 逐項相同。\n*The five updates are identical to the binary version of KP02.*",
+      "text": "**整條軌跡**〔程式計算〕：$(0,0,-1)\\to(0,1,0)\\to(0,1,-1)\\to(1,1,0)\\to(1,1,-1)$，第 4 輪全對，與 KP02 逐項相同。\n*The five updates are identical to the binary version of KP02.*",
       "shapeKind": "rectangle"
     },
     "lec02kp03-u01-p3c": {
@@ -1195,7 +1195,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**自我檢核**(來源):$o_i\\ne y_i$ 時,$\\eta(y_i-o_i)\\mathbf{x}_i$ 化簡為?A $\\eta y\\mathbf{x}$ B $2\\eta y\\mathbf{x}$ C $-2\\eta\\mathbf{x}$ D 0。提示:看第 1 頁表格。**留給 KP04**:什麼分類問題都學得會嗎?\n*Self-check: what does the term reduce to when the sample is wrong? Hint: see the table on page 1. Next: can the Perceptron learn every classification problem?*",
+      "text": "**自我檢核**（來源）：$o_i\\ne y_i$ 時，$\\eta(y_i-o_i)\\mathbf{x}_i$ 化簡為？\nA $\\eta y\\mathbf{x}$　　B $2\\eta y\\mathbf{x}$　　C $-2\\eta\\mathbf{x}$　　D 0　（提示：看第 1 頁表格）\n*Self-check: what does the term reduce to when the sample is wrong? Hint: see the table on page 1.*\n**留給 KP04**：Perceptron 什麼分類問題都學得會嗎？",
       "shapeKind": "rectangle"
     },
     "lec02kp03-frame-u01": {
@@ -1394,7 +1394,7 @@
   "metadata": {
     "title": "深度學習導論 第2週 KP03(大學生)",
     "createdAt": "2026-10-13T00:00:00.000Z",
-    "updatedAt": "2026-10-14T21:00:29.099Z",
+    "updatedAt": "2026-10-14T21:19:42.770Z",
     "aspectRatio": "16:9"
   }
 }
