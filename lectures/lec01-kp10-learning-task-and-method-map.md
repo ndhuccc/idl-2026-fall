@@ -1,12 +1,12 @@
 # 第1週 KP10：用共同框架選下一步（A common map for choosing the next step）
 
-**程度 / Level：**大學生 / Undergraduate　**建議時間 / Time：**15 分鐘　**對應實作 / Related practice：**根據一個新情境列出輸入、可用回饋、輸出、評分與未見資料檢查。
+**程度 / Level**：大學生 / Undergraduate　**建議時間 / Time**：15 分鐘　**對應實作 / Related practice**：根據一個新情境列出輸入、可用回饋、輸出、評分與未見資料檢查。
 
-**學習目標 / Learning goals：**整合假設、評分與搜尋三步；按標籤、無標籤及互動回饋辨認任務；將統計方法與神經網路放在同一候選集合比較。 / Reuse the three-part learning framework, distinguish feedback types and compare methods under a stated objective.
+**學習目標 / Learning goals**：整合假設、評分與搜尋三步；按標籤、無標籤及互動回饋辨認任務；將統計方法與神經網路放在同一候選集合比較。 / Reuse the three-part learning framework, distinguish feedback types and compare methods under a stated objective.
 
 [下載本單元簡報 / Download this unit's slides](../slides/lec01-kp10-learning-task-and-method-map.jbd.json)
 
-**一句話重點 / Main point：**先寫清楚輸入、回饋與輸出，再指定候選模型、評分和搜尋；最後以未見資料或新互動檢查。 / Define the task before choosing a model, then validate the result beyond the training examples.
+**一句話重點 / Main point**：先寫清楚輸入、回饋與輸出，再指定候選模型、評分和搜尋；最後以未見資料或新互動檢查。 / Define the task before choosing a model, then validate the result beyond the training examples.
 
 ## 1. 先辨認任務，再挑工具（Identify the task before a method）
 
@@ -49,8 +49,8 @@ KP08 的 Perceptron 與 ADALINE 提醒我們分開問表達與訓練；KP09 的 
 | 3. 在來源的「統計學習家族」清單中，何者不在列？ / Which item is outside the source list? | 統計分類 / Statistical classification | 統計回歸 / Statistical regression | 統計降維 / Statistical reduction | 深度強化學習 DQN / Deep RL DQN | 這是**來源清單的分類題**，不是斷言 DQN 沒有統計成分。 / Treat this as a source-taxonomy question. |
 | 4. 來源所指 2006 深度學習里程碑？ / Which is the 2006 milestone? | AlexNet | DBN | Transformer | GAN | 對照 KP09 的文獻時間線。 / Consult the KP09 chronology. |
 
-**口訣 / Memory aid：**輸入、回饋、輸出 → 假設、評分、搜尋 → 新情境檢查。 / Input, feedback, output → hypotheses, score, search → new-condition check.
+**口訣 / Memory aid**：輸入、回饋、輸出 → 假設、評分、搜尋 → 新情境檢查。 / Input, feedback, output → hypotheses, score, search → new-condition check.
 
-**銜接 / Next：**第 2 章先把一個可學習神經元寫清楚，接著第 3 章處理多層網路的梯度與反向傳播。 / Next, study a trainable neuron, then gradients for multilayer networks.
+**銜接 / Next**：第 2 章先把一個可學習神經元寫清楚，接著第 3 章處理多層網路的梯度與反向傳播。 / Next, study a trainable neuron, then gradients for multilayer networks.
 
-**來源與界線 / Source and scope：**[CCC-LNS 第一章 KP10](https://ndhuccc.github.io/CCC-LNS/IDL_115/Ch01-introduction-history/index.html)，2026-10-14 讀取。三個情境、決策表與章級地圖為明示補充；來源列出的「統計學習家族」不是統計方法的唯一正式分類，後續章節對照採本課程章節安排。題目保留來源意圖但不附答案。
+**來源與界線 / Source and scope**：[CCC-LNS 第一章 KP10](https://ndhuccc.github.io/CCC-LNS/IDL_115/Ch01-introduction-history/index.html)，2026-10-14 讀取。三個情境、決策表與章級地圖為明示補充；來源列出的「統計學習家族」不是統計方法的唯一正式分類，後續章節對照採本課程章節安排。題目保留來源意圖但不附答案。

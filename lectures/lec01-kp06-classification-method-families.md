@@ -1,12 +1,12 @@
 # 第1週 KP06：分類工具各有不同假設（Classification methods use different assumptions）
 
-**程度 / Level：**大學生 / Undergraduate　**建議時間 / Time：**15 分鐘　**對應實作 / Related practice：**手算二類後驗並比較 LDA/QDA 假設。
+**程度 / Level**：大學生 / Undergraduate　**建議時間 / Time**：15 分鐘　**對應實作 / Related practice**：手算二類後驗並比較 LDA/QDA 假設。
 
-**學習目標 / Learning goals：**區分先驗、類條件密度、後驗與證據；用同一組數字完成 Bayes 計算；說明 LDA/QDA、Logistic、KNN、樹、SVM 與集成方法的基本假設。 / Distinguish prior, density, posterior and evidence; normalize a two-class example; compare common classifier assumptions.
+**學習目標 / Learning goals**：區分先驗、類條件密度、後驗與證據；用同一組數字完成 Bayes 計算；說明 LDA/QDA、Logistic、KNN、樹、SVM 與集成方法的基本假設。 / Distinguish prior, density, posterior and evidence; normalize a two-class example; compare common classifier assumptions.
 
 [下載本單元簡報 / Download this unit's slides](../slides/lec01-kp06-classification-method-families.jbd.json)
 
-**一句話重點 / Main point：**分類方法沒有單一共同的建模途徑；選法要看假設、資料與未見樣本的表現。 / Classifiers make different modeling choices; evaluate those choices on data not used for fitting.
+**一句話重點 / Main point**：分類方法沒有單一共同的建模途徑；選法要看假設、資料與未見樣本的表現。 / Classifiers make different modeling choices; evaluate those choices on data not used for fitting.
 
 ## 1. 六個重疊的工具家族 / Six overlapping families of tools
 
@@ -107,8 +107,8 @@ SVM 對偶解中非零係數對應支持向量；在硬間隔且線性可分的�
 | 3. Logistic 如何處理後驗？ / How does logistic regression handle posterior probability? | 經生成密度間接計算 / Only via generative densities | 直接用 sigmoid 建模 / Direct sigmoid model | 假設後驗是高斯 / Gaussian posterior | 完全不處理 / Does not model it | 問 $P(Y=1\mid\mathbf x)$ 在哪一式直接出現。 / Find the direct conditional-probability equation. |
 | 4. 在線性可分硬間隔 SVM 下，何謂「稀疏」？ / What is sparse in a linearly separable hard-margin SVM? | 每筆都有非零對偶係數 / All dual weights nonzero | 間隔邊緣的支持向量有非零係數 / Margin support vectors have nonzero weights | 一定得用核 / A kernel is mandatory | 只能處理一維 / Only one dimension | 題目刻意限定硬間隔；軟間隔另有情況。 / The qualifier matters. |
 
-**口訣 / Memory aid：**先問「怎樣產生分數」，再問「哪些假設可被資料挑戰」。 / Ask how scores are produced, then which assumptions the data can challenge.
+**口訣 / Memory aid**：先問「怎樣產生分數」，再問「哪些假設可被資料挑戰」。 / Ask how scores are produced, then which assumptions the data can challenge.
 
-**銜接 / Next：**KP07 轉向連續值預測及表示降維。 / KP07 moves to numerical prediction and representations.
+**銜接 / Next**：KP07 轉向連續值預測及表示降維。 / KP07 moves to numerical prediction and representations.
 
-**來源與更正 / Source and corrections：**[CCC-LNS 第一章，KP06](https://ndhuccc.github.io/CCC-LNS/IDL_115/Ch01-introduction-history/index.html)，2026-10-14 讀取。高斯例沿用來源參數，密度與後驗已重算；2D 邊界為補充。LDA/QDA、Logistic、KNN、樹、集成與 SVM 的技術條件查核 [scikit-learn LDA/QDA](https://scikit-learn.org/stable/modules/lda_qda.html)、[linear models](https://scikit-learn.org/stable/modules/linear_model.html)、[SVM](https://scikit-learn.org/stable/modules/svm.html)。六枝是方法地圖而非歷史推導樹；來源 1950s→現在的時間提示不應機械地對應每枝。來源對 SVM 支持向量與最優性的概括已限定適用條件。
+**來源與更正 / Source and corrections**：[CCC-LNS 第一章，KP06](https://ndhuccc.github.io/CCC-LNS/IDL_115/Ch01-introduction-history/index.html)，2026-10-14 讀取。高斯例沿用來源參數，密度與後驗已重算；2D 邊界為補充。LDA/QDA、Logistic、KNN、樹、集成與 SVM 的技術條件查核 [scikit-learn LDA/QDA](https://scikit-learn.org/stable/modules/lda_qda.html)、[linear models](https://scikit-learn.org/stable/modules/linear_model.html)、[SVM](https://scikit-learn.org/stable/modules/svm.html)。六枝是方法地圖而非歷史推導樹；來源 1950s→現在的時間提示不應機械地對應每枝。來源對 SVM 支持向量與最優性的概括已限定適用條件。

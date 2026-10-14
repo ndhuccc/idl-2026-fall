@@ -1,12 +1,12 @@
 # 第1週 KP05：回饋型態改變學習目標（Feedback changes the learning objective）
 
-**程度 / Level：**大學生 / Undergraduate　**建議時間 / Time：**15 分鐘（第一章 3 小時配置的一部分）　**對應實作 / Related practice：**辨識投影準則與行動回報；無程式作業。
+**程度 / Level**：大學生 / Undergraduate　**建議時間 / Time**：15 分鐘（第一章 3 小時配置的一部分）　**對應實作 / Related practice**：辨識投影準則與行動回報；無程式作業。
 
-**學習目標 / Learning goals：**辨別無監督與有側資訊的表示準則；畫出代理與環境的雙向回路；逐步計算兩步回報；說明錯誤標籤與獎勵設計的影響。 / Distinguish unlabeled and label-informed representations, describe the agent–environment loop, calculate two-step returns, and identify feedback-design limits.
+**學習目標 / Learning goals**：辨別無監督與有側資訊的表示準則；畫出代理與環境的雙向回路；逐步計算兩步回報；說明錯誤標籤與獎勵設計的影響。 / Distinguish unlabeled and label-informed representations, describe the agent–environment loop, calculate two-step returns, and identify feedback-design limits.
 
 [下載本單元簡報 / Download this unit's slides](../slides/lec01-kp05-side-information-and-rewards.jbd.json)
 
-**一句話重點 / Main point：**標籤告訴表示模型哪些區別值得保留；獎勵評估的是行動後果，常須把數步合起來看。 / Labels identify distinctions to preserve in a representation; rewards evaluate the consequences of actions, often over several steps.
+**一句話重點 / Main point**：標籤告訴表示模型哪些區別值得保留；獎勵評估的是行動後果，常須把數步合起來看。 / Labels identify distinctions to preserve in a representation; rewards evaluate the consequences of actions, often over several steps.
 
 ## 1. 從「壓成幾維」轉到「保留什麼」 / What should an embedding preserve?
 
@@ -62,8 +62,8 @@
 | 3. 來源式 (8) 的 $a$ 是什麼？ / What does $a$ denote in equation (8)? | 從 $\mathcal A$ 選的行動 / An action selected from $\mathcal A$ | 輸入標籤 / An input label | 環境狀態 / The environment state | 回報總和 / The total return | 分開「觀察、輸出、回饋」。 / Separate observation, output and feedback. |
 | 4. 哪項描述強化學習機制？ / Which describes RL? | 配對標籤擬合 / Fit labeled targets | 只從無標籤資料找結構 / Find structure only | 與環境互動並用獎勵調整 / Interact and adjust with rewards | 隨機猜且永不調整 / Guess without adjustment | 看行動是否影響下一次收到的資料。 / Ask whether actions affect later observations. |
 
-**口訣 / Memory aid：**先問訊號從哪來：資料幾何、側資訊，還是行動後的獎勵？ / Ask where the feedback comes from: data geometry, side information, or rewards after actions.
+**口訣 / Memory aid**：先問訊號從哪來：資料幾何、側資訊，還是行動後的獎勵？ / Ask where the feedback comes from: data geometry, side information, or rewards after actions.
 
-**銜接 / Next：**KP06 比較各種監督式分類工具的假設。 / KP06 compares the assumptions of classification methods.
+**銜接 / Next**：KP06 比較各種監督式分類工具的假設。 / KP06 compares the assumptions of classification methods.
 
-**來源與更正 / Source and corrections：**[CCC-LNS 第一章，KP05](https://ndhuccc.github.io/CCC-LNS/IDL_115/Ch01-introduction-history/index.html)，2026-10-14 讀取。8 點例為補充；來源的 5→8、1.5→0.8 為示意距離，未當成演算法量測。來源把降維一概描述為推近拉遠、把降維接 RL 當必經步驟，以及把兩步回報當成已學會策略，均在文中加上條件。強化學習的狀態、行動與預期回報術語另參考 [Sutton 與 Barto，MIT Press](https://mitpress.mit.edu/9780262039246/reinforcement-learning/)。
+**來源與更正 / Source and corrections**：[CCC-LNS 第一章，KP05](https://ndhuccc.github.io/CCC-LNS/IDL_115/Ch01-introduction-history/index.html)，2026-10-14 讀取。8 點例為補充；來源的 5→8、1.5→0.8 為示意距離，未當成演算法量測。來源把降維一概描述為推近拉遠、把降維接 RL 當必經步驟，以及把兩步回報當成已學會策略，均在文中加上條件。強化學習的狀態、行動與預期回報術語另參考 [Sutton 與 Barto，MIT Press](https://mitpress.mit.edu/9780262039246/reinforcement-learning/)。

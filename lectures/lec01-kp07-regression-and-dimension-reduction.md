@@ -1,12 +1,12 @@
 # 第1週 KP07：回歸與降維保留不同資訊（Regression and reduction preserve different information）
 
-**程度 / Level：**大學生 / Undergraduate　**建議時間 / Time：**15 分鐘　**對應實作 / Related practice：**重算 Ridge/Lasso 控制例，對比因子模型的雜訊假設。
+**程度 / Level**：大學生 / Undergraduate　**建議時間 / Time**：15 分鐘　**對應實作 / Related practice**：重算 Ridge/Lasso 控制例，對比因子模型的雜訊假設。
 
-**學習目標 / Learning goals：**區分連續值預測與低維表示；寫出 $L_2^2$ 與 $L_1$ 懲罰；從固定數字算出收縮與零係數；辨別因子分析與機率式 PCA 的雜訊假設；正確定位其他降維家族。 / Distinguish prediction from representation, calculate a regularization example, compare factor-analysis and pPCA noise, and locate other reduction methods.
+**學習目標 / Learning goals**：區分連續值預測與低維表示；寫出 $L_2^2$ 與 $L_1$ 懲罰；從固定數字算出收縮與零係數；辨別因子分析與機率式 PCA 的雜訊假設；正確定位其他降維家族。 / Distinguish prediction from representation, calculate a regularization example, compare factor-analysis and pPCA noise, and locate other reduction methods.
 
 [下載本單元簡報 / Download this unit's slides](../slides/lec01-kp07-regression-and-dimension-reduction.jbd.json)
 
-**一句話重點 / Main point：**正則化控制預測模型的係數，降維改變資料的表示；方法各有保留準則，並非每次都須「先降維再預測」。 / Regularization controls model coefficients, while reduction changes a representation; neither implies a mandatory pipeline.
+**一句話重點 / Main point**：正則化控制預測模型的係數，降維改變資料的表示；方法各有保留準則，並非每次都須「先降維再預測」。 / Regularization controls model coefficients, while reduction changes a representation; neither implies a mandatory pipeline.
 
 ## 1. 連續預測與係數懲罰 / Numerical prediction and coefficient penalties
 
@@ -109,8 +109,8 @@ Johnson–Lindenstrauss（JL）引理對有限點集的隨機線性投影給出�
 | 3. Isomap 和 LLE 的核心想法各是？ / How do Isomap and LLE differ? | 測地距離；局部鄰居重建 / Geodesic distance; local reconstruction | 都只用原始歐氏距離 / Both use only original Euclidean distance | 線性投影；核法 / Linear projection; kernel method | 都最大化類間差 / Both maximize class separation | 一個保路徑距離，一個保重建權重。 / Contrast distances with reconstruction weights. |
 | 4. pPCA 相較典型 FA 的雜訊限制？ / What noise restriction characterizes pPCA? | 等向、各維同變異 / Isotropic, equal variance | 完全沒有雜訊 / No noise | 必為非線性投影 / Necessarily nonlinear | 必用半定規劃 / Necessarily semidefinite programming | 看 $\Psi$ 是否只能寫成單一常數乘 $I$。 / Inspect the covariance form. |
 
-**口訣 / Memory aid：**先問要預測什麼，再問要保留什麼；係數懲罰與表示準則各有任務。 / Ask what to predict and what to preserve; penalties and representations solve different problems.
+**口訣 / Memory aid**：先問要預測什麼，再問要保留什麼；係數懲罰與表示準則各有任務。 / Ask what to predict and what to preserve; penalties and representations solve different problems.
 
-**銜接 / Next：**KP08 將介紹神經網路如何把權重變成可學參數。 / KP08 turns to learnable network weights.
+**銜接 / Next**：KP08 將介紹神經網路如何把權重變成可學參數。 / KP08 turns to learnable network weights.
 
-**來源與更正 / Source and corrections：**[CCC-LNS 第一章，KP07](https://ndhuccc.github.io/CCC-LNS/IDL_115/Ch01-introduction-history/index.html)，2026-10-14 讀取。係數二次例與相同共變異數分解為補充，全部數值由圖程式及獨立算式核對；來源「標籤投影到係數的列空間」「所有譜法都是特徵值問題」「EM 即變分推論」「JL 解釋神經網路初始化」等概括已按適用條件修正。方法條件參照 [scikit-learn 線性模型](https://scikit-learn.org/stable/modules/linear_model.html)、[分解方法](https://scikit-learn.org/stable/modules/decomposition.html)、[隨機投影](https://scikit-learn.org/stable/modules/random_projection.html)；KDR 年份依 [Fukumizu、Bach、Jordan 的 JMLR 原論文](https://jmlr.org/papers/v5/fukumizu04a.html)；LLE 原文見 [Roweis 與 Saul 的出版清單](https://cs.nyu.edu/home/people/in_memoriam/roweis/lle/publications.html)。
+**來源與更正 / Source and corrections**：[CCC-LNS 第一章，KP07](https://ndhuccc.github.io/CCC-LNS/IDL_115/Ch01-introduction-history/index.html)，2026-10-14 讀取。係數二次例與相同共變異數分解為補充，全部數值由圖程式及獨立算式核對；來源「標籤投影到係數的列空間」「所有譜法都是特徵值問題」「EM 即變分推論」「JL 解釋神經網路初始化」等概括已按適用條件修正。方法條件參照 [scikit-learn 線性模型](https://scikit-learn.org/stable/modules/linear_model.html)、[分解方法](https://scikit-learn.org/stable/modules/decomposition.html)、[隨機投影](https://scikit-learn.org/stable/modules/random_projection.html)；KDR 年份依 [Fukumizu、Bach、Jordan 的 JMLR 原論文](https://jmlr.org/papers/v5/fukumizu04a.html)；LLE 原文見 [Roweis 與 Saul 的出版清單](https://cs.nyu.edu/home/people/in_memoriam/roweis/lle/publications.html)。

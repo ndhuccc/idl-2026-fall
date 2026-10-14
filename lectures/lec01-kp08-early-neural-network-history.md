@@ -1,12 +1,12 @@
 # 第1週 KP08：從邏輯單元走向可學權重（From logic units to learnable weights）
 
-**程度 / Level：**大學生 / Undergraduate　**建議時間 / Time：**15 分鐘　**對應實作 / Related practice：**手算 XOR 的線性限制與兩種更新規則。
+**程度 / Level**：大學生 / Undergraduate　**建議時間 / Time**：15 分鐘　**對應實作 / Related practice**：手算 XOR 的線性限制與兩種更新規則。
 
-**學習目標 / Learning goals：**依時間區分神經元形式、可調權重與多層訓練；以不等式說明 XOR 不能由單一線性門檻分開；比較 Perceptron 與 ADALINE 的更新目標。 / Separate neuron design, weight learning and multilayer training; prove the single-threshold XOR limitation; compare two update objectives.
+**學習目標 / Learning goals**：依時間區分神經元形式、可調權重與多層訓練；以不等式說明 XOR 不能由單一線性門檻分開；比較 Perceptron 與 ADALINE 的更新目標。 / Separate neuron design, weight learning and multilayer training; prove the single-threshold XOR limitation; compare two update objectives.
 
 [下載本單元簡報 / Download this unit's slides](../slides/lec01-kp08-early-neural-network-history.jbd.json)
 
-**一句話重點 / Main point：**網路「能表示」某個函數與「能從資料學到」該函數是兩個問題。 / Representational capacity and a workable learning rule are distinct questions.
+**一句話重點 / Main point**：網路「能表示」某個函數與「能從資料學到」該函數是兩個問題。 / Representational capacity and a workable learning rule are distinct questions.
 
 ## 1. 固定的邏輯單元與可調權重（Fixed logic units and adjustable weights）
 
@@ -55,8 +55,8 @@ Widrow 與 Hoff 在 1960 年提出相關 ADALINE／LMS 工作；MADALINE 使用�
 | 3. 單層 Perceptron 的限制？ / What limits one linear-threshold unit? | 不能處理大量資料 / Cannot process many samples | 不能分開 XOR / Cannot split XOR | 訓練必很慢 / Must train slowly | 不能二元分類 / Cannot classify binary labels | 看四條不等式。 / Inspect the four inequalities. |
 | 4. ADALINE 與 Perceptron 的主要差別？ / What differs in the update? | ADALINE 必為多層 / Necessarily multilayer | LMS 可在已分對時修正連續誤差 / LMS can update a correct sign | ADALINE 不可學 / Cannot learn | ADALINE 決策必非線性 / Necessarily nonlinear | 比較更新前用的是 sign 還是 $a$。 / Compare the thresholded and linear outputs. |
 
-**口訣 / Memory aid：**形式決定能表示甚麼，損失與更新決定怎樣學。 / Architecture sets capacity; objective and update determine learning.
+**口訣 / Memory aid**：形式決定能表示甚麼，損失與更新決定怎樣學。 / Architecture sets capacity; objective and update determine learning.
 
-**銜接 / Next：**KP09 比較影像、序列和生成任務怎樣共同改變架構與訓練。 / KP09 follows the interaction of data structure, objectives and training.
+**銜接 / Next**：KP09 比較影像、序列和生成任務怎樣共同改變架構與訓練。 / KP09 follows the interaction of data structure, objectives and training.
 
-**來源與更正 / Sources and corrections：**[CCC-LNS 第一章 KP08](https://ndhuccc.github.io/CCC-LNS/IDL_115/Ch01-introduction-history/index.html)，2026-10-14 讀取。來源的「所有權重固定相等」、「ADALINE 因 LMS 必然泛化較好」及「單本書造成 AI 冬天」改為有條件的說明；XOR 與更新數值例為明示補充。原始文獻：[McCulloch–Pitts 1943](https://gwern.net/doc/ai/nn/1943-mcculloch.pdf)、[Rosenblatt 1958](https://papers.baulab.info/papers/Rosenblatt-1958.pdf)、[Widrow–Hoff 1960](https://isl.stanford.edu/~widrow/papers/c1960adaptiveswitching.pdf)、[Rumelhart–Hinton–Williams 1986](https://doi.org/10.1038/323533a0)。
+**來源與更正 / Sources and corrections**：[CCC-LNS 第一章 KP08](https://ndhuccc.github.io/CCC-LNS/IDL_115/Ch01-introduction-history/index.html)，2026-10-14 讀取。來源的「所有權重固定相等」、「ADALINE 因 LMS 必然泛化較好」及「單本書造成 AI 冬天」改為有條件的說明；XOR 與更新數值例為明示補充。原始文獻：[McCulloch–Pitts 1943](https://gwern.net/doc/ai/nn/1943-mcculloch.pdf)、[Rosenblatt 1958](https://papers.baulab.info/papers/Rosenblatt-1958.pdf)、[Widrow–Hoff 1960](https://isl.stanford.edu/~widrow/papers/c1960adaptiveswitching.pdf)、[Rumelhart–Hinton–Williams 1986](https://doi.org/10.1038/323533a0)。

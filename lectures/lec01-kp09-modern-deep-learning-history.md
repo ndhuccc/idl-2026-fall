@@ -1,12 +1,12 @@
 # 第1週 KP09：架構與訓練共同推動復興（Architecture and training shaped deep learning）
 
-**程度 / Level：**大學生 / Undergraduate　**建議時間 / Time：**15 分鐘　**對應實作 / Related practice：**重算一層卷積與全連接的參數量，按資料結構選候選方法。
+**程度 / Level**：大學生 / Undergraduate　**建議時間 / Time**：15 分鐘　**對應實作 / Related practice**：重算一層卷積與全連接的參數量，按資料結構選候選方法。
 
-**學習目標 / Learning goals：**說明局部連結與權重共享；區分早期卷積網、LeNet-5 與 AlexNet；辨認 2006 預訓練和 2017 Transformer 解決的不同問題；按任務理解生成、偏好及圖方法。 / Explain locality and weight sharing, distinguish historical milestones, and relate architectures to data and objectives.
+**學習目標 / Learning goals**：說明局部連結與權重共享；區分早期卷積網、LeNet-5 與 AlexNet；辨認 2006 預訓練和 2017 Transformer 解決的不同問題；按任務理解生成、偏好及圖方法。 / Explain locality and weight sharing, distinguish historical milestones, and relate architectures to data and objectives.
 
 [下載本單元簡報 / Download this unit's slides](../slides/lec01-kp09-modern-deep-learning-history.jbd.json)
 
-**一句話重點 / Main point：**沒有單一演算法「喚醒」深度學習；資料表示、可訓練性、算力與任務目標一起改變可行的方法。 / Architecture, optimization, compute and the task objective jointly shape what works.
+**一句話重點 / Main point**：沒有單一演算法「喚醒」深度學習；資料表示、可訓練性、算力與任務目標一起改變可行的方法。 / Architecture, optimization, compute and the task objective jointly shape what works.
 
 ## 1. 影像的局部結構與權重共享（Locality and weight sharing in images）
 
@@ -64,8 +64,8 @@ RNN／LSTM 以遞迴狀態處理序列；注意力可在序列各位置間選取
 | 3. 來源所指的 2006 復興方法？ / Which method is the 2006 milestone? | AlexNet GPU / AlexNet GPU | DBN 逐層預訓練 / DBN layer-wise pretraining | Transformer 注意力 / Transformer attention | GAN 對抗 / GAN adversarial learning | 對照各論文年份，不把兩篇 2006 論文混成一篇。 / Check dates and the distinct 2006 papers. |
 | 4. RLHF 與 DPO 的正確比較？ / How do RLHF and DPO differ here? | 都必另訓顯式獎勵模型 / Both require a separate reward model | DPO 無須另訓顯式獎勵模型 / DPO does not separately fit one | RLHF 不用人類偏好 / RLHF needs no preference data | 都只用於影像分類 / Both are image classifiers | 分開「偏好資料」和「額外的顯式獎勵模型」。 / Separate preference data from a fitted reward model. |
 
-**口訣 / Memory aid：**先看資料結構與目標，再看架構、訓練與成本。 / Start from data and objective; then evaluate architecture, training and cost.
+**口訣 / Memory aid**：先看資料結構與目標，再看架構、訓練與成本。 / Start from data and objective; then evaluate architecture, training and cost.
 
-**銜接 / Next：**KP10 將把整章的任務、方法與歷史收束為選擇流程。 / KP10 turns the chapter into a usable decision map.
+**銜接 / Next**：KP10 將把整章的任務、方法與歷史收束為選擇流程。 / KP10 turns the chapter into a usable decision map.
 
-**來源與更正 / Sources and corrections：**[CCC-LNS 第一章 KP09](https://ndhuccc.github.io/CCC-LNS/IDL_115/Ch01-introduction-history/index.html)，2026-10-14 讀取。參數例為明示補充；LeNet 年份／型號、兩篇 2006 論文作者、注意力與遞迴、擴散模型 2015 起點，以及「全面優於」敘述已依原文釐清。原始文獻：[Fukushima 1980](https://www.cs.princeton.edu/courses/archive/spr08/cos598B/Readings/Fukushima1980.pdf)、[LeCun 等 1989](https://henriquetmaia.github.io/pdf/papers/lecun1989.pdf)、[LeCun 等 1998](https://hal.science/hal-03926082v1/file/lecun1998.pdf)、[Hinton–Osindero–Teh 2006](https://www.stats.ox.ac.uk/~teh/research/unsup/nc2006.pdf)、[Hinton–Salakhutdinov 2006](https://www.cs.toronto.edu/~hinton/science.pdf)、[Transformer 2017](https://arxiv.org/abs/1706.03762)、[擴散生成 2015](https://arxiv.org/abs/1503.03585)、[DDPM 2020](https://arxiv.org/abs/2006.11239)、[DPO 2023](https://arxiv.org/abs/2305.18290)。
+**來源與更正 / Sources and corrections**：[CCC-LNS 第一章 KP09](https://ndhuccc.github.io/CCC-LNS/IDL_115/Ch01-introduction-history/index.html)，2026-10-14 讀取。參數例為明示補充；LeNet 年份／型號、兩篇 2006 論文作者、注意力與遞迴、擴散模型 2015 起點，以及「全面優於」敘述已依原文釐清。原始文獻：[Fukushima 1980](https://www.cs.princeton.edu/courses/archive/spr08/cos598B/Readings/Fukushima1980.pdf)、[LeCun 等 1989](https://henriquetmaia.github.io/pdf/papers/lecun1989.pdf)、[LeCun 等 1998](https://hal.science/hal-03926082v1/file/lecun1998.pdf)、[Hinton–Osindero–Teh 2006](https://www.stats.ox.ac.uk/~teh/research/unsup/nc2006.pdf)、[Hinton–Salakhutdinov 2006](https://www.cs.toronto.edu/~hinton/science.pdf)、[Transformer 2017](https://arxiv.org/abs/1706.03762)、[擴散生成 2015](https://arxiv.org/abs/1503.03585)、[DDPM 2020](https://arxiv.org/abs/2006.11239)、[DPO 2023](https://arxiv.org/abs/2305.18290)。
