@@ -62,7 +62,9 @@ SLIDE_SUFFIXES = ALLOWED_SUFFIXES | {".json", ".pptx"}
 
 # MathJax 設定:讓 $...$ 與 $$...$$ 能在網站上渲染
 MATHJAX_JS = r"""window.MathJax = {
+  loader: {load: ["[tex]/boldsymbol"]},
   tex: {
+    packages: {"[+]": ["boldsymbol"]},
     inlineMath: [["\\(", "\\)"]],
     displayMath: [["\\[", "\\]"]],
     processEscapes: true,
@@ -71,15 +73,21 @@ MATHJAX_JS = r"""window.MathJax = {
   options: {
     ignoreHtmlClass: ".*|",
     processHtmlClass: "arithmatex"
+  },
+  startup: {
+    ready: () => {
+      MathJax.startup.defaultReady();
+      document$.subscribe(() => {
+        MathJax.startup.promise = MathJax.startup.promise.then(() => {
+          MathJax.startup.output.clearCache();
+          MathJax.typesetClear();
+          MathJax.texReset();
+          return MathJax.typesetPromise();
+        });
+      });
+    }
   }
 };
-
-document$.subscribe(() => {
-  MathJax.startup.output.clearCache();
-  MathJax.typesetClear();
-  MathJax.texReset();
-  MathJax.typesetPromise();
-});
 """
 
 

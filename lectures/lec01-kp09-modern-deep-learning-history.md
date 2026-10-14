@@ -1,5 +1,4 @@
-# 第 1 週講義 KP09｜架構與訓練共同推動復興
-# Week 1 lecture KP09 | Architecture and training shaped deep learning
+# 第1週 KP09：架構與訓練共同推動復興（Architecture and training shaped deep learning）
 
 **程度 / Level：**大學生 / Undergraduate　**建議時間 / Time：**15 分鐘　**對應實作 / Related practice：**重算一層卷積與全連接的參數量，按資料結構選候選方法。
 

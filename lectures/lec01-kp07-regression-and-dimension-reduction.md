@@ -1,5 +1,4 @@
-# 第 1 週講義 KP07｜回歸與降維保留不同資訊
-# Week 1 lecture KP07 | Regression and reduction preserve different information
+# 第1週 KP07：回歸與降維保留不同資訊（Regression and reduction preserve different information）
 
 **程度 / Level：**大學生 / Undergraduate　**建議時間 / Time：**15 分鐘　**對應實作 / Related practice：**重算 Ridge/Lasso 控制例，對比因子模型的雜訊假設。
 

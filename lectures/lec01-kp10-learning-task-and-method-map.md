@@ -1,5 +1,4 @@
-# 第 1 週講義 KP10｜用共同框架選下一步
-# Week 1 lecture KP10 | A common map for choosing the next step
+# 第1週 KP10：用共同框架選下一步（A common map for choosing the next step）
 
 **程度 / Level：**大學生 / Undergraduate　**建議時間 / Time：**15 分鐘　**對應實作 / Related practice：**根據一個新情境列出輸入、可用回饋、輸出、評分與未見資料檢查。
 

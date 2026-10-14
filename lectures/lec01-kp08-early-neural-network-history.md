@@ -1,5 +1,4 @@
-# 第 1 週講義 KP08｜從邏輯單元走向可學權重
-# Week 1 lecture KP08 | From logic units to learnable weights
+# 第1週 KP08：從邏輯單元走向可學權重（From logic units to learnable weights）
 
 **程度 / Level：**大學生 / Undergraduate　**建議時間 / Time：**15 分鐘　**對應實作 / Related practice：**手算 XOR 的線性限制與兩種更新規則。
 
