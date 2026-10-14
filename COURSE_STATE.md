@@ -40,6 +40,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-10-14 — 第二章 KP01–KP10 驗收通過並已推送(commit c35b244)。新增全章地圖 `slides/lec02-kp00-chapter-map.jbd.json`(1 頁,十個 KP 蛇行排列,公式用 LaTeX),本機版尚未推送。技能 `audit_deck.py` 新增 G3(公式須用 LaTeX、不得用 Unicode 近似字元),已同步到 course-template 與 pr-2026-fall;第 2 章 KP01–KP10 簡報仍有 Unicode 公式,老師決定這個單元先不改。
+
 - 2026-10-14 — 第二章 KP08–KP10 本機版(尚未同步雲端):老師驗收 KP05–KP07 後接續製作。KP08 ADALINE 與邏輯回歸(OR 手算 LMS、牛頓法一步)、KP09 RBF 與 SOM(XOR 的 RBF 解、SOM 一步更新)、KP10 萬有逼近定理(階梯法逼近 sin 2πx、誤差≈π/N)。講義與簡報(各 4 頁)已通過稽核。來源更正:牛頓更新應為加號且對數似然是凹的;SOM 鄰域逐漸縮小而非每步對半;RBF XOR 例需偏置;UAT 對 ReLU 的補充。第二章章節地圖 `lec02-kp00-chapter-map` 待做。
 
 - 2026-10-14 — 第二章 KP05–KP07 本機版(尚未同步雲端):老師驗收 KP02–KP04 後接續製作。KP05 多層網路與非線性(2-2-1 XOR 網路、全線性坍縮)、KP06 活化函數(13 種分四族、softmax 手算、ReLU 家族)、KP07 損失函數(MSE/MAE/Huber、交叉熵/KL、hinge)。講義與簡報(各 4 頁)已通過稽核。來源更正:hinge 為零條件是 y·f≥m(來源寫 |f|≥m)。KP05 的 xor-network 圖在簡報改用原生節點與連線,稽核以 --exclude-fig 排除(待老師確認)。KP08–KP10 與 kp00 章節地圖待做。
