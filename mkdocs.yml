@@ -53,7 +53,22 @@ nav:
       - 第 1 週 Week 1:
           - lec01: lectures/lec01.md
       - 第 3 週 Week 3:
-          - 全章新版：大學生・4小時: lectures/lec03-backprop-optimization-v2.md
+          - KP01 最佳化即參數搜尋: lectures/lec03-kp01-optimization-as-search.md
+          - KP02 梯度下降與學習率: lectures/lec03-kp02-gradient-descent-and-learning-rate.md
+          - KP03 停止準則: lectures/lec03-kp03-stopping-criteria.md
+          - KP04 線搜索與最陡下降: lectures/lec03-kp04-line-search.md
+          - KP05 動量: lectures/lec03-kp05-momentum.md
+          - KP06 反向傳播: lectures/lec03-kp06-backpropagation.md
+          - KP07 隨機梯度下降: lectures/lec03-kp07-sgd.md
+          - KP08 小批次與 epoch: lectures/lec03-kp08-mini-batch-and-epoch.md
+          - KP09 SGD 收斂分析: lectures/lec03-kp09-sgd-convergence.md
+          - KP10 AdaGrad: lectures/lec03-kp10-adagrad.md
+          - KP11 RMSProp 與 Adam: lectures/lec03-kp11-rmsprop-and-adam.md
+          - KP12 平坦極小值與 SAM 動機: lectures/lec03-kp12-flat-minima-and-sam-motivation.md
+          - KP13 基本 SAM: lectures/lec03-kp13-vanilla-sam.md
+          - KP14 高效與自適應 SAM: lectures/lec03-kp14-efficient-and-adaptive-sam.md
+          - KP15 過參數化網路的收斂保證: lectures/lec03-kp15-overparameterized-convergence.md
+          - KP16 全章總結: lectures/lec03-kp16-chapter-synthesis.md
   - 作業 Assignments:
       - 作業繳交說明 Submission Guide: assignments/README.md
       - 請 AI agent 協助 AI Agent Prompt: assignments/ai-agent-prompt.md
