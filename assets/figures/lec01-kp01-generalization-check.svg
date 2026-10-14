@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360">
+<rect width="1280" height="360" fill="white"/>
+<defs><marker id="end" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#275f79"/></marker></defs>
+<rect x="60" y="55" width="560" height="250" rx="16" fill="#f4f6f8" stroke="#275f79" stroke-width="3"/>
+<text x="84" y="105" font-family="Arial" font-size="28" font-weight="700" fill="#132634">Known training evidence</text>
+<text x="84" y="158" font-family="Arial" font-size="26" fill="#132634">A: error 0.5; score 1.5</text>
+<text x="84" y="204" font-family="Arial" font-size="26" fill="#132634">B: error 1.0; score 1.2</text>
+<text x="84" y="250" font-family="Arial" font-size="26" fill="#132634">This rule selects B</text>
+<rect x="660" y="55" width="560" height="250" rx="16" fill="#f4f6f8" stroke="#275f79" stroke-width="3"/>
+<text x="684" y="105" font-family="Arial" font-size="28" font-weight="700" fill="#132634">Unseen-data evidence</text>
+<text x="684" y="158" font-family="Arial" font-size="26" fill="#132634">Test error: not measured</text>
+<text x="684" y="204" font-family="Arial" font-size="26" fill="#132634">No guarantee from score</text>
+<text x="684" y="250" font-family="Arial" font-size="26" fill="#132634">Evaluate separately</text>
+</svg>

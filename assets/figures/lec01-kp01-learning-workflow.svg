@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360">
+<rect width="1280" height="360" fill="white"/>
+<defs><marker id="end" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#275f79"/></marker></defs>
+<rect x="60" y="55" width="300" height="250" rx="16" fill="#f4f6f8" stroke="#275f79" stroke-width="3"/>
+<text x="84" y="105" font-family="Arial" font-size="28" font-weight="700" fill="#132634">Hypothesis class</text>
+<text x="84" y="158" font-family="Arial" font-size="26" fill="#132634">Allowed candidates</text>
+<text x="84" y="204" font-family="Arial" font-size="26" fill="#132634">Models A and B</text>
+<rect x="450" y="55" width="300" height="250" rx="16" fill="#f4f6f8" stroke="#275f79" stroke-width="3"/>
+<text x="474" y="105" font-family="Arial" font-size="28" font-weight="700" fill="#132634">Scoring rule</text>
+<text x="474" y="158" font-family="Arial" font-size="26" fill="#132634">Error + penalty</text>
+<text x="474" y="204" font-family="Arial" font-size="26" fill="#132634">Lower is better</text>
+<rect x="840" y="55" width="380" height="250" rx="16" fill="#f4f6f8" stroke="#275f79" stroke-width="3"/>
+<text x="864" y="105" font-family="Arial" font-size="28" font-weight="700" fill="#132634">Search</text>
+<text x="864" y="158" font-family="Arial" font-size="26" fill="#132634">Evaluate candidates</text>
+<text x="864" y="204" font-family="Arial" font-size="26" fill="#132634">Choose a minimizer</text>
+<path d="M370,180 L435,180" fill="none" stroke="#275f79" stroke-width="4" marker-end="url(#end)"/>
+<path d="M760,180 L825,180" fill="none" stroke="#275f79" stroke-width="4" marker-end="url(#end)"/>
+</svg>
