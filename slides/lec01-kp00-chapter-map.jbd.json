@@ -1,0 +1,890 @@
+{
+  "schemaVersion": 3,
+  "rootSceneId": "scene-root",
+  "scenes": {
+    "lec01kp00-scene-u01": {
+      "id": "lec01kp00-scene-u01",
+      "name": "第一章知識地圖",
+      "parentFrameId": "lec01kp00-frame-u01",
+      "nodeIds": [
+        "lec01kp00-u01-p1-title",
+        "lec01kp00-u01-p1-sub",
+        "lec01kp00-u01-p1-bridge",
+        "lec01kp00-u01-p1-kp1",
+        "lec01kp00-u01-p1-kp2",
+        "lec01kp00-u01-p1-conn1",
+        "lec01kp00-u01-p1-kp3",
+        "lec01kp00-u01-p1-conn2",
+        "lec01kp00-u01-p1-kp4",
+        "lec01kp00-u01-p1-conn3",
+        "lec01kp00-u01-p1-kp5",
+        "lec01kp00-u01-p1-conn4",
+        "lec01kp00-u01-p1-kp6",
+        "lec01kp00-u01-p1-conn5",
+        "lec01kp00-u01-p1-kp7",
+        "lec01kp00-u01-p1-conn6",
+        "lec01kp00-u01-p1-kp8",
+        "lec01kp00-u01-p1-conn7",
+        "lec01kp00-u01-p1-kp9",
+        "lec01kp00-u01-p1-conn8",
+        "lec01kp00-u01-p1-kp10",
+        "lec01kp00-u01-p1-conn9",
+        "lec01kp00-u01-p1-close"
+      ],
+      "camera": {
+        "x": 640.0,
+        "y": 310.0,
+        "zoom": 0.8780487804878049,
+        "rotation": 0
+      }
+    },
+    "scene-root": {
+      "id": "scene-root",
+      "name": "根畫布",
+      "parentFrameId": null,
+      "nodeIds": [
+        "lec01kp00-frame-u01"
+      ],
+      "camera": {
+        "x": 200,
+        "y": 100,
+        "zoom": 1.2,
+        "rotation": 0
+      }
+    }
+  },
+  "nodes": {
+    "lec01kp00-u01-p1-title": {
+      "id": "lec01kp00-u01-p1-title",
+      "type": "text",
+      "name": "u01-p1-title",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 26,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 60,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#f2ede4",
+        "fontSize": 42,
+        "radius": 0,
+        "fontWeight": 700,
+        "textAlign": "left",
+        "lineHeight": 1.25
+      },
+      "text": "從任務走到可學網路"
+    },
+    "lec01kp00-u01-p1-sub": {
+      "id": "lec01kp00-u01-p1-sub",
+      "type": "text",
+      "name": "u01-p1-sub",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 88,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 38,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#b7b0a5",
+        "fontSize": 22,
+        "radius": 0,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.2
+      },
+      "text": "From the task to a trainable network"
+    },
+    "lec01kp00-u01-p1-bridge": {
+      "id": "lec01kp00-u01-p1-bridge",
+      "type": "text",
+      "name": "u01-p1-bridge",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 137,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 76,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 0,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4
+      },
+      "text": "先定義要學甚麼、怎樣衡量；再看哪些歷史工具能處理它。\n*Define a task and score first, then inspect candidate methods.*"
+    },
+    "lec01kp00-u01-p1-kp1": {
+      "id": "lec01kp00-u01-p1-kp1",
+      "type": "shape",
+      "name": "u01-p1-kp1",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 245.7,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 220,
+      "height": 113.16,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(217,119,87,0.12)",
+        "stroke": "rgba(217,119,87,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**KP01 模型選擇**\n*Choice*",
+      "shapeKind": "rectangle"
+    },
+    "lec01kp00-u01-p1-kp2": {
+      "id": "lec01kp00-u01-p1-kp2",
+      "type": "shape",
+      "name": "u01-p1-kp2",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 294,
+        "y": 245.7,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 220,
+      "height": 113.16,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**KP02 資料映射**\n*Mapping*",
+      "shapeKind": "rectangle"
+    },
+    "lec01kp00-u01-p1-conn1": {
+      "id": "lec01kp00-u01-p1-conn1",
+      "type": "connector",
+      "name": "u01-p1-conn1",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec01kp00-u01-p1-kp1",
+        "sourceHook": 4,
+        "targetNodeId": "lec01kp00-u01-p1-kp2",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec01kp00-u01-p1-kp3": {
+      "id": "lec01kp00-u01-p1-kp3",
+      "type": "shape",
+      "name": "u01-p1-kp3",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 528,
+        "y": 245.7,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 220,
+      "height": 113.16,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**KP03 標籤任務**\n*Labels*",
+      "shapeKind": "rectangle"
+    },
+    "lec01kp00-u01-p1-conn2": {
+      "id": "lec01kp00-u01-p1-conn2",
+      "type": "connector",
+      "name": "u01-p1-conn2",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec01kp00-u01-p1-kp2",
+        "sourceHook": 4,
+        "targetNodeId": "lec01kp00-u01-p1-kp3",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec01kp00-u01-p1-kp4": {
+      "id": "lec01kp00-u01-p1-kp4",
+      "type": "shape",
+      "name": "u01-p1-kp4",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 762,
+        "y": 245.7,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 220,
+      "height": 113.16,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**KP04 無標籤結構**\n*Structure*",
+      "shapeKind": "rectangle"
+    },
+    "lec01kp00-u01-p1-conn3": {
+      "id": "lec01kp00-u01-p1-conn3",
+      "type": "connector",
+      "name": "u01-p1-conn3",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec01kp00-u01-p1-kp3",
+        "sourceHook": 4,
+        "targetNodeId": "lec01kp00-u01-p1-kp4",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec01kp00-u01-p1-kp5": {
+      "id": "lec01kp00-u01-p1-kp5",
+      "type": "shape",
+      "name": "u01-p1-kp5",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 996,
+        "y": 245.7,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 220,
+      "height": 113.16,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**KP05 側資訊／獎勵**\n*Feedback*",
+      "shapeKind": "rectangle"
+    },
+    "lec01kp00-u01-p1-conn4": {
+      "id": "lec01kp00-u01-p1-conn4",
+      "type": "connector",
+      "name": "u01-p1-conn4",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec01kp00-u01-p1-kp4",
+        "sourceHook": 4,
+        "targetNodeId": "lec01kp00-u01-p1-kp5",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec01kp00-u01-p1-kp6": {
+      "id": "lec01kp00-u01-p1-kp6",
+      "type": "shape",
+      "name": "u01-p1-kp6",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 996,
+        "y": 397.0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 220,
+      "height": 113.16,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(95,184,168,0.12)",
+        "stroke": "rgba(95,184,168,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**KP06 分類方法**\n*Classify*",
+      "shapeKind": "rectangle"
+    },
+    "lec01kp00-u01-p1-conn5": {
+      "id": "lec01kp00-u01-p1-conn5",
+      "type": "connector",
+      "name": "u01-p1-conn5",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec01kp00-u01-p1-kp5",
+        "sourceHook": 8,
+        "targetNodeId": "lec01kp00-u01-p1-kp6",
+        "targetHook": 0,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec01kp00-u01-p1-kp7": {
+      "id": "lec01kp00-u01-p1-kp7",
+      "type": "shape",
+      "name": "u01-p1-kp7",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 762,
+        "y": 397.0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 220,
+      "height": 113.16,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(95,184,168,0.12)",
+        "stroke": "rgba(95,184,168,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**KP07 回歸／降維**\n*Predict*",
+      "shapeKind": "rectangle"
+    },
+    "lec01kp00-u01-p1-conn6": {
+      "id": "lec01kp00-u01-p1-conn6",
+      "type": "connector",
+      "name": "u01-p1-conn6",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec01kp00-u01-p1-kp6",
+        "sourceHook": 12,
+        "targetNodeId": "lec01kp00-u01-p1-kp7",
+        "targetHook": 4,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec01kp00-u01-p1-kp8": {
+      "id": "lec01kp00-u01-p1-kp8",
+      "type": "shape",
+      "name": "u01-p1-kp8",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 528,
+        "y": 397.0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 220,
+      "height": 113.16,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(95,184,168,0.12)",
+        "stroke": "rgba(95,184,168,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**KP08 可學權重**\n*Learn*",
+      "shapeKind": "rectangle"
+    },
+    "lec01kp00-u01-p1-conn7": {
+      "id": "lec01kp00-u01-p1-conn7",
+      "type": "connector",
+      "name": "u01-p1-conn7",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec01kp00-u01-p1-kp7",
+        "sourceHook": 12,
+        "targetNodeId": "lec01kp00-u01-p1-kp8",
+        "targetHook": 4,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec01kp00-u01-p1-kp9": {
+      "id": "lec01kp00-u01-p1-kp9",
+      "type": "shape",
+      "name": "u01-p1-kp9",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 294,
+        "y": 397.0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 220,
+      "height": 113.16,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(95,184,168,0.12)",
+        "stroke": "rgba(95,184,168,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**KP09 現代架構**\n*Architecture*",
+      "shapeKind": "rectangle"
+    },
+    "lec01kp00-u01-p1-conn8": {
+      "id": "lec01kp00-u01-p1-conn8",
+      "type": "connector",
+      "name": "u01-p1-conn8",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec01kp00-u01-p1-kp8",
+        "sourceHook": 12,
+        "targetNodeId": "lec01kp00-u01-p1-kp9",
+        "targetHook": 4,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec01kp00-u01-p1-kp10": {
+      "id": "lec01kp00-u01-p1-kp10",
+      "type": "shape",
+      "name": "u01-p1-kp10",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 397.0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 220,
+      "height": 113.16,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(217,119,87,0.12)",
+        "stroke": "rgba(217,119,87,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "center",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**KP10 共同框架**\n*Synthesis*",
+      "shapeKind": "rectangle"
+    },
+    "lec01kp00-u01-p1-conn9": {
+      "id": "lec01kp00-u01-p1-conn9",
+      "type": "connector",
+      "name": "u01-p1-conn9",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec01kp00-u01-p1-kp9",
+        "sourceHook": 12,
+        "targetNodeId": "lec01kp00-u01-p1-kp10",
+        "targetHook": 4,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec01kp00-u01-p1-close": {
+      "id": "lec01kp00-u01-p1-close",
+      "type": "shape",
+      "name": "u01-p1-close",
+      "sceneId": "lec01kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 536.4,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 108.56,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(217,119,87,0.12)",
+        "stroke": "rgba(217,119,87,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**下一章 / Next chapter**：一個神經元如何有可學參數？第3章再推導多層網路的梯度與反向傳播。\n*Chapter 2 defines a trainable neuron; Chapter 3 develops gradients and backpropagation.*",
+      "shapeKind": "rectangle"
+    },
+    "lec01kp00-frame-u01": {
+      "id": "lec01kp00-frame-u01",
+      "type": "frame",
+      "name": "lec01kp00-frame-u01",
+      "sceneId": "scene-root",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 400,
+      "height": 200,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 0
+      },
+      "text": "第一章知識地圖",
+      "frame": {
+        "childSceneId": "lec01kp00-scene-u01",
+        "previewMode": "live",
+        "padding": 18,
+        "clip": true
+      }
+    }
+  },
+  "steps": [
+    {
+      "id": "lec01kp00-root-step-u01",
+      "order": 0,
+      "label": "第一章知識地圖",
+      "durationMs": 900,
+      "holdMs": 500,
+      "easing": "smooth",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "scene-root",
+        "point": {
+          "x": 200,
+          "y": 100
+        },
+        "zoom": 2.6666666666666665,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "speakerNotes": "教材程度：大學生（undergrad）。全章3小時、淨150分鐘。本頁是十個KP的章級概念地圖，接在最後一批供整體回顧；公開備註不含練習答案。"
+    },
+    {
+      "id": "lec01kp00-u01-step1",
+      "order": 1,
+      "label": "從任務走到可學網路",
+      "durationMs": 900,
+      "holdMs": 500,
+      "easing": "smooth",
+      "speakerNotes": "教材程度：大學生（undergrad）。承接KP01的假設、評分與搜尋，這頁十個節點按蛇行順序重述全章；每個節點都有原生形狀與Connector，沒有把歷史當唯一進化路徑。KP01–02先建立候選與表示，KP03–05依回饋分任務，KP06–07列方法，KP08–09看表達與訓練史，KP10綜合。下一章講可學單元，第3章講反向傳播。講者備註隨檔案公開。",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "lec01kp00-scene-u01",
+        "point": {
+          "x": 640.0,
+          "y": 310.0
+        },
+        "zoom": 0.8780487804878049,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "title": "第1週 第一章知識地圖（大學生）",
+    "createdAt": "2026-10-14T00:00:00.000Z",
+    "updatedAt": "2026-10-14T00:00:00.000Z",
+    "aspectRatio": "16:9"
+  }
+}
