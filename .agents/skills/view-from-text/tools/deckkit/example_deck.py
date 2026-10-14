@@ -79,7 +79,7 @@ def build():
 
 if __name__ == "__main__":
     U = build()
-    doc = kit.assemble(U, "深度學習導論 第3週 KP08:小批次與 epoch(大學生・4小時)", [], {"x": 200, "y": 100, "zoom": 1.2, "rotation": 0})
+    doc = kit.assemble(U, "課名 第N週 KPNN:標題(程度・時長)", [], {"x": 200, "y": 100, "zoom": 1.2, "rotation": 0})
     kit.steps[0]["speakerNotes"] = LEVEL_NOTE
     doc["steps"] = kit.steps
     out = os.path.join(HERE, "draft.jbd.json")
