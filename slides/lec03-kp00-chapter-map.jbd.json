@@ -1,0 +1,585 @@
+{
+  "schemaVersion": 3,
+  "rootSceneId": "scene-root",
+  "scenes": {
+    "lec03kp00-scene-u01": {
+      "id": "lec03kp00-scene-u01",
+      "name": "全章地圖",
+      "parentFrameId": "lec03kp00-frame-u01",
+      "nodeIds": [
+        "lec03kp00-u01-p1-title",
+        "lec03kp00-u01-p1-sub",
+        "lec03kp00-u01-p1-mapbridge",
+        "lec03kp00-u01-p1-s1",
+        "lec03kp00-u01-p1-s2",
+        "lec03kp00-u01-p1-s3",
+        "lec03kp00-u01-p1-s4",
+        "lec03kp00-u01-p1-s5",
+        "lec03kp00-u01-p1-s6",
+        "lec03kp00-u01-p1-conn1",
+        "lec03kp00-u01-p1-conn2",
+        "lec03kp00-u01-p1-conn3",
+        "lec03kp00-u01-p1-conn4",
+        "lec03kp00-u01-p1-conn5"
+      ],
+      "camera": {
+        "x": 640.0,
+        "y": 310.0,
+        "zoom": 0.8780487804878049,
+        "rotation": 0
+      }
+    },
+    "scene-root": {
+      "id": "scene-root",
+      "name": "根畫布",
+      "parentFrameId": null,
+      "nodeIds": [
+        "lec03kp00-frame-u01"
+      ],
+      "camera": {
+        "x": 200,
+        "y": 100,
+        "zoom": 1.2,
+        "rotation": 0
+      }
+    }
+  },
+  "nodes": {
+    "lec03kp00-u01-p1-title": {
+      "id": "lec03kp00-u01-p1-title",
+      "type": "text",
+      "name": "u01-p1-title",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 26,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 65,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#f2ede4",
+        "fontSize": 42,
+        "radius": 0,
+        "fontWeight": 700,
+        "textAlign": "left",
+        "lineHeight": 1.25
+      },
+      "text": "第 3 章地圖:十六個知識點,五個階段"
+    },
+    "lec03kp00-u01-p1-sub": {
+      "id": "lec03kp00-u01-p1-sub",
+      "type": "text",
+      "name": "u01-p1-sub",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 88,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 38,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#b7b0a5",
+        "fontSize": 22,
+        "radius": 0,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.2
+      },
+      "text": "Map of Chapter 3: sixteen knowledge points in five stages"
+    },
+    "lec03kp00-u01-p1-mapbridge": {
+      "id": "lec03kp00-u01-p1-mapbridge",
+      "type": "shape",
+      "name": "u01-p1-mapbridge",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 136,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 95,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(245,241,233,0.05)",
+        "stroke": "rgba(245,241,233,0.20)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**全章第一頁**:怎麼降損失、怎麼知道降好了?**這頁問**:十六個知識點怎麼接成一條路?\n*First page: how do we lower the loss and know it is lowered? How do the 16 points connect?*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp00-u01-p1-s1": {
+      "id": "lec03kp00-u01-p1-s1",
+      "type": "shape",
+      "name": "u01-p1-s1",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 245,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 360,
+      "height": 218,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**① 地基與走法**\nKP01 搜尋、KP02 梯度下降、KP03 停止準則、KP04 線搜索、KP05 動量\n**留下**:梯度怎麼算?\n*Foundations and moving*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp00-u01-p1-s2": {
+      "id": "lec03kp00-u01-p1-s2",
+      "type": "shape",
+      "name": "u01-p1-s2",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 460,
+        "y": 245,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 360,
+      "height": 218,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(95,184,168,0.12)",
+        "stroke": "rgba(95,184,168,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**② 梯度與估計**\nKP06 反向傳播、KP07 SGD、KP08 小批次、KP09 SGD 收斂\n**留下**:步長能自適應嗎?\n*Gradients and estimation*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp00-u01-p1-s3": {
+      "id": "lec03kp00-u01-p1-s3",
+      "type": "shape",
+      "name": "u01-p1-s3",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 860,
+        "y": 245,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 360,
+      "height": 218,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(125,187,140,0.12)",
+        "stroke": "rgba(125,187,140,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**③ 自適應步長**\nKP10 AdaGrad、KP11 RMSProp 與 Adam\n**留下**:只看一點的損失夠嗎?\n*Adaptive steps*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp00-u01-p1-s4": {
+      "id": "lec03kp00-u01-p1-s4",
+      "type": "shape",
+      "name": "u01-p1-s4",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 860,
+        "y": 501,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 360,
+      "height": 187,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(224,153,95,0.12)",
+        "stroke": "rgba(224,153,95,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**④ 鄰域與銳度**\nKP12 平坦極小值、KP13 SAM、KP14 高效與自適應 SAM\n**留下**:為什麼非凸還練得動?\n*Neighbourhoods, sharpness*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp00-u01-p1-s5": {
+      "id": "lec03kp00-u01-p1-s5",
+      "type": "shape",
+      "name": "u01-p1-s5",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 460,
+        "y": 501,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 360,
+      "height": 187,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(217,119,87,0.12)",
+        "stroke": "rgba(217,119,87,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**⑤ 收斂與結論**\nKP15 過參數化收斂、KP16 全章總結\n**留下**:模型好不好要靠證據\n*Convergence and conclusions*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp00-u01-p1-s6": {
+      "id": "lec03kp00-u01-p1-s6",
+      "type": "shape",
+      "name": "u01-p1-s6",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 501,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 360,
+      "height": 187,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**全章一句話**\n損失→梯度→更新規則→訓練行為→驗證證據\n*loss, gradient, update, behaviour, evidence*",
+      "shapeKind": "rectangle"
+    },
+    "lec03kp00-u01-p1-conn1": {
+      "id": "lec03kp00-u01-p1-conn1",
+      "type": "connector",
+      "name": "u01-p1-conn1",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec03kp00-u01-p1-s1",
+        "sourceHook": 4,
+        "targetNodeId": "lec03kp00-u01-p1-s2",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec03kp00-u01-p1-conn2": {
+      "id": "lec03kp00-u01-p1-conn2",
+      "type": "connector",
+      "name": "u01-p1-conn2",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec03kp00-u01-p1-s2",
+        "sourceHook": 4,
+        "targetNodeId": "lec03kp00-u01-p1-s3",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec03kp00-u01-p1-conn3": {
+      "id": "lec03kp00-u01-p1-conn3",
+      "type": "connector",
+      "name": "u01-p1-conn3",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec03kp00-u01-p1-s3",
+        "sourceHook": 8,
+        "targetNodeId": "lec03kp00-u01-p1-s4",
+        "targetHook": 0,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec03kp00-u01-p1-conn4": {
+      "id": "lec03kp00-u01-p1-conn4",
+      "type": "connector",
+      "name": "u01-p1-conn4",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec03kp00-u01-p1-s4",
+        "sourceHook": 12,
+        "targetNodeId": "lec03kp00-u01-p1-s5",
+        "targetHook": 4,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec03kp00-u01-p1-conn5": {
+      "id": "lec03kp00-u01-p1-conn5",
+      "type": "connector",
+      "name": "u01-p1-conn5",
+      "sceneId": "lec03kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec03kp00-u01-p1-s5",
+        "sourceHook": 12,
+        "targetNodeId": "lec03kp00-u01-p1-s6",
+        "targetHook": 4,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec03kp00-frame-u01": {
+      "id": "lec03kp00-frame-u01",
+      "type": "frame",
+      "name": "lec03kp00-frame-u01",
+      "sceneId": "scene-root",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 400,
+      "height": 200,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 0
+      },
+      "text": "全章地圖",
+      "frame": {
+        "childSceneId": "lec03kp00-scene-u01",
+        "previewMode": "live",
+        "padding": 18,
+        "clip": true
+      }
+    }
+  },
+  "steps": [
+    {
+      "id": "lec03kp00-root-step-u01",
+      "order": 0,
+      "label": "全章地圖",
+      "durationMs": 900,
+      "holdMs": 500,
+      "easing": "smooth",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "scene-root",
+        "point": {
+          "x": 200,
+          "y": 100
+        },
+        "zoom": 2.6666666666666665,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "speakerNotes": "教材程度:大學生(undergrad)。簡報時長:4 小時(淨授課 200 分鐘,每 KP 12.5 分鐘)。本檔是全章地圖,共 1 頁,放在 KP01 之前。"
+    },
+    {
+      "id": "lec03kp00-u01-step1",
+      "order": 1,
+      "label": "全章地圖",
+      "durationMs": 900,
+      "holdMs": 500,
+      "easing": "smooth",
+      "speakerNotes": "這是第 3 章的第一頁,沒有上一頁,先給一張地圖。本章要回答兩件事:怎麼把損失降下去,又怎麼知道降好了。十六個知識點分成五個階段。第一階段是地基與走法:KP01 把訓練看成在參數空間的搜尋,KP02 到 05 是梯度下降、學習率、停止準則、線搜索與動量,留下的問題是梯度怎麼算。第二階段是梯度與估計:KP06 反向傳播,KP07 與 08 的 SGD 與小批次,KP09 的收斂分析,留下的問題是步長能不能自適應。第三階段是自適應步長:KP10 的 AdaGrad,KP11 的 RMSProp 與 Adam,留下的問題是只看一點的損失夠不夠。第四階段是鄰域與銳度:KP12 到 14 的平坦極小值與 SAM。第五階段是收斂與結論:KP15 的過參數化保證,KP16 的總結。每一段結束都留下一個問題,下一段第一頁就接住它,這就是這條路的接法。接下來進入 KP01:把訓練看成參數空間的搜尋。",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "lec03kp00-scene-u01",
+        "point": {
+          "x": 640.0,
+          "y": 310.0
+        },
+        "zoom": 0.8780487804878049,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "title": "深度學習導論 第3章 全章地圖(大學生・4小時)",
+    "createdAt": "2026-10-13T00:00:00.000Z",
+    "updatedAt": "2026-10-13T00:00:00.000Z",
+    "aspectRatio": "16:9"
+  }
+}
