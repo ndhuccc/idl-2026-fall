@@ -1,5 +1,5 @@
-# 第 1 週補充講義 KP06｜分類工具各有不同假設
-# Week 1 supplement KP06 | Classification methods use different assumptions
+# 第 1 週講義 KP06｜分類工具各有不同假設
+# Week 1 lecture KP06 | Classification methods use different assumptions
 
 **程度 / Level：**大學生 / Undergraduate　**建議時間 / Time：**15 分鐘　**對應實作 / Related practice：**手算二類後驗並比較 LDA/QDA 假設。
 

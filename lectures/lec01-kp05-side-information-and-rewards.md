@@ -1,5 +1,5 @@
-# 第 1 週補充講義 KP05｜回饋型態改變學習目標
-# Week 1 supplement KP05 | Feedback changes the learning objective
+# 第 1 週講義 KP05｜回饋型態改變學習目標
+# Week 1 lecture KP05 | Feedback changes the learning objective
 
 **程度 / Level：**大學生 / Undergraduate　**建議時間 / Time：**15 分鐘（第一章 3 小時配置的一部分）　**對應實作 / Related practice：**辨識投影準則與行動回報；無程式作業。
 
