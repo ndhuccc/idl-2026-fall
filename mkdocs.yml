@@ -63,6 +63,17 @@ nav:
           - KP08 從邏輯單元走向可學權重: lectures/lec01-kp08-early-neural-network-history.md
           - KP09 架構與訓練共同推動復興: lectures/lec01-kp09-modern-deep-learning-history.md
           - KP10 用共同框架選下一步: lectures/lec01-kp10-learning-task-and-method-map.md
+      - 第 2 週 Week 2:
+          - KP01 神經元把訊號加總，過門檻才放電: lectures/lec02-kp01-biological-neuron-and-mp-unit.md
+          - KP02 猜錯才改權重，Perceptron 自己學出權重: lectures/lec02-kp02-perceptron-learning-rule.md
+          - KP03 標籤改成 ±1，更新規則縮成「猜錯時加 2ηyx」: lectures/lec02-kp03-signum-update-derivations.md
+          - KP04 單層 Perceptron 解不了 XOR，可分也不保證泛化: lectures/lec02-kp04-perceptron-limits-and-generalization.md
+          - KP05 把神經元接成層，非線性才讓多層有力量: lectures/lec02-kp05-mlp-and-nonlinearity.md
+          - KP06 13 種活化函數分四族，隱藏層優先 ReLU 家族: lectures/lec02-kp06-activation-functions.md
+          - KP07 損失函數把「錯多少」變成一個數: lectures/lec02-kp07-loss-functions.md
+          - KP08 用連續誤差取代「對或錯」，ADALINE 與邏輯回歸: lectures/lec02-kp08-adaline-and-logistic-regression.md
+          - KP09 RBF 用固定的局部基函數，SOM 不用標籤就能自己分群: lectures/lec02-kp09-rbf-and-som.md
+          - KP10 萬有逼近定理：一層隱藏層夠多就能逼近任何連續函數，但沒說怎麼學: lectures/lec02-kp10-universal-approximation.md
       - 第 3 週 Week 3:
           - KP01 最佳化即參數搜尋: lectures/lec03-kp01-optimization-as-search.md
           - KP02 梯度下降與學習率: lectures/lec03-kp02-gradient-descent-and-learning-rate.md
