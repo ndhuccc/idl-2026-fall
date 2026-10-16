@@ -40,6 +40,7 @@
 
 ## 決策與異動紀錄
 
+- 2026-10-16 — 依老師要求把「週次進度表跟著實際製作的講義內容更新配置」寫進標準工作規範:`AGENTS.md` 新增 §5.12(依實際講義拆列並概括主題、每列列出存在的講義與簡報連結、備註寫知識點範圍、未列入進度表的講義會落到選單「其他」、不自行改週次日期、驗證與記錄),§5.1、§5.11 的同步步驟指向 §5.12,§9 檢查清單新增一項。pr-2026-fall、course-template、idl-2026-fall 三個倉庫的 `AGENTS.md` 相同。
 - 2026-10-16 — 新增技能 `.agents/skills/slides-to-four-panel-comics/`(讀簡報、擷取每個核心概念、為每個概念產生一張 16:9 的 2×2 四格漫畫並插入簡報;含 `SKILL.md`、`references/jbd-format.md`、`scripts/insert_jbd_comics.py` 等);三個倉庫(idl-2026-fall、pr-2026-fall、course-template)內容相同。
 - 2026-10-14 — 第二章 KP01–KP10 驗收通過並已推送(commit c35b244)。新增全章地圖 `slides/lec02-kp00-chapter-map.jbd.json`(1 頁,十個 KP 蛇行排列,公式用 LaTeX),本機版尚未推送。技能 `audit_deck.py` 新增 G3(公式須用 LaTeX、不得用 Unicode 近似字元),已同步到 course-template 與 pr-2026-fall;第 2 章 KP01–KP10 簡報仍有 Unicode 公式,老師決定這個單元先不改。
 

@@ -239,7 +239,7 @@ gh workflow run deploy-site.yml                                    # 第一次�
 - 作法:若老師提供教科書章節(PDF、貼上的文本或網址),依 `.agents/skills/textbook-lecture-notes/SKILL.md` 製作**繁體中文與英文對照**的講義(知識點萃取、高中可讀的白話撰寫、公式範例、示意圖與公式圖)。
   沒有章節文本時,在 `lectures/` 新增 `lecNN.md`(NN 為兩位數週次);格式照 `lectures/lec01.md`:開頭有週次、對應實作、學習目標。
   數學式用 `$...$`(行內)與 `$$...$$`(區塊);圖片放 `assets/figures/` 並用相對路徑引用。
-- 同步:`schedule.md` 該週的「講義」欄加連結。
+- 同步:`schedule.md` 該週的「講義」欄加連結,並依 §5.12 讓進度表反映實際講義內容。
 - 驗證:`python3 scripts/build_docs.py && mkdocs build` 無 ERROR。
 
 ### 5.2 新增實驗(Lab)
@@ -305,7 +305,16 @@ gh workflow run deploy-site.yml                                    # 第一次�
 - 若要從講義產生 JianBauDau 投影片草稿(完整 `lecNN.jbd.json`),依 `.agents/skills/view-from-text/SKILL.md`。產出後仍須執行下方的 `check_slides.py` 檢查,並請老師在 JianBauDau 中逐頁確認排版。
 - 若是 JianBauDau JSON,執行 `python3 scripts/check_slides.py`。**FAIL 必須修正**(例如匯入用的 page spec、孤兒節點、`asset:` 伺服器參照);**WARN 請逐項告知老師確認**(講者備註、電子郵件、疑似學號、檔案大小)。
 - 提醒老師:課程網站是公開網址,`slides/` 內的檔案不需登入即可下載;講者備註會一起給學生。
-- 同步:`schedule.md` 或 `lectures/lecNN.md` 的投影片連結;網站下載頁由 `build_docs.py` 自動產生,不需手動維護。
+- 同步:`schedule.md` 或 `lectures/lecNN.md` 的投影片連結(依 §5.12,連結要指向實際存在的檔案);網站下載頁由 `build_docs.py` 自動產生,不需手動維護。
+
+### 5.12 週次進度表跟著實際製作的內容更新(通用原則,適用所有單元)
+每次新增、拆分、合併、改名或刪除某週的講義、簡報、實驗、作業之後,**在同一次提交裡**讓 `schedule.md` 反映「實際做出來的內容」,不要停在計畫表的籠統標題:
+1. **依實際講義配置該週的列**:一週的內容若分成幾個主題段(例如感知器、線性判別函數、支持向量機),就拆成幾列(週次、日期相同,和第 2 週的「正課/自主學習」寫法一樣)。每列的「主題」用該段實際講義的內容概括(括號內列出關鍵概念),原計畫的英文標題可保留。
+2. **每列列出該段所有講義與對應簡報**,連結必須指向**實際存在**的檔案。檔案改名或刪除時,一併修正 `schedule.md` 與講義內的簡報連結,不要留下點了會「File not found」的連結。
+3. **備註欄**寫合併或拆分的原因、知識點範圍(例如 KP06–KP13)、自主學習或選讀等說明。
+4. **網站選單由 `schedule.md` 產生**:沒有列進進度表的講義會被歸到選單的「其他 Others」。所以每份講義都要在 `schedule.md` 至少出現一次,選單的各週底下不應出現「其他」。
+5. **不要自己改週次與日期**(放假週、期中期末也不動),除非老師明確要求;要改時照 §5.4 辦理。
+6. **驗證與記錄**:`python3 scripts/build_docs.py && mkdocs build` 無 ERROR 與 WARNING(特別是失效連結);在 `CHANGELOG.md` 記一行(類型「更新」),並更新 `COURSE_STATE.md`。
 
 ---
 
@@ -368,6 +377,7 @@ gh workflow run deploy-site.yml                                    # 第一次�
 - [ ] `python3 scripts/doctor.py` 沒有 ❌
 - [ ] 沒有新增成績、名單、個資、Token 類的內容
 - [ ] 網站能建置(動到文件時)/ 測試符合預期(動到實驗時)
+- [ ] 新增、改名或刪除講義與簡報後,`schedule.md` 已依實際內容更新(§5.12):選單沒有「其他」,連結都指向存在的檔案
 - [ ] 已向老師摘要「改了什麼」並取得同意後才提交
 - [ ] 已推送,且遠端與本機一致(`git status` 顯示 up to date)
 - [ ] `COURSE_STATE.md` 已更新
