@@ -103,8 +103,42 @@ def render_nav() -> str:
     return NAV_START + "\n".join(lines) + "\n" + NAV_END
 
 
+# 講義標題格式(AGENTS.md §5.12 第 6 項):知識點講義寫 `KPNN 標題`,不用冒號、不加「(試做)」之類標註、不附英文
+_KP_SLUG = re.compile(r"-kp(\d{2})(?:-|$)")
+_KP_TITLE = re.compile(r"^KP(\d{2}) \S")
+_NOTE_WORDS = re.compile(r"[（(\[【][^）)\]】]*(試做|草稿|待驗收|暫定|製作中|TODO|WIP|DRAFT)[^）)\]】]*[）)\]】]", re.I)
+_TRAILING_EN = re.compile(r"[（(][^）)]*[A-Za-z]{3,}[^）)]*[）)]\s*$")
+
+
+def check_titles(order: list[tuple[str, str, str]]) -> list[str]:
+    """Return human-readable problems with the lecture titles that become the left-hand menu entries."""
+    problems: list[str] = []
+    for week, title, path in order:
+        where = f"{path}(標題「{title}」)"
+        if not week:
+            problems.append(f"{where}:沒有列入 schedule.md,選單會歸到「其他」(§5.12 第 4 項)")
+        m = _KP_SLUG.search(path)
+        if m:
+            t = _KP_TITLE.match(title)
+            if not t:
+                problems.append(f"{where}:知識點講義的標題應為「KP{m.group(1)} 標題」(KP、兩位數編號、一個半形空格、標題,不用冒號)")
+            elif t.group(1) != m.group(1):
+                problems.append(f"{where}:標題的編號 KP{t.group(1)} 與檔名的 kp{m.group(1)} 不一致")
+        if _NOTE_WORDS.search(title):
+            problems.append(f"{where}:標題不要加「(試做)」「(草稿)」之類的標註")
+        if _TRAILING_EN.search(title):
+            problems.append(f"{where}:標題不要附英文括號")
+    return problems
+
+
+
 def main() -> int:
-    argparse.ArgumentParser(description=__doc__.split("\n\n")[0]).parse_args()
+    ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    ap.add_argument("--strict", action="store_true", help="標題格式有問題時以非 0 結束(預設只列出警告)")
+    args, _ = ap.parse_known_args()
+    problems = check_titles(lecture_order())
+    for p in problems:
+        print(f"[警告] 講義標題格式:{p}")
     text = MK.read_text(encoding="utf-8")
     block = render_nav()
     if NAV_START in text and NAV_END in text:
@@ -118,6 +152,8 @@ def main() -> int:
         print("mkdocs.yml nav updated")
     else:
         print("mkdocs.yml nav already up to date")
+    if problems and args.strict:
+        return 1
     return 0
 
 
