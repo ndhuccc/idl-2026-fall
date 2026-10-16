@@ -118,16 +118,26 @@ def check_titles(order: list[tuple[str, str, str]]) -> list[str]:
         if not week:
             problems.append(f"{where}:沒有列入 schedule.md,選單會歸到「其他」(§5.12 第 4 項)")
         m = _KP_SLUG.search(path)
-        if m:
-            t = _KP_TITLE.match(title)
-            if not t:
-                problems.append(f"{where}:知識點講義的標題應為「KP{m.group(1)} 標題」(KP、兩位數編號、一個半形空格、標題,不用冒號)")
-            elif t.group(1) != m.group(1):
-                problems.append(f"{where}:標題的編號 KP{t.group(1)} 與檔名的 kp{m.group(1)} 不一致")
+        t = _KP_TITLE.match(title)
+        if not t:
+            problems.append(f"{where}:所有講義的標題都應為「KPNN 標題」(KP、兩位數編號、一個半形空格、標題,不用冒號)")
+        elif m and t.group(1) != m.group(1):
+            problems.append(f"{where}:標題的編號 KP{t.group(1)} 與檔名的 kp{m.group(1)} 不一致")
         if _NOTE_WORDS.search(title):
             problems.append(f"{where}:標題不要加「(試做)」「(草稿)」之類的標註")
         if _TRAILING_EN.search(title):
             problems.append(f"{where}:標題不要附英文括號")
+    # 每一週的編號從 KP01 起依進度表順序遞增(檔名自帶 kpNN 的講義,以檔名編號為準,允許跳號)
+    by_week: dict[str, list[tuple[str, str]]] = {}
+    for week, title, path in order:
+        if week:
+            by_week.setdefault(week, []).append((title, path))
+    for week, items in by_week.items():
+        nums = [int(m.group(1)) for title, _ in items if (m := _KP_TITLE.match(title))]
+        if len(nums) == len(items) and nums != sorted(set(nums)):
+            problems.append(f"第 {week} 週:講義標題的編號重複或順序不對({', '.join(f'KP{n:02d}' for n in nums)}),應從 KP01 依進度表順序遞增")
+        elif len(nums) == len(items) and not any(_KP_SLUG.search(p) for _, p in items) and nums != list(range(1, len(nums) + 1)):
+            problems.append(f"第 {week} 週:講義標題的編號應為 KP01 起連續遞增,目前是 {', '.join(f'KP{n:02d}' for n in nums)}")
     return problems
 
 
