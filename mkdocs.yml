@@ -42,9 +42,7 @@ validation:
   unrecognized_links: info
   anchors: info
 
-# 暫不公開的草稿頁:HW 01 內容與日期定了之後,把 README.draft.md 改回 README.md,並刪除下面兩行
-exclude_docs: |
-  assignments/hw01/README.draft.md
+# HW 01 正式頁面由 assignments/hw01/README.md 產生。
 
 # --- nav(由 build_docs.py 依 schedule.md 產生,請勿手改)---
 nav:
