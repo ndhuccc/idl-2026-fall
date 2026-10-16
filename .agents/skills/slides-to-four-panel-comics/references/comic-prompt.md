@@ -13,3 +13,4 @@ Visual invariants: [directions, relative position, signs, class colors].
 Avoid: decorative equations, tiny text, wrong labels, false probabilities, misleading geometry, cropped panels, watermark.
 
 For precise mathematics, omit numeric axis ticks unless the generator can place them correctly. Inspect the result; regenerate factual errors rather than declaring an inaccurate diagram schematic.
+

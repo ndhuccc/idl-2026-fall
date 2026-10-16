@@ -25,6 +25,16 @@ Adopt the source domain expert and educational cartoonist roles. Use the user's 
 - Inspect every generated image for legibility, arithmetic, spelling, diagram geometry and clipping. Incorrect ticks, points, perpendicularity or class sides require correction; a disclaimer does not repair a misleading teaching diagram. Prefer unscaled diagrams without numeric ticks when precise geometry is unnecessary. Preserve true formulas.
 - If image generation is unavailable, supply complete per-concept prompts and report that images were not generated. Never silently substitute placeholders into the deck. Continue insertion only with actual available images.
 
+## 2A. Prepare compact embedded images
+
+- Preserve generated originals unchanged. Use JPEG for newly inserted comics by default: quality 90, maximum width 1920 pixels, 4:4:4 chroma (Pillow subsampling=0), optimized encoding. Keep aspect ratio, never upscale or crop; composite transparency onto white before JPEG encoding.
+- Encode from the original high-resolution source; avoid repeated lossy recompression. The utility preserves existing RGB JPEG bytes when within the width limit.
+- Inspect each encoded image at the intended presentation size for Traditional Chinese characters, equations, subscripts, thin lines, panel borders and clipping. Encoding success or a smaller file does not prove readability.
+- If text or formulas blur, retry from the original with quality 95 or a larger width; use PNG or original-byte embedding when lossless detail or transparency is needed. Select per image.
+- Embed actual encoded bytes with matching MIME: JPEG uses `data:image/jpeg;base64,...`; PNG uses `data:image/png;base64,...`. Never relabel PNG bytes as JPEG or merely rename an extension. For PPTX use actual encoded images through native tools; verify support before selecting other formats.
+- Compare actual input/output image bytes and final deck size. Report measured savings only; Base64 adds roughly one third to encoded bytes. A JPEG can be larger than a simple PNG: select PNG/original when smaller and equally readable. Do not sacrifice readability to meet a size target.
+- Apply compression only to newly inserted comics; do not recompress existing user-added images or alter original slides.
+
 ## 3. Insert safely
 
 - Embed image bytes or package all assets so import works without private URLs or local paths.
@@ -37,13 +47,22 @@ Adopt the source domain expert and educational cartoonist roles. Use the user's 
 For supported JBD schema v3, create a manifest with an `items` array; each item contains `anchor_step_id`, `title`, and `image` (path relative to manifest, or absolute). Run:
 
 ```bash
-python scripts/insert_jbd_comics.py source.jbd.json comics.json output.jbd.json
+python scripts/insert_jbd_comics.py source.jbd.json comics.json output.jbd.json --image-format jpeg --jpeg-quality 90 --max-width 1920
 ```
+
+Set per-item `image_format` (`jpeg`, `png`, `original`), `jpeg_quality` (integer 1–95), and `max_width` (positive integer pixels) to override CLI defaults. Original mode embeds unchanged bytes without resizing; normalize EXIF orientation first. Example:
+
+```json
+{"items":[{"anchor_step_id":"source-step-id","title":"概念名稱","image":"comic.png","image_format":"jpeg","jpeg_quality":90,"max_width":1920}]}
+```
+
+For a lossless fallback use `"image_format": "png"` or `"image_format": "original"`. The utility reports original/embedded image-byte totals, measured reduction and final deck bytes; its structural validation does not replace §2A visual review or native playback checks.
 
 The script requires Pillow, preserves original nodes/scenes, appends images into unused scene regions, inserts steps, validates references and collision constraints, and refuses to overwrite files. On reruns use the original deck; do not insert duplicate comics into an already augmented deck.
 
 ## 4. Validate and deliver
 
+- Verify decoded image format matches MIME, transparency handling, compressed-text legibility and measured image/deck sizes.
 - Verify source-to-comic coverage, immediate-next-step mapping, unique IDs, contiguous orders, valid references, valid embedded images, original node preservation and absence of viewport overlap with all original content and other comics.
 - Use the actual presentation application to import and play all added steps when available. Check canvas overview and each camera view; screenshots must show full images without adjacent page fragments. Report honestly if runtime validation is unavailable.
 - Save through the environment's persistent artifact mechanism. Return the editable file and a concise count/mapping; do not claim installation, successful import or publication without evidence.

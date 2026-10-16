@@ -2,7 +2,7 @@
 """Insert manifested PNG/JPEG comics after JBD v3 scene-point steps, collision-free."""
 import argparse, base64, copy, datetime, io, json, math, uuid
 from pathlib import Path
-from PIL import Image
+from PIL import Image, ImageOps
 
 def overlap(a,b):
     return a[0]<b[2] and b[0]<a[2] and a[1]<b[3] and b[1]<a[3]
@@ -33,7 +33,54 @@ def bounds(n,nodes,seen=None):
         r=math.hypot(w,h); return x-r,y-r,x+r,y+r
     return min(x,x+w),min(y,y+h),max(x,x+w),max(y,y+h)
 
-def insert(source,manifest):
+
+def prepare_image(path, image_format='jpeg', jpeg_quality=90, max_width=1920):
+    """Encode an embedding copy; never modify input files."""
+    if image_format not in ('jpeg', 'png', 'original'):
+        raise ValueError('image_format must be jpeg, png or original')
+    if type(jpeg_quality) is not int or not 1 <= jpeg_quality <= 95:
+        raise ValueError('jpeg_quality must be an integer from 1 to 95')
+    if type(max_width) is not int or max_width <= 0:
+        raise ValueError('max_width must be a positive integer')
+    data = Path(path).read_bytes()
+    with Image.open(io.BytesIO(data)) as check:
+        check.verify()
+    with Image.open(io.BytesIO(data)) as source:
+        fmt = source.format
+        mime = {'PNG':'image/png', 'JPEG':'image/jpeg', 'WEBP':'image/webp'}.get(fmt)
+        if mime is None:
+            raise ValueError('Unsupported image format')
+        if getattr(source, 'n_frames', 1) != 1:
+            raise ValueError('Comic must be a static image')
+        im = ImageOps.exif_transpose(source)
+        w, h = im.size
+        if abs(w/h-16/9)/(16/9) > .005:
+            raise ValueError('Comic must be 16:9 (0.5% tolerance)')
+        orientation = source.getexif().get(274, 1)
+        if image_format == 'original':
+            if orientation != 1:
+                raise ValueError('Normalize EXIF orientation before original-byte embedding')
+            return data, mime
+        if image_format == 'jpeg' and fmt == 'JPEG' and w <= max_width and orientation == 1 and im.mode == 'RGB':
+            return data, mime
+        if w > max_width:
+            im = im.resize((max_width, max(1, round(h*max_width/w))), Image.Resampling.LANCZOS)
+        output = io.BytesIO()
+        if image_format == 'jpeg':
+            rgba = im.convert('RGBA')
+            rgb = Image.new('RGB', rgba.size, 'white')
+            rgb.paste(rgba, mask=rgba.getchannel('A'))
+            rgb.save(output, format='JPEG', quality=jpeg_quality, subsampling=0, optimize=True)
+            mime = 'image/jpeg'
+        else:
+            im.save(output, format='PNG', optimize=True)
+            mime = 'image/png'
+        encoded = output.getvalue()
+    with Image.open(io.BytesIO(encoded)) as check:
+        check.verify()
+    return encoded, mime
+
+def insert(source,manifest,*,image_format='jpeg',jpeg_quality=90,max_width=1920):
     p=copy.deepcopy(source)
     if p['schemaVersion']!=3: raise ValueError('Only schemaVersion 3 supported')
     steps=p['steps']; ids=[s['id'] for s in steps]
@@ -52,14 +99,7 @@ def insert(source,manifest):
         anchor=item['anchor_step_id']
         if anchor not in ids: raise ValueError('Unknown anchor: '+anchor)
         anchor_step=steps[ids.index(anchor)]; sid=anchor_step['target']['sceneId']
-        data=Path(item['image']).read_bytes()
-        with Image.open(io.BytesIO(data)) as im:
-            im.verify()
-        with Image.open(io.BytesIO(data)) as im:
-            w,h=im.size; fmt=im.format
-        if abs(w/h-16/9)/(16/9)>.005: raise ValueError('Comic must be 16:9 (0.5% tolerance)')
-        mime={'PNG':'image/png','JPEG':'image/jpeg','WEBP':'image/webp'}.get(fmt)
-        if mime is None: raise ValueError('Unsupported image format')
+        data,mime=prepare_image(item['image'],item.get('image_format',image_format),item.get('jpeg_quality',jpeg_quality),item.get('max_width',max_width))
         # Fixed 1280×720 camera plus 32-unit perimeter; dynamically placed below ALL occupied bounds.
         x=anchor_step['target']['point']['x']; top=max([b[3] for b in occupied[sid]] or [0])+160
         y=top+392; rect=(x-672,y-392,x+672,y+392)
@@ -85,14 +125,18 @@ def insert(source,manifest):
     return p
 
 def main():
-    ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('source',type=Path);ap.add_argument('manifest',type=Path);ap.add_argument('output',type=Path);a=ap.parse_args()
+    ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('source',type=Path);ap.add_argument('manifest',type=Path);ap.add_argument('output',type=Path);ap.add_argument('--image-format',choices=('jpeg','png','original'),default='jpeg');ap.add_argument('--jpeg-quality',type=int,default=90);ap.add_argument('--max-width',type=int,default=1920);a=ap.parse_args()
     if a.output.exists(): raise ValueError('Output exists; choose a new versioned filename')
-    items=json.loads(a.manifest.read_text())['items']
+    items=json.loads(a.manifest.read_text(encoding='utf-8-sig'))['items']
     for item in items:
         path=Path(item['image']);item['image']=str(path if path.is_absolute() else a.manifest.parent/path)
-    p=insert(json.loads(a.source.read_text()),items)
+    source=json.loads(a.source.read_text(encoding='utf-8-sig'))
+    p=insert(source,items,image_format=a.image_format,jpeg_quality=a.jpeg_quality,max_width=a.max_width)
     a.output.parent.mkdir(parents=True,exist_ok=True)
     # Exclusive creation avoids clobbering concurrent output.
-    with a.output.open('x') as f:json.dump(p,f,ensure_ascii=False,indent=2)
-    print(json.dumps({'output':str(a.output.resolve()),'inserted':len(items),'total_steps':len(p['steps']),'structural_validation':'passed','runtime_import':'not_checked'},ensure_ascii=False))
+    with a.output.open('x',encoding='utf-8') as f:json.dump(p,f,ensure_ascii=False,indent=2)
+    added=[n for key,n in p['nodes'].items() if key not in source['nodes']]
+    original_bytes=sum(Path(item['image']).stat().st_size for item in items)
+    embedded_bytes=sum(len(base64.b64decode(n['image']['src'].split(',',1)[1])) for n in added)
+    print(json.dumps({'original_image_bytes':original_bytes,'embedded_image_bytes':embedded_bytes,'image_bytes_reduction_percent':round(100*(1-embedded_bytes/original_bytes),2),'output_bytes':a.output.stat().st_size,'visual_quality':'requires_review','output':str(a.output.resolve()),'inserted':len(items),'total_steps':len(p['steps']),'structural_validation':'passed','runtime_import':'not_checked'},ensure_ascii=False))
 if __name__=='__main__':main()
