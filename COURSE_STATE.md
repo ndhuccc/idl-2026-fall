@@ -31,14 +31,17 @@
 
 ## 待辦事項
 
-- [ ] HW 01–03 的確切發佈與截止日;`assignments/hw01/README.md` 目前仍是範本示範作業(梯度下降),要換成實際的 HW 01「反向傳播與 MLP」(依 `.agents/skills/assignment-design/SKILL.md`)
+- [x] HW 01 正式作業已完成:`assignments/hw01/README.md`(「Backpropagation:兩層與三層 MLP 的函數逼近與雙螺旋分類」,發佈 2026-10-19、截止 2026-11-09),`schedule.md`/`mkdocs.yml` 已同步;LabTube 匯入檔 `assignments/labtube-import/assignments_hw01.json` 已建立(`check_assignments.py` 0 FAIL / 0 WARN)。
+- [ ] HW 02–03 的確切發佈與截止日,以及正式作業內容(依 `.agents/skills/assignment-design/SKILL.md`)。
 - [ ] 期末專題確切截止日;e 學苑繳交說明
 - [ ] LabTube:在 LabTube 建課、匯入修課名單,並把「學生作業 Repo 名稱前綴」設為 `idl-2026`;向學生公告作業範本網址與 LabTube 網址
 - [ ] 之後修改 `student-template/` 時,要手動同步到 `ndhuccc/idl-2026-hw-template`(學生已建立的 Repo 不會自動更新)
-- [ ] 每週講義與投影片(第1週KP01–KP10與第3週KP01–KP16已完成，其餘待補)
+- [ ] 每週講義與投影片(第 1–3 週已完成:第 1 週 lec01 KP01–KP10、第 2 週 lec02 KP01–KP10、第 3 週 lec03 KP01–KP16;其餘週次待補)
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+
+- 2026-10-17 — 清理過時待辦與殘留檔案:(1) 更正「每週講義與投影片」待辦,補上第 2 週(lec02 KP01–KP10)亦已完成;(2) HW 待辦拆分——HW 01 已於 2026-10-17 完成正式 `assignments/hw01/README.md` 並發布,改記為完成,只留 HW 02–03 的日期與內容待定;(3) 刪除 `assignments/hw01/README.draft.md`——該檔是 2026-10-13「HW 01 暫時從網站導覽拿掉」時把 `README.md` 改名保留的範本示範版(見下方該日紀錄),現已有正式 `README.md` 且 `mkdocs.yml` 的 `exclude_docs` 已移除,此檔已無用途,且 `.md` 會被 `build_docs.py` 複製到公開網站(內容含「老師用,發佈前整段刪除」的內部說明),故移除;刪除前版本可由 Git 歷史取回。
 
 - 2026-10-17 — 由 HW01 正式 README 產生 LabTube 匯入檔:新增 `assignments/labtube-import/assignments_hw01.json`(`build_labtube_import.py hw01 --course IDL115`,1 份作業、10 段說明;標題「Backpropagation:兩層與三層 MLP 的函數逼近與雙螺旋分類」、單元「反向傳播與梯度下降」、`opens 2026-10-19`／`due 2026-11-09`、`rubric_url` 指課程網站)。`check_assignments.py` **FAIL 0 / WARN 0**。另:稍早工作區曾出現一個未追蹤的 `assignments/hw01/hw01_published_labtube_import.json`(位置不符慣例、缺 `course` 欄位、且其來源 README 當時尚不存在),已不採用,改以本次由 README 重新產生的檔案為準。此檔不會進公開網站(`build_docs.py` 只複製 .md/.html/.pdf/圖片,不含 .json)。尚未匯入 LabTube;匯入由老師在 LabTube 端確認。
 
