@@ -40,6 +40,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-10-17 — 由 HW01 正式 README 產生 LabTube 匯入檔:新增 `assignments/labtube-import/assignments_hw01.json`(`build_labtube_import.py hw01 --course IDL115`,1 份作業、10 段說明;標題「Backpropagation:兩層與三層 MLP 的函數逼近與雙螺旋分類」、單元「反向傳播與梯度下降」、`opens 2026-10-19`／`due 2026-11-09`、`rubric_url` 指課程網站)。`check_assignments.py` **FAIL 0 / WARN 0**。另:稍早工作區曾出現一個未追蹤的 `assignments/hw01/hw01_published_labtube_import.json`(位置不符慣例、缺 `course` 欄位、且其來源 README 當時尚不存在),已不採用,改以本次由 README 重新產生的檔案為準。此檔不會進公開網站(`build_docs.py` 只複製 .md/.html/.pdf/圖片,不含 .json)。尚未匯入 LabTube;匯入由老師在 LabTube 端確認。
+
 - 2026-10-16 — 依老師提供的 `slides-to-four-panel-comics-v1.1-jpeg.zip` 更新技能 `.agents/skills/slides-to-four-panel-comics/`:新增 §2A「準備精簡的內嵌圖片」(新插入的漫畫預設存成 JPEG,品質 90、寬度上限 1920、4:4:4、不放大不裁切;需保真或透明時改用 PNG 或原始位元組,每張可個別指定),`scripts/insert_jbd_comics.py` 新增 `--image-format`、`--jpeg-quality`、`--max-width` 與每項 `image_format`、`jpeg_quality`、`max_width`,並回報原始與內嵌位元組數;只壓縮新插入的漫畫,不動既有圖片與原簡報。我用 idl-2026-fall 的簡報與合成圖做過冒煙測試(可執行、結構驗證通過);實際漫畫的可讀性仍須目視確認。三個倉庫相同。
 - 2026-10-16 — 講義標題格式再統一:所有講義(含導論與整份課堂講義)一律「KPNN 標題」,每週編號從 KP01 起依進度表順序遞增;`scripts/sync_nav.py` 的 `check_titles` 同步擴大為檢查所有講義與週內編號。pr-2026-fall:第 1 週導論改為 KP01;第 2 週不再區分「正課」與「自主學習」,九份講義編為 KP01–KP09 並依內容拆成三列(貝氏決策與線性分類器 KP01–KP02、機率密度估計 KP03–KP06、單純貝氏最近鄰居與貝氏網路 KP07–KP09),各列附講義與簡報連結;原「選讀,不列入考試範圍」的備註隨之移除(考試範圍需另行確認)。course-template 的 lec01 連結文字改為「KP01 課程介紹與環境設定」。AGENTS.md §5.12 第 1、6 項更新,三個倉庫相同。
 - 2026-10-16 — 建置腳本自動檢查講義標題格式:`scripts/sync_nav.py` 新增 `check_titles`,每次建置(`build_docs.py` 會呼叫它)檢查選單用的講義標題——知識點講義須為「KPNN 標題」且編號與檔名一致、不得有「(試做)」等標註、不得附英文括號、須列入 schedule.md(否則落到「其他」);有問題只顯示「[警告] 講義標題格式」,加 `--strict` 才以非 0 結束。AGENTS.md §5.12 第 6 項補上說明。course-template 的 `lectures/lec01.md` 尚未列入進度表,會出現一則警告(範本狀態,課程設定後消失)。三個倉庫相同。
