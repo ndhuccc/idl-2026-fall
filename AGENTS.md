@@ -287,6 +287,7 @@ gh workflow run deploy-site.yml                                    # 第一次�
 ### 5.8 考試範圍與題庫
 - 範圍:在 `exams/` 新增 `scope-midterm.md`(對應週次與講義連結)。
 - 試題草稿或解答**不要放進公開 Repo**。考古題公開前要確認不會與本學期考題重複。
+- 依 Bloom 認知層次命題(期中考、期末考、小考、題庫):照 `.agents/skills/bloom-exam-designer/SKILL.md`;產出(試題、答案、解析)存到 Repo 以外的私人目錄。作業截止後的理解測驗另見 §5.3 的 `assignment-quiz`。
 
 ### 5.9 學期結束與封存
 1. 確認成績與名單**從未**進入 Repo(`doctor.py` 隱私檢查)。

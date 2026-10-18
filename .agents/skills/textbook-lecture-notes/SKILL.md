@@ -195,6 +195,12 @@ python -m playwright install chromium     # 只有需要公式圖片時才需要
 6. **不灌水**：不重複同名小節、不用空洞的提醒節湊篇幅（L2、L8、L9）。
 7. **全新撰寫**：說明文字依知識地圖重新寫；來源的事實、數字、數值例不改，比喻與習題可沿用並標出處（`audit_lecture.py --source` 比對連續 14 字相同的片段，L10）。
 
+### 4.7a 公式區塊格式（硬規則，`audit_lecture.py` L11）
+
+- 區塊公式的 `$$` 必須獨立成行、成對出現；前一個區塊的結尾 `$$` 與下一個區塊的開頭 `$$` 之間**必須空一行**。緊接著寫會讓網頁多出一串 `$$`（例如「$$$$」）。
+- 偵出：`audit_lecture.py` 回報 `FAIL L11`；也可用 `mkdocs build` 後檢查頁面是否有可見的 `$$`。修正：在兩個區塊之間加空行，或把兩段合併成一個區塊（用 `\` 或 `aligned` 換行）。
+- 新增或修改講義後，**所有**講義都要重跑稽核，不只檢查動到的那一份。
+
 ### 4.7 忠實與出處
 
 - 原文有錯或公式損壞：先還原，再重新推算。**不得默默修改數字**；若有疑問，在講義中標註並告知老師。
@@ -382,7 +388,7 @@ python .agents/skills/textbook-lecture-notes/scripts/render_formula.py --batch f
 11. **圖內無中文**：用腳本檢查 `assets/figures/src/` 中繪圖呼叫的字串參數（`text`、`set_xlabel`、`set_ylabel`、`set_title`、`legend`、`annotate`）是否含中文字，並確認 AI 生圖的提示檔沒有要求中文字。驗證腳本不提交。
 12. **圖的功能檢查**：每張圖的圖說含讀圖指引與功能標記；標記的功能必須對應圖的實際內容（例如標記 3 的圖，必須真的呈現空間或分布的幾何形狀）。
 
-13. **講義品質稽核**：執行 `python .agents/skills/textbook-lecture-notes/scripts/audit_lecture.py lectures/lecNN.md`，FAIL 必須為 0，WARN 逐項處理或說明；再把各小節標題依序讀一遍，應像一段順暢的論證，並抽樣自讀至少 20% 的小節。
+13. **講義品質稽核**：執行 `python .agents/skills/textbook-lecture-notes/scripts/audit_lecture.py lectures/lecNN.md`，FAIL 必須為 0（含 L11 公式區塊檢查：兩個 `$$ ... $$` 區塊之間必須空一行，否則網頁會顯示多餘的 `$$$$`），WARN 逐項處理或說明；再把各小節標題依序讀一遍，應像一段順暢的論證，並抽樣自讀至少 20% 的小節。
 
 驗證用的腳本是一次性的，不要提交進 Repo（除非是 `assets/figures/src/` 中的圖表腳本）。
 

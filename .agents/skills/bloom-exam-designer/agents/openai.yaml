@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bloom 命題"
+  short_description: "依講義與 Bloom 層次規劃試題、解析與品質報告;試題與答案不進入課程 Repo"
+  default_prompt: "請使用 $bloom-exam-designer,先讀課程命題流程與指定講義,確認範圍與規格後產生命題藍圖,經核准再命題;產出存到 Repo 以外的私人目錄。"

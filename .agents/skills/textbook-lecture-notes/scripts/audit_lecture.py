@@ -12,6 +12,8 @@ Checks what a program can check (SKILL.md section 7, NARRATIVE.md):
       example, common misconception, practice)
   L8  slide-by-slide transcription: too many tiny sections per knowledge point
   L9  slides / sections that are only a one-line fragment (< 40 characters of body)
+  L11 display math ($$ ... $$): a closing $$ line directly followed by an opening $$ line (no blank line between),
+      or an odd number of $$ lines. The site renders the stray "$$" as visible text ("$$$$" glitch). FAIL.
 Usage:  py .agents/skills/textbook-lecture-notes/scripts/audit_lecture.py lectures/lecNN.md
 Exit code 1 when there is a FAIL.
 """
@@ -75,6 +77,14 @@ def main():
     # L6
     for lvl, h, _ in heads:
         if CN_NUM.search(h): W("L6", f"Chinese numerals in a heading (use digits so it can be searched): {h!r}")
+    # L11 display-math fences: $$ lines must pair up, and two blocks need a blank line between them
+    lines = text.splitlines()
+    fence = [i for i, l in enumerate(lines) if l.strip() == "$$"]
+    if len(fence) % 2:
+        F("L11", f"odd number of '$$' lines ({len(fence)}): an unclosed display equation")
+    for k in range(1, len(fence) - 1, 2):
+        if fence[k + 1] == fence[k] + 1:
+            F("L11", f"line {fence[k] + 1}: closing '$$' directly followed by opening '$$'; insert a blank line (renders as '$$$$')")
     # L7 / L8 / L9 per knowledge point
     kp_idx = [(i, h) for i, (lvl, h, _) in enumerate(heads) if lvl == 2 and re.match(r"KP\s*\d+", h)]
     for n, (i, h) in enumerate(kp_idx):
