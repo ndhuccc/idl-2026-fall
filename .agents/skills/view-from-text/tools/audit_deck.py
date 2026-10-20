@@ -75,7 +75,7 @@ def main():
     ap.add_argument("--exclude-fig", action="append", default=[], help="lecture figure id the teacher agreed to leave out (repeatable)")
     ap.add_argument("--speaker-notes", action="store_true", help="every content page must carry speaker notes (P1)")
     ap.add_argument("--minutes", type=float, help="class-time budget for the main line (LEVELS.md section 7): warns when the estimate exceeds it (T1); pages whose step label starts with the extension marker are not counted")
-    ap.add_argument("--max-pages-per-kp", type=int, default=6, help="hard cap on the pages of one unit (one knowledge point), extension and continuation pages included (U1)")
+    ap.add_argument("--max-pages-per-kp", type=int, default=6, help="guideline for the pages of one unit (one knowledge point), extension and continuation pages included; more is allowed when clarity needs it (U1 warns only)")
     ap.add_argument("--source", action="append", default=[], help="source text file(s): O2 warns when pages repeat long runs of the source (14+ identical CJK characters)")
     ap.add_argument("--narrative", action="store_true", help="require a bridge node (name contains 'bridge') on every content page and speaker notes that link to the previous and next page (R1, R3); see .agents/skills/NARRATIVE.md")
     ap.add_argument("--outline", action="store_true", help="print the title chain and bridge line of every page, per unit, for the reading test (NARRATIVE.md section 5)")
@@ -272,6 +272,17 @@ def main():
         if hits:
             Wn("G3", f"{sid}#p{idx}: {len(hits)} Unicode math symbol(s) outside $...$ (e.g. {''.join(sorted(set(hits)))[:12]!r}): write formulas in LaTeX, vectors \mathbf{{}}, norms \|\cdot\| (AUDIT_CHECKLIST G3, G4)")
 
+    # ------------------------------------------------------------ C11 half-width punctuation next to Chinese (CLARITY.md C11)
+    HALF = re.compile(r"[㐀-鿿][,:;?!(]|[,:;?!)][㐀-鿿]")
+    for (sid, idx), ns in pages.items():
+        bad = 0
+        for n in ns:
+            if n["type"] in ("text", "shape"):
+                t = re.sub(r"\$\$.*?\$\$|\$[^$\n]*\$", "", n.get("text", ""), flags=re.S)
+                bad += sum(len(HALF.findall(ln)) for ln in t.split("\n") if not ln.lstrip().startswith("*"))
+        if bad:
+            Wn("C11", f"{sid}#p{idx}: {bad} half-width punctuation mark(s) next to Chinese; use full-width ，。：；？！（） (CLARITY.md C11)")
+
     # ------------------------------------------------------------ N3 results that appear without a derivation
     page_text = {}
     for (sid, idx), ns in pages.items():
@@ -359,7 +370,7 @@ def main():
     per_scene = Counter(sid for (sid, _idx) in pages)
     for sid, c in per_scene.items():
         if c > args.max_pages_per_kp:
-            F("U1", f"{S[sid]['name']!r} has {c} pages; a knowledge point may use at most {args.max_pages_per_kp} (move detail to the lecture)")
+            Wn("U1", f"{S[sid]['name']!r} has {c} pages; the guideline is {args.max_pages_per_kp}. More is allowed when clarity needs it: say which unit grew and why in the delivery summary")
     if args.source:
         stream = lambda t: "".join(CJK.findall(re.sub(r"\$[^$]*\$", "", t)))
         grams = set()
