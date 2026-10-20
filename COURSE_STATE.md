@@ -163,3 +163,5 @@
 - 2026-10-12 — 新增 `assignments/labtube.md`(LabTube 老師導覽),並在 AGENTS.md、SETUP.md、assignments/README.md 加入指引(自 pr-2026-fall 同步)。
 
 - 2026-10-12 — 同步 `view-from-text` 技能新規則與工具(中英對照、Frame 標準樣式、`tools/audit_deck.py`、`tools/preview_deck.py`),自 pr-2026-fall 同步通用改進。
+
+- 2026-10-20:lec04 含漫畫簡報(中文 18 + 英文 18,約 72 MB)已放入 `slides/comics/`(不列在下載頁首層清單,但會隨網站發佈)。尚未在 JianBauDau 實際匯入驗證。
