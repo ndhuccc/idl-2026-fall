@@ -76,9 +76,9 @@ Take 100 points and $K=5$. Shuffle and cut into 5 folds of 20 points; with a fix
 |---|---|---|---|---|---|
 | $E_k$ | 0.1153 | 0.1008 | 0.0642 | 0.1090 | 0.1218 |
 
-五個誤差加起來是 $0.5112$，平均 $\mathrm{CV}=0.5112/5=0.1022$。注意單一個 fold 的誤差很不穩：最小的 $0.0642$ 低於雜訊地板 $0.09$，最大的 $0.1218$ 是最小的約 $1.9$ 倍，這正是第 1 節的運氣；平均之後的 $0.1022$ 才是比較可靠的估計。
+五個誤差加起來是 $0.5111$，平均 $\mathrm{CV}=0.5111/5=0.1022$。注意單一個 fold 的誤差很不穩：最小的 $0.0642$ 低於雜訊地板 $0.09$，最大的 $0.1218$ 是最小的約 $1.9$ 倍，這正是第 1 節的運氣；平均之後的 $0.1022$ 才是比較可靠的估計。
 
-The five errors sum to $0.5112$ and the mean is $\mathrm{CV}=0.5112/5=0.1022$. Notice that a single fold's error is unstable: the smallest, $0.0642$, is below the noise floor $0.09$ and the largest, $0.1218$, is $1.9$ times the smallest; that is the luck of Section 1. The average $0.1022$ is the more reliable estimate.
+The five errors sum to $0.5111$ and the mean is $\mathrm{CV}=0.5111/5=0.1022$. Notice that a single fold's error is unstable: the smallest, $0.0642$, is below the noise floor $0.09$ and the largest, $0.1218$, is $1.9$ times the smallest; that is the luck of Section 1. The average $0.1022$ is the more reliable estimate.
 
 ![5-fold 交叉驗證的輪替（上，$K=5$，每個 fold 20 筆）：第 $k$ 輪把第 $k$ 個 fold（紅）留出來當驗證，其餘四個 fold（藍）訓練，最後得到 $E_1,\dots,E_5$；留一法 LOOCV（下，$K=n=100$，用 20 個格子示意）：每輪只留 1 筆，要訓練 100 次，每次用 99 筆。（The rotation of 5-fold cross-validation (top, $K=5$, 20 points per fold): round $k$ holds out the $k$-th fold (red) for validation and trains on the other four folds (blue), ending with $E_1,\dots,E_5$; leave-one-out LOOCV (bottom, $K=n=100$, drawn with 20 blocks): each round holds out one point, so 100 trainings of 99 points each are needed.）](../assets/figures/lec04-kp09-folds.png)
 
