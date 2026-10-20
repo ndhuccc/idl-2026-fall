@@ -4,9 +4,10 @@ Create ONE landscape 16:9 educational comic, exactly four panels in a 2×2 grid.
 
 Source meaning: [complete definition and causal mechanism].
 Required conditions: [assumptions / nonzero constraints / units].
-Panel 1: [concrete situation, exact dialogue].
-Panel 2: [question or obstacle, exact dialogue].
-Panel 3: [key mechanism with accurate visual and essential equation].
+Process to show: [setup with data and sample sizes → how each quantity is scored → every compared option in a small table or plot → the chosen result]. Do not show only the conclusion.
+Panel 1: [concrete situation or experiment setup, exact dialogue and labels].
+Panel 2: [question, obstacle or how each score is measured, exact dialogue].
+Panel 3: [key mechanism or the full result table/plot with accurate values and essential equation].
 Panel 4: [result, takeaway and misconception correction].
 Verified example: [inputs, intermediate calculation, result].
 Visual invariants: [directions, relative position, signs, class colors].
