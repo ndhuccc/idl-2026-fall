@@ -36,10 +36,16 @@
 - [ ] 期末專題確切截止日;e 學苑繳交說明
 - [ ] LabTube:在 LabTube 建課、匯入修課名單,並把「學生作業 Repo 名稱前綴」設為 `idl-2026`;向學生公告作業範本網址與 LabTube 網址
 - [ ] 之後修改 `student-template/` 時,要手動同步到 `ndhuccc/idl-2026-hw-template`(學生已建立的 Repo 不會自動更新)
-- [ ] 每週講義與投影片(第 1–3 週已完成:第 1 週 lec01 KP01–KP10、第 2 週 lec02 KP01–KP10、第 3 週 lec03 KP01–KP16;其餘週次待補)
+- [ ] 每週講義與投影片(第 1–3 週已完成:第 1 週 lec01 KP01–KP10、第 2 週 lec02 KP01–KP10、第 3 週 lec03 KP01–KP16;第 4 週 lec04 KP01–KP18 草稿 PR 待驗收;其餘週次待補)
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+
+- 2026-10-20 — 新增 KP01–KP18 漫畫英文版(精簡文字、字體稍小)存於 `assets/comics-en/`;含英文漫畫的簡報檔暫存共用資料夾。
+- 2026-10-20 — 技能 `slides-to-four-panel-comics` 再補「每格用白話讀得懂」六條原則(含「公式先定義再代數字」;先交代情境、符號首次出現附白話、一格一個因果、同色同義、圖加一句說明、刪去需額外前提或未計算的說法),並同步 `references/comic-prompt.md`。依老師對 KP02 漫畫 3 的回饋重畫;KP01 至 KP18 的漫畫圖放在 `assets/comics/`(程式繪製,非 AI 生圖;含漫畫的簡報檔暫存共用資料夾,JianBauDau 匯入播放尚未驗證)。
+- 2026-10-20 — 更新技能 `.agents/skills/slides-to-four-panel-comics/`:依老師對 lec04 KP01 漫畫的回饋,新增「要呈現實驗過程而非只放結論」原則(設定、各量如何打分、完整結果表、結論;數字須與講義一致),以及沒有生圖工具時用程式繪製並如實告知的作法。
+
+- 2026-10-20 — 第 4 週講義與簡報(草稿 PR,待老師驗收):依老師指示把原第 5 週的正則化內容放進第 4 週。來源 CCC-LNS `IDL_115/Ch05-regularization-overfitting`(讀取 2026-10-20),重新撰寫為 lec04 KP01–KP18(中英對照、大學生程度)+ 全章地圖 `slides/lec04-kp00-chapter-map.jbd.json`;每個 KP 2–3 張圖(淺色 PNG 給講義、深色 SVG 給簡報)。schedule.md 第 4 週改列實際講義;第 5 週列保留原標題(日期不動,內容已併入第 4 週,待老師決定第 5 週怎麼安排)。決定:程度大學生、18 KP × 12.5 分鐘 = 225 分鐘(比第 3 週的 200 分鐘多);每 KP 4 頁,audit 的 T1(約 16 分鐘)警告未處理。來源更正都寫在各講義「來源更正與取捨」(如 MSE 三角形標示、SURE 方向、多項式次數、L1 軟閾值條件、dropout 保留機率、Bagging 共變異數)。`[補充]` 標示的內容與 KP17 的 PyTorch 程式片段未實際執行(環境沒有 PyTorch)。JianBauDau 內的逐頁版面與 PDF 匯出尚未由老師確認;簡報講者備註會公開。
 
 - 2026-10-17 — 清理過時待辦與殘留檔案:(1) 更正「每週講義與投影片」待辦,補上第 2 週(lec02 KP01–KP10)亦已完成;(2) HW 待辦拆分——HW 01 已於 2026-10-17 完成正式 `assignments/hw01/README.md` 並發布,改記為完成,只留 HW 02–03 的日期與內容待定;(3) 刪除 `assignments/hw01/README.draft.md`——該檔是 2026-10-13「HW 01 暫時從網站導覽拿掉」時把 `README.md` 改名保留的範本示範版(見下方該日紀錄),現已有正式 `README.md` 且 `mkdocs.yml` 的 `exclude_docs` 已移除,此檔已無用途,且 `.md` 會被 `build_docs.py` 複製到公開網站(內容含「老師用,發佈前整段刪除」的內部說明),故移除;刪除前版本可由 Git 歷史取回。
 
@@ -157,3 +163,5 @@
 - 2026-10-12 — 新增 `assignments/labtube.md`(LabTube 老師導覽),並在 AGENTS.md、SETUP.md、assignments/README.md 加入指引(自 pr-2026-fall 同步)。
 
 - 2026-10-12 — 同步 `view-from-text` 技能新規則與工具(中英對照、Frame 標準樣式、`tools/audit_deck.py`、`tools/preview_deck.py`),自 pr-2026-fall 同步通用改進。
+
+- 2026-10-20:lec04 含漫畫簡報(中文 18 + 英文 18,約 72 MB)已放入 `slides/comics/`(不列在下載頁首層清單,但會隨網站發佈)。尚未在 JianBauDau 實際匯入驗證。

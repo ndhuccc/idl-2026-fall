@@ -1,0 +1,548 @@
+{
+  "schemaVersion": 3,
+  "rootSceneId": "scene-root",
+  "scenes": {
+    "lec04kp00-scene-u01": {
+      "id": "lec04kp00-scene-u01",
+      "name": "全章地圖",
+      "parentFrameId": "lec04kp00-frame-u01",
+      "nodeIds": [
+        "lec04kp00-u01-p1-title",
+        "lec04kp00-u01-p1-sub",
+        "lec04kp00-u01-p1-mapbridge",
+        "lec04kp00-u01-p1-s1",
+        "lec04kp00-u01-p1-s2",
+        "lec04kp00-u01-p1-s3",
+        "lec04kp00-u01-p1-s4",
+        "lec04kp00-u01-p1-s5",
+        "lec04kp00-u01-p1-s6",
+        "lec04kp00-u01-p1-conn1",
+        "lec04kp00-u01-p1-conn2",
+        "lec04kp00-u01-p1-conn3",
+        "lec04kp00-u01-p1-conn4"
+      ],
+      "camera": {
+        "x": 640.0,
+        "y": 310.0,
+        "zoom": 0.8780487804878049,
+        "rotation": 0
+      }
+    },
+    "scene-root": {
+      "id": "scene-root",
+      "name": "根畫布",
+      "parentFrameId": null,
+      "nodeIds": [
+        "lec04kp00-frame-u01"
+      ],
+      "camera": {
+        "x": 200,
+        "y": 100,
+        "zoom": 1.2,
+        "rotation": 0
+      }
+    }
+  },
+  "nodes": {
+    "lec04kp00-u01-p1-title": {
+      "id": "lec04kp00-u01-p1-title",
+      "type": "text",
+      "name": "u01-p1-title",
+      "sceneId": "lec04kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 26,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 60,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#f2ede4",
+        "fontSize": 42,
+        "radius": 0,
+        "fontWeight": 700,
+        "textAlign": "left",
+        "lineHeight": 1.25
+      },
+      "text": "第 4 章地圖:十八個知識點,五個階段"
+    },
+    "lec04kp00-u01-p1-sub": {
+      "id": "lec04kp00-u01-p1-sub",
+      "type": "text",
+      "name": "u01-p1-sub",
+      "sceneId": "lec04kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 88,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 38,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#b7b0a5",
+        "fontSize": 22,
+        "radius": 0,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.2
+      },
+      "text": "Map of Chapter 4: eighteen knowledge points in five stages"
+    },
+    "lec04kp00-u01-p1-mapbridge": {
+      "id": "lec04kp00-u01-p1-mapbridge",
+      "type": "shape",
+      "name": "u01-p1-mapbridge",
+      "sceneId": "lec04kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 136,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 120,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(245,241,233,0.05)",
+        "stroke": "rgba(245,241,233,0.20)",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**全章第一頁**:第 3 章把損失壓低了。**這頁問**:壓低的數字可信嗎?模型怎麼才不會只背答案?\n*First page: Chapter 3 lowered the loss. Can the number be trusted, and how do we keep a model from just memorising?*",
+      "shapeKind": "rectangle"
+    },
+    "lec04kp00-u01-p1-s1": {
+      "id": "lec04kp00-u01-p1-s1",
+      "type": "shape",
+      "name": "u01-p1-s1",
+      "sceneId": "lec04kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 276,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 360,
+      "height": 196,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(106,159,214,0.12)",
+        "stroke": "rgba(106,159,214,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 20,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**① 誠實評估與誤差語言**\nKP01 資料切分、KP02 偏差變異、KP03 共變異數、KP04 雜訊地板\n**留下**:沒見過的點,誤差能還原嗎?\n*Honest evaluation and the language of error*",
+      "shapeKind": "rectangle"
+    },
+    "lec04kp00-u01-p1-s2": {
+      "id": "lec04kp00-u01-p1-s2",
+      "type": "shape",
+      "name": "u01-p1-s2",
+      "sceneId": "lec04kp00-scene-u01",
+      "transform": {
+        "x": 460,
+        "y": 276,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 360,
+      "height": 196,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(95,184,168,0.12)",
+        "stroke": "rgba(95,184,168,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 20,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**② 誤差拆解**\nKP05 測試誤差、KP06 Stein 與 SURE、KP07 複雜度\n**留下**:修正項對應哪種擬合?\n*Decomposing the error*",
+      "shapeKind": "rectangle"
+    },
+    "lec04kp00-u01-p1-s3": {
+      "id": "lec04kp00-u01-p1-s3",
+      "type": "shape",
+      "name": "u01-p1-s3",
+      "sceneId": "lec04kp00-scene-u01",
+      "transform": {
+        "x": 860,
+        "y": 276,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 360,
+      "height": 196,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(224,153,95,0.12)",
+        "stroke": "rgba(224,153,95,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 20,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**③ 過擬合與驗證**\nKP08 過擬合欠擬合、KP09 交叉驗證、KP10 誤差為何回升\n**留下**:能不能直接壓複雜度?\n*Overfitting and validation*",
+      "shapeKind": "rectangle"
+    },
+    "lec04kp00-u01-p1-s4": {
+      "id": "lec04kp00-u01-p1-s4",
+      "type": "shape",
+      "name": "u01-p1-s4",
+      "sceneId": "lec04kp00-scene-u01",
+      "transform": {
+        "x": 860,
+        "y": 512,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 360,
+      "height": 196,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(217,119,87,0.12)",
+        "stroke": "rgba(217,119,87,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 20,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**④ 正則化**\nKP11 稀疏性、KP12 L2、KP13 L1、KP14 權重衰減與輸入雜訊、KP15 早停\n**留下**:平均多個模型呢?\n*Regularization*",
+      "shapeKind": "rectangle"
+    },
+    "lec04kp00-u01-p1-s5": {
+      "id": "lec04kp00-u01-p1-s5",
+      "type": "shape",
+      "name": "u01-p1-s5",
+      "sceneId": "lec04kp00-scene-u01",
+      "transform": {
+        "x": 460,
+        "y": 512,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 360,
+      "height": 196,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(125,187,140,0.12)",
+        "stroke": "rgba(125,187,140,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 20,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**⑤ 集成與正規化**\nKP16 Bagging、KP17 Dropout、KP18 批次正規化\n**接下來**:CNN\n*Ensembles and normalization*",
+      "shapeKind": "rectangle"
+    },
+    "lec04kp00-u01-p1-s6": {
+      "id": "lec04kp00-u01-p1-s6",
+      "type": "shape",
+      "name": "u01-p1-s6",
+      "sceneId": "lec04kp00-scene-u01",
+      "transform": {
+        "x": 60,
+        "y": 512,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 360,
+      "height": 196,
+      "zIndex": 2,
+      "locked": false,
+      "style": {
+        "fill": "rgba(224,122,112,0.12)",
+        "stroke": "rgba(224,122,112,0.65)",
+        "textColor": "#f2ede4",
+        "fontSize": 20,
+        "radius": 16,
+        "fontWeight": 400,
+        "textAlign": "left",
+        "lineHeight": 1.4,
+        "borderStyle": "solid",
+        "borderWidth": 2
+      },
+      "text": "**全章一句話**\n誠實評估→拆解誤差→複雜度→正則化→平均與正規化\n*evaluate honestly, decompose, measure complexity, regularize, average and normalise*",
+      "shapeKind": "rectangle"
+    },
+    "lec04kp00-u01-p1-conn1": {
+      "id": "lec04kp00-u01-p1-conn1",
+      "type": "connector",
+      "name": "u01-p1-conn1",
+      "sceneId": "lec04kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec04kp00-u01-p1-s1",
+        "sourceHook": 4,
+        "targetNodeId": "lec04kp00-u01-p1-s2",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec04kp00-u01-p1-conn2": {
+      "id": "lec04kp00-u01-p1-conn2",
+      "type": "connector",
+      "name": "u01-p1-conn2",
+      "sceneId": "lec04kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec04kp00-u01-p1-s2",
+        "sourceHook": 4,
+        "targetNodeId": "lec04kp00-u01-p1-s3",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec04kp00-u01-p1-conn3": {
+      "id": "lec04kp00-u01-p1-conn3",
+      "type": "connector",
+      "name": "u01-p1-conn3",
+      "sceneId": "lec04kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec04kp00-u01-p1-s3",
+        "sourceHook": 8,
+        "targetNodeId": "lec04kp00-u01-p1-s4",
+        "targetHook": 0,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec04kp00-u01-p1-conn4": {
+      "id": "lec04kp00-u01-p1-conn4",
+      "type": "connector",
+      "name": "u01-p1-conn4",
+      "sceneId": "lec04kp00-scene-u01",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#6a9fd6",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "lec04kp00-u01-p1-s4",
+        "sourceHook": 12,
+        "targetNodeId": "lec04kp00-u01-p1-s5",
+        "targetHook": 4,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "lec04kp00-frame-u01": {
+      "id": "lec04kp00-frame-u01",
+      "type": "frame",
+      "name": "lec04kp00-frame-u01",
+      "sceneId": "scene-root",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 400,
+      "height": 200,
+      "zIndex": 1,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#f2ede4",
+        "fontSize": 22,
+        "radius": 0
+      },
+      "text": "全章地圖",
+      "frame": {
+        "childSceneId": "lec04kp00-scene-u01",
+        "previewMode": "live",
+        "padding": 18,
+        "clip": true
+      }
+    }
+  },
+  "steps": [
+    {
+      "id": "lec04kp00-root-step-u01",
+      "order": 0,
+      "label": "全章地圖",
+      "durationMs": 900,
+      "holdMs": 500,
+      "easing": "smooth",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "scene-root",
+        "point": {
+          "x": 200,
+          "y": 100
+        },
+        "zoom": 2.6666666666666665,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "speakerNotes": "教材程度:大學生(undergrad)。簡報時長:4.5 小時(淨授課 225 分鐘,每 KP 12.5 分鐘)。本檔是全章地圖,共 1 頁,放在 KP01 之前。"
+    },
+    {
+      "id": "lec04kp00-u01-step1",
+      "order": 1,
+      "label": "全章地圖",
+      "durationMs": 900,
+      "holdMs": 500,
+      "easing": "smooth",
+      "speakerNotes": "這是第 4 章的第一頁,沒有上一頁,先給一張地圖。第 3 章教我們把損失壓低,這一章問:壓低的數字可不可信,模型怎麼才不會只背答案。十八個知識點分成五個階段。第一階段是誠實評估與誤差語言:KP01 資料切分與兩種作弊,KP02 到 04 的偏差、變異、共變異數與雜訊地板,留下的問題是沒見過的點誤差能不能還原。第二階段是誤差拆解:KP05 測試誤差,KP06 Stein 引理與 SURE,KP07 複雜度,留下的問題是修正項對應哪種擬合。第三階段是過擬合與驗證:KP08 到 10,留下的問題是能不能直接壓低複雜度。第四階段是正則化:KP11 到 15 的稀疏性、L2、L1、權重衰減與輸入雜訊、早停,留下的問題是平均多個模型會怎樣。第五階段是集成與正規化:KP16 Bagging、KP17 Dropout、KP18 批次正規化,接下來是 CNN。全章一句話:誠實評估、拆解誤差、量複雜度、正則化,再用平均與正規化穩住訓練。",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "lec04kp00-scene-u01",
+        "point": {
+          "x": 640.0,
+          "y": 310.0
+        },
+        "zoom": 0.8780487804878049,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "title": "深度學習導論 第4章 全章地圖(大學生・4.5 小時)",
+    "createdAt": "2026-10-13T00:00:00.000Z",
+    "updatedAt": "2026-10-13T00:00:00.000Z",
+    "aspectRatio": "16:9"
+  }
+}
