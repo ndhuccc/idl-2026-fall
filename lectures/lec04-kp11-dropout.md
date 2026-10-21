@@ -94,9 +94,9 @@ With many neurons a simulation is more convincing: take 20 neurons with random $
 
 ### 3. 與獨立多模型平均的差別（Differences from independent models）
 
-縮放後的輸出，可以看成這 $2^n$ 個子網路預測的「平均」。這句話在最簡單的情形（被 dropout 的那層後面直接接 softmax 分類層）可以證明是精確的；在含 ReLU 等非線性的深網路，它只是**近似**。實務上這個近似效果不錯（Srivastava 等人 2014，`[補充]`），但這是經驗，不是定理。本單元不做證明。
+縮放後的輸出，是這 $2^n$ 個子網路預測的**近似**平均，不是精確的算術平均。例如只有一個神經元、保留機率 $0.5$、兩個輸出分數為 $(2m,\,0)$（$m\in\{0,1\}$ 是遮罩）：兩個子網路預測第一類的機率平均約 $0.6904$，而縮放後的預測約 $0.7311$，兩者不同。數學上可以說明縮放對應的是子網路預測的「正規化幾何平均」（在最簡單的 softmax 情形精確成立），但本單元不做證明。實務上這個近似效果不錯（Srivastava 等人 2014，`[補充]`），但這是經驗，不是定理。
 
-The weight-scaled output can be seen as the "average" of the predictions of the $2^n$ sub-networks. In the simplest case (the dropped layer feeds a softmax classification layer directly) this can be proved exact; in deep networks with nonlinearities such as ReLU it is only an **approximation**. In practice the approximation works well (Srivastava et al., 2014, `[Added]`), but that is experience, not a theorem. This unit does not prove it.
+The weight-scaled output is an **approximation** of the average of the predictions of the $2^n$ sub-networks, not their exact arithmetic mean. For example, with one neuron kept with probability $0.5$ and two output scores $(2m,\,0)$ ($m\in\{0,1\}$ is the mask): the average over the two sub-networks of the probability of the first class is about $0.6904$, while the weight-scaled prediction is about $0.7311$, so they differ. Mathematically the scaling corresponds to the "normalized geometric mean" of the sub-network predictions (exact in the simplest softmax case), but this unit does not prove it. In practice the approximation works well (Srivastava et al., 2014, `[Added]`), but that is experience, not a theorem.
 
 **和「獨立訓練 $k$ 個模型再平均」比較。**
 
