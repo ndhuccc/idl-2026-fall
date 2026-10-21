@@ -45,13 +45,13 @@ Both coordinates converge only if $|1-25\eta|<1$, that is $\eta<2/25=0.08$. From
 |---|---|---|---|
 | 0.01 | 0.990 | 0.750 | $y$ 很快收斂，但 $x$ 縮到 $1/10$ 要 230 步 |
 | 0.07 | 0.930 | $-0.750$ | 都收斂，$x$ 縮到 $1/10$ 要 32 步，$y$ 每步變號 |
-| 0.10 | 0.900 | $-1.500$ | $y$ 每步放大 1.5 倍，30 步後 $|y|\approx3.8\times10^{5}$，發散 |
+| 0.10 | 0.900 | $-1.500$ | $y$ 每步放大 1.5 倍，30 步後 $\lvert y\rvert\approx3.8\times10^{5}$，發散 |
 
 | $\eta$ | factor of $x$ | factor of $y$ | result |
 |---|---|---|---|
 | 0.01 | 0.990 | 0.750 | $y$ converges quickly, but $x$ needs 230 steps to shrink to $1/10$ |
 | 0.07 | 0.930 | $-0.750$ | both converge; $x$ needs 32 steps to shrink to $1/10$ and $y$ flips sign every step |
-| 0.10 | 0.900 | $-1.500$ | $y$ grows 1.5 times per step; after 30 steps $|y|\approx3.8\times10^{5}$, it diverges |
+| 0.10 | 0.900 | $-1.500$ | $y$ grows 1.5 times per step; after 30 steps $\lvert y\rvert\approx3.8\times10^{5}$, it diverges |
 
 這就是兩難：陡的座標限制了學習率的上限，平的座標卻因此走得慢。真實的網路有成千上萬個座標，每個座標的尺度又隨訓練變化，沒有辦法事先一個一個調。AdaGrad（Duchi 等人，2011）的想法是讓演算法自己根據每個座標看過的梯度，各配一個步長。
 

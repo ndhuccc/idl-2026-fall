@@ -64,9 +64,9 @@ The residual is multiplied by a fixed ratio 0.64 per step, which is called **lin
 
 ![半對數圖：全梯度下降 η=0.2 的殘差 12.5×0.64^t 是直線往下掉，藍色的 O(1/t) 上界緩慢下降（Semi-log plot: the full-gradient residual 12.5×0.64^t falls along a straight line while the blue O(1/t) upper bound falls slowly）](../assets/figures/lec03-kp09-rates.png)
 
-**圖說 `lec03-kp09-rates`**：先看橘線：縱軸是對數，所以直線代表每步乘上固定比例，$t=40$ 時殘差約 $2.2	imes10^{-7}$；再看藍線：$\|w_0-w^{\ast}\|^2/(2\eta t)$ 只緩慢下降，$t=40$ 時還有約 1.56。兩條線的距離說明：上界是保證，不是預測。〔功能：1、2〕
+**圖說 `lec03-kp09-rates`**：先看橘線：縱軸是對數，所以直線代表每步乘上固定比例，$t=40$ 時殘差約 $2.2\times10^{-7}$；再看藍線：$\|w_0-w^{\ast}\|^2/(2\eta t)$ 只緩慢下降，$t=40$ 時還有約 1.56。兩條線的距離說明：上界是保證，不是預測。〔功能：1、2〕
 
-**Caption `lec03-kp09-rates`**: Look at the orange line first: the vertical axis is logarithmic, so a straight line means a fixed ratio per step, and the residual is about $2.2	imes10^{-7}$ at $t=40$. Then the blue line: $\|w_0-w^{\ast}\|^2/(2\eta t)$ falls slowly and is still about 1.56 at $t=40$. The gap between the lines shows that a bound is a guarantee, not a prediction. [Function: 1, 2]
+**Caption `lec03-kp09-rates`**: Look at the orange line first: the vertical axis is logarithmic, so a straight line means a fixed ratio per step, and the residual is about $2.2\times10^{-7}$ at $t=40$. Then the blue line: $\|w_0-w^{\ast}\|^2/(2\eta t)$ falls slowly and is still about 1.56 at $t=40$. The gap between the lines shows that a bound is a guarantee, not a prediction. [Function: 1, 2]
 
 ### 2. 固定步長的 SGD：停在一條帶子裡（Fixed-step SGD stays in a band）
 
