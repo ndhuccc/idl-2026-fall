@@ -141,9 +141,9 @@ Shrinking a little lowers the variance by more than it raises the squared bias: 
 
 A different setting: a bathroom scale weighs you every day. If it systematically reads 2 kg low but is very steady, you know how to correct it; if it has no bias but its reading jumps by 5 kg at random, you can hardly tell the trend of your weight. The MSE puts both problems on one ruler.
 
-接下來的問題是：實際的估計往往是把好幾個量**加在一起**（把許多模型的預測平均、把幾個權重相加）。加起來之後，變異數怎麼算？$\mathrm{Var}(X+Y)$ 一定等於 $\mathrm{Var}(X)+\mathrm{Var}(Y)$ 嗎？這是 KP03 的主題。
+接下來的問題是：我們量到的資料不只有真實的規律，還混了雜訊。即使有了最好的模型，誤差最低能低到哪裡？這是 KP03 的主題。
 
-The next question: real estimates often **add** several quantities together (averaging the predictions of many models, summing a few weights). After adding, how is the variance computed? Does $\mathrm{Var}(X+Y)$ always equal $\mathrm{Var}(X)+\mathrm{Var}(Y)$? That is the topic of KP03.
+The next question: the data we measure carry not only the true pattern but also noise. Even with the best possible model, how low can the error go? That is the topic of KP03.
 
 ### 本單元重點整理（KP02 summary）
 
@@ -167,23 +167,23 @@ The next question: real estimates often **add** several quantities together (ave
 
 - 「MSE 就是變異數」——不是，它還包含偏差的平方。
 - 「無偏一定最好」——要看 MSE：變異數很大的無偏估計可能輸給稍微有偏、很穩的估計。
-- 「變異數大就是資料雜訊大」——不一定，也可能是估計器對訓練樣本太敏感，那就是過擬合的徵兆（KP08）。
+- 「變異數大就是資料雜訊大」——不一定，也可能是估計器對訓練樣本太敏感，那就是過擬合的徵兆（KP05）。
 - 「直角三角形的斜邊是 $\mathrm{MSE}$」——斜邊是 $\sqrt{\mathrm{MSE}}$，平方後才是加法。
 
 **Common misconceptions**:
 
 - "MSE is just the variance." No: it also contains the squared bias.
 - "Unbiased is always best." Look at the MSE: an unbiased estimate with a large variance can lose to a slightly biased, very stable one.
-- "A large variance means noisy data." Not necessarily: the estimator may also be too sensitive to the training sample, which is a sign of overfitting (KP08).
+- "A large variance means noisy data." Not necessarily: the estimator may also be too sensitive to the training sample, which is a sign of overfitting (KP05).
 - "The hypotenuse of the right triangle is $\mathrm{MSE}$." The hypotenuse is $\sqrt{\mathrm{MSE}}$; the addition holds after squaring.
 
 **圖**：本單元三張圖，`lec04-kp02-darts`（四塊靶：偏差與變異的 $2\times2$ 組合，功能 1、2）、`lec04-kp02-triangle`（直角三角形，功能 1、2）與 `lec04-kp02-shrink`（無偏與縮小估計的分布，功能 2、3），以 `assets/figures/src/lec04-kp02-figures.py` 繪製，每個數字都由程式印出。
 
 **Figures**: Three figures in this unit, `lec04-kp02-darts` (four boards: the $2\times2$ combinations of bias and variance; functions 1, 2), `lec04-kp02-triangle` (the right triangle; functions 1, 2) and `lec04-kp02-shrink` (the distributions of the unbiased and the shrunk estimator; functions 2, 3), drawn by `assets/figures/src/lec04-kp02-figures.py`; every number is printed by the program.
 
-**想深入**（選讀）：在學習問題裡，$\widehat X$ 換成「某個學習演算法在隨機抽到的訓練集上做出的預測」，$X$ 換成真實函數在那一點的值，同一條恆等式照樣成立：期望是對「訓練集怎麼抽」取的。於是模型太簡單時（欠擬合），預測的平均離真實值遠，偏差大；模型太複雜時（過擬合），預測隨訓練集大幅晃動，變異大。KP08 會用實驗把這件事算出來，KP11 起的正則化就是用少量偏差換變異的下降。
+**想深入**（選讀）：在學習問題裡，$\widehat X$ 換成「某個學習演算法在隨機抽到的訓練集上做出的預測」，$X$ 換成真實函數在那一點的值，同一條恆等式照樣成立：期望是對「訓練集怎麼抽」取的。於是模型太簡單時（欠擬合），預測的平均離真實值遠，偏差大；模型太複雜時（過擬合），預測隨訓練集大幅晃動，變異大。KP05 會用實驗把這件事算出來，KP07 起的正則化就是用少量偏差換變異的下降。
 
-**Going deeper** (optional): In a learning problem replace $\widehat X$ by "the prediction a learning algorithm makes on a randomly drawn training set" and $X$ by the value of the true function at that point; the same identity still holds, with the expectation taken over "how the training set is drawn". When the model is too simple (underfitting) the mean prediction is far from the truth and the bias is large; when the model is too complex (overfitting) the prediction swings widely with the training set and the variance is large. KP08 computes this in an experiment, and the regularization from KP11 on trades a little bias for a drop in variance.
+**Going deeper** (optional): In a learning problem replace $\widehat X$ by "the prediction a learning algorithm makes on a randomly drawn training set" and $X$ by the value of the true function at that point; the same identity still holds, with the expectation taken over "how the training set is drawn". When the model is too simple (underfitting) the mean prediction is far from the truth and the bias is large; when the model is too complex (overfitting) the prediction swings widely with the training set and the variance is large. KP05 computes this in an experiment, and the regularization from KP07 on trades a little bias for a drop in variance.
 
 **小練習**：
 

@@ -450,7 +450,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**① 誠實評估與誤差語言**\nKP01–KP04\n留下：沒見過的點，誤差能還原嗎？\n*Honest evaluation and the language of error.*",
+      "text": "**① 誠實評估與誤差語言**\nKP01–KP03\n留下：沒見過的點，誤差能還原嗎？\n*Honest evaluation and the language of error.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p2-c2": {
@@ -481,7 +481,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**② 誤差拆解**\nKP05–KP07\n留下：修正項對應哪種擬合？\n*Decomposing the error.*",
+      "text": "**② 誤差拆解**\nKP04–KP【待改07】\n留下：修正項對應哪種擬合？\n*Decomposing the error.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p2-c3": {
@@ -512,7 +512,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**③ 過擬合與驗證**\nKP08–KP10\n留下：能不能直接壓低複雜度？\n*Overfitting and validation.*",
+      "text": "**③ 過擬合與驗證**\nKP05–KP【待改10】\n留下：能不能直接壓低複雜度？\n*Overfitting and validation.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p2-conn7": {
@@ -615,7 +615,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**④ 正則化**\nKP11–KP15\n留下：平均多個模型會怎樣？\n*Regularisation.*",
+      "text": "**④ 正則化**\nKP07–KP10\n留下：平均多個模型會怎樣？\n*Regularisation.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p2-c10": {
@@ -646,7 +646,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**⑤ 集成與正規化**\nKP16–KP18\n接下來：卷積神經網路（CNN）。\n*Ensembles and normalisation; the next chapter is the CNN.*",
+      "text": "**⑤ 集成與正規化**\nKP【待改16】–KP12\n接下來：卷積神經網路（CNN）。\n*Ensembles and normalisation; the next chapter is the CNN.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p2-conn13": {
@@ -711,7 +711,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "階段一（KP01–KP04）：誠實評估與誤差的語言"
+      "text": "階段一（KP01–KP03）：誠實評估與誤差的語言"
     },
     "lec04kp00-u01-p3-sub": {
       "id": "lec04kp00-u01-p3-sub",
@@ -862,7 +862,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP03 共變異數與線性組合**\n幾個量相加，變異不只是各自相加，還要看它們是否「一起動」。\n*The variance of a sum also depends on how the parts move together.*",
+      "text": "**KP【待改03】 共變異數與線性組合**\n幾個量相加，變異不只是各自相加，還要看它們是否「一起動」。\n*The variance of a sum also depends on how the parts move together.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p3-c6": {
@@ -893,7 +893,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP04 真實模型與雜訊地板**\n觀測 $y=f+\\varepsilon$。雜訊的變異數 $\\sigma^2$ 是任何模型都壓不掉的地板。\n*Observation = truth + noise; the noise variance is a floor.*",
+      "text": "**KP03 真實模型與雜訊地板**\n觀測 $y=f+\\varepsilon$。雜訊的變異數 $\\sigma^2$ 是任何模型都壓不掉的地板。\n*Observation = truth + noise; the noise variance is a floor.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p3-c9": {
@@ -953,7 +953,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "階段二（KP05–KP07）：把誤差拆開"
+      "text": "階段二（KP04–KP【待改07】）：把誤差拆開"
     },
     "lec04kp00-u01-p4-sub": {
       "id": "lec04kp00-u01-p4-sub",
@@ -1042,7 +1042,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP05 測試誤差的拆解**\n沒參與訓練的點：誤差乾淨地拆成「預測離真值」加上「雜訊地板」。\n*For a test point the error splits cleanly.*",
+      "text": "**KP04 測試誤差的拆解**\n沒參與訓練的點：誤差乾淨地拆成「預測離真值」加上「雜訊地板」。\n*For a test point the error splits cleanly.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p4-c2": {
@@ -1073,7 +1073,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP06 Stein 引理與 SURE**\n參與訓練的點，預測與雜訊不再獨立；用 Stein 引理算出修正項。\n*For a training point the cross term needs a correction.*",
+      "text": "**KP【待改06】 Stein 引理與 SURE**\n參與訓練的點，預測與雜訊不再獨立；用 Stein 引理算出修正項。\n*For a training point the cross term needs a correction.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p4-c3": {
@@ -1104,7 +1104,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP07 敏感度與複雜度**\n各點的敏感度加起來，就是模型的有效複雜度；線性模型等於參數個數。\n*The summed sensitivity is the effective complexity.*",
+      "text": "**KP【待改07】 敏感度與複雜度**\n各點的敏感度加起來，就是模型的有效複雜度；線性模型等於參數個數。\n*The summed sensitivity is the effective complexity.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p4-c7": {
@@ -1164,7 +1164,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "階段三（KP08–KP10）：過擬合與驗證"
+      "text": "階段三（KP05–KP【待改10】）：過擬合與驗證"
     },
     "lec04kp00-u01-p5-sub": {
       "id": "lec04kp00-u01-p5-sub",
@@ -1253,7 +1253,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP08 過擬合與泛化**\n複雜度升高，訓練誤差一路降，測試誤差卻先降後升；兩者的差距是泛化落差。\n*Training error falls, test error falls then rises.*",
+      "text": "**KP05 過擬合與泛化**\n複雜度升高，訓練誤差一路降，測試誤差卻先降後升；兩者的差距是泛化落差。\n*Training error falls, test error falls then rises.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p5-c2": {
@@ -1284,7 +1284,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP09 交叉驗證**\n資料不夠時，分成幾份輪流當驗證集，用平均的驗證誤差來選模型。\n*Rotate the validation fold and average the errors.*",
+      "text": "**KP06 交叉驗證**\n資料不夠時，分成幾份輪流當驗證集，用平均的驗證誤差來選模型。\n*Rotate the validation fold and average the errors.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p5-c3": {
@@ -1315,7 +1315,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP10 真實誤差為何回升**\n驗證集若與訓練集重疊，就看不到回升；兩者必須分開。\n*Overlap hides the rise of the true error.*",
+      "text": "**KP【待改10】 真實誤差為何回升**\n驗證集若與訓練集重疊，就看不到回升；兩者必須分開。\n*Overlap hides the rise of the true error.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p5-c7": {
@@ -1375,7 +1375,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "階段四（KP11–KP15）：正則化"
+      "text": "階段四（KP07–KP10）：正則化"
     },
     "lec04kp00-u01-p6-sub": {
       "id": "lec04kp00-u01-p6-sub",
@@ -1464,7 +1464,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP11 正則化與稀疏性**\n把權重縮小：偏差略升、變異降得更多，整體誤差可能更低。\n*Shrinking weights trades a little bias for less variance.*",
+      "text": "**KP07 正則化與稀疏性**\n把權重縮小：偏差略升、變異降得更多，整體誤差可能更低。\n*Shrinking weights trades a little bias for less variance.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p6-c2": {
@@ -1495,7 +1495,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP12 L2 正則化與收縮**\n沿各個特徵方向收縮，有效自由度變小。\n*L2 shrinks along each feature direction.*",
+      "text": "**KP08 L2 正則化與收縮**\n沿各個特徵方向收縮，有效自由度變小。\n*L2 shrinks along each feature direction.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p6-c3": {
@@ -1526,7 +1526,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP13 L1 正則化與軟閾值**\n把小權重直接砍成 0，得到稀疏的模型。\n*L1 sets small weights to zero.*",
+      "text": "**KP09 L1 正則化與軟閾值**\n把小權重直接砍成 0，得到稀疏的模型。\n*L1 sets small weights to zero.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p6-c7": {
@@ -1557,7 +1557,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP14 權重衰減與輸入雜訊**\n權重衰減就是 L2；在雜訊小的線性模型裡，輸入雜訊的效果也近似 L2。\n*Weight decay is L2; small input noise acts like L2 in a linear model.*",
+      "text": "**KP【待改14】 權重衰減與輸入雜訊**\n權重衰減就是 L2；在雜訊小的線性模型裡，輸入雜訊的效果也近似 L2。\n*Weight decay is L2; small input noise acts like L2 in a linear model.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p6-c8": {
@@ -1588,7 +1588,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP15 早停法**\n在驗證誤差最低的地方停止訓練，也是在限制複雜度。\n*Stop where the validation error is lowest.*",
+      "text": "**KP10 早停法**\n在驗證誤差最低的地方停止訓練，也是在限制複雜度。\n*Stop where the validation error is lowest.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p6-c11": {
@@ -1648,7 +1648,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "階段五（KP16–KP18）：集成與正規化"
+      "text": "階段五（KP【待改16】–KP12）：集成與正規化"
     },
     "lec04kp00-u01-p7-sub": {
       "id": "lec04kp00-u01-p7-sub",
@@ -1737,7 +1737,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP16 Bagging 與變異降低**\n平均很多個用不同資料訓練的模型，變異降低；降多少看模型之間的共變異數。\n*Averaging models trained on different data lowers the variance.*",
+      "text": "**KP【待改16】 Bagging 與變異降低**\n平均很多個用不同資料訓練的模型，變異降低；降多少看模型之間的共變異數。\n*Averaging models trained on different data lowers the variance.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p7-c2": {
@@ -1768,7 +1768,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP17 Dropout**\n訓練時隨機遮掉一部分神經元，等於同時訓練很多個共用權重的小網路。\n*Random masks train many weight-sharing sub-networks.*",
+      "text": "**KP11 Dropout**\n訓練時隨機遮掉一部分神經元，等於同時訓練很多個共用權重的小網路。\n*Random masks train many weight-sharing sub-networks.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p7-c3": {
@@ -1799,7 +1799,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP18 批次正規化**\n每層把一批輸入標準化，再學縮放與平移，讓訓練更穩。\n*Standardise each batch, then learn a scale and a shift.*",
+      "text": "**KP12 批次正規化**\n每層把一批輸入標準化，再學縮放與平移，讓訓練更穩。\n*Standardise each batch, then learn a scale and a shift.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p7-c7": {
@@ -1948,7 +1948,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**① 誠實評估**（KP01–KP04）\n資料切分正確，才有可信的誤差；雜訊地板是壓不掉的底線。\n*Split the data correctly; the noise floor cannot be removed.*",
+      "text": "**① 誠實評估**（KP01–KP03）\n資料切分正確，才有可信的誤差；雜訊地板是壓不掉的底線。\n*Split the data correctly; the noise floor cannot be removed.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p8-c3": {
@@ -1979,7 +1979,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**② 拆解與量測**（KP05–KP10）\n$\\mathbf{Err}\\approx\\mathbf{err}+$ 複雜度；複雜度太高，真實誤差回升。\n*Err is about err plus the complexity; too much complexity makes it rise.*",
+      "text": "**② 拆解與量測**（KP04–KP【待改10】）\n$\\mathbf{Err}\\approx\\mathbf{err}+$ 複雜度；複雜度太高，真實誤差回升。\n*Err is about err plus the complexity; too much complexity makes it rise.*",
       "shapeKind": "rectangle"
     },
     "lec04kp00-u01-p8-c5": {
@@ -2010,7 +2010,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**③ 壓低複雜度**（KP11–KP18）\n正則化、早停、平均多個模型、正規化。\n*Regularise, stop early, average models and normalise.*",
+      "text": "**③ 壓低複雜度**（KP07–KP12）\n正則化、早停、平均多個模型、正規化。\n*Regularise, stop early, average models and normalise.*",
       "shapeKind": "rectangle"
     }
   },
@@ -2066,7 +2066,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁把十八個知識點分成五個階段。第一階段 KP01 到 KP04：誠實評估與誤差的語言，留下的問題是沒見過的點誤差能不能還原。第二階段 KP05 到 KP07：把誤差拆解開，留下的問題是修正項對應哪一種擬合。第三階段 KP08 到 KP10：過擬合與驗證，留下的問題是能不能直接壓低複雜度。第四階段 KP11 到 KP15：正則化，留下的問題是平均多個模型會怎樣。第五階段 KP16 到 KP18：集成與正規化，接下來是卷積神經網路。接下來每個階段各用一頁說明。",
+      "speakerNotes": "這一頁把十八個知識點分成五個階段。第一階段 KP01 到 KP03：誠實評估與誤差的語言，留下的問題是沒見過的點誤差能不能還原。第二階段 KP04 到 KP【待改07】：把誤差拆解開，留下的問題是修正項對應哪一種擬合。第三階段 KP05 到 KP【待改10】：過擬合與驗證，留下的問題是能不能直接壓低複雜度。第四階段 KP07 到 KP10：正則化，留下的問題是平均多個模型會怎樣。第五階段 KP【待改16】 到 KP12：集成與正規化，接下來是卷積神經網路。接下來每個階段各用一頁說明。",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp00-scene-u01",
@@ -2088,7 +2088,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁是第一階段。KP01 資料切分與兩種作弊：把資料分成訓練、驗證、測試三份，各有各的任務，混用就是作弊。KP02 偏差、變異與 MSE：估計好不好，要分準與穩兩件事量，偏差管準、變異管穩，MSE 等於偏差平方加變異。KP03 共變異數與線性組合：幾個量加在一起，變異還要看它們是不是一起動。KP04 真實模型與雜訊地板：觀測等於真實輸出加雜訊，雜訊的變異數是任何模型都壓不掉的地板。第一階段留下的問題：我們只看得到帶雜訊的觀測，沒見過的點的誤差，能還原成真正的誤差嗎？",
+      "speakerNotes": "這一頁是第一階段。KP01 資料切分與兩種作弊：把資料分成訓練、驗證、測試三份，各有各的任務，混用就是作弊。KP02 偏差、變異與 MSE：估計好不好，要分準與穩兩件事量，偏差管準、變異管穩，MSE 等於偏差平方加變異。KP【待改03】 共變異數與線性組合：幾個量加在一起，變異還要看它們是不是一起動。KP03 真實模型與雜訊地板：觀測等於真實輸出加雜訊，雜訊的變異數是任何模型都壓不掉的地板。第一階段留下的問題：我們只看得到帶雜訊的觀測，沒見過的點的誤差，能還原成真正的誤差嗎？",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp00-scene-u01",
@@ -2110,7 +2110,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁是第二階段。KP05 測試誤差的拆解：沒參與訓練的點，預測與雜訊互相獨立，所以乾淨地拆成預測離真值的誤差，加上雜訊地板。KP06 Stein 引理與 SURE：參與訓練的點，預測與雜訊不再獨立，要用 Stein 引理算出修正項，修正項等於敏感度乘以雜訊變異數。KP07 訓練點敏感度與複雜度：把各點的敏感度加起來，就是模型的有效複雜度，線性模型就是參數個數。第二階段留下的問題：修正項和複雜度對應到真正的擬合時，會長什麼樣子？",
+      "speakerNotes": "這一頁是第二階段。KP04 測試誤差的拆解：沒參與訓練的點，預測與雜訊互相獨立，所以乾淨地拆成預測離真值的誤差，加上雜訊地板。KP【待改06】 Stein 引理與 SURE：參與訓練的點，預測與雜訊不再獨立，要用 Stein 引理算出修正項，修正項等於敏感度乘以雜訊變異數。KP【待改07】 訓練點敏感度與複雜度：把各點的敏感度加起來，就是模型的有效複雜度，線性模型就是參數個數。第二階段留下的問題：修正項和複雜度對應到真正的擬合時，會長什麼樣子？",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp00-scene-u01",
@@ -2132,7 +2132,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁是第三階段。KP08 過擬合、欠擬合與泛化：複雜度愈高，訓練誤差愈低，測試誤差卻先降後升，兩者的差距就是泛化落差。KP09 交叉驗證：資料不夠時，把資料分成幾份輪流當驗證集，用來選模型。KP10 真實誤差為何回升：驗證集如果和訓練集重疊，就看不到回升，所以兩者必須分開。第三階段留下的問題：既然複雜度太高會傷害，能不能在訓練時就直接壓低複雜度？",
+      "speakerNotes": "這一頁是第三階段。KP05 過擬合、欠擬合與泛化：複雜度愈高，訓練誤差愈低，測試誤差卻先降後升，兩者的差距就是泛化落差。KP06 交叉驗證：資料不夠時，把資料分成幾份輪流當驗證集，用來選模型。KP【待改10】 真實誤差為何回升：驗證集如果和訓練集重疊，就看不到回升，所以兩者必須分開。第三階段留下的問題：既然複雜度太高會傷害，能不能在訓練時就直接壓低複雜度？",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp00-scene-u01",
@@ -2154,7 +2154,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁是第四階段，主題是正則化，也就是在訓練時限制複雜度。KP11 正則化與稀疏性：把權重縮小，偏差會變大一點，變異會降得更多，整體誤差可能更低。KP12 L2 正則化與收縮：沿各個特徵方向收縮，有效自由度變小。KP13 L1 正則化與軟閾值：把小權重直接砍成 0，得到稀疏的模型。KP14 權重衰減與輸入雜訊：權重衰減就是 L2，在雜訊小的線性模型裡，輸入雜訊的效果也近似 L2。KP15 早停法：在驗證誤差最低的地方停止訓練，也是在限制複雜度。第四階段留下的問題：除了限制單一模型，把很多模型平均起來會怎樣？",
+      "speakerNotes": "這一頁是第四階段，主題是正則化，也就是在訓練時限制複雜度。KP07 正則化與稀疏性：把權重縮小，偏差會變大一點，變異會降得更多，整體誤差可能更低。KP08 L2 正則化與收縮：沿各個特徵方向收縮，有效自由度變小。KP09 L1 正則化與軟閾值：把小權重直接砍成 0，得到稀疏的模型。KP【待改14】 權重衰減與輸入雜訊：權重衰減就是 L2，在雜訊小的線性模型裡，輸入雜訊的效果也近似 L2。KP10 早停法：在驗證誤差最低的地方停止訓練，也是在限制複雜度。第四階段留下的問題：除了限制單一模型，把很多模型平均起來會怎樣？",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp00-scene-u01",
@@ -2176,7 +2176,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁是第五階段。KP16 Bagging 與變異降低：把很多個用不同資料訓練的模型平均，變異會降低，降多少要看模型之間的共變異數。KP17 Dropout：訓練時隨機遮掉一部分神經元，等於同時訓練很多個共用權重的小網路，測試時用縮放近似它們的平均。KP18 批次正規化：每一層把一批輸入標準化，再學習縮放與平移，讓訓練更穩定。第五階段之後，下一章是卷積神經網路。",
+      "speakerNotes": "這一頁是第五階段。KP【待改16】 Bagging 與變異降低：把很多個用不同資料訓練的模型平均，變異會降低，降多少要看模型之間的共變異數。KP11 Dropout：訓練時隨機遮掉一部分神經元，等於同時訓練很多個共用權重的小網路，測試時用縮放近似它們的平均。KP12 批次正規化：每一層把一批輸入標準化，再學習縮放與平移，讓訓練更穩定。第五階段之後，下一章是卷積神經網路。",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp00-scene-u01",

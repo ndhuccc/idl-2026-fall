@@ -1,8 +1,7 @@
-"""KP12 figures (L2 regularization shrinks along the Hessian eigen-directions) in two skins from the same data.
+"""KP12 figures (Batch normalization) in two skins from the same data.
     assets/figures/<id>.png (light, lecture)    assets/figures/<id>.svg (dark, deck)
-Ids: lec04-kp12-ellipse, lec04-kp12-factor, lec04-kp12-dof.   Prints every number the lecture and the deck quote.
-Setup: J(x) = 1/2 (x-x*)^T H (x-x*), penalty (alpha/2)||x||^2  =>  x_dag = (H + alpha I)^-1 H x*.
-H = U diag(4, 0.5) U^T with U a rotation by -25 degrees; x* = U (10, 10)^T; alpha = 1.
+Ids: lec04-kp12-hist-bn (a skewed feature before / after batch normalization), lec04-kp12-batch-noise (how noisy the batch statistics are against batch size).
+Prints every number the lecture and the deck quote.
 Run:  python3 assets/figures/src/lec04-kp12-figures.py
 """
 import os
@@ -11,157 +10,122 @@ import sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import matplotlib.pyplot as plt  # noqa: E402
 from lec04_common import DARK, LIGHT, axes, clean, finish, skin  # noqa: E402
+import matplotlib.pyplot as plt  # noqa: E402
 
-LAM = np.array([4.0, 0.5])
-ALPHA = 1.0
-THETA = np.deg2rad(-25.0)
-U = np.array([[np.cos(THETA), -np.sin(THETA)], [np.sin(THETA), np.cos(THETA)]])   # columns = eigenvectors u1, u2
-H = U @ np.diag(LAM) @ U.T
-XSTAR_EIG = np.array([10.0, 10.0])
-XSTAR = U @ XSTAR_EIG
+EPS = 1e-5
 
 
-def factor(lam, alpha):
-    return lam / (lam + alpha)
+def bn(x, eps=EPS):
+    """Batch normalization of one feature over a mini-batch (1/b variance, as in the source)."""
+    mu = x.mean()
+    var = ((x - mu) ** 2).mean()
+    return (x - mu) / np.sqrt(var + eps), mu, var
 
 
-def xdag(alpha, x=XSTAR, h=H):
-    return np.linalg.solve(h + alpha * np.eye(len(x)), h @ x)
+def skew(x):
+    z = (x - x.mean()) / x.std()
+    return float((z ** 3).mean())
 
 
-def dof(alpha, lam=LAM):
-    return float(np.sum(factor(lam, alpha)))
+def skewed_feature(n=1000, seed=0):
+    rng = np.random.default_rng(seed)
+    return rng.lognormal(mean=0.5, sigma=0.8, size=n)
 
 
-def ellipse(dark):
+# ------------------------------------------------------------------ figure 1: histogram before / after
+def hist_bn(dark):
     c = DARK if dark else LIGHT
     skin(c, dark)
-    W, H_PX = 640, 380
-    fig, ax = axes(W, H_PX, left=40, bottom=36, right=16, top=14)
-    xd = xdag(ALPHA)
-    gx, gy = np.meshgrid(np.linspace(-6, 20, 600), np.linspace(-12, 16, 600))
-    d = np.stack([gx - XSTAR[0], gy - XSTAR[1]], axis=-1)
-    Jv = 0.5 * np.einsum("...i,ij,...j->...", d, H, d)
-    Jd = 0.5 * (xd - XSTAR) @ H @ (xd - XSTAR)
-    J0 = 0.5 * XSTAR @ H @ XSTAR
-    ax.contour(gx, gy, Jv, levels=[8, 40, 90, 150], colors=c["ref"], linewidths=1.2, alpha=0.55)
-    ax.contour(gx, gy, Jv, levels=[Jd], colors=c["main"], linewidths=1.8)
-    ax.contour(gx, gy, Jv, levels=[J0], colors=c["muted"], linewidths=1.2, linestyles="--")
-    t = np.array([-14.0, 14.0])
-    for k, col in ((0, c["ok"]), (1, c["vec"])):
-        ax.plot(t * U[0, k], t * U[1, k], color=col, lw=1.6, ls=(0, (6, 4)))
-    # components along the eigen-directions: origin -> along u1 -> x* (or x_dag)
-    for comp, col, ls in ((XSTAR_EIG, c["ref"], "-"), (U.T @ xd, c["main"], "-")):
-        p1 = U[:, 0] * comp[0]
-        ax.plot([0, p1[0]], [0, p1[1]], color=col, lw=2.4, ls=ls)
-        tip = U @ comp
-        ax.plot([p1[0], tip[0]], [p1[1], tip[1]], color=col, lw=2.4, ls=ls)
-    ax.plot([0], [0], "o", color=c["text"], ms=7)
-    ax.plot([XSTAR[0]], [XSTAR[1]], "o", color=c["ref"], ms=10)
-    ax.plot([xd[0]], [xd[1]], "o", color=c["main"], ms=10)
-    ax.annotate(r"$\mathbf{x}^{\ast}$", XSTAR, xytext=(-4, 12), textcoords="offset points", color=c["ref"], fontsize=17, ha="center")
-    ax.annotate(r"$\mathbf{x}^{\dagger}$", xd, xytext=(-44, -2), textcoords="offset points", color=c["main"], fontsize=17)
-    ax.annotate(r"$\mathbf{0}$", (0, 0), xytext=(-16, -18), textcoords="offset points", color=c["text"], fontsize=15)
-    ax.annotate(r"$\mathbf{u}_1$ ($\lambda=4$)", (11.2, -6.8), color=c["ok"], fontsize=13)
-    ax.annotate(r"$\mathbf{u}_2$ ($\lambda=0.5$)", (3.6, 9.6), xytext=(8, -2), textcoords="offset points", color=c["vec"], fontsize=13)
-    ax.set_xlim(-5, 18)
-    ax.set_ylim(-8, 12)
-    ax.set_aspect("equal")
-    ax.set_xticks([])
-    ax.set_yticks([])
-    for s in ("left", "bottom"):
-        ax.spines[s].set_visible(False)
-    finish(fig, "lec04-kp12-ellipse", dark, c)
-    return W, H_PX
+    W, H = 640, 380
+    fig = plt.figure(figsize=(W / 100, H / 100))
+    x = skewed_feature()
+    xh, mu, var = bn(x)
+    for k, (data, title, col, xl) in enumerate(((x, rf"before: mean ${mu:.2f}$, std ${np.sqrt(var):.2f}$", c["ref"], (0, 14)),
+                                                (xh, r"after: mean $0$, std $1$", c["main"], (-2, 7)))):
+        ax = fig.add_axes([(80 + k * 280) / W, 66 / H, 245 / W, 245 / H])
+        ax.hist(data, bins=40, color=col, alpha=0.85)
+        ax.set_title(title, fontsize=13, color=c["text"])
+        ax.set_xlim(*xl)
+        ax.set_xlabel(r"feature value $x$" if k == 0 else r"normalized value $\hat x$")
+        if k == 0:
+            ax.set_ylabel("count")
+        else:
+            ax.set_yticklabels([])
+        clean(ax)
+    finish(fig, "lec04-kp12-hist-bn", dark, c)
+    return W, H
 
 
-def factor_fig(dark):
+# ------------------------------------------------------------------ figure 2: noise of the batch statistics
+def batch_noise_data(bs=(2, 4, 8, 16, 32, 64, 128, 256), nb=5000, seed=1):
+    rng = np.random.default_rng(seed)
+    out = []
+    for b in bs:
+        X = rng.normal(0, 1, (nb, b))
+        sd = X.std(axis=1)          # 1/b form
+        mu = X.mean(axis=1)
+        out.append((b, float(sd.mean()), float(sd.std()), float(mu.std())))
+    return out
+
+
+def batch_noise(dark):
     c = DARK if dark else LIGHT
     skin(c, dark)
-    W, H_PX = 640, 380
-    fig, ax = axes(W, H_PX)
-    al = np.linspace(0, 10, 500)
-    for lam, col, tag in ((4.0, c["ok"], r"$\lambda=4$"), (0.5, c["vec"], r"$\lambda=0.5$")):
-        ax.plot(al, factor(lam, al), color=col, lw=2.8, label=tag)
-        ax.plot([ALPHA], [factor(lam, ALPHA)], "o", color=col, ms=9)
-        ax.annotate(f"{factor(lam, ALPHA):.3f}", (ALPHA, factor(lam, ALPHA)), xytext=(14, 8), textcoords="offset points", color=col, fontsize=14)
-    ax.axvline(ALPHA, color=c["muted"], lw=1.0, ls="--")
-    ax.set_xlabel(r"strength $\alpha$")
-    ax.set_ylabel(r"shrink factor $\lambda/(\lambda+\alpha)$")
-    ax.set_xlim(0, 10)
-    ax.set_ylim(0, 1.05)
-    ax.legend(loc="upper right", frameon=False, fontsize=14)
+    W, H = 640, 380
+    fig, ax = axes(W, H)
+    d = batch_noise_data()
+    b = np.array([r[0] for r in d])
+    m = np.array([r[1] for r in d])
+    s = np.array([r[2] for r in d])
+    mu_sd = np.array([r[3] for r in d])
+    ax.axhline(1.0, color=c["muted"], lw=1.2, ls=":")
+    ax.fill_between(b, m - s, m + s, color=c["ref"], alpha=0.25)
+    ax.plot(b, m, color=c["ref"], lw=2.4, marker="o", label=r"batch std $\hat\sigma$ (mean $\pm$ 1 sd over batches)")
+    ax.plot(b, mu_sd, color=c["main"], lw=2.4, marker="s", label=r"spread of the batch mean $\hat\mu$")
+    ax.set_xscale("log", base=2)
+    ax.set_xticks(b)
+    ax.set_xticklabels([str(v) for v in b])
+    ax.set_xlabel(r"batch size $b$")
+    ax.set_ylabel("estimate of a $N(0,1)$ feature")
+    ax.set_ylim(0, 1.6)
+    ax.legend(loc="upper right", frameon=False, fontsize=11)
     clean(ax)
-    finish(fig, "lec04-kp12-factor", dark, c)
-    return W, H_PX
-
-
-def dof_fig(dark):
-    c = DARK if dark else LIGHT
-    skin(c, dark)
-    W, H_PX = 640, 380
-    fig, ax = axes(W, H_PX)
-    al = np.linspace(0, 10, 500)
-    ax.plot(al, [dof(a) for a in al], color=c["main"], lw=2.8, label=r"$\sum_j \lambda_j/(\lambda_j+\alpha)$")
-    for a, off in ((0, (10, -2)), (1, (10, 6)), (3, (10, 6)), (10, (-46, 12))):
-        ax.plot([a], [dof(a)], "o", color=c["ref"], ms=8)
-        ax.annotate(f"{dof(a):.3f}", (a, dof(a)), xytext=off, textcoords="offset points", color=c["ref"], fontsize=14)
-    ax.set_xlabel(r"strength $\alpha$")
-    ax.set_ylabel("effective parameters")
-    ax.set_xlim(-0.2, 10.2)
-    ax.set_ylim(0, 2.3)
-    ax.legend(loc="upper right", frameon=False, fontsize=14)
-    clean(ax)
-    finish(fig, "lec04-kp12-dof", dark, c)
-    return W, H_PX
+    finish(fig, "lec04-kp12-batch-noise", dark, c)
+    return W, H
 
 
 def report():
-    np.set_printoptions(precision=4, suppress=True)
-    print("lambda =", LAM, " alpha =", ALPHA, " rotation -25 deg")
-    print("H =\n", H)
-    print("eigenvalues of H:", np.linalg.eigvalsh(H)[::-1])
-    print("x* (original coords) =", XSTAR, "  in eigenbasis =", U.T @ XSTAR)
-    print("shrink factors at alpha=1:", factor(LAM, ALPHA), " effective parameters:", round(dof(ALPHA), 4))
-    xd = xdag(ALPHA)
-    xe = np.diag(factor(LAM, ALPHA)) @ XSTAR_EIG
-    print("x_dag direct (H+aI)^-1 H x* =", xd, " in eigenbasis =", U.T @ xd, " eigen formula =", xe, " max diff:", float(np.abs(U.T @ xd - xe).max()))
-    grad = H @ (xd - XSTAR) + ALPHA * xd
-    print("gradient of J+(alpha/2)|x|^2 at x_dag:", grad)
-    print("|x*| =", float(np.linalg.norm(XSTAR)), " |x_dag| =", float(np.linalg.norm(xd)))
-    print("J(x*) = 0, J(x_dag) =", float(0.5 * (xd - XSTAR) @ H @ (xd - XSTAR)), " J(0) =", float(0.5 * XSTAR @ H @ XSTAR))
-    print("table alpha: factor(4), factor(0.5), effective parameters")
-    for a in (0, 0.5, 1, 3, 10):
-        print(f"  alpha={a}: {factor(4.0, a):.4f}  {factor(0.5, a):.4f}  dof={dof(a):.4f}")
-    print("alpha for which the lambda=0.5 factor is 0.5:", 0.5, " (factor = lambda/(lambda+alpha) = 1/2 iff alpha = lambda)")
-    # diagonal-H check from the lecture's 1-D link with KP11: J=(w-w*)^2 => H=2, penalty alpha_K w^2 = (alpha/2) w^2 with alpha=2 alpha_K
-    for ak in (0.5, 1, 3):
-        print(f"  KP11 link: alpha_K={ak}: 2/(2+2*alpha_K)={2 / (2 + 2 * ak):.4f}  =  1/(1+alpha_K)={1 / (1 + ak):.4f}")
-    # ridge regression is exactly the quadratic case
-    rng = np.random.default_rng(12)
-    n, p = 30, 3
-    X = rng.normal(size=(n, p)) * np.array([3.0, 1.0, 0.3])
-    y = X @ np.array([1.0, -2.0, 4.0]) + 0.5 * rng.normal(size=n)
-    Hx = X.T @ X
-    w_ols = np.linalg.solve(Hx, X.T @ y)
-    lam, _ = np.linalg.eigh(Hx)
-    s = np.linalg.svd(X, compute_uv=False)
-    print("ridge regression check: n=30, p=3, X columns scaled 3, 1, 0.3")
-    print("  eigenvalues of X^T X:", lam[::-1], " squared singular values:", s ** 2)
-    for a in (1.0, 10.0):
-        w_r = np.linalg.solve(Hx + a * np.eye(p), X.T @ y)
-        w_f = np.linalg.solve(Hx + a * np.eye(p), Hx @ w_ols)
-        hat = X @ np.linalg.solve(Hx + a * np.eye(p), X.T)
-        print(f"  alpha={a}: ridge w = {w_r}  formula (H+aI)^-1 H w_ols = {w_f}  max diff {float(np.abs(w_r - w_f).max()):.2e}")
-        print(f"    trace of hat matrix = {np.trace(hat):.4f}   sum lambda/(lambda+alpha) = {float(np.sum(lam / (lam + a))):.4f}")
-    print("  alpha=0: trace of hat matrix =", round(float(np.trace(X @ np.linalg.solve(Hx, X.T))), 4), "(= p)")
+    print("== hand example b=4: x = 2,4,6,8")
+    x = np.array([2.0, 4.0, 6.0, 8.0])
+    xh0, mu, var = bn(x, eps=0.0)
+    xh, _, _ = bn(x)
+    print("  mu =", mu, " sigma^2 (1/b) =", var, " deviations", x - mu, " squares", (x - mu) ** 2)
+    print("  x_hat (eps=0)    =", np.round(xh0, 6))
+    print("  x_hat (eps=1e-5) =", np.round(xh, 6), " max diff", float(np.abs(xh - xh0).max()))
+    print("  mean of x_hat", float(xh.mean()), " var of x_hat (1/b)", float((xh ** 2).mean()), " theory var/(var+eps) =", var / (var + EPS))
+    g, bt = 2.0, 1.0
+    print("  gamma=2, beta=1: y =", np.round(g * xh + bt, 4), " mean", float((g * xh + bt).mean()), " var", float(((g * xh + bt) - (g * xh + bt).mean()).var()))
+    x2 = 100 * x
+    xh2, mu2, var2 = bn(x2)
+    print("  second feature x2 = 100*x: mu", mu2, " sigma^2", var2, " x_hat2 =", np.round(xh2, 6), " max|x_hat2 - x_hat| =", float(np.abs(xh2 - xh).max()))
+    print("== skewed small batch: 1,1,2,2,3,10")
+    s6 = np.array([1.0, 1.0, 2.0, 2.0, 3.0, 10.0])
+    s6h, m6, v6 = bn(s6)
+    print("  mu", round(float(m6), 4), " sigma^2", round(float(v6), 4), " x_hat", np.round(s6h, 4), " skewness before", round(skew(s6), 4), " after", round(skew(s6h), 4))
+    print("== lognormal feature, b = 1000")
+    x = skewed_feature()
+    xh, mu, var = bn(x)
+    print(f"  before: mean {mu:.4f} std {np.sqrt(var):.4f} skewness {skew(x):.4f}   after: mean {xh.mean():.2e} std {xh.std():.4f} skewness {skew(xh):.4f}")
+    print("== batch of size 1 :", bn(np.array([3.0]))[0], "(x_hat = 0 for any single value)")
+    print("== batch statistics noise (N(0,1) feature, 5000 batches per size)")
+    for b, m, s, ms in batch_noise_data():
+        print(f"  b={b:3d}: mean batch std {m:.4f} (sd {s:.4f})   sd of batch mean {ms:.4f}  (1/sqrt(b) = {1 / np.sqrt(b):.4f})")
 
 
 if __name__ == "__main__":
-    for dk in (False, True):
-        ellipse(dk)
-        factor_fig(dk)
-        dof_fig(dk)
+    sizes = {"lec04-kp12-hist-bn": hist_bn(False), "lec04-kp12-batch-noise": batch_noise(False)}
+    hist_bn(True)
+    batch_noise(True)
+    print("sizes", sizes)
     report()

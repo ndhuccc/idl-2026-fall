@@ -1,8 +1,10 @@
-"""KP05 figures (test-error decomposition, Case I) in two skins from the same data.
-    assets/figures/<id>.png (light, lectures)    assets/figures/<id>.svg (dark, deck)
-Ids: lec04-kp05-bar, lec04-kp05-mc.   Prints every number the lecture and the deck quote.
-Toy data: f(x) = 1 + 2x - 1.5x^2 on [-1, 1], noise sigma = 0.3 (sigma^2 = 0.09); the model is a straight line fitted on n = 15 points.
-Run:  py assets/figures/src/lec04-kp05-figures.py
+"""KP05 figures (overfitting, underfitting, generalization) in two skins from the same data.
+    assets/figures/<id>.png (light, lecture)    assets/figures/<id>.svg (dark, deck)
+Ids: lec04-kp05-fits (three fits on the same 12 training points), lec04-kp05-train-test (train vs test MSE against degree).
+Toy data: f(x) = 1 + 2x - 1.5x^2 (true model is quadratic), sigma = 0.3 (noise floor sigma^2 = 0.09), 12 fixed-design points x = linspace(-1, 1, 12),
+noise drawn with seed 11. "Test MSE" = E[(fhat - y)^2] on fresh noisy data = mean (fhat - f)^2 + sigma^2 on a dense grid (KP04 identity), cross-checked
+against a fresh noisy test set. Bias^2 and variance come from refitting on 2000 fresh noise draws with the design fixed.
+Run:  python3 assets/figures/src/lec04-kp05-figures.py     (prints every number the lecture and the deck quote)
 """
 import os
 import sys
@@ -14,97 +16,110 @@ import matplotlib.pyplot as plt  # noqa: E402
 from lec04_common import DARK, LIGHT, axes, clean, finish, skin  # noqa: E402
 
 SIGMA = 0.3
-SIG2 = SIGMA ** 2
-NTR, NTE_BIG, REPS = 15, 20000, 300
+N = 12
+X = np.linspace(-1, 1, N)
+XG = np.linspace(-1, 1, 2001)
 
 
 def f(x):
     return 1.0 + 2.0 * np.asarray(x) - 1.5 * np.asarray(x) ** 2
 
 
-# ------------------------------------------------------------------ the worked example of the source (GUIDE 5)
-N_TE, S2, ERR_EMP = 50, 4.0, 300.0
-ERR_TRUE = ERR_EMP - N_TE * S2          # 100
+Y = f(X) + np.random.default_rng(11).normal(0, SIGMA, N)
+rt = np.random.default_rng(77)
+XT = np.sort(rt.uniform(-1, 1, 8))              # eight fresh test points shown as hollow circles
+YT = f(XT) + rt.normal(0, SIGMA, 8)
 
 
-def bar(dark):
+def fit(d, y=Y):
+    return np.polyfit(X, y, d)
+
+
+def train_mse(d):
+    return float(np.mean((np.polyval(fit(d), X) - Y) ** 2))
+
+
+def test_mse(d):
+    """Expected squared error on fresh noisy data: mean (fhat - f)^2 + sigma^2."""
+    return float(np.mean((np.polyval(fit(d), XG) - f(XG)) ** 2) + SIGMA ** 2)
+
+
+def fresh_test_mse(d, m=200000, seed=5):
+    rng = np.random.default_rng(seed)
+    xs = rng.uniform(-1, 1, m)
+    ys = f(xs) + rng.normal(0, SIGMA, m)
+    return float(np.mean((np.polyval(fit(d), xs) - ys) ** 2))
+
+
+def bias_var(d, reps=2000):
+    P = np.array([np.polyval(np.polyfit(X, f(X) + np.random.default_rng(10 + s).normal(0, SIGMA, N), d), XG) for s in range(reps)])
+    return float(np.mean((P.mean(0) - f(XG)) ** 2)), float(np.mean(P.var(0)))
+
+
+def fits(dark):
     c = DARK if dark else LIGHT
-    skin(c, dark)
-    W, H = 640, 300
-    fig, ax = axes(W, H, left=30, bottom=60, top=20)
-    ax.barh([0], [ERR_TRUE], color=c["ref"], height=0.5, label=r"$\mathbf{Err}=100$ (true error)")
-    ax.barh([0], [N_TE * S2], left=[ERR_TRUE], color=c["warn"], height=0.5, label=r"$n_{te}\sigma^2=50\cdot4=200$ (noise floor)")
-    ax.text(ERR_TRUE / 2, 0, "100", ha="center", va="center", color="#ffffff", fontsize=16, fontweight="bold")
-    ax.text(ERR_TRUE + N_TE * S2 / 2, 0, "200", ha="center", va="center", color="#ffffff", fontsize=16, fontweight="bold")
-    ax.annotate("", xy=(ERR_EMP, 0.42), xytext=(0, 0.42), arrowprops=dict(arrowstyle="<->", color=c["text"], lw=1.4))
-    ax.text(ERR_EMP / 2, 0.5, r"$\mathbf{err}=300$ (what we can compute)", ha="center", va="bottom", color=c["text"], fontsize=14)
-    ax.set_xlim(0, 320)
-    ax.set_ylim(-1.15, 0.95)
-    ax.set_yticks([])
-    ax.set_xlabel("sum of squared errors over 50 test points")
-    ax.legend(loc="lower center", frameon=False, fontsize=12, ncol=1, bbox_to_anchor=(0.5, 0.0))
-    clean(ax)
-    ax.grid(False)
-    finish(fig, "lec04-kp05-bar", dark, c)
+    skin(c, dark, 16)
+    W, H = 1100, 340
+    fig = plt.figure(figsize=(W / 100, H / 100))
+    spec = ((1, "underfit", c["warn"]), (2, "good fit", c["ok"]), (9, "overfit", c["ref"]))
+    for k, (d, name, col) in enumerate(spec):
+        ax = fig.add_axes([(60 + k * 355) / W, 84 / H, 300 / W, 200 / H])
+        ax.plot(XG, f(XG), color=c["muted"], lw=1.4, ls="--", label="true $f$")
+        ax.plot(XG, np.polyval(fit(d), XG), color=col, lw=2.6, label=f"degree {d}")
+        ax.scatter(X, Y, s=34, color=c["main"], zorder=5, label="train")
+        ax.scatter(XT, YT, s=44, facecolors="none", edgecolors=c["text"], linewidths=1.6, zorder=5, label="test")
+        ax.set_ylim(-1.6, 2.2)
+        ax.set_xlim(-1.05, 1.05)
+        ax.set_xlabel("$x$")
+        if k == 0:
+            ax.set_ylabel("$y$")
+            h, l = ax.get_legend_handles_labels()
+            hh = [h[0], h[2], h[3]]
+            ll = ["true $f$", "train", "test"]
+        ax.set_title(f"{name}: degree {d}\ntrain {train_mse(d):.3f}   test {test_mse(d):.3f}", fontsize=12, color=c["text"])
+        clean(ax)
+    fig.legend(hh, ll, loc="lower center", frameon=False, fontsize=11, ncol=3, bbox_to_anchor=(0.5, 0.0))
+    finish(fig, "lec04-kp05-fits", dark, c)
     return W, H
 
 
-# ------------------------------------------------------------------ Monte Carlo: a straight line fitted on 15 points, scored on fresh points
-def monte_carlo(seed=5):
-    rng = np.random.default_rng(seed)
-    out = []
-    for _ in range(REPS):
-        x = rng.uniform(-1, 1, NTR)
-        y = f(x) + rng.normal(0, SIGMA, NTR)
-        b1, b0 = np.polyfit(x, y, 1)
-        xt = rng.uniform(-1, 1, NTE_BIG)
-        yt = f(xt) + rng.normal(0, SIGMA, NTE_BIG)
-        fh = b0 + b1 * xt
-        out.append((np.mean((fh - yt) ** 2), np.mean((fh - f(xt)) ** 2)))
-    return np.array(out)
-
-
-def mc(dark):
+def train_test(dark):
     c = DARK if dark else LIGHT
     skin(c, dark)
     W, H = 640, 380
     fig, ax = axes(W, H)
-    r = monte_carlo()
-    lhs, rhs = r[:, 0], r[:, 1] + SIG2
-    ax.scatter(rhs, lhs, s=14, color=c["main"], alpha=0.75, label="300 fitted lines")
-    lo, hi = min(rhs.min(), lhs.min()) - 0.01, max(rhs.max(), lhs.max()) + 0.01
-    ax.plot([lo, hi], [lo, hi], color=c["ok"], lw=1.8, ls="--", label=r"$y=x$")
-    ax.set_xlim(lo, hi)
-    ax.set_ylim(lo, hi)
-    ax.set_xlabel(r"mean$(\hat f-f)^2+\sigma^2$")
-    ax.set_ylabel(r"mean$(\hat f-y)^2$ on fresh points")
-    ax.legend(loc="upper left", frameon=False, fontsize=13)
+    ds = np.arange(1, 11)
+    tr = [train_mse(d) for d in ds]
+    te = [test_mse(d) for d in ds]
+    ax.semilogy(ds, tr, "-o", color=c["main"], lw=2.4, ms=6, label="train MSE")
+    ax.semilogy(ds, te, "-o", color=c["ref"], lw=2.4, ms=6, label="test MSE")
+    ax.axhline(SIGMA ** 2, color=c["ok"], ls="--", lw=1.4)
+    ax.annotate(r"noise floor $\sigma^2=0.09$", (6.4, SIGMA ** 2), xytext=(0, -18), textcoords="offset points", color=c["ok"], fontsize=13)
+    best = int(ds[int(np.argmin(te))])
+    ax.annotate(f"best test: degree {best}", (best, min(te)), xytext=(18, 38), textcoords="offset points", color=c["text"], fontsize=13,
+                arrowprops=dict(arrowstyle="->", color=c["muted"]))
+    ax.set_xlabel("polynomial degree (complexity)")
+    ax.set_ylabel("MSE (log scale)")
+    ax.set_xticks(ds)
+    ax.legend(loc="lower left", frameon=False, fontsize=13)
     clean(ax)
-    finish(fig, "lec04-kp05-mc", dark, c)
+    finish(fig, "lec04-kp05-train-test", dark, c)
     return W, H
 
 
 def report():
-    print("source example: n_te =", N_TE, " sigma^2 =", S2, " err =", ERR_EMP, " -> Err =", ERR_TRUE, " per point:", ERR_EMP / N_TE, ERR_TRUE / N_TE, " floor per point", S2)
-    print("stack: ", ERR_TRUE, "+", N_TE * S2, "=", ERR_TRUE + N_TE * S2)
-    r = monte_carlo()
-    lhs, rhs = r[:, 0], r[:, 1] + SIG2
-    print(f"toy: sigma={SIGMA} sigma^2={SIG2}; line on n={NTR} points; {REPS} repeats, {NTE_BIG} fresh test points each")
-    print(f"  mean over repeats of mean(f^-y)^2        = {lhs.mean():.4f}")
-    print(f"  mean over repeats of mean(f^-f)^2        = {r[:, 1].mean():.4f}")
-    print(f"  mean over repeats of mean(f^-f)^2+sigma^2 = {rhs.mean():.4f}")
-    print(f"  max |lhs - rhs| over repeats = {np.max(np.abs(lhs - rhs)):.4f}; correlation {np.corrcoef(lhs, rhs)[0, 1]:.4f}")
-    # cross term explicitly
-    rng = np.random.default_rng(7)
-    x = rng.uniform(-1, 1, NTR); y = f(x) + rng.normal(0, SIGMA, NTR)
-    b1, b0 = np.polyfit(x, y, 1)
-    xt = rng.uniform(-1, 1, 400000); eps = rng.normal(0, SIGMA, 400000)
-    fh = b0 + b1 * xt
-    print(f"  one fitted line: mean(eps*(f^-f)) on 400000 fresh points = {np.mean(eps * (fh - f(xt))):.5f}  (cross term, should be ~0)")
-    print(f"  mean(eps^2) = {np.mean(eps ** 2):.4f}")
+    print("true f(x)=1+2x-1.5x^2, sigma=0.3 (sigma^2=0.09), n=12 fixed design x=linspace(-1,1,12), noise seed 11")
+    print("noise realisation: mean eps^2 on the 12 points =", round(float(np.mean((Y - f(X)) ** 2)), 4))
+    print("degree  train   test(exact)  test(fresh set)   bias^2   var    bias^2+var+sigma^2")
+    for d in list(range(1, 11)):
+        b2, v = bias_var(d) if d in (1, 2, 3, 9) else (float("nan"), float("nan"))
+        print(f"{d:5d}  {train_mse(d):.4f}  {test_mse(d):.4f}     {fresh_test_mse(d):.4f}         {b2:.4f}  {v:.4f}  {b2 + v + SIGMA ** 2:.4f}")
+    print("expected train MSE of a p-parameter fit = sigma^2 (n-p)/n :", {d: round(SIGMA ** 2 * (N - d - 1) / N, 4) for d in (1, 2, 9)})
+    print("test points (hollow):", np.round(XT, 3), np.round(YT, 3))
 
 
 if __name__ == "__main__":
     for dk in (False, True):
-        sizes = [bar(dk), mc(dk)]
+        fits(dk)
+        train_test(dk)
     report()
