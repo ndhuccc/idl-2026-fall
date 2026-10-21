@@ -293,7 +293,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP【待改14】**說權重衰減與輸入雜訊都在改目標函數。**這頁問**：不改目標，只靠少訓練幾步，能得到正則化嗎？\n*KP【待改14】 changed the objective. Can we regularize just by training fewer steps?*",
+      "text": "**KP09**說 L2 與 L1 都在改目標函數。**這頁問**：不改目標，只靠少訓練幾步，能得到正則化嗎？\n*KP09 changed the objective. Can we regularize just by training fewer steps?*",
       "shapeKind": "rectangle"
     },
     "lec04kp15-u01-p1-c1": {
@@ -417,7 +417,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**為什麼這樣做**：KP【待改10】 說訓練誤差一路下降，真實誤差先降後升。驗證誤差就是真實誤差的替身，它開始上升的地方，就是該停的地方。\n*Training error always falls; the validation error stands in for the true error and tells us when to stop.*",
+      "text": "**為什麼這樣做**：KP05 說訓練誤差一路下降，新資料上的誤差先降後升。驗證誤差就是真實誤差的替身，它開始上升的地方，就是該停的地方。\n*Training error always falls; the validation error stands in for the true error and tells us when to stop.*",
       "shapeKind": "rectangle"
     },
     "lec04kp15-u01-p2-title": {
@@ -4636,7 +4636,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**代價一**\n驗證集也拿來選停止點，對測試誤差略為樂觀；真正的測試集仍要另外保留（KP01、KP【待改10】）。\n*A real test set is still needed.*",
+      "text": "**代價一**\n驗證集也拿來選停止點，對測試誤差略為樂觀；真正的測試集仍要另外保留（KP01、KP05）。\n*A real test set is still needed.*",
       "shapeKind": "rectangle"
     },
     "lec04kp15-u01-p14-c6": {
@@ -4698,7 +4698,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**下一個問題**：預測太不穩時，能不能不碰它，而是訓練許多個再平均？這是 KP【待改16】 Bagging。\n*Next: train many models and average them (KP【待改16】, bagging).*",
+      "text": "**下一個問題**：能不能在訓練時隨機關掉一部分神經元，逼網路不要過度依賴任何一個？這是 KP11 Dropout。\n*Next: switch off random neurons during training so that no single one is relied on (KP11, dropout).*",
       "shapeKind": "rectangle"
     }
   },
@@ -4732,7 +4732,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁承接 KP【待改14】：權重衰減與輸入雜訊都靠改目標函數來平滑模型。KP【待改10】 給了線索：訓練誤差一路下降，但真實誤差先降後升，最低點就是該停的位置。早停法照這條曲線做：訓練時持續監控驗證誤差，驗證誤差開始上升就停，並用驗證誤差最低那一刻的權重。驗證誤差是模型在沒參與訓練的驗證集上的誤差。實務有三個細節：每隔固定步數檢查一次；每次出現新的最低值就存下當時的權重；驗證誤差有雜訊，所以設耐心值，連續幾次沒創新低才真的停。上一頁（KP【待改14】）留下問題，接下來第二頁看一個算出來的例子。",
+      "speakerNotes": "這一頁承接 KP09：L2 與 L1 都靠改目標函數來平滑模型。KP05 給了線索：訓練誤差一路下降，但新資料上的誤差先降後升，最低點就是該停的位置。早停法照這條曲線做：訓練時持續監控驗證誤差，驗證誤差開始上升就停，並用驗證誤差最低那一刻的權重。驗證誤差是模型在沒參與訓練的驗證集上的誤差。實務有三個細節：每隔固定步數檢查一次；每次出現新的最低值就存下當時的權重；驗證誤差有雜訊，所以設耐心值，連續幾次沒創新低才真的停。上一頁（KP09）留下問題，接下來第二頁看一個算出來的例子。",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp15-scene-u01",
@@ -4886,7 +4886,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁把早停和權重衰減並排。KP08 與 KP【待改14】 說過，權重衰減強度 alpha，在每個方向保留 lambda 除以 lambda 加 alpha，也就是 1 減 alpha 除以 lambda 加 alpha。早停在每個方向保留 1 減 1 減 eta lambda 的 t 次方。兩個式子的形狀一樣，都是 1 減一個要消掉的部分。所以只要 1 減 eta lambda 的 t 次方，等於 alpha 除以 lambda 加 alpha，兩者就給出相同的權重。用上一頁的玩具題算權重衰減 alpha 等於 1：第一方向 1 除以 1 加 1 等於 0.5，乘 1.8 得 0.9；第二方向 0.25 除以 0.25 加 1 等於 0.2，乘 2.6 得 0.52。上一頁看早停，這一頁看權重衰減，接下來第九頁找出 alpha 和 t 的關係。",
+      "speakerNotes": "這一頁把早停和權重衰減並排。KP08 說過，權重衰減強度 alpha，在每個方向保留 lambda 除以 lambda 加 alpha，也就是 1 減 alpha 除以 lambda 加 alpha。早停在每個方向保留 1 減 1 減 eta lambda 的 t 次方。兩個式子的形狀一樣，都是 1 減一個要消掉的部分。所以只要 1 減 eta lambda 的 t 次方，等於 alpha 除以 lambda 加 alpha，兩者就給出相同的權重。用上一頁的玩具題算權重衰減 alpha 等於 1：第一方向 1 除以 1 加 1 等於 0.5，乘 1.8 得 0.9；第二方向 0.25 除以 0.25 加 1 等於 0.2，乘 2.6 得 0.52。上一頁看早停，這一頁看權重衰減，接下來第九頁找出 alpha 和 t 的關係。",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp15-scene-u01",
@@ -5018,7 +5018,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁整理實務。四件事：一，保留一份驗證集，每隔幾步量驗證誤差；二，存下最低驗證誤差時的權重；三，設耐心值，連續幾次沒進步才停，然後退回最佳權重；四，學習率要小到 eta 小於 2 除以 lambda 最大，否則梯度下降本身就發散，公式不成立。兩個代價：驗證集也被用來選停止點，所以它對最終測試誤差已經略為樂觀，真正的測試集仍要另外保留；需要一份驗證資料，而且停止點成了一個要看資料決定的超參數。好處是幾乎不花額外計算，反而少算。到這裡，我們都在處理一個模型的複雜度：改目標、加雜訊、少訓練。下一個問題：如果一個模型的預測太不穩，能不能不碰它，而是訓練許多個再平均？這是 KP【待改16】 Bagging 的主題。",
+      "speakerNotes": "這一頁整理實務。四件事：一，保留一份驗證集，每隔幾步量驗證誤差；二，存下最低驗證誤差時的權重；三，設耐心值，連續幾次沒進步才停，然後退回最佳權重；四，學習率要小到 eta 小於 2 除以 lambda 最大，否則梯度下降本身就發散，公式不成立。兩個代價：驗證集也被用來選停止點，所以它對最終測試誤差已經略為樂觀，真正的測試集仍要另外保留；需要一份驗證資料，而且停止點成了一個要看資料決定的超參數。好處是幾乎不花額外計算，反而少算。到這裡，我們都在處理一個模型的複雜度：改目標、少訓練。下一個問題：訓練時能不能隨機關掉一部分神經元，逼網路不要過度依賴任何一個？這是 KP11 Dropout 的主題。",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp15-scene-u01",

@@ -311,7 +311,7 @@
         "rotation": 0
       },
       "width": 1160,
-      "height": 96,
+      "height": 110,
       "zIndex": 2,
       "locked": false,
       "style": {
@@ -326,7 +326,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP【待改10】**得到真實誤差約等於訓練誤差加懲罰。**這頁問**：能不能直接在目標函數裡把複雜度壓住？\n*KP【待改10】: true error is training error plus a penalty. Can we hold complexity down in the objective?*",
+      "text": "**KP06**用交叉驗證從幾個候選模型中挑出複雜度合適的。**這頁問**：能不能在訓練時就直接把複雜度壓住？\n*KP06: cross-validation picks the complexity among candidates. Can we hold complexity down during training?*",
       "shapeKind": "rectangle"
     },
     "lec04kp11-u01-p1-c1": {
@@ -661,7 +661,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**提醒**：$\\Omega$ 只是容易計算的「代理」，不等於 KP【待改10】 的 $2\\sigma^2S$；兩者要到線性模型加 $\\ell_2$ 才對應（KP08）。\n*Omega is only a surrogate for the complexity term.*",
+      "text": "**提醒**：$\\Omega$ 只是容易計算的「代理」，不是精確的複雜度；後面的 $\\ell_2$（KP08）與 $\\ell_1$（KP09）是兩種常用的選法。\n*Omega is only a surrogate for the complexity.*",
       "shapeKind": "rectangle"
     },
     "lec04kp11-u01-p3-title": {
@@ -5775,7 +5775,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁承接 KP【待改10】：真實誤差約等於訓練誤差 err 加複雜度懲罰 2 σ 平方 S，訓練越久，err 一路下降，懲罰一路上升，真實誤差先降後升。如果我們只最小化 err，等於假裝第二項不存在，模型會越複雜越好，結果過擬合。那直接最小化整個真實誤差呢？有兩個困難：敏感度的總和 S 要對每一筆標籤求偏導，很難直接算；雜訊的變異數 σ 平方通常也不知道。正則化的做法是：找一個容易計算的函數 Ω 來扮演複雜度那一項，然後把它加進目標。接下來第二頁寫出這個目標。",
+      "speakerNotes": "這一頁承接 KP06：交叉驗證只能在幾個候選模型之間挑。可是訓練越久，訓練誤差一路下降，真實誤差卻先降後升（KP05）；如果只最小化訓練誤差，模型會越複雜越好，結果過擬合。那能不能在訓練的時候，就直接把複雜度加進目標去壓住？正則化的做法是：找一個容易計算的函數 Ω 來扮演複雜度那一項，然後把它加進目標。接下來第二頁寫出這個目標。",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp11-scene-u01",
@@ -5797,7 +5797,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁寫出正則化的目標。J tilde 等於 J 加 α 乘 Ω。J 是經驗誤差，例如均方誤差，只看訓練資料，管貼合資料。Ω 是複雜度懲罰，參數越大或越多，值越大，管保持簡單。α 是正則化強度，大於 0，決定懲罰在總目標裡占多重：α 等於 0 回到原本的最小化；α 很大時，模型被迫非常簡單。可以把它想成一個天平：J 在一邊、α 乘 Ω 在另一邊，α 是兩者的權重。要提醒學生，Ω 只是容易計算的代理，不等於 KP【待改10】 的 2 σ 平方 S，兩者的關係在線性模型加 ℓ2 懲罰時才精確，一般情況只是啟發式。",
+      "speakerNotes": "這一頁寫出正則化的目標。J tilde 等於 J 加 α 乘 Ω。J 是經驗誤差，例如均方誤差，只看訓練資料，管貼合資料。Ω 是複雜度懲罰，參數越大或越多，值越大，管保持簡單。α 是正則化強度，大於 0，決定懲罰在總目標裡占多重：α 等於 0 回到原本的最小化；α 很大時，模型被迫非常簡單。可以把它想成一個天平：J 在一邊、α 乘 Ω 在另一邊，α 是兩者的權重。要提醒學生，Ω 只是容易計算的代理，不是精確的複雜度，一般情況只是啟發式；後面的 ℓ2 與 ℓ1 是兩種常用的選法。",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp11-scene-u01",

@@ -279,7 +279,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**KP【待改07】**把複雜度量成模型有多緊盯訓練點。**這頁問**：太簡單與太複雜的模型，實際上各長什麼樣子？\n*KP【待改07】 measured stickiness. What do too-simple and too-complex models look like?*",
+      "text": "**KP04**說訓練誤差會低於新資料上的誤差。**這頁問**：太簡單與太複雜的模型，各長什麼樣子？\n*KP04: training error falls below the new-data error. What do too-simple and too-complex models look like?*",
       "shapeKind": "rectangle"
     },
     "lec04kp08-u01-p1-c1": {
@@ -4277,7 +4277,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁先把實驗講清楚，後面每個數字都來自這個實驗，而且都可以重算。真實函數 f 是二次曲線 1 加 2x 減 1.5x 平方，只用來造資料與評分，實際訓練時看不到。雜訊標準差 0.3，變異數 σ 平方是 0.09，這就是 KP03 的雜訊地板。訓練資料是 12 個點，x 在負 1 到 1 之間等距，y 等於 f 加雜訊，雜訊用固定的亂數種子。模型是 d 次多項式，用最小平方法配出，參數個數 p 等於 d 加 1。訓練 MSE 是訓練點上的平均平方誤差，算得出來；測試 MSE 是對新資料的平均平方誤差，依 KP04 的恆等式等於 mean（f 帽減 f） 平方加 σ 平方。上一頁（KP【待改07】）量複雜度，接下來第二頁定義泛化與三種狀態。",
+      "speakerNotes": "這一頁先把實驗講清楚，後面每個數字都來自這個實驗，而且都可以重算。真實函數 f 是二次曲線 1 加 2x 減 1.5x 平方，只用來造資料與評分，實際訓練時看不到。雜訊標準差 0.3，變異數 σ 平方是 0.09，這就是 KP03 的雜訊地板。訓練資料是 12 個點，x 在負 1 到 1 之間等距，y 等於 f 加雜訊，雜訊用固定的亂數種子。模型是 d 次多項式，用最小平方法配出，參數個數 p 等於 d 加 1。訓練 MSE 是訓練點上的平均平方誤差，算得出來；測試 MSE 是對新資料的平均平方誤差，依 KP04 的恆等式等於 mean（f 帽減 f） 平方加 σ 平方。上一頁（KP04）談訓練誤差被高估，接下來第二頁定義泛化與三種狀態。",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp08-scene-u01",
