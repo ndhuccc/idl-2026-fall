@@ -204,7 +204,7 @@ The log-likelihood rises from $-2.7726$ ($=-4\ln2$) to $-2.3526$; the second ste
 | 4. MADALINE 訓練規則的演進，何者正確？ / Which statement on the MADALINE rules is correct? | MRI（1962）只能更新輸入到隱藏層，MRII（1988）才支援兩段連接 | MRI 已能全連接更新 | MRIII 是最早的規則 | MRII 不需要隱藏層 | 看年份。 / Look at the years. |
 | 5. 與 LDA 相比，邏輯回歸建模的是？ / Compared with LDA, what does logistic regression model? | 似然 $P(\mathbf{x}\mid y)$ | 直接建模後驗 $P(y\mid\mathbf{x})$ | 先驗 $P(y)$ | 生成模型 $P(\mathbf{x},y)$ | 看第 2 節。 / Section 2. |
 | 6. logistic 函數最初的用途？ / What was the logistic function first used for? | 建模人口成長（Verhulst，1845） | 影像分類 | 矩陣分解 | 圖論最短徑 | 看歷史小記。 / The history note. |
-| 7. 矩陣形式的牛頓更新式？ / The matrix form of the Newton update? | 見來源選項 A | $\boldsymbol\beta+\mathbf{X}\mathbf{W}\mathbf{X}^\top$ | $\boldsymbol\beta-\mathbf{W}^{-1}\mathbf{y}$ | $\boldsymbol\beta+(\mathbf{y}-\mathbf{p})$ | 注意正負號（見下方更正）。 / Mind the sign (see the correction below). |
+| 7. 矩陣形式的牛頓更新式？ / The matrix form of the Newton update? | $\boldsymbol\beta+(\mathbf{X}\mathbf{W}\mathbf{X}^\top)^{-1}\mathbf{X}(\mathbf{y}-\mathbf{p})$ | $\boldsymbol\beta+\mathbf{X}\mathbf{W}\mathbf{X}^\top$ | $\boldsymbol\beta-\mathbf{W}^{-1}\mathbf{y}$ | $\boldsymbol\beta+(\mathbf{y}-\mathbf{p})$ | 注意正負號（見下方更正）。 / Mind the sign (see the correction below). |
 | 8. 測試階段如何決定類別？ / How is the class decided at test time? | 看梯度是否為 0 | 機率是否 $\ge0.5$ | 直接取權重總和 | 隨機猜測 | 看第 2 節。 / Section 2. |
 
 **留給下一個知識點的問題**：到目前為止，單層模型的第一層都是學出來的權重。如果第一層固定成一組「局部」的基函數，只學第二層，會怎樣？這就是 RBF 網路；另一個完全不用標籤的做法是 SOM。
@@ -213,12 +213,12 @@ The log-likelihood rises from $-2.7726$ ($=-4\ln2$) to $-2.3526$; the second ste
 
 ### 來源更正與取捨（Corrections to the source）
 
-- 來源把牛頓更新寫成 $\boldsymbol\beta-(\mathbf{X}\mathbf{W}\mathbf{X}^\top)^{-1}\mathbf{X}(\mathbf{y}-\mathbf{p})$。我們要最大化對數似然，Hessian 是 $-\mathbf{X}\mathbf{W}\mathbf{X}^\top$，正確的是**加號**；一維例子的第一步 $(0,0)\to(-1.2,0.8)$ 由程式驗算（用減號會得到 $(1.2,-0.8)$，似然下降）。上表第 7 題的選項照來源列出，請以本講義的符號為準。
+- 來源把牛頓更新寫成 $\boldsymbol\beta-(\mathbf{X}\mathbf{W}\mathbf{X}^\top)^{-1}\mathbf{X}(\mathbf{y}-\mathbf{p})$。我們要最大化對數似然，Hessian 是 $-\mathbf{X}\mathbf{W}\mathbf{X}^\top$，正確的是**加號**；一維例子的第一步 $(0,0)\to(-1.2,0.8)$ 由程式驗算（用減號會得到 $(1.2,-0.8)$，似然下降）。上表第 7 題的選項 A 已補成與本講義符號一致的正確式（加號、含 Hessian 相反數的逆矩陣 $(-H)^{-1}$ 與梯度 $\mathbf{X}(\mathbf{y}-\mathbf{p})$）；B 缺少逆矩陣與梯度，C 的 $\mathbf{W}^{-1}\mathbf{y}$ 不是梯度也不是 Hessian 相反數的逆矩陣，D 少了 Hessian 相反數的逆矩陣（沒有縮放步長），三者皆錯。
 - 來源圖中寫「對數後驗為凸」。要最大化的對數似然是**凹**的（等價地，負對數似然是凸的）。
 - 來源說 ADALINE「通常帶來更好的泛化」。本講義只展示邊界落在兩類中間這一點（OR 的例子），不另證泛化更好（`[補充]`）。
 - 來源的 Newton 與梯度推導（式 48–54）省略了中間步驟；本講義只保留梯度與 Hessian 的結果，並用手算驗證。
 
-- The source writes the Newton update as $\boldsymbol\beta-(\mathbf{X}\mathbf{W}\mathbf{X}^\top)^{-1}\mathbf{X}(\mathbf{y}-\mathbf{p})$. We maximize the log-likelihood, whose Hessian is $-\mathbf{X}\mathbf{W}\mathbf{X}^\top$, so the correct sign is **plus**; the first step $(0,0)\to(-1.2,0.8)$ of the one-dimensional example was checked by program (a minus sign would give $(1.2,-0.8)$ and the likelihood would fall). The options of question 7 above are listed as in the source; follow the notation of this note.
+- The source writes the Newton update as $\boldsymbol\beta-(\mathbf{X}\mathbf{W}\mathbf{X}^\top)^{-1}\mathbf{X}(\mathbf{y}-\mathbf{p})$. We maximize the log-likelihood, whose Hessian is $-\mathbf{X}\mathbf{W}\mathbf{X}^\top$, so the correct sign is **plus**; the first step $(0,0)\to(-1.2,0.8)$ of the one-dimensional example was checked by program (a minus sign would give $(1.2,-0.8)$ and the likelihood would fall). Option A of question 7 above is now filled in with the correct form in this note's notation (plus sign, the inverse of the negative Hessian, $(-H)^{-1}$, times the gradient $\mathbf{X}(\mathbf{y}-\mathbf{p})$); B lacks the inverse matrix and the gradient, C's $\mathbf{W}^{-1}\mathbf{y}$ is neither the gradient nor an inverse of the negative Hessian, and D omits the inverse of the negative Hessian (no step scaling), so all three are wrong.
 - A figure of the source says the "log posterior is convex". The log-likelihood to be maximized is **concave** (equivalently, the negative log-likelihood is convex).
 - The source says ADALINE "usually generalizes better". This note shows only that the boundary lies between the classes (the OR example) and does not prove better generalization (`[Added]`).
 - The source skips intermediate steps in the Newton and gradient derivation (equations 48–54); this note keeps only the results for the gradient and Hessian and checks them by hand.
