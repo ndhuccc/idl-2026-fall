@@ -199,71 +199,8 @@ def kp02_shrink():
 
 
 # ======================================================================= KP03
-def kp03_scatter():
+def kp03_model():
     k = load("kp03")
-    W, H = 1160, 330
-    fig = start(W, H, 18)
-    titles = {3.0: r"Cov$(X,Y)=+3$", 0.0: r"Cov$(X,Y)=0$", -3.0: r"Cov$(X,Y)=-3$"}
-    for i, d in enumerate(k.panels()):
-        ax = fig.add_axes([(76 + i * 388) / W, 68 / H, 300 / W, 176 / H])
-        ax.plot(d["x"][:k.NPLOT], d["y"][:k.NPLOT], "o", color=c["main"], ms=3.5, alpha=0.55)
-        ax.axhline(0, color=c["muted"], lw=0.8, alpha=0.6)
-        ax.axvline(0, color=c["muted"], lw=0.8, alpha=0.6)
-        ax.set_xlim(-8, 8); ax.set_ylim(-11, 11)
-        ax.set_xlabel("$X$", labelpad=1, fontsize=18)
-        if i == 0:
-            ax.set_ylabel("$Y$", labelpad=1, fontsize=18)
-        ax.set_title(titles[d["cov"]], fontsize=19, color=c["text"], pad=36)
-        ax.text(0.5, 1.04, rf"Var$(X+Y)={d['theory']:.0f}$", transform=ax.transAxes, ha="center", va="bottom", fontsize=18, color=c["ok"])
-        clean(ax)
-    save(fig, "lec04-kp03-scatter")
-    return W, H
-
-
-def kp03_parabola():
-    W, H = 520, 380
-    fig = start(W, H, 18)
-    ax = fig.add_axes([84 / W, 70 / H, (W - 108) / W, (H - 100) / H])
-    xs = np.arange(-2, 3); ys = xs ** 2
-    xx = np.linspace(-2.4, 2.4, 100)
-    ax.plot(xx, xx ** 2, color=c["muted"], lw=1.2, ls=":")
-    ax.plot(xs, ys, "o", color=c["main"], ms=11)
-    ax.axvline(0, color=c["muted"], lw=0.8, alpha=0.6)
-    ax.set_xlabel("$X$", fontsize=18); ax.set_ylabel(r"$Y=X^2$", fontsize=18)
-    ax.set_xlim(-2.6, 2.6); ax.set_ylim(-0.6, 7.2)
-    ax.text(0, 6.4, r"5 points, Cov$(X,Y)=0$", ha="center", color=c["text"], fontsize=17)
-    clean(ax)
-    save(fig, "lec04-kp03-parabola")
-    return W, H
-
-
-def kp03_bars():
-    k = load("kp03")
-    W, H = 560, 300
-    fig = start(W, H, 18)
-    ax = fig.add_axes([76 / W, 60 / H, (W - 90) / W, (H - 84) / H])
-    ds = k.panels()
-    order = [ds[2], ds[1], ds[0]]
-    xs = np.arange(3)
-    ax.bar(xs - 0.2, [d["theory"] for d in order], 0.38, color=c["ref"], alpha=0.85, label="theory")
-    ax.bar(xs + 0.2, [d["var_sum"] for d in order], 0.38, color=c["main"], alpha=0.85, label="sample")
-    for i, d in enumerate(order):
-        ax.text(i - 0.2, d["theory"] + 0.4, f"{d['theory']:.0f}", ha="center", fontsize=17, color=c["text"])
-        ax.text(i + 0.2, d["var_sum"] + 0.4, f"{d['var_sum']:.1f}", ha="center", fontsize=17, color=c["text"])
-    ax.axhline(13, color=c["ok"], lw=2, ls="--")
-    ax.text(-0.55, 14.0, "4+9=13", color=c["ok"], fontsize=17, ha="left")
-    ax.set_xticks(xs); ax.set_xticklabels([r"Cov$=-3$", r"Cov$=0$", r"Cov$=+3$"], fontsize=17)
-    ax.set_ylabel(r"Var$(X+Y)$", fontsize=18)
-    ax.set_ylim(0, 27); ax.set_xlim(-0.6, 2.6)
-    ax.legend(loc="upper left", frameon=False, fontsize=17)
-    clean(ax)
-    save(fig, "lec04-kp03-bars")
-    return W, H
-
-
-# ======================================================================= KP04
-def kp04_model():
-    k = load("kp04")
     W, H = 600, 400
     fig = start(W, H, 18)
     ax = fig.add_axes([74 / W, 80 / H, (W - 92) / W, (H - 100) / H])
@@ -278,12 +215,12 @@ def kp04_model():
     ax.set_xlim(-1.05, 1.05); ax.set_ylim(-4.2, 2.4)
     ax.legend(loc="lower center", frameon=False, fontsize=17)
     clean(ax)
-    save(fig, "lec04-kp04-model")
+    save(fig, "lec04-kp03-model")
     return W, H
 
 
-def kp04_hist():
-    k = load("kp04")
+def kp03_hist():
+    k = load("kp03")
     W, H = 600, 380
     fig = start(W, H, 18)
     ax = fig.add_axes([84 / W, 74 / H, (W - 100) / W, (H - 94) / H])
@@ -299,12 +236,12 @@ def kp04_hist():
     ax.text(0.04, 0.84, rf"$\mathbb{{E}}(\varepsilon^2)\approx{np.mean(e ** 2):.3f}$", transform=ax.transAxes, va="top", fontsize=17, color=c["text"])
     ax.text(0.04, 0.73, rf"$\sigma^2={k.SIGMA ** 2:.2f}$", transform=ax.transAxes, va="top", fontsize=17, color=c["ref"])
     clean(ax)
-    save(fig, "lec04-kp04-hist")
+    save(fig, "lec04-kp03-hist")
     return W, H
 
 
-def kp04_thermo():
-    k = load("kp04")
+def kp03_thermo():
+    k = load("kp03")
     W, H = 600, 380
     fig = start(W, H, 18)
     ax = fig.add_axes([92 / W, 74 / H, (W - 108) / W, (H - 94) / H])
@@ -320,12 +257,12 @@ def kp04_thermo():
     ax.set_xlabel("number of readings", fontsize=18); ax.set_ylabel(r"mean of $(y-37.0)^2$", fontsize=18)
     ax.set_xlim(1, 10000); ax.set_ylim(0, 0.2)
     clean(ax)
-    save(fig, "lec04-kp04-thermo")
+    save(fig, "lec04-kp03-thermo")
     return W, H
 
 
-# ======================================================================= KP05
-def kp05_bar():
+# ======================================================================= KP04
+def kp04_bar():
     W, H = 600, 260
     fig = start(W, H, 18)
     ax = fig.add_axes([0, 0, 1, 1]); ax.set_xlim(0, W); ax.set_ylim(0, H); ax.axis("off")
@@ -339,12 +276,12 @@ def kp05_bar():
     ax.text(x0 + (wb + wr) / 2, y0 + h + 40, "err = 300  (what we can compute)", ha="center", va="bottom", fontsize=18, color=c["text"])
     ax.text(x0, y0 - 14, "true error", ha="left", va="top", fontsize=17, color=c["ref"])
     ax.text(x0 + wb + wr, y0 - 14, r"$n_{te}\sigma^2=50\times4$", ha="right", va="top", fontsize=17, color=c["warn"])
-    save(fig, "lec04-kp05-bar")
+    save(fig, "lec04-kp04-bar")
     return W, H
 
 
-def kp05_mc():
-    k = load("kp05")
+def kp04_mc():
+    k = load("kp04")
     W, H = 600, 340
     fig = start(W, H, 18)
     ax = fig.add_axes([84 / W, 72 / H, (W - 102) / W, (H - 92) / H])
@@ -358,15 +295,14 @@ def kp05_mc():
     ax.set_ylabel(r"mean$(\hat f-y)^2$", fontsize=18)
     ax.legend(loc="upper left", frameon=False, fontsize=17)
     clean(ax)
-    save(fig, "lec04-kp05-mc")
+    save(fig, "lec04-kp04-mc")
     return W, H
 
 
 FIGS = {"kp01": (kp01_split_roles, kp01_cheating_scores),
         "kp02": (kp02_boards, kp02_numline, kp02_triangle, kp02_shrink),
-        "kp03": (kp03_scatter, kp03_parabola, kp03_bars),
-        "kp04": (kp04_model, kp04_hist, kp04_thermo),
-        "kp05": (kp05_bar, kp05_mc)}
+        "kp03": (kp03_model, kp03_hist, kp03_thermo),
+        "kp04": (kp04_bar, kp04_mc)}
 
 if __name__ == "__main__":
     want = sys.argv[1:] or list(FIGS)
