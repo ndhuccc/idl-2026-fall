@@ -2659,7 +2659,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**下一個問題**：L2 與 L1 都是在目標上加一項；套到多層神經網路的權重上是什麼意思？還有沒有別的方法得到同樣的平滑效果？下一個單元 KP【待改14】。\n*Next: what do these penalties mean for a deep network, and are there other ways to get the same smoothness? (KP【待改14】)*",
+      "text": "**下一個問題**：L2 與 L1 都是在目標上加一項；能不能完全不改目標，只靠少訓練幾步，得到類似的正則化效果？下一個單元 KP10。\n*Next: can we leave the objective alone and get a similar effect just by training fewer steps? (KP10)*",
       "shapeKind": "rectangle"
     }
   },
@@ -2891,7 +2891,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "最後把常見的誤解整理成四張卡。第一：L1 只是把權重縮小。錯，L1 會產生精確的零，只縮小的是 L2。第二：菱形的接觸點一定在軸上。錯，只是常見，換一個橢圓方向接觸點可以離開軸。第三：軟閾值公式對任何 H 都成立。錯，只在 Hessian 是對角時成立。第四：α 越大越好。錯，零越多不代表越好，太大會把有用的特徵也關掉，α 要像 KP07 說的用驗證集挑。下一個問題：L2 與 L1 都只是在一般的目標上加一項，套到有很多層的神經網路權重上是什麼意思？還有沒有別的方法得到同樣的平滑效果？這是 KP【待改14】 的主題。",
+      "speakerNotes": "最後把常見的誤解整理成四張卡。第一：L1 只是把權重縮小。錯，L1 會產生精確的零，只縮小的是 L2。第二：菱形的接觸點一定在軸上。錯，只是常見，換一個橢圓方向接觸點可以離開軸。第三：軟閾值公式對任何 H 都成立。錯，只在 Hessian 是對角時成立。第四：α 越大越好。錯，零越多不代表越好，太大會把有用的特徵也關掉，α 要像 KP07 說的用驗證集挑。下一個問題：L2 與 L1 都只是在一般的目標上加一項；能不能完全不改目標，只靠少訓練幾步，得到類似的正則化效果？這是 KP10 早停法的主題。",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp13-scene-u01",
