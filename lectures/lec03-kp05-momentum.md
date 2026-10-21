@@ -86,9 +86,9 @@ The loss is not monotone either: $f(\theta_1)=56.68$ and $f(\theta_2)=\tfrac12(8
 
 ### 3. 為什麼有效：抵消與累加（Why it works: cancellation and accumulation）
 
-把遞迴式往回展開，$\Delta w^{(k)}=-\eta\sum_{i=0}^{k-1}\alpha^i\,\nabla f\big(w^{(k-i)}\big)$：更新量是**歷史梯度的指數加權和**，越舊的梯度權重 $\alpha^i$ 越小（指數移動平均的樣子）。兩個結果：
+把遞迴式往回展開，$\Delta w^{(k)}=-\eta\sum_{i=0}^{k}\alpha^i\,\nabla f\big(w^{(k-i)}\big)$：更新量是**歷史梯度的指數加權和**，越舊的梯度權重 $\alpha^i$ 越小（指數移動平均的樣子）。兩個結果：
 
-Unrolling the recursion gives $\Delta w^{(k)}=-\eta\sum_{i=0}^{k-1}\alpha^i\,\nabla f\big(w^{(k-i)}\big)$: the update is an **exponentially weighted sum of past gradients**, older ones weighted by $\alpha^i$ and fading (an exponential moving average). Two consequences:
+Unrolling the recursion gives $\Delta w^{(k)}=-\eta\sum_{i=0}^{k}\alpha^i\,\nabla f\big(w^{(k-i)}\big)$: the update is an **exponentially weighted sum of past gradients**, older ones weighted by $\alpha^i$ and fading (an exponential moving average). Two consequences:
 
 - **抵消**：$y$ 方向的梯度每步正負交替（碗很陡，一步就衝過谷底），相加時互相抵消，所以橫向擺動變小。
 - **累加**：$x$ 方向的梯度每步都同號（碗很平），相加時越疊越大。若梯度長期是同一個值 $g$，更新量趨近穩態 $\Delta w=-\eta g/(1-\alpha)$，等於把學習率放大成**有效步長 $\eta/(1-\alpha)$**：$\alpha=0.8$ 時是 $0.06/0.2=0.3$，是純梯度下降的 5 倍；$\alpha=0.9$ 時是 10 倍。
