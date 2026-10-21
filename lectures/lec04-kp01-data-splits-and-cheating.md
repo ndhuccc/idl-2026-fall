@@ -125,7 +125,7 @@ Why? A guesser gets at least 15 of 20 right with probability $\sum_{k=15}^{20}\b
 
 **第三種重疊：$\mathcal{T}\cap\mathcal{V}\neq\varnothing$。** 它不算作弊，因為測試集沒被碰到；但它讓驗證分數變成訓練分數的同義詞，你再也看不出模型有沒有過擬合。用一個小回歸例子 `[補充]` 看：真實曲線 $f(x)=1+2x-1.5x^2$，觀測 $y=f(x)+\varepsilon$，雜訊標準差 $\sigma=0.3$（所以不可避免的誤差是 $\sigma^2=0.09$，第 4 個 KP 才會細講）。取 20 個訓練點，用 1、2、3、5、9 次多項式去配，比較三種「分數」（誤差是均方誤差，越小越好）：
 
-**The third overlap: $\mathcal{T}\cap\mathcal{V}\neq\varnothing$.** It is not cheating, since the test set is untouched, but it makes the validation score a synonym of the training score, and you can no longer see whether the model overfits. A small regression example `[Added]`: the true curve is $f(x)=1+2x-1.5x^2$, observations are $y=f(x)+\varepsilon$ with noise standard deviation $\sigma=0.3$ (so the unavoidable error is $\sigma^2=0.09$, detailed in KP04). Take 20 training points and fit polynomials of degree 1, 2, 3, 5 and 9, comparing three kinds of "score" (the error is the mean squared error, smaller is better):
+**The third overlap: $\mathcal{T}\cap\mathcal{V}\neq\varnothing$.** It is not cheating, since the test set is untouched, but it makes the validation score a synonym of the training score, and you can no longer see whether the model overfits. A small regression example `[Added]`: the true curve is $f(x)=1+2x-1.5x^2$, observations are $y=f(x)+\varepsilon$ with noise standard deviation $\sigma=0.3$ (so the unavoidable error is $\sigma^2=0.09$, detailed in KP03). Take 20 training points and fit polynomials of degree 1, 2, 3, 5 and 9, comparing three kinds of "score" (the error is the mean squared error, smaller is better):
 
 | 多項式次數 | 訓練誤差（＝重疊時的「驗證」誤差） | 乾淨驗證誤差（20 個新點） | 測試誤差（2000 個新點） |
 |---|---|---|---|
@@ -153,9 +153,9 @@ Choosing with the overlapping validation set picks the smallest error, degree 9 
 
 The rules of splitting can be condensed into one sentence: **the closer to the final decision, the more the data must stay unseen.** The training set may be used again and again; the validation set leaks a little more each time you choose by it; the test set may be used once, and the model must not be changed afterwards. If you look at the test score and then tweak a hyper-parameter, the test set has become a validation set, which is cheating #2.
 
-這也有代價：每一份留作驗證或測試的資料，就少了一份拿來訓練。資料很少的時候該怎麼辦？KP09 的交叉驗證會給出辦法。
+這也有代價：每一份留作驗證或測試的資料，就少了一份拿來訓練。資料很少的時候該怎麼辦？KP06 的交叉驗證會給出辦法。
 
-There is a price: every example kept for validation or testing is one fewer for training. What to do when data are scarce? The cross-validation of KP09 gives an answer.
+There is a price: every example kept for validation or testing is one fewer for training. What to do when data are scarce? The cross-validation of KP06 gives an answer.
 
 現在我們確定了「要用沒見過的資料評分」。但評分用的「誤差」本身又是怎麼量的？一個估計又準又穩，要怎麼用數字說清楚？這是 KP02 的主題：偏差、變異與均方誤差。
 
@@ -184,14 +184,14 @@ Now we know to "score on unseen data". But how is the "error" used for scoring i
 - 「測試集偶爾拿來調一下參數沒關係」——只要依測試分數做過一次選擇，它就不再是沒見過的資料（作弊二）。
 - 「驗證集要和測試集一樣大」——大小不是重點，互不相交才是。
 - 「訓練集和驗證集重疊沒關係」——它不算作弊，但驗證誤差會變得和訓練誤差一樣漂亮，過擬合就看不出來。
-- 「比例一定要 $60/20/20$」——比例只是常見選擇，要依資料量調整（資料少時用 KP09 的交叉驗證）。
+- 「比例一定要 $60/20/20$」——比例只是常見選擇，要依資料量調整（資料少時用 KP06 的交叉驗證）。
 
 **Common misconceptions**:
 
 - "Using the test set to tweak a parameter now and then is harmless." Once a single choice has been made by the test score, it is no longer unseen data (cheating #2).
 - "The validation set must be as large as the test set." Size is not the point; being disjoint is.
 - "Training and validation sets may overlap." It is not cheating, but the validation error becomes as pretty as the training error and overfitting goes unseen.
-- "The ratio must be $60/20/20$." It is only a common choice and depends on the amount of data (with little data use the cross-validation of KP09).
+- "The ratio must be $60/20/20$." It is only a common choice and depends on the amount of data (with little data use the cross-validation of KP06).
 
 **圖**：本單元兩張圖：`lec04-kp01-split-roles`（三份資料的分工，功能 1）、`lec04-kp01-cheating-scores`（兩種作弊讓分數虛高，功能 1、2），以 `assets/figures/src/lec04-kp01-figures.py` 繪製；多項式表格的數字由同一支程式印出。
 

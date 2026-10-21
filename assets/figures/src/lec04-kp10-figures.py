@@ -1,169 +1,169 @@
-"""KP10 figures (why the true error rises) in two skins from the same data.
-    assets/figures/<id>.png (light, lecture)    assets/figures/<id>.svg (dark, deck)
-Ids: lec04-kp10-three-curves (err, penalty and err+penalty: the five-stage numbers of the source on the left, a computed polynomial experiment on the right),
-     lec04-kp10-overlap (training error, a validation set that overlaps the training set, and a clean validation set).
-Computed experiment: f(x) = 1 + 2x - 1.5x^2, sigma = 0.3 (sigma^2 = 0.09), fixed design x = linspace(-1, 1, 12), polynomial degree d = 1..10 (p = d + 1 parameters).
-For a least-squares fit the sensitivity sum is sum_i d fhat_i / d y_i = tr(H) = p (KP07), so the penalty per point is 2 sigma^2 p / n. The script checks by
-simulation (4000 fresh noise draws, same x) that  E[test error at the same x with fresh y] = E[err] + 2 sigma^2 p / n  for every degree.
-Overlap demo: n = 15 training points x = linspace(-1, 1, 15), noise seed 21; "clean" validation = 2000 fresh points, "half-overlap" validation = 10 of the
-training points + 10 fresh points, "full overlap" validation = the training set itself.
-Run:  python3 assets/figures/src/lec04-kp10-figures.py     (prints every number the lecture and the deck quote)
+"""KP10 figures (early stopping) in two skins from the same data.
+    assets/figures/<id>.png (light, lectures)    assets/figures/<id>.svg (dark, deck)
+Ids: lec04-kp10-paths (weight-space paths on elliptical contours), lec04-kp10-valcurve (validation-error U-curve).   Prints every number the lecture and the deck quote.
+Part A: quadratic J(w) = 1/2 (w-w*)^T H (w-w*), H = diag(1, 0.25), w* = (1.8, 2.6), gradient descent from w = 0 with eta = 0.1;
+        ridge path w_dagger(alpha) = (lambda_j/(lambda_j+alpha)) w*_j  for alpha from large to small.
+Part B: computed demo (fixed seed): 13 Legendre features, 20 noisy training points of sin(1.5 pi x), noise std 0.3, gradient descent from w = 0.
+Run:  python3 assets/figures/src/lec04-kp10-figures.py
 """
 import os
 import sys
 
 import numpy as np
+from numpy.polynomial import legendre as L
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import matplotlib.pyplot as plt  # noqa: E402
 from lec04_common import DARK, LIGHT, axes, clean, finish, skin  # noqa: E402
 
-SIGMA = 0.3
-S2 = SIGMA ** 2
-N = 12
-X = np.linspace(-1, 1, N)
-DEGS = list(range(1, 11))
-STAGE_ERR = np.array([10, 7, 5, 4, 3])
-STAGE_PEN = np.array([0, 1, 3, 6, 10])
+# ------------------------------------------------------------------ part A: two-direction quadratic
+LAM = np.array([1.0, 0.25])
+WSTAR = np.array([1.8, 2.6])
+ETA, T_STOP, ALPHA = 0.1, 10, 1.0
 
 
-def f(x):
-    return 1.0 + 2.0 * np.asarray(x) - 1.5 * np.asarray(x) ** 2
+def gd_path(t_max):
+    """Iterates w^(0..t_max) of gradient descent from the origin: w <- w - eta * H (w - w*)."""
+    w = np.zeros(2)
+    out = [w.copy()]
+    for _ in range(t_max):
+        w = w - ETA * LAM * (w - WSTAR)
+        out.append(w.copy())
+    return np.array(out)
 
 
-def hat(x, d):
-    V = np.vander(x, d + 1)
-    return V @ np.linalg.pinv(V)
+def ridge(alpha):
+    """Weight-decay (ridge) minimiser of J + alpha/2 |w|^2: each eigen-direction is multiplied by lambda/(lambda+alpha)."""
+    return LAM / (LAM + alpha) * WSTAR
 
 
-def experiment(reps=4000):
-    """Per degree: mean err/n, penalty 2 s2 p/n, simulated in-sample test error (fresh y at the same x), simulated mean (fhat - f)^2 at the design."""
-    rng = np.random.default_rng(31)
-    out = {}
-    E = rng.normal(0, SIGMA, (reps, N))
-    E2 = rng.normal(0, SIGMA, (reps, N))
-    for d in DEGS:
-        H = hat(X, d)
-        Y = f(X)[None, :] + E
-        Yfit = Y @ H.T
-        err = np.mean((Yfit - Y) ** 2)
-        test_in = np.mean((Yfit - (f(X)[None, :] + E2)) ** 2)
-        true_err = np.mean((Yfit - f(X)[None, :]) ** 2)
-        out[d] = dict(err=err, pen=2 * S2 * np.trace(H) / N, trace=np.trace(H), test_in=test_in, true_err=true_err)
-    return out
+def J(w):
+    d = np.asarray(w) - WSTAR
+    return 0.5 * np.sum(LAM * d * d, axis=-1)
 
 
-EXP = experiment()
+# ------------------------------------------------------------------ part B: validation curve demo
+def demo(t_max=20000):
+    rng = np.random.default_rng(3)
+    n, m, deg = 20, 400, 12
+    f = lambda x: np.sin(1.5 * np.pi * x)  # noqa: E731
+    xt = np.sort(rng.uniform(-1, 1, n))
+    yt = f(xt) + rng.normal(0, 0.3, n)
+    xv = np.linspace(-1, 1, m)
+    yv = f(xv) + rng.normal(0, 0.3, m)
+    feat = lambda x: np.stack([L.legval(x, [0] * k + [1]) for k in range(deg + 1)], 1)  # noqa: E731
+    Xt, Xv = feat(xt), feat(xv)
+    H = Xt.T @ Xt / n
+    eta = 0.9 / np.linalg.eigvalsh(H).max()
+    w = np.zeros(deg + 1)
+    tr, va, ws = [], [], []
+    for _ in range(t_max + 1):
+        tr.append(np.mean((Xt @ w - yt) ** 2))
+        va.append(np.mean((Xv @ w - yv) ** 2))
+        ws.append(w.copy())
+        w = w - eta * Xt.T @ (Xt @ w - yt) / n
+    return dict(tr=np.array(tr), va=np.array(va), ws=np.array(ws), eta=eta, H=H, Xt=Xt, yt=yt, Xv=Xv, yv=yv)
 
 
-def three_curves(dark):
+# ------------------------------------------------------------------ figure 1: paths in weight space
+def paths(dark):
     c = DARK if dark else LIGHT
-    skin(c, dark, 16)
-    W, H = 1100, 380
-    fig = plt.figure(figsize=(W / 100, H / 100))
-    # left: the five stages of the source (sigma^2 = 1)
-    ax = fig.add_axes([70 / W, 70 / H, 440 / W, 250 / H])
-    st = np.arange(1, 6)
-    tot = STAGE_ERR + STAGE_PEN
-    ax.plot(st, STAGE_ERR, "-o", color=c["main"], lw=2.4, ms=6, label="err")
-    ax.plot(st, STAGE_PEN, marker="o", color=c["warn"], lw=2.4, ms=6, ls="--", label="penalty")
-    ax.plot(st, tot, "-o", color=c["ref"], lw=2.8, ms=7, label="err + penalty")
-    ax.axvspan(1.75, 3.25, color=c["ok"], alpha=0.16, lw=0)
-    ax.text(2.5, 20.5, "lowest: 8", ha="center", color=c["ok"], fontsize=13)
-    ax.set_ylim(-0.5, 25)
-    ax.set_xticks(st)
-    ax.set_xlabel("training stage")
-    ax.set_ylabel(r"error ($\sigma^2=1$)")
-    ax.set_title("five stages of the source", fontsize=13, color=c["text"])
-    ax.legend(loc="upper right", frameon=False, fontsize=12)
+    skin(c, dark)
+    W, H = 600, 440
+    fig, ax = axes(W, H)
+    g1, g2 = np.meshgrid(np.linspace(-0.6, 3.8, 400), np.linspace(-0.6, 4.6, 400))
+    z = 0.5 * (LAM[0] * (g1 - WSTAR[0]) ** 2 + LAM[1] * (g2 - WSTAR[1]) ** 2)
+    ax.contour(g1, g2, z, levels=sorted([0.3, 0.9, 1.6, 3.6, float(J(np.zeros(2)))]), colors=[c["muted"]], linewidths=1.0, alpha=0.7)
+    p = gd_path(60)
+    ax.plot(p[:, 0], p[:, 1], color=c["main"], lw=1.4, alpha=0.5)
+    ax.plot(p[:T_STOP + 1, 0], p[:T_STOP + 1, 1], "o-", color=c["main"], lw=2.4, ms=4.5, label=r"gradient descent, $t=0..10$")
+    ax.plot(*p[T_STOP], "o", color=c["main"], ms=11, mfc="none", mew=2.2)
+    al = np.logspace(2, -2, 200)
+    r = np.array([ridge(a) for a in al])
+    ax.plot(r[:, 0], r[:, 1], color=c["ref"], lw=2.4, ls="--", label=r"weight decay, $\alpha:\infty\to0$")
+    ax.plot(*ridge(ALPHA), "s", color=c["ref"], ms=10)
+    ax.plot(*WSTAR, "*", color=c["ok"], ms=15)
+    ax.plot(0, 0, "o", color=c["text"], ms=7)
+    ax.annotate(r"$w^{*}$", WSTAR, xytext=(8, 6), textcoords="offset points", color=c["ok"], fontsize=15)
+    ax.annotate(r"$w^{(10)}$", p[T_STOP], xytext=(12, -16), textcoords="offset points", color=c["main"], fontsize=14)
+    ax.annotate(r"$w^{\dagger}(1)$", ridge(ALPHA), xytext=(-52, 6), textcoords="offset points", color=c["ref"], fontsize=14)
+    ax.annotate(r"start $0$", (0, 0), xytext=(8, -16), textcoords="offset points", color=c["text"], fontsize=13)
+    ax.set_xlabel(r"$w_1$ (curvature $\lambda_1=1$)")
+    ax.set_ylabel(r"$w_2$ (curvature $\lambda_2=0.25$)")
+    ax.set_xlim(-0.6, 3.8)
+    ax.set_ylim(-0.6, 4.6)
+    ax.set_aspect("equal", adjustable="box")
+    ax.legend(loc="upper left", frameon=False, fontsize=12)
     clean(ax)
-    # right: computed polynomial experiment (per point)
-    ax = fig.add_axes([620 / W, 70 / H, 440 / W, 250 / H])
-    ds = np.array(DEGS)
-    err = np.array([EXP[d]["err"] for d in DEGS])
-    pen = np.array([EXP[d]["pen"] for d in DEGS])
-    ti = np.array([EXP[d]["test_in"] for d in DEGS])
-    ax.plot(ds, err, "-o", color=c["main"], lw=2.4, ms=5, label="err")
-    ax.plot(ds, pen, marker="o", color=c["warn"], lw=2.4, ms=5, ls="--", label="penalty")
-    ax.plot(ds, err + pen, "-o", color=c["ref"], lw=2.8, ms=6, label="err + penalty")
-    ax.scatter(ds, ti, s=70, facecolors="none", edgecolors=c["text"], linewidths=1.5, zorder=6, label="simulated test")
-    ax.set_xticks(ds)
-    ax.set_xlabel("polynomial degree")
-    ax.set_ylabel("error per point")
-    ax.set_title("computed: 12 points, $\\sigma^2=0.09$", fontsize=13, color=c["text"])
-    ax.set_ylim(-0.01, 0.56)
-    ax.legend(loc="upper right", frameon=False, fontsize=11)
-    clean(ax)
-    finish(fig, "lec04-kp10-three-curves", dark, c)
+    finish(fig, "lec04-kp10-paths", dark, c)
     return W, H
 
 
-def overlap_curves():
-    """Training error, half-overlap validation, clean validation, all against the degree (n=15)."""
-    n = 15
-    x = np.linspace(-1, 1, n)
-    y = f(x) + np.random.default_rng(21).normal(0, SIGMA, n)
-    rng = np.random.default_rng(22)
-    xf = rng.uniform(-1, 1, 10)
-    yf = f(xf) + rng.normal(0, SIGMA, 10)
-    xc = np.random.default_rng(23).uniform(-1, 1, 2000)
-    yc = f(xc) + np.random.default_rng(24).normal(0, SIGMA, 2000)
-    sel = np.random.default_rng(25).choice(n, 10, replace=False)
-    xh, yh = np.concatenate([x[sel], xf]), np.concatenate([y[sel], yf])
-    res = {"train": [], "half": [], "clean": []}
-    for d in DEGS:
-        p = np.polyfit(x, y, d)
-        res["train"].append(float(np.mean((np.polyval(p, x) - y) ** 2)))
-        res["half"].append(float(np.mean((np.polyval(p, xh) - yh) ** 2)))
-        res["clean"].append(float(np.mean((np.polyval(p, xc) - yc) ** 2)))
-    return res
-
-
-OV = overlap_curves()
-
-
-def overlap(dark):
+# ------------------------------------------------------------------ figure 2: validation error U curve
+def valcurve(dark, d):
     c = DARK if dark else LIGHT
     skin(c, dark)
     W, H = 640, 380
-    fig, ax = axes(W, H, left=96)
-    ds = np.array(DEGS)
-    ax.semilogy(ds, OV["train"], "-o", color=c["main"], lw=2.4, ms=6, label="training set (fully overlapping)")
-    ax.semilogy(ds, OV["half"], "-o", color=c["edge"], lw=2.4, ms=6, label="validation, half overlapping")
-    ax.semilogy(ds, OV["clean"], "-o", color=c["ref"], lw=2.4, ms=6, label="clean validation")
-    ax.axhline(S2, color=c["ok"], ls="--", lw=1.3)
-    ax.annotate("clean: lowest at degrees 2 to 4", (3, OV["clean"][2]), xytext=(10, 62), textcoords="offset points", color=c["text"], fontsize=12,
-                arrowprops=dict(arrowstyle="->", color=c["muted"]))
-    ax.set_xlabel("polynomial degree")
-    ax.set_ylabel("MSE (log scale)")
-    ax.set_xticks(ds)
-    ax.yaxis.set_minor_formatter(plt.NullFormatter())
-    ax.legend(loc="lower left", frameon=False, fontsize=11)
+    fig, ax = axes(W, H)
+    t = np.arange(len(d["va"]))
+    ts = np.maximum(t, 1)
+    ax.semilogx(ts[1:], d["tr"][1:], color=c["ref"], lw=2.4, label="training error")
+    ax.semilogx(ts[1:], d["va"][1:], color=c["main"], lw=2.4, label="validation error")
+    ax.axhline(0.09, color=c["muted"], lw=1.2, ls=":")
+    ax.text(45, 0.103, r"noise floor $\sigma^2=0.09$", color=c["muted"], fontsize=12)
+    tb = int(np.argmin(d["va"]))
+    ax.axvline(tb, color=c["ok"], lw=1.6, ls="--")
+    ax.plot(tb, d["va"][tb], "o", color=c["ok"], ms=10)
+    ax.annotate(rf"stop at $t={tb}$", (tb, d["va"][tb]), xytext=(14, 54), textcoords="offset points", color=c["ok"], fontsize=14,
+                arrowprops=dict(arrowstyle="->", color=c["ok"], lw=1.4))
+    ax.set_xlabel(r"gradient-descent step $t$ (log scale)")
+    ax.set_ylabel("mean squared error")
+    ax.set_xlim(1, 20000)
+    ax.set_ylim(0, 0.7)
+    ax.legend(loc="upper left", bbox_to_anchor=(0.46, 1.0), frameon=False, fontsize=13)
     clean(ax)
-    finish(fig, "lec04-kp10-overlap", dark, c)
+    finish(fig, "lec04-kp10-valcurve", dark, c)
     return W, H
 
 
-def report():
-    print("source five-stage table (sigma^2 = 1): err", STAGE_ERR.tolist(), "penalty", STAGE_PEN.tolist(), "err+penalty", (STAGE_ERR + STAGE_PEN).tolist(),
-          "-> minimum", int((STAGE_ERR + STAGE_PEN).min()), "at stages", (np.where(STAGE_ERR + STAGE_PEN == (STAGE_ERR + STAGE_PEN).min())[0] + 1).tolist())
-    print("computed: n=12 fixed design, sigma^2=0.09, per point; err = mean train MSE over 4000 noise draws, pen = 2 s2 tr(H)/n,")
-    print("          test_in = error at the same x with fresh y, true = mean (fhat - f)^2 at the design")
-    print("degree p  tr(H)   err     pen     err+pen   test_in   test_in-(err+pen)   true_err   err+pen-s2")
-    for d in DEGS:
-        e = EXP[d]
-        print(f"{d:5d} {d + 1:2d}  {e['trace']:.3f}  {e['err']:.4f}  {e['pen']:.4f}  {e['err'] + e['pen']:.4f}    {e['test_in']:.4f}    {e['test_in'] - e['err'] - e['pen']:+.4f}"
-              f"            {e['true_err']:.4f}     {e['err'] + e['pen'] - S2:.4f}")
-    tot = [EXP[d]["err"] + EXP[d]["pen"] for d in DEGS]
-    print("minimum of err+pen at degree", DEGS[int(np.argmin(tot))])
-    print("overlap demo (n=15 training points, seed 21): degree | train | half-overlap val | clean val (2000 fresh)")
-    for i, d in enumerate(DEGS):
-        print(f"{d:5d}  {OV['train'][i]:.4f}  {OV['half'][i]:.4f}  {OV['clean'][i]:.4f}")
-    print("argmin: train", DEGS[int(np.argmin(OV['train']))], "half-overlap", DEGS[int(np.argmin(OV['half']))], "clean", DEGS[int(np.argmin(OV['clean']))])
+def report(d):
+    print("lambda =", LAM, " w* =", WSTAR, " eta =", ETA, " t =", T_STOP, " alpha = 1/(t eta) =", 1 / (T_STOP * ETA))
+    print("GD closed form check, direction 1:", round(float(gd_path(T_STOP)[T_STOP, 0]), 4), "=", round(float((1 - (1 - ETA * LAM[0]) ** T_STOP) * WSTAR[0]), 4))
+    print("table  lambda | eta*lambda | (1-eta*lambda)^10 | alpha/(lambda+alpha) | GD factor 1-(1-eta*lambda)^10 | WD factor lambda/(lambda+alpha)")
+    for lam in (0.1, 0.25, 0.5, 1.0, 4.0):
+        a, b = (1 - ETA * lam) ** T_STOP, ALPHA / (lam + ALPHA)
+        print(f"   {lam:5.2f} | {ETA * lam:5.3f} | {a:6.4f} | {b:6.4f} | {1 - a:6.4f} | {1 - b:6.4f}")
+    w10, wr = gd_path(T_STOP)[T_STOP], ridge(ALPHA)
+    print("w(10) =", np.round(w10, 4), " w_dagger(1) =", np.round(wr, 4), " w* =", WSTAR, " J(0) =", round(float(J(np.zeros(2))), 4),
+          " J(w10) =", round(float(J(w10)), 4), " J(wdagger) =", round(float(J(wr)), 4))
+    print("distance |w(10)-w_dagger(1)| =", round(float(np.linalg.norm(w10 - wr)), 4), " |w*| =", round(float(np.linalg.norm(WSTAR)), 4))
+    print("stability limit 2/lambda_max =", 2 / LAM.max(), " (eta =", ETA, ")")
+    va, tr = d["va"], d["tr"]
+    tb = int(np.argmin(va))
+    print(f"demo: eta={d['eta']:.4f}  best validation step t={tb}: val={va[tb]:.4f} train={tr[tb]:.4f}; t=20000: val={va[-1]:.4f} train={tr[-1]:.4f}; t=0 val={va[0]:.4f}")
+    # patience rule: evaluate every 10 steps, stop after 20 evaluations (200 steps) without a new best, return the best weights
+    best, best_t, bad = np.inf, 0, 0
+    for t in range(0, len(va), 10):
+        if va[t] < best - 1e-12:
+            best, best_t, bad = va[t], t, 0
+        else:
+            bad += 1
+            if bad >= 20:
+                break
+    print(f"patience rule (check every 10 steps, patience 20 checks): stops at t={t}, returns weights of t={best_t} with val={best:.4f}")
+    # weight decay with alpha = 1/(t eta) on the same demo
+    H, Xt, yt, Xv, yv = d["H"], d["Xt"], d["yt"], d["Xv"], d["yv"]
+    n = len(yt)
+    for tt in (tb, 100, 1000):
+        a = 1 / (tt * d["eta"])
+        wr = np.linalg.solve(H + a * np.eye(len(H)), Xt.T @ yt / n)
+        wg = d["ws"][tt]
+        print(f"  t={tt}: alpha=1/(t eta)={a:.4f}  GD val={va[tt]:.4f}  ridge val={np.mean((Xv @ wr - yv) ** 2):.4f}  rel. weight distance={np.linalg.norm(wg - wr) / np.linalg.norm(wr):.3f}")
 
 
 if __name__ == "__main__":
-    for dk in (False, True):
-        three_curves(dk)
-        overlap(dk)
-    report()
+    d = demo()
+    for dark in (False, True):
+        paths(dark)
+        valcurve(dark, d)
+    report(d)

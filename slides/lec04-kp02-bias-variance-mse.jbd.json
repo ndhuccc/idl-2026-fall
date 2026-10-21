@@ -1351,7 +1351,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**設定**：真實平均 $\\mu=3$，用 $n=4$ 筆獨立觀測，每筆標準差 $\\sigma=4$。A 是樣本平均 $\\bar x$；B 是把它縮小成 $0.8\\,\\bar x$。樣本平均的變異數是 $\\sigma^2/n$（KP03 會證明）。\n*True mean $\\mu=3$, $n=4$ observations, each with standard deviation $\\sigma=4$. A is the sample mean; B shrinks it to $0.8\\,\\bar x$.*",
+      "text": "**設定**：真實平均 $\\mu=3$，用 $n=4$ 筆獨立觀測，每筆標準差 $\\sigma=4$。A 是樣本平均 $\\bar x$；B 是把它縮小成 $0.8\\,\\bar x$。樣本平均的變異數是 $\\sigma^2/n$（KP【待改03】 會證明）。\n*True mean $\\mu=3$, $n=4$ observations, each with standard deviation $\\sigma=4$. A is the sample mean; B shrinks it to $0.8\\,\\bar x$.*",
       "shapeKind": "rectangle"
     },
     "lec04kp02-u01-p7-c2": {
@@ -1837,7 +1837,7 @@
         "borderStyle": "solid",
         "borderWidth": 2
       },
-      "text": "**留給 KP03**：實際的估計常把好幾個量「加在一起」。$\\mathrm{Var}(X+Y)$ 一定等於 $\\mathrm{Var}(X)+\\mathrm{Var}(Y)$ 嗎？\n*Left for KP03: when quantities are added, does the variance simply add?*",
+      "text": "**留給 KP【待改03】**：實際的估計常把好幾個量「加在一起」。$\\mathrm{Var}(X+Y)$ 一定等於 $\\mathrm{Var}(X)+\\mathrm{Var}(Y)$ 嗎？\n*Left for KP【待改03】: when quantities are added, does the variance simply add?*",
       "shapeKind": "rectangle"
     }
   },
@@ -2003,7 +2003,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁用一個反例：真實平均 μ 等於 3，用 4 筆獨立觀測，每筆標準差 4。估計器 A 是樣本平均，無偏，偏差 0；樣本平均的變異數是 σ 平方除以 n，等於 16 除以 4 等於 4（這個公式 KP03 會證明）；所以 MSE 等於 4。估計器 B 把樣本平均縮成 0.8 倍：偏差是 0.8 乘 3 減 3 等於負 0.6，平方 0.36；變異數是 0.8 平方乘 4 等於 2.56；MSE 是 2.56 加 0.36 等於 2.92。2.92 小於 4，所以有偏的 B 比無偏的 A 好。這是 [補充] 的數字，來源只用文字描述。上一頁講 MSE 由準與穩合成，接下來第八頁用圖看這個取捨。",
+      "speakerNotes": "這一頁用一個反例：真實平均 μ 等於 3，用 4 筆獨立觀測，每筆標準差 4。估計器 A 是樣本平均，無偏，偏差 0；樣本平均的變異數是 σ 平方除以 n，等於 16 除以 4 等於 4（這個公式 KP【待改03】 會證明）；所以 MSE 等於 4。估計器 B 把樣本平均縮成 0.8 倍：偏差是 0.8 乘 3 減 3 等於負 0.6，平方 0.36；變異數是 0.8 平方乘 4 等於 2.56；MSE 是 2.56 加 0.36 等於 2.92。2.92 小於 4，所以有偏的 B 比無偏的 A 好。這是 [補充] 的數字，來源只用文字描述。上一頁講 MSE 由準與穩合成，接下來第八頁用圖看這個取捨。",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp02-scene-u01",
@@ -2025,7 +2025,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁用 20 萬次模擬畫出兩個估計器的分布。寬而矮的是 A：中心剛好在真實的 3，但向兩側拖得很開，MSE 約 4。窄而高的是 B：中心偏左到 2.4，但集中得多，MSE 約 2.92。綠色虛線是真實值 3。B 用一點偏差換來大幅下降的變異。這就是正則化的想法：訓練資料有限時，把模型縮小一點，用少量偏差換大量變異的下降。模擬值與理論值吻合，A 約 3.99，B 約 2.91。上一頁是算例，接下來第九頁整理本單元，並接到 KP03。",
+      "speakerNotes": "這一頁用 20 萬次模擬畫出兩個估計器的分布。寬而矮的是 A：中心剛好在真實的 3，但向兩側拖得很開，MSE 約 4。窄而高的是 B：中心偏左到 2.4，但集中得多，MSE 約 2.92。綠色虛線是真實值 3。B 用一點偏差換來大幅下降的變異。這就是正則化的想法：訓練資料有限時，把模型縮小一點，用少量偏差換大量變異的下降。模擬值與理論值吻合，A 約 3.99，B 約 2.91。上一頁是算例，接下來第九頁整理本單元，並接到 KP【待改03】。",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp02-scene-u01",
@@ -2047,7 +2047,7 @@
       "durationMs": 900,
       "holdMs": 500,
       "easing": "smooth",
-      "speakerNotes": "這一頁收束 KP02。三件事：第一，估計要分準與穩兩件事量，偏差管準、變異管穩；第二，MSE 等於變異加偏差平方，交叉項為 0；第三，無偏不一定最好，用少量偏差換變異下降，是正則化的想法。接下來的問題：實際的估計常把好幾個量加在一起，例如把許多模型的預測平均。加起來之後變異怎麼算？變異的加法一定成立嗎？這是 KP03 的主題。上一頁看取捨，接下來進入 KP03：共變異與線性組合。",
+      "speakerNotes": "這一頁收束 KP02。三件事：第一，估計要分準與穩兩件事量，偏差管準、變異管穩；第二，MSE 等於變異加偏差平方，交叉項為 0；第三，無偏不一定最好，用少量偏差換變異下降，是正則化的想法。接下來的問題：實際的估計常把好幾個量加在一起，例如把許多模型的預測平均。加起來之後變異怎麼算？變異的加法一定成立嗎？這是 KP【待改03】 的主題。上一頁看取捨，接下來進入 KP【待改03】：共變異與線性組合。",
       "target": {
         "kind": "scene-point",
         "sceneId": "lec04kp02-scene-u01",

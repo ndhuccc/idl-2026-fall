@@ -1,10 +1,9 @@
-"""KP08 figures (overfitting, underfitting, generalization) in two skins from the same data.
+"""KP08 figures (L2 regularization shrinks along the Hessian eigen-directions) in two skins from the same data.
     assets/figures/<id>.png (light, lecture)    assets/figures/<id>.svg (dark, deck)
-Ids: lec04-kp08-fits (three fits on the same 12 training points), lec04-kp08-train-test (train vs test MSE against degree).
-Toy data: f(x) = 1 + 2x - 1.5x^2 (true model is quadratic), sigma = 0.3 (noise floor sigma^2 = 0.09), 12 fixed-design points x = linspace(-1, 1, 12),
-noise drawn with seed 11. "Test MSE" = E[(fhat - y)^2] on fresh noisy data = mean (fhat - f)^2 + sigma^2 on a dense grid (KP05 identity), cross-checked
-against a fresh noisy test set. Bias^2 and variance come from refitting on 2000 fresh noise draws with the design fixed.
-Run:  python3 assets/figures/src/lec04-kp08-figures.py     (prints every number the lecture and the deck quote)
+Ids: lec04-kp08-ellipse, lec04-kp08-factor, lec04-kp08-dof.   Prints every number the lecture and the deck quote.
+Setup: J(x) = 1/2 (x-x*)^T H (x-x*), penalty (alpha/2)||x||^2  =>  x_dag = (H + alpha I)^-1 H x*.
+H = U diag(4, 0.5) U^T with U a rotation by -25 degrees; x* = U (10, 10)^T; alpha = 1.
+Run:  python3 assets/figures/src/lec04-kp08-figures.py
 """
 import os
 import sys
@@ -15,111 +14,154 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import matplotlib.pyplot as plt  # noqa: E402
 from lec04_common import DARK, LIGHT, axes, clean, finish, skin  # noqa: E402
 
-SIGMA = 0.3
-N = 12
-X = np.linspace(-1, 1, N)
-XG = np.linspace(-1, 1, 2001)
+LAM = np.array([4.0, 0.5])
+ALPHA = 1.0
+THETA = np.deg2rad(-25.0)
+U = np.array([[np.cos(THETA), -np.sin(THETA)], [np.sin(THETA), np.cos(THETA)]])   # columns = eigenvectors u1, u2
+H = U @ np.diag(LAM) @ U.T
+XSTAR_EIG = np.array([10.0, 10.0])
+XSTAR = U @ XSTAR_EIG
 
 
-def f(x):
-    return 1.0 + 2.0 * np.asarray(x) - 1.5 * np.asarray(x) ** 2
+def factor(lam, alpha):
+    return lam / (lam + alpha)
 
 
-Y = f(X) + np.random.default_rng(11).normal(0, SIGMA, N)
-rt = np.random.default_rng(77)
-XT = np.sort(rt.uniform(-1, 1, 8))              # eight fresh test points shown as hollow circles
-YT = f(XT) + rt.normal(0, SIGMA, 8)
+def xdag(alpha, x=XSTAR, h=H):
+    return np.linalg.solve(h + alpha * np.eye(len(x)), h @ x)
 
 
-def fit(d, y=Y):
-    return np.polyfit(X, y, d)
+def dof(alpha, lam=LAM):
+    return float(np.sum(factor(lam, alpha)))
 
 
-def train_mse(d):
-    return float(np.mean((np.polyval(fit(d), X) - Y) ** 2))
-
-
-def test_mse(d):
-    """Expected squared error on fresh noisy data: mean (fhat - f)^2 + sigma^2."""
-    return float(np.mean((np.polyval(fit(d), XG) - f(XG)) ** 2) + SIGMA ** 2)
-
-
-def fresh_test_mse(d, m=200000, seed=5):
-    rng = np.random.default_rng(seed)
-    xs = rng.uniform(-1, 1, m)
-    ys = f(xs) + rng.normal(0, SIGMA, m)
-    return float(np.mean((np.polyval(fit(d), xs) - ys) ** 2))
-
-
-def bias_var(d, reps=2000):
-    P = np.array([np.polyval(np.polyfit(X, f(X) + np.random.default_rng(10 + s).normal(0, SIGMA, N), d), XG) for s in range(reps)])
-    return float(np.mean((P.mean(0) - f(XG)) ** 2)), float(np.mean(P.var(0)))
-
-
-def fits(dark):
-    c = DARK if dark else LIGHT
-    skin(c, dark, 16)
-    W, H = 1100, 340
-    fig = plt.figure(figsize=(W / 100, H / 100))
-    spec = ((1, "underfit", c["warn"]), (2, "good fit", c["ok"]), (9, "overfit", c["ref"]))
-    for k, (d, name, col) in enumerate(spec):
-        ax = fig.add_axes([(60 + k * 355) / W, 84 / H, 300 / W, 200 / H])
-        ax.plot(XG, f(XG), color=c["muted"], lw=1.4, ls="--", label="true $f$")
-        ax.plot(XG, np.polyval(fit(d), XG), color=col, lw=2.6, label=f"degree {d}")
-        ax.scatter(X, Y, s=34, color=c["main"], zorder=5, label="train")
-        ax.scatter(XT, YT, s=44, facecolors="none", edgecolors=c["text"], linewidths=1.6, zorder=5, label="test")
-        ax.set_ylim(-1.6, 2.2)
-        ax.set_xlim(-1.05, 1.05)
-        ax.set_xlabel("$x$")
-        if k == 0:
-            ax.set_ylabel("$y$")
-            h, l = ax.get_legend_handles_labels()
-            hh = [h[0], h[2], h[3]]
-            ll = ["true $f$", "train", "test"]
-        ax.set_title(f"{name}: degree {d}\ntrain {train_mse(d):.3f}   test {test_mse(d):.3f}", fontsize=12, color=c["text"])
-        clean(ax)
-    fig.legend(hh, ll, loc="lower center", frameon=False, fontsize=11, ncol=3, bbox_to_anchor=(0.5, 0.0))
-    finish(fig, "lec04-kp08-fits", dark, c)
-    return W, H
-
-
-def train_test(dark):
+def ellipse(dark):
     c = DARK if dark else LIGHT
     skin(c, dark)
-    W, H = 640, 380
-    fig, ax = axes(W, H)
-    ds = np.arange(1, 11)
-    tr = [train_mse(d) for d in ds]
-    te = [test_mse(d) for d in ds]
-    ax.semilogy(ds, tr, "-o", color=c["main"], lw=2.4, ms=6, label="train MSE")
-    ax.semilogy(ds, te, "-o", color=c["ref"], lw=2.4, ms=6, label="test MSE")
-    ax.axhline(SIGMA ** 2, color=c["ok"], ls="--", lw=1.4)
-    ax.annotate(r"noise floor $\sigma^2=0.09$", (6.4, SIGMA ** 2), xytext=(0, -18), textcoords="offset points", color=c["ok"], fontsize=13)
-    best = int(ds[int(np.argmin(te))])
-    ax.annotate(f"best test: degree {best}", (best, min(te)), xytext=(18, 38), textcoords="offset points", color=c["text"], fontsize=13,
-                arrowprops=dict(arrowstyle="->", color=c["muted"]))
-    ax.set_xlabel("polynomial degree (complexity)")
-    ax.set_ylabel("MSE (log scale)")
-    ax.set_xticks(ds)
-    ax.legend(loc="lower left", frameon=False, fontsize=13)
+    W, H_PX = 640, 380
+    fig, ax = axes(W, H_PX, left=40, bottom=36, right=16, top=14)
+    xd = xdag(ALPHA)
+    gx, gy = np.meshgrid(np.linspace(-6, 20, 600), np.linspace(-12, 16, 600))
+    d = np.stack([gx - XSTAR[0], gy - XSTAR[1]], axis=-1)
+    Jv = 0.5 * np.einsum("...i,ij,...j->...", d, H, d)
+    Jd = 0.5 * (xd - XSTAR) @ H @ (xd - XSTAR)
+    J0 = 0.5 * XSTAR @ H @ XSTAR
+    ax.contour(gx, gy, Jv, levels=[8, 40, 90, 150], colors=c["ref"], linewidths=1.2, alpha=0.55)
+    ax.contour(gx, gy, Jv, levels=[Jd], colors=c["main"], linewidths=1.8)
+    ax.contour(gx, gy, Jv, levels=[J0], colors=c["muted"], linewidths=1.2, linestyles="--")
+    t = np.array([-14.0, 14.0])
+    for k, col in ((0, c["ok"]), (1, c["vec"])):
+        ax.plot(t * U[0, k], t * U[1, k], color=col, lw=1.6, ls=(0, (6, 4)))
+    # components along the eigen-directions: origin -> along u1 -> x* (or x_dag)
+    for comp, col, ls in ((XSTAR_EIG, c["ref"], "-"), (U.T @ xd, c["main"], "-")):
+        p1 = U[:, 0] * comp[0]
+        ax.plot([0, p1[0]], [0, p1[1]], color=col, lw=2.4, ls=ls)
+        tip = U @ comp
+        ax.plot([p1[0], tip[0]], [p1[1], tip[1]], color=col, lw=2.4, ls=ls)
+    ax.plot([0], [0], "o", color=c["text"], ms=7)
+    ax.plot([XSTAR[0]], [XSTAR[1]], "o", color=c["ref"], ms=10)
+    ax.plot([xd[0]], [xd[1]], "o", color=c["main"], ms=10)
+    ax.annotate(r"$\mathbf{x}^{\ast}$", XSTAR, xytext=(-4, 12), textcoords="offset points", color=c["ref"], fontsize=17, ha="center")
+    ax.annotate(r"$\mathbf{x}^{\dagger}$", xd, xytext=(-44, -2), textcoords="offset points", color=c["main"], fontsize=17)
+    ax.annotate(r"$\mathbf{0}$", (0, 0), xytext=(-16, -18), textcoords="offset points", color=c["text"], fontsize=15)
+    ax.annotate(r"$\mathbf{u}_1$ ($\lambda=4$)", (11.2, -6.8), color=c["ok"], fontsize=13)
+    ax.annotate(r"$\mathbf{u}_2$ ($\lambda=0.5$)", (3.6, 9.6), xytext=(8, -2), textcoords="offset points", color=c["vec"], fontsize=13)
+    ax.set_xlim(-5, 18)
+    ax.set_ylim(-8, 12)
+    ax.set_aspect("equal")
+    ax.set_xticks([])
+    ax.set_yticks([])
+    for s in ("left", "bottom"):
+        ax.spines[s].set_visible(False)
+    finish(fig, "lec04-kp08-ellipse", dark, c)
+    return W, H_PX
+
+
+def factor_fig(dark):
+    c = DARK if dark else LIGHT
+    skin(c, dark)
+    W, H_PX = 640, 380
+    fig, ax = axes(W, H_PX)
+    al = np.linspace(0, 10, 500)
+    for lam, col, tag in ((4.0, c["ok"], r"$\lambda=4$"), (0.5, c["vec"], r"$\lambda=0.5$")):
+        ax.plot(al, factor(lam, al), color=col, lw=2.8, label=tag)
+        ax.plot([ALPHA], [factor(lam, ALPHA)], "o", color=col, ms=9)
+        ax.annotate(f"{factor(lam, ALPHA):.3f}", (ALPHA, factor(lam, ALPHA)), xytext=(14, 8), textcoords="offset points", color=col, fontsize=14)
+    ax.axvline(ALPHA, color=c["muted"], lw=1.0, ls="--")
+    ax.set_xlabel(r"strength $\alpha$")
+    ax.set_ylabel(r"shrink factor $\lambda/(\lambda+\alpha)$")
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 1.05)
+    ax.legend(loc="upper right", frameon=False, fontsize=14)
     clean(ax)
-    finish(fig, "lec04-kp08-train-test", dark, c)
-    return W, H
+    finish(fig, "lec04-kp08-factor", dark, c)
+    return W, H_PX
+
+
+def dof_fig(dark):
+    c = DARK if dark else LIGHT
+    skin(c, dark)
+    W, H_PX = 640, 380
+    fig, ax = axes(W, H_PX)
+    al = np.linspace(0, 10, 500)
+    ax.plot(al, [dof(a) for a in al], color=c["main"], lw=2.8, label=r"$\sum_j \lambda_j/(\lambda_j+\alpha)$")
+    for a, off in ((0, (10, -2)), (1, (10, 6)), (3, (10, 6)), (10, (-46, 12))):
+        ax.plot([a], [dof(a)], "o", color=c["ref"], ms=8)
+        ax.annotate(f"{dof(a):.3f}", (a, dof(a)), xytext=off, textcoords="offset points", color=c["ref"], fontsize=14)
+    ax.set_xlabel(r"strength $\alpha$")
+    ax.set_ylabel("effective parameters")
+    ax.set_xlim(-0.2, 10.2)
+    ax.set_ylim(0, 2.3)
+    ax.legend(loc="upper right", frameon=False, fontsize=14)
+    clean(ax)
+    finish(fig, "lec04-kp08-dof", dark, c)
+    return W, H_PX
 
 
 def report():
-    print("true f(x)=1+2x-1.5x^2, sigma=0.3 (sigma^2=0.09), n=12 fixed design x=linspace(-1,1,12), noise seed 11")
-    print("noise realisation: mean eps^2 on the 12 points =", round(float(np.mean((Y - f(X)) ** 2)), 4))
-    print("degree  train   test(exact)  test(fresh set)   bias^2   var    bias^2+var+sigma^2")
-    for d in list(range(1, 11)):
-        b2, v = bias_var(d) if d in (1, 2, 3, 9) else (float("nan"), float("nan"))
-        print(f"{d:5d}  {train_mse(d):.4f}  {test_mse(d):.4f}     {fresh_test_mse(d):.4f}         {b2:.4f}  {v:.4f}  {b2 + v + SIGMA ** 2:.4f}")
-    print("expected train MSE of a p-parameter fit = sigma^2 (n-p)/n :", {d: round(SIGMA ** 2 * (N - d - 1) / N, 4) for d in (1, 2, 9)})
-    print("test points (hollow):", np.round(XT, 3), np.round(YT, 3))
+    np.set_printoptions(precision=4, suppress=True)
+    print("lambda =", LAM, " alpha =", ALPHA, " rotation -25 deg")
+    print("H =\n", H)
+    print("eigenvalues of H:", np.linalg.eigvalsh(H)[::-1])
+    print("x* (original coords) =", XSTAR, "  in eigenbasis =", U.T @ XSTAR)
+    print("shrink factors at alpha=1:", factor(LAM, ALPHA), " effective parameters:", round(dof(ALPHA), 4))
+    xd = xdag(ALPHA)
+    xe = np.diag(factor(LAM, ALPHA)) @ XSTAR_EIG
+    print("x_dag direct (H+aI)^-1 H x* =", xd, " in eigenbasis =", U.T @ xd, " eigen formula =", xe, " max diff:", float(np.abs(U.T @ xd - xe).max()))
+    grad = H @ (xd - XSTAR) + ALPHA * xd
+    print("gradient of J+(alpha/2)|x|^2 at x_dag:", grad)
+    print("|x*| =", float(np.linalg.norm(XSTAR)), " |x_dag| =", float(np.linalg.norm(xd)))
+    print("J(x*) = 0, J(x_dag) =", float(0.5 * (xd - XSTAR) @ H @ (xd - XSTAR)), " J(0) =", float(0.5 * XSTAR @ H @ XSTAR))
+    print("table alpha: factor(4), factor(0.5), effective parameters")
+    for a in (0, 0.5, 1, 3, 10):
+        print(f"  alpha={a}: {factor(4.0, a):.4f}  {factor(0.5, a):.4f}  dof={dof(a):.4f}")
+    print("alpha for which the lambda=0.5 factor is 0.5:", 0.5, " (factor = lambda/(lambda+alpha) = 1/2 iff alpha = lambda)")
+    # diagonal-H check from the lecture's 1-D link with KP07: J=(w-w*)^2 => H=2, penalty alpha_K w^2 = (alpha/2) w^2 with alpha=2 alpha_K
+    for ak in (0.5, 1, 3):
+        print(f"  KP07 link: alpha_K={ak}: 2/(2+2*alpha_K)={2 / (2 + 2 * ak):.4f}  =  1/(1+alpha_K)={1 / (1 + ak):.4f}")
+    # ridge regression is exactly the quadratic case
+    rng = np.random.default_rng(12)
+    n, p = 30, 3
+    X = rng.normal(size=(n, p)) * np.array([3.0, 1.0, 0.3])
+    y = X @ np.array([1.0, -2.0, 4.0]) + 0.5 * rng.normal(size=n)
+    Hx = X.T @ X
+    w_ols = np.linalg.solve(Hx, X.T @ y)
+    lam, _ = np.linalg.eigh(Hx)
+    s = np.linalg.svd(X, compute_uv=False)
+    print("ridge regression check: n=30, p=3, X columns scaled 3, 1, 0.3")
+    print("  eigenvalues of X^T X:", lam[::-1], " squared singular values:", s ** 2)
+    for a in (1.0, 10.0):
+        w_r = np.linalg.solve(Hx + a * np.eye(p), X.T @ y)
+        w_f = np.linalg.solve(Hx + a * np.eye(p), Hx @ w_ols)
+        hat = X @ np.linalg.solve(Hx + a * np.eye(p), X.T)
+        print(f"  alpha={a}: ridge w = {w_r}  formula (H+aI)^-1 H w_ols = {w_f}  max diff {float(np.abs(w_r - w_f).max()):.2e}")
+        print(f"    trace of hat matrix = {np.trace(hat):.4f}   sum lambda/(lambda+alpha) = {float(np.sum(lam / (lam + a))):.4f}")
+    print("  alpha=0: trace of hat matrix =", round(float(np.trace(X @ np.linalg.solve(Hx, X.T))), 4), "(= p)")
 
 
 if __name__ == "__main__":
     for dk in (False, True):
-        fits(dk)
-        train_test(dk)
+        ellipse(dk)
+        factor_fig(dk)
+        dof_fig(dk)
     report()
