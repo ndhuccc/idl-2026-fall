@@ -1,7 +1,7 @@
 """Weight-decay figure for KP05 (L2 regularization): small weights keep tanh near its linear part, in two skins.
     assets/figures/<id>.png (light, lectures)    assets/figures/<id>.svg (dark, deck)
-Id: lec04-kp05-saturation.   Prints the numbers the lecture and the deck quote.
-Run:  python3 assets/figures/src/lec04-kp05-saturation-figures.py
+Id: lec04-kp08-saturation.   Prints the numbers the lecture and the deck quote.
+Run:  python3 assets/figures/src/lec04-kp08-saturation-figures.py
 """
 import os
 import sys
@@ -54,7 +54,7 @@ def saturation(dark):
     ax.set_ylim(-1.25, 1.25)
     ax.legend(loc="lower right", frameon=False, fontsize=13)
     clean(ax)
-    finish(fig, "lec04-kp05-saturation", dark, c)
+    finish(fig, "lec04-kp08-saturation", dark, c)
     return W, H
 
 
