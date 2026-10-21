@@ -12,7 +12,7 @@ This is the seventh knowledge point (KP07) of Chapter 4. It picks up the questio
 
 ### 學習目標（Learning objectives）
 
-讀完之後，你能說出為什麼只最小化訓練誤差會過擬合，並寫出正則化目標 $\tilde J=J+\alpha\Omega$ 各項的意思；能用一組數字算出兩個模型在不同 $\alpha$ 下的總目標並判斷誰占便宜；能對一個權重推導出 $w^{\dagger}=w^{\ast}/(1+\alpha)$；也能算出 $\ell_0$、$\ell_1$、$\ell_2$，並說明「稀疏」為什麼等於自動做特徵選擇。
+讀完之後，你能說出為什麼只最小化訓練誤差會過擬合，並寫出正則化目標 $\tilde J=J+\alpha\Omega$ 各項的意思；能用一組數字算出兩個模型在不同 $\alpha$ 下的總目標並判斷誰占便宜；能對一個權重推導出 $w^{\dagger}=w^{\ast}/(1+\alpha)$；也能算出 $\ell_0$、 $\ell_1$、 $\ell_2$，並說明「稀疏」為什麼等於自動做特徵選擇。
 
 After reading, you can explain why minimizing only the training error overfits and say what each term of the regularized objective $\tilde J=J+\alpha\Omega$ means; compute the total objective of two models for different $\alpha$ and judge which one has the advantage; derive $w^{\dagger}=w^{\ast}/(1+\alpha)$ for a single weight; and compute $\ell_0$, $\ell_1$ and $\ell_2$ and explain why "sparse" amounts to automatic feature selection.
 
@@ -38,14 +38,14 @@ KP05 concluded that the more complex the model, the lower the training error fal
 **Regularization** finds an easy-to-compute function $\Omega$ to "play the role" of that complexity term and adds it to the objective:
 
 $$
-\underset{\mathbf{x}}{\operatorname{minimize}}\;\tilde J(\mathbf{x};\theta):=J(\mathbf{x};\theta)+\alpha\,\Omega(\mathbf{x}),\qquad \alpha>0
+\min_{\mathbf{x}}\;\tilde J(\mathbf{x};\theta):=J(\mathbf{x};\theta)+\alpha\Omega(\mathbf{x}),\qquad \alpha>0
 $$
 
-$J$ 管「貼合資料」，$\alpha\Omega$ 管「保持簡單」，$\alpha$ 是兩者在天平上的權重。$\alpha=0$ 回到原本的最小化；$\alpha$ 很大時，模型被迫非常簡單。
+$J$ 管「貼合資料」， $\alpha\Omega$ 管「保持簡單」， $\alpha$ 是兩者在天平上的權重。 $\alpha=0$ 回到原本的最小化； $\alpha$ 很大時，模型被迫非常簡單。
 
 $J$ takes care of "fitting the data", $\alpha\Omega$ takes care of "staying simple", and $\alpha$ is the weight of the two on the scale. $\alpha=0$ returns to the original minimization; with a very large $\alpha$ the model is forced to be very simple.
 
-用一組數字看天平怎麼傾斜。複雜模型 $J=10$、$\Omega=4$；簡單模型 $J=11$、$\Omega=1$（它對訓練資料貼得稍差）：
+用一組數字看天平怎麼傾斜。複雜模型 $J=10$、 $\Omega=4$；簡單模型 $J=11$、 $\Omega=1$（它對訓練資料貼得稍差）：
 
 A set of numbers shows how the scale tips. A complex model has $J=10$, $\Omega=4$; a simple model has $J=11$, $\Omega=1$ (it fits the training data a little worse):
 
@@ -61,13 +61,13 @@ A set of numbers shows how the scale tips. A complex model has $J=10$, $\Omega=4
 | $0.5$ | $12$ | $11.5$ | simple model |
 | $2$ | $18$ | $13$ | simple model, the gap grows to $5$ |
 
-兩個模型的總目標相等的 $\alpha$ 滿足 $10+4\alpha=11+\alpha$，即 $\alpha=1/3$〔程式計算〕。$\alpha$ 超過 $1/3$ 之後，簡單模型就勝出。正則化不是把訓練誤差變小，而是改變「誰是贏家」。
+兩個模型的總目標相等的 $\alpha$ 滿足 $10+4\alpha=11+\alpha$，即 $\alpha=1/3$〔程式計算〕。 $\alpha$ 超過 $1/3$ 之後，簡單模型就勝出。正則化不是把訓練誤差變小，而是改變「誰是贏家」。
 
 The two totals are equal when $10+4\alpha=11+\alpha$, that is $\alpha=1/3$ [computed by program]. Beyond $\alpha=1/3$ the simple model wins. Regularization does not make the training error smaller; it changes who the winner is.
 
 ### 2. 一個權重的完整例子（A complete one-weight example）
 
-取最小的例子：只有一個權重 $w$，經驗誤差 $J(w)=(w-w^{\ast})^2$，$w^{\ast}=2$ 是無正則化的最佳解；懲罰取 $\Omega(w)=w^2$。總目標 $\tilde J(w)=(w-w^{\ast})^2+\alpha w^2$ 是開口向上的拋物線，微分為零的位置就是最小點：
+取最小的例子：只有一個權重 $w$，經驗誤差 $J(w)=(w-w^{\ast})^2$， $w^{\ast}=2$ 是無正則化的最佳解；懲罰取 $\Omega(w)=w^2$。總目標 $\tilde J(w)=(w-w^{\ast})^2+\alpha w^2$ 是開口向上的拋物線，微分為零的位置就是最小點：
 
 Take the smallest example: a single weight $w$ with empirical error $J(w)=(w-w^{\ast})^2$, where $w^{\ast}=2$ is the unregularized optimum, and penalty $\Omega(w)=w^2$. The total $\tilde J(w)=(w-w^{\ast})^2+\alpha w^2$ is an upward parabola whose minimum is where the derivative is zero:
 
@@ -75,7 +75,7 @@ $$
 \frac{d\tilde J}{dw}=2(w-w^{\ast})+2\alpha w=0\;\Longrightarrow\;w^{\dagger}=\frac{w^{\ast}}{1+\alpha}
 $$
 
-$\alpha=0$ 時 $w^{\dagger}=w^{\ast}$；$\alpha$ 越大，$w^{\dagger}$ 被拉得越靠近 $0$，但永遠不會剛好等於 $0$。代入 $w^{\ast}=2$：
+$\alpha=0$ 時 $w^{\dagger}=w^{\ast}$； $\alpha$ 越大， $w^{\dagger}$ 被拉得越靠近 $0$，但永遠不會剛好等於 $0$。代入 $w^{\ast}=2$：
 
 At $\alpha=0$, $w^{\dagger}=w^{\ast}$; the larger $\alpha$ is, the closer $w^{\dagger}$ is pulled to $0$, but it never equals $0$ exactly. With $w^{\ast}=2$:
 
@@ -87,7 +87,7 @@ At $\alpha=0$, $w^{\dagger}=w^{\ast}$; the larger $\alpha$ is, the closer $w^{\d
 | $3$ | $0.5000$ | $2.2500$ | $0.7500$ | $3.0000$ |
 | $9$ | $0.2000$ | $3.2400$ | $0.3600$ | $3.6000$ |
 
-注意兩件事（數字皆由程式算出並用網格搜尋驗證，網格最小點與公式一致）：（1）第三欄 $J$ 隨 $\alpha$ 上升，也就是**訓練誤差一定變大**，這是刻意付出的代價；（2）$\tilde J$ 的最小值 $\alpha w^{\ast2}/(1+\alpha)$ 也隨 $\alpha$ 上升，但上升得越來越慢。
+注意兩件事（數字皆由程式算出並用網格搜尋驗證，網格最小點與公式一致）：（1）第三欄 $J$ 隨 $\alpha$ 上升，也就是**訓練誤差一定變大**，這是刻意付出的代價；（2） $\tilde J$ 的最小值 $\alpha w^{\ast2}/(1+\alpha)$ 也隨 $\alpha$ 上升，但上升得越來越慢。
 
 Note two things (all numbers are computed by program and checked by a grid search whose minimum agrees with the formula): (1) the column $J$ grows with $\alpha$, that is the **training error always gets larger**, a price paid on purpose; (2) the minimum of $\tilde J$, $\alpha w^{\ast2}/(1+\alpha)$, also grows with $\alpha$, but ever more slowly.
 
@@ -99,7 +99,7 @@ Note two things (all numbers are computed by program and checked by a grid searc
 
 ![w† 隨 α 的變化：α=0.5、1、3 分別是 1.333、1.000、0.500，曲線一路下降但不碰到 0（w† against α: 1.333, 1.000, 0.500 at α=0.5, 1, 3; the curve keeps falling but never reaches 0）](../assets/figures/lec04-kp07-shrink.png)
 
-**圖說 `lec04-kp07-shrink`**：先看三個標出數值的點，再看曲線右端：$\alpha=10$ 時 $w^{\dagger}=0.18$，仍然大於 $0$。這條曲線說明 $\ell_2$ 型懲罰「只縮小、不歸零」。〔功能：1、2〕
+**圖說 `lec04-kp07-shrink`**：先看三個標出數值的點，再看曲線右端： $\alpha=10$ 時 $w^{\dagger}=0.18$，仍然大於 $0$。這條曲線說明 $\ell_2$ 型懲罰「只縮小、不歸零」。〔功能：1、2〕
 
 **Caption `lec04-kp07-shrink`**: Look at the three labelled points first, then at the right end of the curve: at $\alpha=10$, $w^{\dagger}=0.18$, still above $0$. The curve shows that an $\ell_2$-type penalty shrinks but never zeroes. [Function: 1, 2]
 
@@ -131,42 +131,42 @@ where $\mathbb{I}(\cdot)$ is $1$ when the condition holds and $0$ otherwise. For
 - **Bet on sparsity**: if the problem is sparse, a sparse method does very well; if it is not sparse, no method does well, so betting on sparsity loses little. This is a common rule of thumb, not a theorem (the source gives no reference).
 - **Occam's razor**: with equal explanatory power, the simpler model is more likely to be right.
 
-哪一種範數能產生稀疏解？光看這一節還不知道：上面一個權重的例子用的是 $\ell_2$ 型懲罰，$w^{\dagger}$ 只縮小、不歸零。直接最小化 $\ell_0$ 才是「數特徵個數」，但它不是連續函數，找最佳解是 NP-hard，所以實務上用 $\ell_1$（KP09）；$\ell_2$ 的收縮方式則留給 KP08。
+哪一種範數能產生稀疏解？光看這一節還不知道：上面一個權重的例子用的是 $\ell_2$ 型懲罰， $w^{\dagger}$ 只縮小、不歸零。直接最小化 $\ell_0$ 才是「數特徵個數」，但它不是連續函數，找最佳解是 NP-hard，所以實務上用 $\ell_1$（KP09）；$\ell_2$ 的收縮方式則留給 KP08。
 
 Which norm produces sparse solutions? This section does not say yet: the one-weight example above used an $\ell_2$-type penalty and $w^{\dagger}$ only shrinks without reaching zero. Minimizing $\ell_0$ directly is what "counting features" means, but it is not continuous and finding the optimum is NP-hard, so in practice $\ell_1$ is used (KP09); how $\ell_2$ shrinks is left to KP08.
 
-最後一個實務問題：$\alpha$ 要取多大？太小等於沒正則化，太大會讓模型過於簡單（欠擬合）。$\alpha$ 不能用訓練誤差挑（它永遠偏好 $\alpha=0$），要用 KP06 的驗證集或交叉驗證來選。
+最後一個實務問題： $\alpha$ 要取多大？太小等於沒正則化，太大會讓模型過於簡單（欠擬合）。 $\alpha$ 不能用訓練誤差挑（它永遠偏好  $\alpha=0$），要用 KP06 的驗證集或交叉驗證來選。
 
 One last practical question: how large should $\alpha$ be? Too small is no regularization; too large makes the model too simple (underfitting). $\alpha$ cannot be picked by the training error (which always prefers $\alpha=0$); choose it with the validation set or cross-validation of KP06.
 
-接下來的問題：$\ell_2$ 懲罰在一個有很多參數、彼此相關的真實問題裡，是把每個方向縮小同樣的比例嗎？這是 KP08 的主題。
+接下來的問題： $\ell_2$ 懲罰在一個有很多參數、彼此相關的真實問題裡，是把每個方向縮小同樣的比例嗎？這是 KP08 的主題。
 
 The next question: in a real problem with many correlated parameters, does an $\ell_2$ penalty shrink every direction by the same factor? That is the topic of KP08.
 
 ### 本單元重點整理（KP07 summary）
 
-**一句話重點**：只最小化訓練誤差會越訓越複雜，正則化改成最小化 $\tilde J=J+\alpha\Omega$，用好算的懲罰 $\Omega$ 衡量複雜度，$\alpha$ 控制取捨；$\ell_2$ 只縮小，$\ell_1$ 能產生精確的零（稀疏）。
+**一句話重點**：只最小化訓練誤差會越訓越複雜，正則化改成最小化  $\tilde J=J+\alpha\Omega$，用好算的懲罰  $\Omega$ 衡量複雜度，$\alpha$ 控制取捨； $\ell_2$ 只縮小， $\ell_1$ 能產生精確的零（稀疏）。
 
 **One-sentence summary**: Minimizing only the training error drifts towards ever more complex models, so regularization minimizes $\tilde J=J+\alpha\Omega$, using an easy penalty $\Omega$ to measure the complexity, with $\alpha$ controlling the trade-off; $\ell_2$ only shrinks, while $\ell_1$ can produce exact zeros (sparsity).
 
-**白話說明**：只追求練習卷滿分，會把雜訊也背下來。正則化像在總成績裡扣「小抄分」：複雜度越高扣越多，$\alpha$ 是扣分的力度。
+**白話說明**：只追求練習卷滿分，會把雜訊也背下來。正則化像在總成績裡扣「小抄分」：複雜度越高扣越多， $\alpha$ 是扣分的力度。
 
 **Plain explanation**: Chasing a perfect score on the practice paper memorizes the noise as well. Regularization is like deducting "crib-note points" from the total grade: the more complex, the more is deducted, and $\alpha$ is the severity of the deduction.
 
-**正式定義**：$\tilde J(\mathbf{x};\theta)=J(\mathbf{x};\theta)+\alpha\Omega(\mathbf{x})$，$\alpha>0$；$\|\mathbf{x}\|_0$ 數非零、$\|\mathbf{x}\|_1=\sum|x_j|$、$\|\mathbf{x}\|_2=\sqrt{\sum x_j^2}$；單權重例：$J=(w-w^{\ast})^2$、$\Omega=w^2$ 給 $w^{\dagger}=w^{\ast}/(1+\alpha)$。
+**正式定義**： $\tilde J(\mathbf{x};\theta)=J(\mathbf{x};\theta)+\alpha\Omega(\mathbf{x})$， $\alpha>0$； $\|\mathbf{x}\|_0$ 數非零、 $\|\mathbf{x}\|_1=\sum|x_j|$、 $\|\mathbf{x}\|_2=\sqrt{\sum x_j^2}$；單權重例： $J=(w-w^{\ast})^2$、 $\Omega=w^2$ 給  $w^{\dagger}=w^{\ast}/(1+\alpha)$。
 
-**Formal definition**: $\tilde J(\mathbf{x};\theta)=J(\mathbf{x};\theta)+\alpha\Omega(\mathbf{x})$, $\alpha>0$; $\|\mathbf{x}\|_0$ counts nonzeros, $\|\mathbf{x}\|_1=\sum|x_j|$, $\|\mathbf{x}\|_2=\sqrt{\sum x_j^2}$; one-weight example: $J=(w-w^{\ast})^2$, $\Omega=w^2$ give $w^{\dagger}=w^{\ast}/(1+\alpha)$.
+**Formal definition**:  $\tilde J(\mathbf{x};\theta)=J(\mathbf{x};\theta)+\alpha\Omega(\mathbf{x})$, $\alpha>0$;  $\|\mathbf{x}\|_0$ counts nonzeros,  $\|\mathbf{x}\|_1=\sum|x_j|$, $\|\mathbf{x}\|_2=\sqrt{\sum x_j^2}$; one-weight example: $J=(w-w^{\ast})^2$, $\Omega=w^2$ give $w^{\dagger}=w^{\ast}/(1+\alpha)$.
 
-**例子**：複雜模型 $(J,\Omega)=(10,4)$、簡單模型 $(11,1)$：$\alpha=0.5$ 時 $12$ 對 $11.5$，$\alpha=2$ 時 $18$ 對 $13$；單權重 $w^{\ast}=2$：$\alpha=0.5,1,3$ 的 $w^{\dagger}=1.333,\,1.000,\,0.500$。逐步計算見第 1–2 節。
+**例子**：複雜模型 $(J,\Omega)=(10,4)$、簡單模型 $(11,1)$：$\alpha=0.5$ 時 $12$ 對 $11.5$，$\alpha=2$ 時 $18$ 對 $13$；單權重 $w^{\ast}=2$： $\alpha=0.5,1,3$ 的 $w^{\dagger}=1.333,\,1.000,\,0.500$。逐步計算見第 1–2 節。
 
 **Example**: complex model $(J,\Omega)=(10,4)$, simple model $(11,1)$: $12$ versus $11.5$ at $\alpha=0.5$ and $18$ versus $13$ at $\alpha=2$; one weight with $w^{\ast}=2$: $w^{\dagger}=1.333,\,1.000,\,0.500$ at $\alpha=0.5,1,3$. The computations are in sections 1–2.
 
 **常見迷思**：
 
 - 「正則化讓訓練誤差變小」——相反，它一定讓 $J$ 變大（第 2 節的表），換來的是測試誤差變小。
-- 「$\alpha$ 越大越好」——太大會欠擬合，要用驗證集挑。
-- 「$\ell_2$ 也會產生精確的零」——只縮小、不歸零；產生零的是 $\ell_1$（KP09）。
-- 「$\Omega$ 就是模型的複雜度」——$\Omega$ 只是容易計算的**替身**（代理），不同的 $\Omega$ 會偏好不同的解（KP08、KP09）。
+- 「 $\alpha$ 越大越好」——太大會欠擬合，要用驗證集挑。
+- 「 $\ell_2$ 也會產生精確的零」——只縮小、不歸零；產生零的是 $\ell_1$（KP09）。
+- 「 $\Omega$ 就是模型的複雜度」—— $\Omega$ 只是容易計算的**替身**（代理），不同的 $\Omega$ 會偏好不同的解（KP08、KP09）。
 
 **Common misconceptions**:
 
@@ -175,19 +175,19 @@ The next question: in a real problem with many correlated parameters, does an $\
 - "$\ell_2$ also produces exact zeros." It only shrinks; $\ell_1$ produces zeros (KP09).
 - "$\Omega$ is the complexity of the model." $\Omega$ is only an easy-to-compute **surrogate**; different choices of $\Omega$ prefer different solutions (KP08, KP09).
 
-**圖**：本單元兩張圖，`lec04-kp07-tradeoff`（$J$、$\alpha\Omega$ 與總目標及其最低點，功能 1、2）與 `lec04-kp07-shrink`（$w^{\dagger}$ 隨 $\alpha$ 變化，功能 1、2），以 `assets/figures/src/lec04-kp07-figures.py` 繪製。天平的概念與 $\ell_0$、$\ell_1$、$\ell_2$ 的比較在簡報中以原生節點呈現。
+**圖**：本單元兩張圖，`lec04-kp07-tradeoff`（ $J$、 $\alpha\Omega$ 與總目標及其最低點，功能 1、2）與 `lec04-kp07-shrink`（ $w^{\dagger}$ 隨  $\alpha$ 變化，功能 1、2），以 `assets/figures/src/lec04-kp07-figures.py` 繪製。天平的概念與 $\ell_0$、 $\ell_1$、 $\ell_2$ 的比較在簡報中以原生節點呈現。
 
 **Figure**: Two figures in this unit, `lec04-kp07-tradeoff` ($J$, $\alpha\Omega$ and the total with its minimum; functions 1, 2) and `lec04-kp07-shrink` ($w^{\dagger}$ against $\alpha$; functions 1, 2), drawn by `assets/figures/src/lec04-kp07-figures.py`. The balance idea and the comparison of $\ell_0$, $\ell_1$, $\ell_2$ are drawn with native nodes in the deck.
 
-**想深入**（選讀）：把 $\Omega$ 看成約束也可以：最小化 $J$ 並要求 $\Omega(\mathbf{x})\le r$，與最小化 $J+\alpha\Omega$ 在適當的 $r$ 與 $\alpha$ 下給出同一組解（拉格朗日乘數的對偶）；$\alpha$ 越大，等價的 $r$ 越小。這個幾何視角是 KP09 菱形與圓形的來源。`[補充]`
+**想深入**（選讀）：把  $\Omega$ 看成約束也可以：最小化 $J$ 並要求 $\Omega(\mathbf{x})\le r$，與最小化 $J+\alpha\Omega$ 在適當的 $r$ 與 $\alpha$ 下給出同一組解（拉格朗日乘數的對偶）； $\alpha$ 越大，等價的 $r$ 越小。這個幾何視角是 KP09 菱形與圓形的來源。`[補充]`
 
 **Going deeper** (optional): $\Omega$ can also be read as a constraint: minimizing $J$ subject to $\Omega(\mathbf{x})\le r$ gives the same solution as minimizing $J+\alpha\Omega$ for suitable $r$ and $\alpha$ (Lagrange duality); the larger $\alpha$, the smaller the equivalent $r$. This geometric view is the origin of the diamond and the circle in KP09. `[Added]`
 
 **小練習**：
 
-1. 複雜模型 $(J,\Omega)=(8,5)$、簡單模型 $(10,2)$：$\alpha$ 為多少時兩者的總目標相等？$\alpha=2$ 時誰勝？（提示：解 $8+5\alpha=10+2\alpha$。）
-2. $J(w)=(w-3)^2$、$\Omega(w)=w^2$、$\alpha=2$：求 $w^{\dagger}$，並算出此時的 $J$、$\alpha\Omega$、$\tilde J$。（提示：套用 $w^{\dagger}=w^{\ast}/(1+\alpha)$，$w^{\ast}=3$。）
-3. $\mathbf{x}=(0,-2,0,5,1)$：算 $\|\mathbf{x}\|_0$、$\|\mathbf{x}\|_1$、$\|\mathbf{x}\|_2$。（提示：$\ell_2$ 要開根號。）
+1. 複雜模型  $(J,\Omega)=(8,5)$、簡單模型  $(10,2)$：$\alpha$ 為多少時兩者的總目標相等？ $\alpha=2$ 時誰勝？（提示：解  $8+5\alpha=10+2\alpha$。）
+2. $J(w)=(w-3)^2$、 $\Omega(w)=w^2$、 $\alpha=2$：求 $w^{\dagger}$，並算出此時的 $J$、 $\alpha\Omega$、 $\tilde J$。（提示：套用  $w^{\dagger}=w^{\ast}/(1+\alpha)$， $w^{\ast}=3$。）
+3. $\mathbf{x}=(0,-2,0,5,1)$：算  $\|\mathbf{x}\|_0$、 $\|\mathbf{x}\|_1$、 $\|\mathbf{x}\|_2$。（提示： $\ell_2$ 要開根號。）
 
 **Practice**:
 
@@ -197,10 +197,10 @@ The next question: in a real problem with many correlated parameters, does an $\
 
 **解題示範**（第 1 題）：
 
-1. 令兩個總目標相等：$8+5\alpha=10+2\alpha$。
-2. 移項：$3\alpha=2$，所以 $\alpha=2/3\approx0.667$，此時兩者都是 $8+5\cdot\tfrac23=11.333$。
-3. $\alpha=2$：複雜模型 $8+5\cdot2=18$，簡單模型 $10+2\cdot2=14$，簡單模型勝。
-4. 檢查：$\alpha<2/3$ 時複雜模型較低（例如 $\alpha=0$：$8<10$），符合「$\alpha$ 超過門檻簡單模型才勝出」。
+1. 令兩個總目標相等： $8+5\alpha=10+2\alpha$。
+2. 移項： $3\alpha=2$，所以  $\alpha=2/3\approx0.667$，此時兩者都是  $8+5\cdot\tfrac23=11.333$。
+3.  $\alpha=2$：複雜模型  $8+5\cdot2=18$，簡單模型  $10+2\cdot2=14$，簡單模型勝。
+4. 檢查： $\alpha<2/3$ 時複雜模型較低（例如  $\alpha=0$： $8<10$），符合「 $\alpha$ 超過門檻簡單模型才勝出」。
 
 **Worked solution** (exercise 1):
 
@@ -211,10 +211,10 @@ The next question: in a real problem with many correlated parameters, does an $\
 
 ### 來源更正與取捨（Corrections to the source）
 
-- 來源說正則化項「模仿」複雜度項。本講義明說：$\Omega$ 只是**代理**（surrogate），並不等於模型真正的複雜度，一般情況只是啟發式。
-- 來源的互動示範寫「$\Omega=w^2$，$w^{\dagger}=w^{\ast}/(1+\alpha)$」，這要搭配 $J=(w-w^{\ast})^2$（係數不含 $1/2$）才成立；若寫成 $\tfrac12(w-w^{\ast})^2$，答案會變成 $w^{\ast}/(1+2\alpha)$。本講義明列 $J$ 的形式。
+- 來源說正則化項「模仿」複雜度項。本講義明說： $\Omega$ 只是**代理**（surrogate），並不等於模型真正的複雜度，一般情況只是啟發式。
+- 來源的互動示範寫「 $\Omega=w^2$， $w^{\dagger}=w^{\ast}/(1+\alpha)$」，這要搭配  $J=(w-w^{\ast})^2$（係數不含  $1/2$）才成立；若寫成  $\tfrac12(w-w^{\ast})^2$，答案會變成  $w^{\ast}/(1+2\alpha)$。本講義明列  $J$ 的形式。
 - 來源的「bet on sparsity」沒有給出處，它是常見的經驗準則而不是定理，本講義照此標示。
-- 來源說「$\ell_1$ 與 $\ell_{2,1}$ 產生稀疏解」，$\ell_{2,1}$（按群組的混合範數）超出本章範圍，不展開。
+- 來源說「 $\ell_1$ 與  $\ell_{2,1}$ 產生稀疏解」， $\ell_{2,1}$（按群組的混合範數）超出本章範圍，不展開。
 
 - The source says the regularization term "imitates" the complexity term. This note says plainly that $\Omega$ is only a **surrogate** and not equal to the true complexity of the model; in general it is a heuristic.
 - The source's interactive demo writes "$\Omega=w^2$, $w^{\dagger}=w^{\ast}/(1+\alpha)$", which holds only with $J=(w-w^{\ast})^2$ (no factor $\tfrac12$); with $\tfrac12(w-w^{\ast})^2$ the answer becomes $w^{\ast}/(1+2\alpha)$. This note states the form of $J$ explicitly.
