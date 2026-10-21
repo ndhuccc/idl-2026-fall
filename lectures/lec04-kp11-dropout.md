@@ -12,9 +12,9 @@ This is the eleventh knowledge point (KP11) of Week 4, "Regularization and overf
 
 ### 學習目標（Learning objectives）
 
-讀完之後，你能說明 dropout 在訓練時做了什麼（每一步隨機關掉一部分神經元），為什麼這等於同時訓練許多共享權重的子網路；能算出一個神經元在隨機遮罩下的期望輸入，並說明測試時為什麼要把輸出乘以保留機率 $p$（或在訓練時改乘 $1/p$）；能指出「測試時的縮放是子網路的幾何平均」在什麼條件下成立、在深網路只是近似；也能說明 dropout 與「各自獨立訓練多個模型再平均」有什麼不同，並在 PyTorch 中正確使用 `nn.Dropout` 與 `train()`／`eval()`。
+讀完之後，你能說明 dropout 在訓練時做了什麼（每一步隨機關掉一部分神經元），為什麼這等於同時訓練許多共享權重的子網路；能算出一個神經元在隨機遮罩下的期望輸入，並說明測試時為什麼要把輸出乘以保留機率 $p$（或在訓練時改乘 $1/p$）；知道測試時的縮放只是子網路平均的近似；也能說明 dropout 與「各自獨立訓練多個模型再平均」有什麼不同，並在 PyTorch 中正確使用 `nn.Dropout` 與 `train()`／`eval()`。
 
-After reading, you can explain what dropout does during training (at each step a random part of the neurons is switched off) and why that amounts to training many sub-networks that share weights; compute the expected input of a neuron under a random mask and explain why the output is multiplied by the keep probability $p$ at test time (or by $1/p$ during training); say when "the test-time scaling is the geometric mean of the sub-networks" holds and why it is only an approximation in deep networks; and say how dropout differs from training several independent models and averaging them and use `nn.Dropout` with `train()`/`eval()` correctly in PyTorch.
+After reading, you can explain what dropout does during training (at each step a random part of the neurons is switched off) and why that amounts to training many sub-networks that share weights; compute the expected input of a neuron under a random mask and explain why the output is multiplied by the keep probability $p$ at test time (or by $1/p$ during training); know that the test-time scaling only approximates the average of the sub-networks; and say how dropout differs from training several independent models and averaging them and use `nn.Dropout` with `train()`/`eval()` correctly in PyTorch.
 
 ### 符號表（Symbols）
 
@@ -92,23 +92,11 @@ With many neurons a simulation is more convincing: take 20 neurons with random $
 
 **The reverse way: inverted dropout** (`[Added]`). Nearly all libraries do not scale at test time; instead they divide the surviving outputs by $p$ **during training**, i.e. they use $\frac1p\,\mathbf{m}\odot\mathbf{h}$. The training-time mean is then exactly $\mathbf{h}$: $\mathbb E\big(\frac1p m_ih_i\big)=\frac1p\,p\,h_i=h_i$ (checked term by term on the example above: the mean is $(2,-1,3,1)=\mathbf{h}$). At test time the full network is used unchanged. The two ways are equivalent in expectation; the scaling is only moved to the training side, so at deployment there is nothing to remember.
 
-### 3. 它真的是子網路的平均嗎？與獨立多模型平均的差別（Is it really an average of sub-networks? Differences from independent models）
+### 3. 與獨立多模型平均的差別（Differences from independent models）
 
-來源的祕笈說：測試時乘 $p$ 的縮放，是在做這些子網路的**幾何平均**。這句話要加上限制才正確。
+縮放後的輸出，可以看成這 $2^n$ 個子網路預測的「平均」。這句話在最簡單的情形（被 dropout 的那層後面直接接 softmax 分類層）可以證明是精確的；在含 ReLU 等非線性的深網路，它只是**近似**。實務上這個近似效果不錯（Srivastava 等人 2014，`[補充]`），但這是經驗，不是定理。本單元不做證明。
 
-The source's guide says that the multiply-by-$p$ scaling at test time computes the **geometric mean** of the sub-networks. This sentence is correct only with a qualification.
-
-先看成立的情形。若被 dropout 的那一層後面接的是 softmax 分類層（即 softmax 迴歸 $\mathrm{softmax}(W(\mathbf{m}\odot\mathbf{h}))$），可以證明：把 $2^n$ 個子網路輸出的機率向量做**正規化的幾何平均**（先取對數平均、再取指數、再除以總和），結果恰好等於權重縮放後的輸出 $\mathrm{softmax}(p\,W\mathbf{h})$。原因是 softmax 的對數是 $W(\mathbf{m}\odot\mathbf{h})$ 的線性函數，對數取平均就是取期望，由第 2 節的線性性質得到 $p\,W\mathbf{h}$。
-
-First the case where it holds. If the layer subject to dropout feeds a softmax classification layer (softmax regression $\mathrm{softmax}(W(\mathbf{m}\odot\mathbf{h}))$), one can show that the **normalized geometric mean** of the probability vectors of the $2^n$ sub-networks (average the logarithms, exponentiate, divide by the sum) equals exactly the weight-scaled output $\mathrm{softmax}(p\,W\mathbf{h})$. The reason is that the logits are linear in $\mathbf{m}\odot\mathbf{h}$, averaging the logarithm is taking an expectation, and section 2 gives $p\,W\mathbf{h}$.
-
-我們用固定種子的例子驗證〔程式計算〕。$4$ 個輸入、$3$ 個類別、$p=0.5$，枚舉全部 16 個遮罩：權重縮放的輸出是 $(0.941587,\,0.014320,\,0.044093)$，正規化幾何平均與它一樣，最大差距 $1.4\times10^{-17}$（浮點誤差）；而 16 個輸出的**算術平均**是 $(0.7970,\,0.0878,\,0.1152)$，差很多。換成一個 ReLU 隱藏層（6 個神經元，只在這層做 dropout，後面是 softmax 層），同樣枚舉 64 個遮罩，最大差距是 $5.6\times10^{-17}$，也相等。
-
-We check this with a fixed-seed example [computed by program]. 4 inputs, 3 classes, $p=0.5$, enumerating all 16 masks: the weight-scaled output is $(0.941587,\,0.014320,\,0.044093)$ and the normalized geometric mean is the same, with a largest gap of $1.4\times10^{-17}$ (floating-point error); the **arithmetic mean** of the 16 outputs is $(0.7970,\,0.0878,\,0.1152)$, quite different. With one ReLU hidden layer (6 neurons, dropout only on this layer, followed by a softmax layer) and all 64 masks, the largest gap is $5.6\times10^{-17}$: equal again.
-
-再看不成立的情形：兩個隱藏層（各 5 個神經元），兩層都做 dropout，中間夾著 ReLU，枚舉 $2^5\times2^5=1024$ 個遮罩。權重縮放的輸出是 $(0.22991,\,0.63433,\,0.13576)$，正規化幾何平均卻是 $(0.08085,\,0.89391,\,0.02524)$，最大差距 $0.2596$〔程式計算〕。也就是說：非線性（ReLU）夾在兩層 dropout 中間，縮放就不再等於幾何平均。這只是固定種子的一個例子，不是一般規律；結論是「在深度非線性網路，權重縮放只是近似」。實務上它效果不錯（Srivastava 等人 2014，`[補充]`），但這是經驗，不是定理。
-
-Now the case where it fails: two hidden layers (5 neurons each) with dropout on both and a ReLU in between, enumerating $2^5\times2^5=1024$ masks. The weight-scaled output is $(0.22991,\,0.63433,\,0.13576)$ while the normalized geometric mean is $(0.08085,\,0.89391,\,0.02524)$, a largest gap of $0.2596$ [computed by program]. So with a nonlinearity (ReLU) between two dropout layers the scaling is no longer the geometric mean. This is one fixed-seed example and not a general law; the conclusion is "in deep nonlinear networks weight scaling is only an approximation". In practice it works well (Srivastava et al., 2014, `[Added]`), but that is experience, not a theorem.
+The weight-scaled output can be seen as the "average" of the predictions of the $2^n$ sub-networks. In the simplest case (the dropped layer feeds a softmax classification layer directly) this can be proved exact; in deep networks with nonlinearities such as ReLU it is only an **approximation**. In practice the approximation works well (Srivastava et al., 2014, `[Added]`), but that is experience, not a theorem. This unit does not prove it.
 
 **和「獨立訓練 $k$ 個模型再平均」比較。**
 
@@ -120,7 +108,7 @@ Now the case where it fails: two hidden layers (5 neurons each) with dropout on 
 | 模型之間 | 權重各自獨立 | **共享權重** |
 | 訓練成本 | $k$ 倍 | 約 1 倍（略慢收斂） |
 | 預測成本 | $k$ 個模型各跑一次再平均 | 1 次（乘 $p$ 或除以 $p$ 的縮放） |
-| 平均的對象 | 算術平均（迴歸）或多數決 | 縮放近似子網路的（幾何）平均 |
+| 平均的對象 | 算術平均（迴歸）或多數決 | 縮放近似子網路的平均 |
 | 常見用在 | 小模型、不穩定的學習器 | 深度網路 |
 
 | | $k$ independent models | Dropout |
@@ -129,7 +117,7 @@ Now the case where it fails: two hidden layers (5 neurons each) with dropout on 
 | between models | independent weights | **shared weights** |
 | training cost | $k$ times | about 1 time (converges a bit slower) |
 | prediction cost | run $k$ models and average | 1 pass (scaling by $p$ or $1/p$) |
-| what is averaged | arithmetic mean (regression) or majority vote | scaling approximates the (geometric) mean of the sub-networks |
+| what is averaged | arithmetic mean (regression) or majority vote | scaling approximates the average of the sub-networks |
 | usually used for | small models and unstable learners | deep networks |
 
 共享權重帶來兩個結果：好處是便宜；代價是子網路彼此**不獨立**（用的是同一組數字），平均掉錯誤的效果不如真正獨立的模型。一個可用的直覺是：dropout 逼每個神經元不能依賴特定夥伴一定在場，必須學出在各種組合下都有用的特徵，這就是來源比喻的「每次只讓部分球員上場練習，讓每個球員都能獨當一面」。
@@ -191,9 +179,9 @@ One last question for KP12: dropout "changes the structure of the network at ran
 
 ### 本單元重點整理（KP11 summary）
 
-**一句話重點**：Dropout 在每個訓練步驟以保留機率 $p$ 隨機關掉神經元，等於訓練 $2^n$ 個共享權重的子網路；測試時用完整網路並把輸出乘 $p$（或訓練時除以 $p$）來近似它們的平均，它不是對所有網路都精確的幾何平均。
+**一句話重點**：Dropout 在每個訓練步驟以保留機率 $p$ 隨機關掉神經元，等於訓練 $2^n$ 個共享權重的子網路；測試時用完整網路並把輸出乘 $p$（或訓練時除以 $p$）來近似它們的平均，這只是它們平均的近似，不是精確值。
 
-**One-sentence summary**: At each training step dropout switches neurons off at random with keep probability $p$, which trains $2^n$ sub-networks that share weights; at test time the full network is used with the output multiplied by $p$ (or divided by $p$ during training) to approximate their average, which is not an exact geometric mean for every network.
+**One-sentence summary**: At each training step dropout switches neurons off at random with keep probability $p$, which trains $2^n$ sub-networks that share weights; at test time the full network is used with the output multiplied by $p$ (or divided by $p$ during training) to approximate their average; the result is an approximation of their average, not an exact one.
 
 **白話說明**：想像球隊練習，每次隨機叫幾位球員不上場，其他人照樣打完整場比賽。沒人能靠固定的搭檔，每個人都得練到單打也強。正式比賽時全員上場，但每個人用力的程度要調成「平常有人不上場時的平均」，所以輸出乘 $p$。
 
@@ -212,7 +200,6 @@ One last question for KP12: dropout "changes the structure of the network at ran
 - 「Dropout 讓網路變弱」——每個子網路確實較小，但目標是讓神經元不互相依賴，整體更穩健，並且約等於平均許多子網路。
 - 「測試時也要隨機關神經元」——不要。測試時全部打開（再做縮放，或用 inverted dropout）；忘了 `model.eval()` 是常見錯誤。
 - 「`nn.Dropout(p=0.8)` 是保留 80%」——不對，PyTorch 的 $p$ 是丟棄機率，會丟掉 80%。
-- 「縮放一定等於子網路的幾何平均」——只在 softmax 迴歸（線性加 softmax）精確成立；深度非線性網路只是近似。
 - 「Dropout 就是各自獨立訓練多個模型再平均」——不是，子網路共享權重、不獨立，也只訓練了其中極小的一部分。
 
 **Common misconceptions**:
@@ -220,16 +207,15 @@ One last question for KP12: dropout "changes the structure of the network at ran
 - "Dropout makes the network weaker." Each sub-network is indeed smaller, but the goal is to make neurons not depend on one another, so that the whole is more robust and approximates the average of many sub-networks.
 - "At test time neurons are also switched off at random." No. At test time all are on (with scaling, or with inverted dropout); forgetting `model.eval()` is a common mistake.
 - "`nn.Dropout(p=0.8)` keeps 80%." Wrong: the $p$ of PyTorch is the drop probability, so 80% are dropped.
-- "The scaling is always the geometric mean of the sub-networks." It is exact only for softmax regression (linear plus softmax); for deep nonlinear networks it is an approximation.
 - "Dropout is training several independent models and averaging them." It is not: the sub-networks share weights, are not independent, and only a tiny part of them is ever trained.
 
 **圖**：本單元兩張圖，`lec04-kp11-network`（完整網路與一個遮罩下的子網路，功能 1、3）與 `lec04-kp11-mask-hist`（線性單元在 20000 個遮罩下的輸入分布，功能 1、2），以 `assets/figures/src/lec04-kp11-figures.py` 繪製。縮放的步驟在簡報中以原生節點與連線呈現。
 
 **Figure**: Two figures in this unit, `lec04-kp11-network` (the full network and the sub-network under one mask; functions 1, 3) and `lec04-kp11-mask-hist` (the input of a linear unit over 20000 masks; functions 1, 2), drawn by `assets/figures/src/lec04-kp11-figures.py`. The scaling steps are drawn with native nodes and connectors in the deck.
 
-**想深入**（選讀）：本單元只做了「一個線性單元」的期望。把 dropout 放在含 ReLU 的深網路，嚴格說期望的非線性函數不等於非線性函數的期望，所以第 3 節才會看到縮放與幾何平均不等。另外，dropout 也可以套在**權重**上（DropConnect）或整個通道上，這些變形超出本單元。
+**想深入**（選讀）：本單元只做了「一個線性單元」的期望。把 dropout 放在含 ReLU 的深網路，嚴格說期望的非線性函數不等於非線性函數的期望，所以縮放後的輸出只是子網路平均的近似。另外，dropout 也可以套在**權重**上（DropConnect）或整個通道上，這些變形超出本單元。
 
-**Going deeper** (optional): This unit only took the expectation of one linear unit. In a deep network with ReLU, the expectation of a nonlinear function is not the nonlinear function of the expectation, which is why section 3 sees the scaling differ from the geometric mean. Dropout can also be applied to **weights** (DropConnect) or whole channels; these variants go beyond this unit.
+**Going deeper** (optional): This unit only took the expectation of one linear unit. In a deep network with ReLU, the expectation of a nonlinear function is not the nonlinear function of the expectation, so the weight-scaled output is only an approximation of the average of the sub-networks. Dropout can also be applied to **weights** (DropConnect) or whole channels; these variants go beyond this unit.
 
 **小練習**：
 
@@ -260,12 +246,10 @@ One last question for KP12: dropout "changes the structure of the network at ran
 ### 來源更正與取捨（Corrections to the source）
 
 - 來源的主文寫「機率通常 $p=0.5$」關掉神經元，祕笈與測試縮放卻是「以機率 $p$ 保留」，並說「測試時乘 $p$」。若 $p$ 是丟棄機率，乘 $p$ 就錯了。本講義統一定義 $p$ 為**保留**機率，另用 $q=1-p$ 表示丟棄機率，並在第 4 節說明 PyTorch 的 `nn.Dropout(p=...)` 用的是丟棄機率。
-- 祕笈說「測試時的縮放是在做這些子網路的幾何平均」。本講義限定：這在 softmax 迴歸（線性層加 softmax）精確成立，我們用枚舉驗證；在含非線性的深網路只是近似，並用一個固定種子的反例（最大差距 $0.2596$）說明。
 - 來源把 dropout 稱為「線上 bagging」。本講義改用「便宜的模型平均」，並補上差別：子網路共享權重、彼此不獨立、只訓練其中極小一部分；原先與 bagging 變異數公式的對照已隨 Week 4 縮減刪除。
 - 「inverted dropout」「$2^n$ 個子網路」「期望的逐項推導與枚舉驗證」「PyTorch 範例（未執行）」與「經驗值（隱藏層 $0.5$、輸入層 $0.8$–$0.9$）」是 `[補充]`；經驗值只是常見做法，沒有理論保證。
 
 - The source's main text switches neurons off "with probability usually $p=0.5$", while its guide and the test-time scaling say "keep with probability $p$" and "multiply by $p$ at test time". If $p$ were the drop probability, multiplying by $p$ would be wrong. This note defines $p$ uniformly as the **keep** probability, uses $q=1-p$ for the drop probability, and explains in section 4 that PyTorch's `nn.Dropout(p=...)` takes the drop probability.
-- The guide says "the scaling at test time computes the geometric mean of these sub-networks". This note restricts it: it holds exactly for softmax regression (a linear layer plus softmax), which we verify by enumeration; for deep networks with nonlinearities it is only an approximation, shown with a fixed-seed counterexample (largest gap $0.2596$).
 - The source calls dropout "online bagging". This note says "cheap model averaging" instead and adds the differences: the sub-networks share weights, are not independent, and only a tiny part of them is trained; the comparison with the bagging variance formula was removed with the Week 4 reduction.
 - "Inverted dropout", "$2^n$ sub-networks", "the term-by-term derivation of the expectation and the enumeration check", "the PyTorch example (not executed)" and "the rules of thumb (hidden $0.5$, input $0.8$–$0.9$)" are `[Added]`; the rules of thumb are common practice with no theoretical guarantee.
 
@@ -280,5 +264,4 @@ One last question for KP12: dropout "changes the structure of the network at ran
 | 子網路 | sub-network |
 | 權重縮放規則 | weight scaling rule |
 | 反向 dropout | inverted dropout |
-| 幾何平均 | geometric mean |
 | 權重共享 | weight sharing |
