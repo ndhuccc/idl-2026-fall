@@ -2,6 +2,8 @@
 
 > 程度：大學生（undergrad）／Level: Undergraduate (undergrad)
 
+> **自主學習 / Self-study**：本單元為自主學習內容，課堂不講授，請自行閱讀。
+
 本講義是第3章「反向傳播與最佳化」的第九個知識點（KP09），承接 KP08 留下的問題：雜訊存在時，「收斂」到底是什麼意思？先備知識是期望與變異數、KP01–KP08；第一次出現的符號都會定義，所有數字都可以自己重算。內容依 CCC-LNS 第3章 KP09 的主文與投影片消化後重新撰寫，讀取日期 2026-10-14；來源沒有的內容標示 `[補充]`。
 
 This is the ninth knowledge point (KP09) of Chapter 3. It picks up the question KP08 left open: with noise present, what does "convergence" actually mean? It assumes expectation and variance and KP01–KP08; every symbol is defined when it first appears and every number can be recomputed. The text is rewritten from the KP09 main text and slides of CCC-LNS Chapter 3 (accessed on 2026-10-14); content that the source does not contain is marked `[Added]`.
