@@ -2,6 +2,8 @@
 
 > 程度：大學生（undergrad）／Level: Undergraduate (undergrad)
 
+> **自主學習 / Self-study**：本單元為自主學習內容，課堂不講授，請自行閱讀。
+
 本講義是第3章「反向傳播與最佳化」的第十三個知識點（KP13），承接 KP12 留下的問題：尖銳的解泛化脆弱，訓練時怎麼把「尖銳」也算進目標？先備知識是梯度、一階泰勒展開、Cauchy–Schwarz 不等式、KP02 的梯度下降；第一次出現的符號都會定義，所有數字都可以自己重算。內容依 CCC-LNS 第3章 KP13 的主文與投影片消化後重新撰寫，讀取日期 2026-10-14；來源沒有的內容標示 `[補充]`。
 
 This is the thirteenth knowledge point (KP13) of Chapter 3. It picks up the question KP12 left open: sharp solutions generalize badly, so how do we put "sharpness" into the training objective? It assumes gradients, the first-order Taylor expansion, the Cauchy–Schwarz inequality and the gradient descent of KP02; every symbol is defined when it first appears and every number can be recomputed. The text is rewritten from the KP13 main text and slides of CCC-LNS Chapter 3 (accessed on 2026-10-14); content that the source does not contain is marked `[Added]`.

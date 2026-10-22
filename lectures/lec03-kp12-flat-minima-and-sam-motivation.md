@@ -2,6 +2,8 @@
 
 > 程度：大學生（undergrad）／Level: Undergraduate (undergrad)
 
+> **自主學習 / Self-study**：本單元為自主學習內容，課堂不講授，請自行閱讀。
+
 本講義是第3章「反向傳播與最佳化」的第十二個知識點（KP12），承接 KP11 留下的問題：訓練損失低就夠了嗎？先備知識是梯度、KP01 的 Hessian 與 KP05 的特徵值；第一次出現的符號都會定義，所有數字都可以自己重算。內容依 CCC-LNS 第3章 KP12 的主文與投影片消化後重新撰寫，讀取日期 2026-10-14；來源沒有的內容標示 `[補充]`。
 
 This is the twelfth knowledge point (KP12) of Chapter 3. It picks up the question KP11 left open: is a low training loss enough? It assumes the gradient, the Hessian of KP01 and the eigenvalues of KP05; every symbol is defined when it first appears and every number can be recomputed. The text is rewritten from the KP12 main text and slides of CCC-LNS Chapter 3 (accessed on 2026-10-14); content that the source does not contain is marked `[Added]`.

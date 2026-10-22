@@ -2,6 +2,8 @@
 
 > 程度：大學生（undergrad）／Level: Undergraduate (undergrad)
 
+> **自主學習 / Self-study**：本單元為自主學習內容，課堂不講授，請自行閱讀。
+
 本講義是第3章「反向傳播與最佳化」的第十四個知識點（KP14），承接 KP13 結尾留下的代價與限制：SAM 每步要算兩次梯度，大約貴一倍；而且它量到的銳度會隨權重的尺度改變。先備知識是 KP12–KP13（平坦解、SAM 的擾動 $\epsilon^{\ast}$）、期望與變異數、向量範數；第一次出現的符號都會定義，所有數字都可以自己重算。內容依 CCC-LNS 第3章 KP14 的主文與投影片消化後重新撰寫，讀取日期 2026-10-14；來源沒有的內容標示 `[補充]`。
 
 This is the fourteenth knowledge point (KP14) of Chapter 3. It picks up the costs and limits KP13 left open: SAM computes two gradients per step, which costs about twice as much, and the sharpness it measures changes with the scale of the weights. It assumes KP12–KP13 (flat minima and the SAM perturbation $\epsilon^{\ast}$), expectation and variance, and vector norms; every symbol is defined when it first appears and every number can be recomputed. The text is rewritten from the KP14 main text and slides of CCC-LNS Chapter 3 (accessed on 2026-10-14); content that the source does not contain is marked `[Added]`.

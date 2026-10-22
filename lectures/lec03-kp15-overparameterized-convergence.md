@@ -2,6 +2,8 @@
 
 > 程度：大學生（undergrad）／Level: Undergraduate (undergrad)
 
+> **自主學習 / Self-study**：本單元為自主學習內容，課堂不講授，請自行閱讀。
+
 本講義是第3章「反向傳播與最佳化」的第十五個知識點（KP15），承接 KP14 留下的問題：前面的方法（GD、SGD、Adam、SAM）在非凸的損失上為什麼練得動、保證了什麼？先備知識是線性代數的秩與零空間、KP02 的 GD 收斂分析與 KP12 的銳度；第一次出現的符號都會定義，所有實驗都附程式，數字可以自己重算。內容依 CCC-LNS 第3章 KP15 的主文與投影片消化後重新撰寫，讀取日期 2026-10-14；來源對定理的敘述我沒有逐一對照原論文，凡是引用定理之處都寫成「來源所述」。
 
 This is the fifteenth knowledge point (KP15) of Chapter 3. It picks up the question KP14 left open: GD, SGD, Adam and SAM are applied to non-convex losses, so why do they train at all and what do we get a guarantee for? It assumes rank and null space from linear algebra, the GD analysis of KP02 and the sharpness of KP12; every symbol is defined when it first appears and every experiment comes with code, so the numbers can be recomputed. The text is rewritten from the KP15 main text and slides of CCC-LNS Chapter 3 (accessed 2026-10-14); I did not check the theorems against the original papers, so wherever a theorem is quoted it is phrased as "the source states".
