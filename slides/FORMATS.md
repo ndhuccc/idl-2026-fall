@@ -26,17 +26,19 @@
 ## 網頁版(HTML)自動產生
 
 課程網站建置時,會把 `slides/` 第一層的每份 `.jbd.json` 自動轉成單一檔案、可離線開啟的 HTML,
-放進投影片下載頁的「HTML」欄(排在 JSON 前面);學生用瀏覽器就能看,不必安裝播放器。
-轉出的 HTML 只存在網站,**不提交進 Git**。
+投影片下載頁**只提供 HTML**(網站不發佈 `.jbd.json`,也不放 JianBauDau 播放器連結);學生用瀏覽器就能看。
+`.jbd.json` 仍留在 Repo 當來源檔,轉出的 HTML 只存在網站,**不提交進 Git**。
+若某份簡報沒有網頁版(轉換失敗,或建置環境沒有 Node.js),下載頁才會退回提供該份的 JSON 與播放器連結,避免出現壞連結。
 
 - 轉換器是專案技能 `.agents/skills/slides-to-html/`(需要 Node.js;`deploy-site` 工作流程已安裝)。操作、規則與驗證見該技能的 `SKILL.md`。
-- 已有同名手作 `lecNN.html` 的簡報不會被覆蓋;子資料夾(例如 `slides/comics/`)不處理。
+- 已有同名手作 `lecNN.html` 的簡報不會被覆蓋;子資料夾(例如 `slides/comics/`)不轉 HTML,其中的 `.jbd.json` 也不發佈到網站。
+- 進度表與講義中指向 `slides/…jbd.json` 的連結,建置時會自動改指向同名 HTML,檔案內不必修改。
 - HTML 內含講者備註與語音逐字稿,公開程度與 `.jbd.json` 相同(見下方「發佈前必須確認」)。
 - 自己的電腦建置前,先執行一次 `npm ci --ignore-scripts --prefix .agents/skills/slides-to-html`;沒裝 Node.js 時只會警告並略過,網站仍可建置。
 
 ## 播放器下載
 
-學生用的 JianBauDau 播放器(Windows 執行檔)連結會自動出現在網站的投影片下載頁:
+網站的投影片下載頁預設只提供 HTML,不放播放器連結;只有某份簡報退回提供 JSON 時,才會附上 JianBauDau 播放器(Windows 執行檔)連結:
 <https://github.com/ndhuccc/IDL115/releases/download/player-v1.0.2/JianBauDau-Player-1.0.2.exe>
 
 換新版時,修改 `scripts/build_docs.py` 的 `PLAYER_URL`。

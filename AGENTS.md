@@ -307,7 +307,7 @@ gh workflow run deploy-site.yml                                    # 第一次�
 - 若是 JianBauDau JSON,執行 `python3 scripts/check_slides.py`。**FAIL 必須修正**(例如匯入用的 page spec、孤兒節點、`asset:` 伺服器參照);**WARN 請逐項告知老師確認**(講者備註、電子郵件、疑似學號、檔案大小)。
 - 提醒老師:課程網站是公開網址,`slides/` 內的檔案不需登入即可下載;講者備註會一起給學生。
 - 同步:`schedule.md` 或 `lectures/lecNN.md` 的投影片連結(依 §5.12,連結要指向實際存在的檔案);網站下載頁由 `build_docs.py` 自動產生,不需手動維護。
-- 網頁版 HTML:建置網站時會自動把每份 `.jbd.json` 轉成離線 HTML 並列在下載頁(技能 `.agents/skills/slides-to-html/SKILL.md`),不需手動轉檔、也不提交 HTML;新增或大改簡報後,可在本機 `build_docs.py` 後抽查轉出的頁面。
+- 網頁版 HTML:建置網站時會自動把每份 `.jbd.json` 轉成離線 HTML,**下載頁只提供 HTML**(不發佈 `.jbd.json`、不放播放器連結;`.jbd.json` 仍留在 Repo 當來源檔)。不需手動轉檔、也不提交 HTML(技能 `.agents/skills/slides-to-html/SKILL.md`);新增或大改簡報後,可在本機 `build_docs.py` 後抽查轉出的頁面。
 
 ### 5.12 週次進度表跟著實際製作的內容更新(通用原則,適用所有單元)
 每次新增、拆分、合併、改名或刪除某週的講義、簡報、實驗、作業之後,**在同一次提交裡**讓 `schedule.md` 反映「實際做出來的內容」,不要停在計畫表的籠統標題:

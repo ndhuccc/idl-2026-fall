@@ -1,6 +1,6 @@
 ---
 name: slides-to-html
-description: 把 JianBauDau 投影片(.jbd.json,schemaVersion 3)轉成單一檔案、可離線開啟的 HTML 網頁版(縮放畫布鏡頭運動、公式、連線、漫畫圖片、逐頁語音與講者備註都保留)。課程網站建置時會自動對 slides/ 內每份 .jbd.json 執行,讓投影片下載頁以 HTML 為主要下載。需要手動轉檔、檢查轉出的 HTML、或排查下載頁沒有出現 HTML 連結時使用。
+description: 把 JianBauDau 投影片(.jbd.json,schemaVersion 3)轉成單一檔案、可離線開啟的 HTML 網頁版(縮放畫布鏡頭運動、公式、連線、漫畫圖片、逐頁語音與講者備註都保留)。課程網站建置時會自動對 slides/ 內每份 .jbd.json 執行,讓投影片下載頁只提供 HTML 下載。需要手動轉檔、檢查轉出的 HTML、或排查下載頁沒有出現 HTML 連結時使用。
 ---
 
 # 簡報轉 HTML(slides-to-html)
@@ -14,7 +14,7 @@ description: 把 JianBauDau 投影片(.jbd.json,schemaVersion 3)轉成單一檔�
 
 1. 找出 `slides/` **第一層**的每份 `*.jbd.json`(子資料夾不處理);
 2. 呼叫本技能的轉換器,把 HTML 放進網站暫存區 `.site_src/slides/`(**不提交進 Git**,Repo 不會變大);
-3. 在投影片下載頁(`slides/README.md`)每份簡報多列一行「HTML」,排在 JSON 前面。
+3. 投影片下載頁(`slides/README.md`)**只列 HTML**:網站不發佈 `.jbd.json`(來源檔仍在 Repo),也不放 JianBauDau 播放器連結。轉換失敗或缺少 Node.js 的簡報才退回提供 JSON 與播放器連結,避免壞連結。進度表與講義中指向 `slides/…jbd.json` 的連結,建置時會自動改指向同名 HTML。
 
 已經有同名手作 `lecNN.html` 的簡報不會被覆蓋。
 
@@ -25,7 +25,7 @@ description: 把 JianBauDau 投影片(.jbd.json,schemaVersion 3)轉成單一檔�
 npm ci --ignore-scripts --prefix .agents/skills/slides-to-html
 ```
 
-沒有 Node.js 或套件時,`build_docs.py` 只會印出 `[警告]` 並略過,下載頁退回只列 JSON,網站仍可建置。
+沒有 Node.js 或套件時,`build_docs.py` 只會印出 `[警告]` 並略過,下載頁退回列出 JSON(含播放器連結),網站仍可建置。
 
 ## 2. 手動轉檔
 
@@ -77,7 +77,7 @@ node .agents/skills/slides-to-html/scripts/jbd_to_html.mjs --out-dir <輸出資�
 ## 6. 公開與大小注意
 
 - 課程網站是公開網址:HTML 內含**講者備註與語音逐字稿**,與 `.jbd.json` 相同(見 `slides/FORMATS.md`「發佈前必須確認」)。
-- GitHub Pages 站台上限約 1 GB。HTML 與 JSON 並列,網站體積約為 `slides/` 的兩倍;簡報多、圖片大時要留意,必要時先壓縮簡報內的圖片。
+- GitHub Pages 站台上限約 1 GB。網站只發佈 HTML,體積約等於 `slides/` 內簡報的大小(圖片是主要部分);簡報多、圖片大時要留意,必要時先壓縮簡報內的圖片。
 
 ## 7. 修改轉換器時
 

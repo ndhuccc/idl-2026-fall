@@ -151,6 +151,14 @@ def copy_content(stage: Path) -> int:
                 shutil.copyfile(src, dest)
                 count += 1
     generated = generate_html_slides(stage)
+    # 網站只提供 HTML:已有網頁版的簡報不發佈 .jbd.json(來源檔仍在 Repo);子資料夾內不列入下載頁的 .jbd.json 也不發佈。
+    # 沒有網頁版的簡報(例如轉換失敗或缺少 Node.js)才保留 JSON,避免下載頁出現壞連結。
+    slides_stage = stage / "slides"
+    if slides_stage.exists():
+        for js in list(slides_stage.rglob("*.jbd.json")):
+            if js.parent != slides_stage or js.with_name(js.name[: -len(".jbd.json")] + ".html").exists():
+                js.unlink()
+                count -= 1
     count += len(generated) + write_slides_index(stage, generated)
     return count
 
@@ -237,16 +245,24 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
         else:
             others.append(p.name)
 
+    # 已有網頁版(HTML)的簡報,下載頁只列 HTML;沒有網頁版的才列 JSON(此時才需要播放器)。
+    for lec in weeks:
+        for slug, items in weeks[lec].items():
+            if any(f == "html" for f, _ in items):
+                weeks[lec][slug] = [t for t in items if t[0] != "jbd.json"]
+    has_json = any(f == "jbd.json" for w in weeks.values() for items in w.values() for f, _ in items)
+
     lines = ["# 投影片下載(Slides)", "",
-             "每週的投影片可依需要下載。**建議下載 HTML 網頁版**:單一檔案、不需安裝任何軟體,用瀏覽器開啟即可,也能離線觀看"
-             "(←→ 或空白鍵換頁,F 全螢幕,N 顯示講者備註)。JianBauDau 格式請用 JianBauDau 播放器開啟;"
-             "PPTX、PDF 可直接用一般軟體開啟。", "",
+             "每週的投影片以 **HTML 網頁版**提供:單一檔案、不需安裝任何軟體,用瀏覽器開啟即可,也能離線觀看"
+             "(←→ 或空白鍵換頁,F 全螢幕,N 顯示講者備註)。PPTX、PDF 可直接用一般軟體開啟。"
+             + (" 少數尚無網頁版的簡報才提供 JianBauDau 格式,需用 JianBauDau 播放器開啟。" if has_json else ""), "",
              "同一週可以有多份教材:沒有後綴的是該週正課,"
              "有後綴的(例如 `lec02-parameter-estimation`)是補充或自主學習教材。", ""]
-    lines += ["## JianBauDau 播放器(選用)", "",
-              f"- [下載 JianBauDau 播放器 1.0.2(Windows,.exe)]({PLAYER_URL})",
-              "- 開啟方式:執行播放器後按 Ctrl+O 選擇 `.jbd.json` 檔,或把檔案拖進視窗。",
-              "- 第一次執行時 Windows 可能出現安全性提示,請確認下載來源是本頁連結。", ""]
+    if has_json:  # 只有存在 JSON 下載時才需要播放器
+        lines += ["## JianBauDau 播放器", "",
+                  f"- [下載 JianBauDau 播放器 1.0.2(Windows,.exe)]({PLAYER_URL})",
+                  "- 開啟方式:執行播放器後按 Ctrl+O 選擇 `.jbd.json` 檔,或把檔案拖進視窗。",
+                  "- 第一次執行時 Windows 可能出現安全性提示,請確認下載來源是本頁連結。", ""]
     if not weeks and not others:
         lines.append("目前尚無投影片。")
     if weeks:
@@ -283,6 +299,13 @@ def rewrite_links(stage: Path) -> None:
             new = new.replace(f"]({folder}/)", f"]({folder}/README.md)")
             new = new.replace(f"](./{folder}/)", f"](./{folder}/README.md)")
         new = new.replace("](LICENSE)", "](LICENSE.md)")
+        # 網站只發佈 HTML 網頁版:指向 slides/<名稱>.jbd.json 的連結,改指向同名 .html(若存在)
+        new = re.sub(
+            r"\]\(((?:\.{1,2}/)*)slides/([^)#\s/]+)\.jbd\.json((?:#[^)\s]*)?)\)",
+            lambda m: (f"]({m.group(1)}slides/{m.group(2)}.html{m.group(3)})"
+                       if (stage / "slides" / f"{m.group(2)}.html").exists() else m.group(0)),
+            new,
+        )
         if new != text:
             md.write_text(new, encoding="utf-8")
 

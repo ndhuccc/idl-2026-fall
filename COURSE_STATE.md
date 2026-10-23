@@ -41,6 +41,7 @@
 
 ## 決策與異動紀錄
 
+- 2026-10-24 07:49 — 依老師指示,網站的簡報下載只提供 HTML:`scripts/build_docs.py` 不再把 `.jbd.json` 發佈到網站(來源檔仍在 Repo)、下載頁移除 JSON 欄與 JianBauDau 播放器連結,進度表與講義指向 `slides/…jbd.json` 的連結改指向同名 HTML;僅在某份簡報沒有網頁版(轉換失敗或缺少 Node.js)時才退回提供 JSON 與播放器連結。網站體積隨之縮小(idl 約 713→361 MB、pr 約 637→390 MB)。三個課程 Repo 相同。
 - 2026-10-24 — 投影片下載頁改為以 HTML 網頁版為主:新增專案技能 `.agents/skills/slides-to-html/`(JianBauDau JSON 轉單檔離線 HTML,公式用 KaTeX 預先排版、圖片音檔內嵌),`scripts/build_docs.py` 在建置時自動轉換 `slides/` 第一層的 `.jbd.json` 並把 HTML 列在下載頁(JSON 與播放器連結保留為選用);`deploy-site.yml` 新增 Node 20 與 `npm ci` 步驟、`.gitignore` 排除 `node_modules/`。HTML 不提交進 Git,只存在網站。三個課程 Repo 相同。
 - 2026-10-22 — lec03 KP09、KP10、KP11 簡報依 view-from-text 重做(不畫漫畫,大學生程度,CLARITY 規則):各 21、16、22 頁,稽核 FAIL 0,預覽無溢出。頁數超過「每單元 6 頁」準則,原因是每個玩具算例逐步代入、圖與練習各獨立成頁。舊簡報內嵌的旁白隨舊頁面移除,新簡報沒有音檔;老師指示旁白與講稿不必重錄。待辦:老師在 JianBauDau 逐頁確認排版。
 - 2026-10-22 — 老師指定第3週 KP09 也列為自主學習(與 KP12–KP15 同做法):`schedule.md` 備註欄更新課堂講授範圍,`lec03-kp09` 講義開頭加標註。
