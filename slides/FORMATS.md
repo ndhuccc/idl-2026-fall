@@ -23,6 +23,17 @@
 | PDF | 任何 PDF 閱讀器 | 任何方式匯出 | 無法互動 |
 | HTML | 瀏覽器(離線即可開啟) | 單一檔案,不要引用外部資源 | 外部資源在離線時會失效 |
 
+## 網頁版(HTML)自動產生
+
+課程網站建置時,會把 `slides/` 第一層的每份 `.jbd.json` 自動轉成單一檔案、可離線開啟的 HTML,
+放進投影片下載頁的「HTML」欄(排在 JSON 前面);學生用瀏覽器就能看,不必安裝播放器。
+轉出的 HTML 只存在網站,**不提交進 Git**。
+
+- 轉換器是專案技能 `.agents/skills/slides-to-html/`(需要 Node.js;`deploy-site` 工作流程已安裝)。操作、規則與驗證見該技能的 `SKILL.md`。
+- 已有同名手作 `lecNN.html` 的簡報不會被覆蓋;子資料夾(例如 `slides/comics/`)不處理。
+- HTML 內含講者備註與語音逐字稿,公開程度與 `.jbd.json` 相同(見下方「發佈前必須確認」)。
+- 自己的電腦建置前,先執行一次 `npm ci --ignore-scripts --prefix .agents/skills/slides-to-html`;沒裝 Node.js 時只會警告並略過,網站仍可建置。
+
 ## 播放器下載
 
 學生用的 JianBauDau 播放器(Windows 執行檔)連結會自動出現在網站的投影片下載頁:

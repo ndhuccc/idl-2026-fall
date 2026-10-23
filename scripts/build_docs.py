@@ -21,6 +21,7 @@ import argparse
 import datetime as dt
 import re
 import shutil
+import subprocess
 import sys
 import tomllib
 from pathlib import Path
@@ -149,7 +150,8 @@ def copy_content(stage: Path) -> int:
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(src, dest)
                 count += 1
-    count += write_slides_index(stage)
+    generated = generate_html_slides(stage)
+    count += len(generated) + write_slides_index(stage, generated)
     return count
 
 
@@ -179,7 +181,38 @@ def lecture_title(stem: str) -> str:
     return ""
 
 
-def write_slides_index(stage: Path) -> int:
+HTML_SKILL = ROOT / ".agents" / "skills" / "slides-to-html"
+
+
+def generate_html_slides(stage: Path) -> set[str]:
+    """把 slides/ 第一層的 ``.jbd.json`` 轉成離線 HTML,放進網站暫存區,回傳成功產生的檔名。
+
+    轉換器是專案技能 ``.agents/skills/slides-to-html``(需要 Node.js 與 ``npm ci``)。
+    缺少 Node.js 或套件時只警告並略過,下載頁就退回只列 JSON;已有同名手作 ``.html`` 的不覆蓋。
+    """
+    base = ROOT / "slides"
+    script = HTML_SKILL / "scripts" / "jbd_to_html.mjs"
+    if not base.exists() or not script.exists():
+        return set()
+    sources = sorted(p for p in base.glob("*.jbd.json") if not (base / (p.name[: -len(".jbd.json")] + ".html")).exists())
+    if not sources:
+        return set()
+    node = shutil.which("node")
+    if not node or not (HTML_SKILL / "node_modules" / "katex").exists():
+        print("[警告] 找不到 Node.js 或 slides-to-html 的套件(請在 .agents/skills/slides-to-html 執行 npm ci),本次不產生簡報 HTML。")
+        return set()
+    out = stage / "slides"
+    out.mkdir(parents=True, exist_ok=True)
+    for i in range(0, len(sources), 20):  # 分批,避免命令列過長
+        r = subprocess.run([node, str(script), "--out-dir", str(out), *map(str, sources[i : i + 20])],
+                           capture_output=True, text=True, encoding="utf-8")
+        sys.stdout.write(r.stdout)
+        sys.stderr.write(r.stderr)
+    wanted = {p.name[: -len(".jbd.json")] + ".html" for p in sources}
+    return {p.name for p in out.glob("*.html")} & wanted
+
+
+def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = frozenset()) -> int:
     """產生網站的投影片下載頁(取代 slides/README.md),依週次列出各格式的檔案。
 
     檔名規則:``lecNN.<格式>``(該週正課)或 ``lecNN-<slug>.<格式>``(該週的補充/自主學習教材)。
@@ -198,15 +231,19 @@ def write_slides_index(stage: Path) -> int:
         if m:
             week, slug, fmt = m.group(1), m.group(2) or "", m.group(3)
             weeks.setdefault(week, {}).setdefault(slug, []).append((fmt, p.name))
+            html_name = p.name[: -len(".jbd.json")] + ".html"
+            if fmt == "jbd.json" and html_name in generated:
+                weeks[week][slug].append(("html", html_name))  # 建置時由 JSON 轉出的離線網頁
         else:
             others.append(p.name)
 
     lines = ["# 投影片下載(Slides)", "",
-             "每週的投影片可依需要下載。JianBauDau 格式請用 JianBauDau 播放器開啟;"
-             "PPTX、PDF、HTML 可直接用一般軟體開啟。", "",
+             "每週的投影片可依需要下載。**建議下載 HTML 網頁版**:單一檔案、不需安裝任何軟體,用瀏覽器開啟即可,也能離線觀看"
+             "(←→ 或空白鍵換頁,F 全螢幕,N 顯示講者備註)。JianBauDau 格式請用 JianBauDau 播放器開啟;"
+             "PPTX、PDF 可直接用一般軟體開啟。", "",
              "同一週可以有多份教材:沒有後綴的是該週正課,"
              "有後綴的(例如 `lec02-parameter-estimation`)是補充或自主學習教材。", ""]
-    lines += ["## JianBauDau 播放器", "",
+    lines += ["## JianBauDau 播放器(選用)", "",
               f"- [下載 JianBauDau 播放器 1.0.2(Windows,.exe)]({PLAYER_URL})",
               "- 開啟方式:執行播放器後按 Ctrl+O 選擇 `.jbd.json` 檔,或把檔案拖進視窗。",
               "- 第一次執行時 Windows 可能出現安全性提示,請確認下載來源是本頁連結。", ""]

@@ -9,6 +9,7 @@ on:
     paths:
       - "**/*.md"
       - "slides/**"
+      - ".agents/skills/slides-to-html/**"
       - "assets/figures/**"
       - "labs/**"
       - "release_schedule.toml"
@@ -46,6 +47,15 @@ jobs:
 
       - name: 安裝網站相依套件
         run: pip install -r requirements-site.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: .agents/skills/slides-to-html/package-lock.json
+
+      - name: 安裝簡報轉 HTML 所需套件
+        run: npm ci --ignore-scripts --prefix .agents/skills/slides-to-html
 
       - name: 整理網站原始檔(含解答釋出判斷)
         run: python scripts/build_docs.py
