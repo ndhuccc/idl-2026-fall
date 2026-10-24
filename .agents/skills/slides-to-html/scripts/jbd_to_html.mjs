@@ -56,7 +56,7 @@ const md = new Marked({
   },
 });
 
-const FONT_SLUGS = { inter: 'Inter', 'avenir-next': '"Avenir Next"', georgia: 'Georgia', 'courier-new': '"Courier New"', impact: 'Impact' };
+const FONT_SLUGS = { inter: 'Inter', 'avenir-next': "'Avenir Next'", georgia: 'Georgia', 'courier-new': "'Courier New'", impact: 'Impact' };
 
 // 文字 → HTML。順序:先保護公式與程式碼,再處理 {color=…} 等字元格式,最後交給 Markdown。
 function renderMarkdown(raw, { inline = false } = {}) {
@@ -127,7 +127,8 @@ const SHAPES = {
   star: '50,3 61,35 97,35 68,56 79,93 50,70 21,93 32,56 3,35 39,35', arrow: '3,27 61,27 61,5 97,50 61,95 61,73 3,73',
 };
 const DASH = { dashed: '8 5', dotted: '1 5' };
-const DEFAULT_FONT = '"Avenir Next","Segoe UI",system-ui,"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif';
+// 會放進 style="…" 屬性,所以字型名稱一律用單引號(雙引號會把屬性提早截斷,導致字級、粗細、顏色全部失效)
+const DEFAULT_FONT = "'Avenir Next','Segoe UI',system-ui,'Noto Sans TC','Microsoft JhengHei','PingFang TC',sans-serif";
 
 function hookPoint(n, hook) {
   const a = -Math.PI / 2 + (((Math.trunc(hook) % HOOKS) + HOOKS) % HOOKS) * (Math.PI * 2) / HOOKS;
@@ -258,12 +259,12 @@ function convert(file, outFile) {
       if (st.stroke && st.stroke !== 'transparent' && (n.type !== 'text')) css.push(`border:${bwid}px ${st.borderStyle || 'solid'} ${st.stroke}`);
       if (st.radius) css.push(`border-radius:${st.radius}px`);
       if (n.type === 'text') {
-        parts.push(`<div class="n text" style="${css.join(';')}"><div class="copy" style="${copyCss(n, false)}">${renderMarkdown(n.text || '')}</div></div>`);
+        parts.push(`<div class="n text" data-n="${escAttr(n.id)}" style="${css.join(';')}"><div class="copy" style="${escAttr(copyCss(n, false))}">${renderMarkdown(n.text || '')}</div></div>`);
       } else if (n.type === 'shape') {
         const kind = n.shapeKind || 'rectangle';
         if (kind === 'rectangle') {
           css.push('box-shadow:0 18px 30px rgba(106,64,46,.16)');
-          parts.push(`<div class="n shape" style="${css.join(';')}"><div class="copy shape-label" style="${copyCss(n, true)}">${renderMarkdown(n.text || '')}</div></div>`);
+          parts.push(`<div class="n shape" data-n="${escAttr(n.id)}" style="${css.join(';')}"><div class="copy shape-label" style="${escAttr(copyCss(n, true))}">${renderMarkdown(n.text || '')}</div></div>`);
         } else {
           const bg = css.filter((c) => !/^(background|border|box-shadow)/.test(c));
           const stroke = st.stroke && st.stroke !== 'transparent' ? st.stroke : 'none';
@@ -271,7 +272,7 @@ function convert(file, outFile) {
           const shapeSvg = kind === 'ellipse'
             ? `<ellipse cx="50" cy="50" rx="47" ry="47" fill="${st.fill || 'none'}" stroke="${stroke}" stroke-width="${sw}" vector-effect="non-scaling-stroke"${DASH[st.borderStyle] ? ` stroke-dasharray="${DASH[st.borderStyle]}"` : ''}/>`
             : SHAPES[kind] ? `<polygon points="${SHAPES[kind]}" fill="${st.fill || 'none'}" stroke="${stroke}" stroke-width="${sw}" vector-effect="non-scaling-stroke"${DASH[st.borderStyle] ? ` stroke-dasharray="${DASH[st.borderStyle]}"` : ''}/>` : '';
-          parts.push(`<div class="n shape" style="${bg.join(';')}"><svg class="shape-visual" viewBox="0 0 100 100" preserveAspectRatio="none">${shapeSvg}</svg><div class="copy shape-label" style="${copyCss(n, true)}">${renderMarkdown(n.text || '')}</div></div>`);
+          parts.push(`<div class="n shape" data-n="${escAttr(n.id)}" style="${bg.join(';')}"><svg class="shape-visual" viewBox="0 0 100 100" preserveAspectRatio="none">${shapeSvg}</svg><div class="copy shape-label" style="${escAttr(copyCss(n, true))}">${renderMarkdown(n.text || '')}</div></div>`);
         }
       } else if (n.type === 'image') {
         const src = n.image?.src || '';
@@ -433,7 +434,10 @@ function go(i,instant){
 // 方框固定大小的圖形:文字超出時縮小字級(最小 60%),避免被截掉
 function shrink(){
   document.querySelectorAll('.shape-label').forEach(el=>{
-    let f=1;while(el.scrollHeight>el.clientHeight+1&&f>0.6){f-=0.04;el.style.fontSize=(f*100)+'%'}
+    // 以節點自己的字級(px)為基準縮放;只在超出超過 6px 時才縮,避免內距差幾像素就縮字
+    const base=parseFloat(getComputedStyle(el).fontSize);let f=1;
+    while(el.scrollHeight>el.clientHeight+6&&f>0.6){f-=0.04;el.style.fontSize=(base*f)+'px'}
+    if(f<1)el.dataset.shrunk=f.toFixed(2);
   });
 }
 document.getElementById('prev').onclick=()=>go(cur-1);

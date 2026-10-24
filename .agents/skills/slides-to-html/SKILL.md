@@ -69,8 +69,12 @@ node .agents/skills/slides-to-html/scripts/jbd_to_html.mjs --out-dir <輸出資�
 轉換後請抽查,不要只看有沒有檔案:
 
 1. 用瀏覽器開啟,走一遍所有頁;公式、圖片、連線標籤都要顯示。
-2. 用無頭瀏覽器批次驗證(Chromium 已預裝,用 `playwright-core` 的 `chromium.launch({ executablePath })`):
-   載入每份檔案,確認沒有頁面錯誤、`<img>` 的 `naturalWidth` 都大於 0、`.katex-error` 為 0、沒有對外網路請求。
+2. 用無頭瀏覽器批次驗證(`playwright-core` 不列入本技能的相依,用時才安裝):
+   ```bash
+   npm i --no-save playwright-core --prefix .agents/skills/slides-to-html
+   node .agents/skills/slides-to-html/scripts/check_html.mjs <HTML 資料夾> slides [chromium 執行檔路徑]
+   ```
+   它會逐份確認:沒有頁面錯誤與對外網路請求、所有圖片載入成功、沒有 KaTeX 錯誤,並**逐節點比對實際顯示的字級、粗細、對齊是否與 JSON 設定相同**。有任何問題就以非 0 結束。
 3. 圖片載入失敗通常是**來源 JSON 本身損壞**(例如圖資中被混入文字),請回到 JianBauDau 檢查該檔,不要在轉換器裡硬修。
 4. 有 `[警告]` 就逐項處理或向老師說明,不要忽略。
 
@@ -80,6 +84,9 @@ node .agents/skills/slides-to-html/scripts/jbd_to_html.mjs --out-dir <輸出資�
 - GitHub Pages 站台上限約 1 GB。網站只發佈 HTML,體積約等於 `slides/` 內簡報的大小(圖片是主要部分);簡報多、圖片大時要留意,必要時先壓縮簡報內的圖片。
 
 ## 7. 修改轉換器時
+
+- 放進 `style="…"` 屬性的字串(尤其字型名稱)一律用單引號,或用 `escAttr()` 跳脫。雙引號會把屬性在中途截斷,後面的字級、粗細、顏色全部失效。
+- 「超出就縮小字級」要以節點自己的字級(px)為基準;用百分比會變成相對於上一層字級,字反而變得更小。
 
 改 `scripts/jbd_to_html.mjs` 後,對 `slides/` 內全部簡報重新轉換並做第 5 節的批次驗證。
 三個課程 Repo(`course-template`、`idl-2026-fall`、`pr-2026-fall`)的本技能必須保持相同。
