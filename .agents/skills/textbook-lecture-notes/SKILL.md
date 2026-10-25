@@ -389,6 +389,7 @@ python .agents/skills/textbook-lecture-notes/scripts/render_formula.py --batch f
 11. **圖內無中文**：用腳本檢查 `assets/figures/src/` 中繪圖呼叫的字串參數（`text`、`set_xlabel`、`set_ylabel`、`set_title`、`legend`、`annotate`）是否含中文字，並確認 AI 生圖的提示檔沒有要求中文字。驗證腳本不提交。
 12. **圖的功能檢查**：每張圖的圖說含讀圖指引與功能標記；標記的功能必須對應圖的實際內容（例如標記 3 的圖，必須真的呈現空間或分布的幾何形狀）。
 
+13a. **可讀性稽核 L12–L22（2026-10-26 新增，針對弱背景讀者）**：`audit_lecture.py` 另檢查句長（L12）、段落超過 4 句（L13，超過四成為 FAIL）、符號表（L14）、術語表涵蓋（L15）、練習缺解答（L16，FAIL）、與簡報的重疊率（L17，超過 20% 為 WARN、50% 為 FAIL；講義要先於簡報撰寫，簡報由講義抽出）、圖說讀圖指引與〔功能〕標記（L18）、效能數字缺實驗設定與種子（L19，見 CLARITY.md C19）、跳步用語（L20）、教學文字過短（L21）、術語先用後定義（L22）。機器無法判定的項目（符號是否一致、正負號、參數是否先給值、推導是否跳步）仍須人工與獨立冷讀者檢查，**0 FAIL 不等於可獨立閱讀**。
 13. **講義品質稽核**：執行 `python .agents/skills/textbook-lecture-notes/scripts/audit_lecture.py lectures/lecNN.md`，FAIL 必須為 0（含 L11 公式區塊檢查：兩個 `$$ ... $$` 區塊之間必須空一行，否則網頁會顯示多餘的 `$$$$`），WARN 逐項處理或說明；再把各小節標題依序讀一遍，應像一段順暢的論證，並抽樣自讀至少 20% 的小節。
 
 驗證用的腳本是一次性的，不要提交進 Repo（除非是 `assets/figures/src/` 中的圖表腳本）。
