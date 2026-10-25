@@ -40,6 +40,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("lecture")
     ap.add_argument("--source", action="append", default=[], help="source text file(s); L10 warns when the lecture repeats long runs of the source (14+ identical CJK characters)")
+    ap.add_argument("--lang", choices=["bi", "zh", "en"], default="bi", help="bi (default): bilingual lecture; zh / en: single-language version (skips the English-heading check L1; en looks for the English field names in L7)")
     ap.add_argument("--max-sections-per-kp", type=int, default=14, help="L8 limit (default 14)")
     args = ap.parse_args()
     text = open(args.lecture, encoding="utf-8").read()
@@ -51,7 +52,7 @@ def main():
     # L1
     for lvl, h, _ in heads:
         if PLACEHOLDER.search(h): F("L1", f"placeholder English in heading: {h!r}")
-        elif ("（" not in h and "(" not in h) and not re.match(r"^(符號表|術語對照|學習目標)", h) and re.search(r"[一-鿿]", h):
+        elif args.lang == "bi" and ("（" not in h and "(" not in h) and not re.match(r"^(符號表|術語對照|學習目標)", h) and re.search(r"[一-鿿]", h):
             W("L1", f"heading has no English part: {h!r}")
     # L2
     zh = Counter(re.split(r"[（(]", h)[0].strip() for lvl, h, _ in heads if lvl == 3)
@@ -91,7 +92,10 @@ def main():
         start = heads[i][2]
         end = heads[kp_idx[n + 1][0]][2] if n + 1 < len(kp_idx) else len(text)
         block = text[start:end]
-        found = [zh_ for zh_, en_ in FIELDS if f"**{zh_}**" in block or zh_ in block]
+        if args.lang == "en":
+            found = [zh_ for zh_, en_ in FIELDS if en_.lower() in block.lower()]
+        else:
+            found = [zh_ for zh_, en_ in FIELDS if f"**{zh_}**" in block or zh_ in block]
         miss = [zh_ for zh_, _ in FIELDS if zh_ not in found]
         if len(found) < 3: F("L7", f"{h[:20]!r}: only {len(found)}/6 SKILL 4.6 fields present (missing {miss})")
         elif miss: W("L7", f"{h[:20]!r}: missing fields {miss}")

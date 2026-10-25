@@ -9,6 +9,7 @@ Covers AUDIT_CHECKLIST.md: A (format), B (cameras, connector colours, FRAME STYL
 D (fonts, titles), H5 (step / reticle structure), G14 (image alt), L (bilingual layout),
 N3 (results without a visible derivation), P (speaker notes) and, with --lecture,
 O1 (every lecture figure is used or explicitly excluded) and N6 (lecture formulas / numbers missing from the slides).
+Story and jargon checks (CLARITY.md C12-C17): J1-J3 term registry (--terms), R4/R5 bridge content, S5 repeated note sentences, V2 meta / AI-flavoured phrases.
 It does NOT replace the visual checks: run preview_deck.py and look at the contact sheets, then open the deck in JianBauDau.
 Exit code 1 when there is any FAIL.
 
@@ -51,7 +52,9 @@ def norm_tex(s):
 
 def lecture_inventory(path):
     text = open(path, encoding="utf-8").read()
-    figs = re.findall(r"\*\*圖說 `([^`]+)`\*\*", text)
+    figs = re.findall(r"(?:\*\*)?(?:圖說|Figure|Caption)\s*`([^`]+)`", text)
+    for m in re.findall(r"!\[[^\]]*\]\([^)]*/([^/)]+?)\.(?:png|svg|jpg)\)", text):
+        if m not in figs: figs.append(m)
     formulas = []
     for block in re.findall(r"\$\$(.*?)\$\$", text, re.S):
         for piece in re.split(r",\s*\\qquad|\\qquad|,\s*\\quad", block):
@@ -75,9 +78,10 @@ def main():
     ap.add_argument("--exclude-fig", action="append", default=[], help="lecture figure id the teacher agreed to leave out (repeatable)")
     ap.add_argument("--speaker-notes", action="store_true", help="every content page must carry speaker notes (P1)")
     ap.add_argument("--minutes", type=float, help="class-time budget for the main line (LEVELS.md section 7): warns when the estimate exceeds it (T1); pages whose step label starts with the extension marker are not counted")
-    ap.add_argument("--max-pages-per-kp", type=int, default=6, help="guideline for the pages of one unit (one knowledge point), extension and continuation pages included; more is allowed when clarity needs it (U1 warns only)")
+    ap.add_argument("--max-pages-per-kp", type=int, default=0, help="optional page limit per unit (U1 warns only); default 0 = no limit (the 6-page guideline was withdrawn on 2026-10-25)")
     ap.add_argument("--source", action="append", default=[], help="source text file(s): O2 warns when pages repeat long runs of the source (14+ identical CJK characters)")
     ap.add_argument("--narrative", action="store_true", help="require a bridge node (name contains 'bridge') on every content page and speaker notes that link to the previous and next page (R1, R3); see .agents/skills/NARRATIVE.md")
+    ap.add_argument("--terms", help="term registry JSON (CLARITY.md C12): {\"term\": {\"aliases\": [synonyms only], \"co_defined\": [related terms defined on the same card]}}; every term needs a card node named 'term:<term>' on or before its first use, and on a main-line page if any main-line page uses it (J1-J3)")
     ap.add_argument("--outline", action="store_true", help="print the title chain and bridge line of every page, per unit, for the reading test (NARRATIVE.md section 5)")
     ap.add_argument("--kps", type=int, help="number of knowledge points; with --minutes, prints the per-KP budget")
     ap.add_argument("--level", choices=sorted(LEVEL_LIMITS), help="teaching level (see .agents/skills/LEVELS.md): warns when a page exceeds the level's display-formula and body-text budget (Q1, Q2)")
@@ -166,6 +170,24 @@ def main():
             x = n["transform"]["x"] % PITCH
             if x + n["width"] > W + 1: F("B3", f"{nid} extends past the page width")
 
+    # ------------------------------------------------------------ B10 overlap between text boxes, B11 control characters
+    for sid, sc in S.items():
+        if sid == root: continue
+        pages = {}
+        for nid in sc["nodeIds"]:
+            n = N[nid]
+            if n["type"] not in ("text", "shape") or not n.get("text"): continue
+            if re.search("[\t\f\b\a\v\r]", n["text"]):
+                F("B11", f"{nid} contains a control character (a TeX backslash such as \\tfrac or \\frac lost its escape): {n['text'][:40]!r}")
+            pages.setdefault(int(n["transform"]["x"] // PITCH), []).append((nid, n))
+        for lst in pages.values():
+            for i in range(len(lst)):
+                for j in range(i + 1, len(lst)):
+                    (ia, a_), (ib, b_) = lst[i], lst[j]
+                    ox = min(a_["transform"]["x"] + a_["width"], b_["transform"]["x"] + b_["width"]) - max(a_["transform"]["x"], b_["transform"]["x"])
+                    oy = min(a_["transform"]["y"] + a_["height"], b_["transform"]["y"] + b_["height"]) - max(a_["transform"]["y"], b_["transform"]["y"])
+                    if ox > 5 and oy > 5: F("B10", f"{ia} and {ib} overlap by {oy:.0f} units (a long title or a tall card pushes into the next box)")
+
     # ------------------------------------------------------------ B9 frame style (the legibility rule)
     for fid, fr in frames.items():
         st = fr["style"]
@@ -222,7 +244,8 @@ def main():
         if len(title) != 1: Wn("D2", f"{tag}: expected one page title (font >= 40, y < 120), found {len(title)}"); continue
         t = title[0]
         if "$" in t["text"]: F("D2", f"{tag}: math in the page title (KaTeX line height makes it collide with the subtitle): {t['text']!r}")
-        if not (6 <= len(re.sub(r"\s", "", t["text"])) <= 26): Wn("D2", f"{tag}: title length: {t['text']!r}")
+        _tl = len(re.sub(r"\s", "", t["text"])) if CJK.search(t["text"]) else len(t["text"]) // 2    # English titles: ~2 characters per CJK character
+        if not (6 <= _tl <= 26): Wn("D2", f"{tag}: title length: {t['text']!r}")
         if args.level:
             max_blocks, max_chars = LEVEL_LIMITS[args.level]
             blocks = sum(n["text"].count("$$") // 2 for n in ns if n["type"] in ("text", "shape"))
@@ -302,8 +325,8 @@ def main():
     from collections import Counter
     FOOT = re.compile(r"^\s*(KP|U)\d+\s*[·•]")
     GENERIC = ("備註不代替正文", "本頁英文與中文對應", "這張視覺休息頁", "讀者應能指出本頁的輸入條件")
-    PREV_W = ("上一頁", "前一頁", "前面", "剛才", "回顧", "承接", "上一步")
-    NEXT_W = ("下一頁", "接下來", "接著", "下一步", "下一個", "預告", "之後", "下一單元")
+    PREV_W = ("上一頁", "前一頁", "前面", "剛才", "回顧", "承接", "上一步", "previous page", "last page", "previously", "earlier", "so far")
+    NEXT_W = ("下一頁", "接下來", "接著", "下一步", "下一個", "預告", "之後", "下一單元", "next page", "next,", "next ", "after this", "then ")
 
     def body_nodes(ns):
         return [n for n in ns if n["type"] in ("text", "shape") and n.get("text", "").strip()
@@ -337,7 +360,8 @@ def main():
             if any(g in notes for g in GENERIC): Wn("S3", f"{tag}: speaker notes contain boilerplate text")
             ptxt = "".join(n["text"] for n in ns if n["type"] in ("text", "shape"))
             bigrams = lambda x: {x[k:k + 2] for k in range(len(x) - 1) if CJK.match(x[k]) and CJK.match(x[k + 1])}
-            if len(bigrams(notes) & bigrams(ptxt)) < 6: Wn("P2", f"{tag}: speaker notes share almost no wording with the page; they look generic")
+            wordgrams = lambda x: {w for w in re.findall(r"[a-z][a-z]{3,}", x.lower())}
+            if len(bigrams(notes) & bigrams(ptxt)) < 6 and len(wordgrams(notes) & wordgrams(ptxt)) < 4: Wn("P2", f"{tag}: speaker notes share almost no wording with the page; they look generic")
         sig = tuple(sorted((n["type"], round((n["transform"]["x"] % PITCH) / 60), round(n["transform"]["y"] / 60), round(n["width"] / 60), round(n["height"] / 60))
                            for n in ns if not (n["transform"]["y"] < 130)))
         if key[0] == prev_scene and sig == run_sig:
@@ -349,8 +373,66 @@ def main():
         if args.narrative and i > 0 and not t["label"].endswith("(續)") and not t["label"].endswith("(續)"):
             if not any("bridge" in n.get("name", "").lower() for n in ns):
                 F("R1", f"{tag}: no bridge node (name containing 'bridge') linking this page to the previous one: {t['label']!r}")
-            if notes and not (any(w in notes for w in PREV_W) and any(w in notes for w in NEXT_W)):
+            nl = notes.lower()
+            if notes and not (any(w in nl for w in PREV_W) and any(w in nl for w in NEXT_W)):
                 Wn("R3", f"{tag}: speaker notes should say how this page follows the previous one and leads to the next")
+    # ------------------------------------------------------------ J / R4 / R5 / S5 / V2: story and jargon (CLARITY.md C12-C17)
+    page_list = [(page_of(t), t) for t in content_steps]
+    ptext = lambda key: "\n".join(n.get("text", "") for n in pages.get(key, []) if n["type"] in ("text", "shape"))
+    ext_label = lambda t: t["label"].startswith("延伸") or t["label"].lower().startswith("extension")
+    if args.terms:
+        reg = json.load(open(args.terms, encoding="utf-8"))
+        cards = {}
+        for i, (key, t) in enumerate(page_list):
+            for n in pages.get(key, []):
+                if n.get("name", "").startswith("term:"): cards.setdefault(n["name"][5:], i)
+        for term, info in reg.items():
+            co = list((info or {}).get("co_defined", []))
+            names = [term] + list((info or {}).get("aliases", [])) + co
+            uses = [i for i, (key, t) in enumerate(page_list) if any(nm.lower() in (t["label"] + "\n" + ptext(key)).lower() for nm in names)]
+            if term not in cards:
+                F("J1", f"term {term!r} has no definition card (a node named 'term:{term}' with a plain-language definition and its meaning in the running example)")
+                continue
+            ci = cards[term]
+            card_txt = "\n".join(n.get("text", "") for n in pages.get(page_list[ci][0], []) if n.get("name") == "term:" + term).lower()
+            for c_ in co:
+                if c_.lower() not in card_txt:
+                    F("J4", f"term {term!r} is registered as co-defining {c_!r}, but its card on page {ci + 1} does not define {c_!r} in its text: give {c_!r} its own card or put its definition on this card")
+            early = [i for i in uses if i < ci]
+            if early:
+                F("J2", f"term {term!r} is used on page {early[0] + 1} ({page_list[early[0]][1]['label']!r}) before its definition card on page {ci + 1}")
+            if ext_label(page_list[ci][1]) and any(not ext_label(page_list[i][1]) for i in uses):
+                F("J3", f"term {term!r} is defined only on an extension page ({page_list[ci][1]['label']!r}) but a main-line page uses it: define it on the main line")
+    elif args.narrative:
+        Wn("J0", "no --terms registry: list every technical term of the unit with --terms so J1-J3 can check that each is defined in plain words before use (CLARITY.md C12)")
+    bg = lambda x: {x[k:k + 2] for k in range(len(x) - 1) if CJK.match(x[k]) and CJK.match(x[k + 1])} | \
+        {a + " " + b for a, b in zip(re.findall(r"[a-z]+", x.lower()), re.findall(r"[a-z]+", x.lower())[1:]) if len(a) > 2 and len(b) > 2}
+    QWORD = ("？", "?", "如何", "為什麼", "能否", "是否", "會不會", "怎麼", "哪")
+    for i, (key, t) in enumerate(page_list):
+        if i == 0 or not args.narrative or t["label"].endswith("(續)") or t["label"].endswith("(續)"): continue
+        brs = [n["text"] for n in pages.get(key, []) if "bridge" in n.get("name", "").lower()]
+        if not brs: continue
+        br = MATH.sub("", brs[0])
+        prev_key, prev_t = page_list[i - 1]
+        shared = bg(br) & bg(prev_t["label"] + ptext(prev_key))
+        if len(shared) < (3 if CJK.search(br) else 2):
+            F("R4", f"{key[0]}#p{key[1] + 1}: the bridge does not mention anything concrete from the previous page ({prev_t['label']!r}): say what that page found and what is still unsolved")
+        if not any(q in br for q in QWORD):
+            Wn("R5", f"{key[0]}#p{key[1] + 1}: the bridge names no question; end it with the question this page answers (CLARITY.md C14)")
+    sent_count = Counter()
+    for t in content_steps:
+        for sn in set(x.strip() for x in re.split(r"[。；\n]", t.get("speakerNotes", "")) if len(x.strip()) >= 12):
+            sent_count[sn] += 1
+    for sn, c in sent_count.items():
+        if c >= 3: F("S5", f"the same speaker-note sentence appears on {c} pages: {sn[:40]!r}... write notes that belong to each page")
+    META = re.compile(r"不替.{0,12}新增|請把代入與結論分開讀|依該圖圖例辨認|來源互動說明|更正：|本頁(?:要|將|只|先|保持|定義|說明|使用)|本單元(?:使用|保持)")
+    meta_hits = Counter()
+    for key, t in page_list:
+        for m in META.findall(ptext(key) + "\n" + t.get("speakerNotes", "")):
+            meta_hits[m] += 1
+    for m, c in meta_hits.items():
+        if c >= 2: Wn("V2", f"the phrase {m!r} appears {c} times: it talks about the slide instead of the subject; say it the way a teacher would (CLARITY.md C16)")
+
     for fid, fr in frames.items():
         sc = S.get(fr["frame"]["childSceneId"])
         if sc and sc["name"] != fr["text"] and sc["name"].startswith(fr["text"]) and len(sc["name"]) > len(fr["text"]):
@@ -369,7 +451,7 @@ def main():
     # ------------------------------------------------------------ U1 pages per knowledge point, O2 originality
     per_scene = Counter(sid for (sid, _idx) in pages)
     for sid, c in per_scene.items():
-        if c > args.max_pages_per_kp:
+        if args.max_pages_per_kp and c > args.max_pages_per_kp:
             Wn("U1", f"{S[sid]['name']!r} has {c} pages; the guideline is {args.max_pages_per_kp}. More is allowed when clarity needs it: say which unit grew and why in the delivery summary")
     if args.source:
         stream = lambda t: "".join(CJK.findall(re.sub(r"\$[^$]*\$", "", t)))
@@ -395,7 +477,7 @@ def main():
             if tg["sceneId"] == root: continue
             idx = int((tg["point"]["x"]) // PITCH)
             ns = pages.get((tg["sceneId"], idx), [])
-            if t["label"].startswith(("延伸:", "延伸:")):
+            if t["label"].startswith(("延伸:", "延伸:")) or t["label"].lower().startswith("extension"):
                 ext += 1
                 continue
             text = "\n".join(n.get("text", "") for n in ns if n["type"] in ("text", "shape"))

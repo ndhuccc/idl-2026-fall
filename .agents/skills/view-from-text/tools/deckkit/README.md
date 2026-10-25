@@ -16,3 +16,6 @@
 `u = kit.Unit("u01", 標題, 0, 0)`;`u.flow(label, zh標題, en標題, 講稿, bridge(...), C(...), Table(...), Row(...))`;
 手排頁:`p=u.page(label, zh, en)`、`p.card(key,x,y,w,h,text,c=色)`、`p.conn(a,hook,b,hook)`、`p.figure(id,x,y,w)`、`p.step(講稿)`。
 色:`MAIN REF EDGE AUX WARN OK`。`T(zh, en(en_))` 組雙語行。第一個 step 的 speakerNotes 要記錄教材程度與時長。
+
+## 單語版本(中文版、英文版分開)
+在組裝程式裡用環境變數 `KP_LANG=zh|en|bi` 切換:`T()` 在 zh 版去掉英文斜體行,在 en 版去掉含中文的行並用另寫的英文覆蓋(標題、標籤、術語卡名稱 `term:<English>`、備註、圖的 alt)。各語言用各自的工作資料夾(`need.json`、`figs.json` 分開),再各跑一次 `fit.py`。範例:`lec05-kp03-polyhedral-codes-review.zip` 內的 `assets/figures/src/deck_kp03.py` 與 `i18n_data.py`。
