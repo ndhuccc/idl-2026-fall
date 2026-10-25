@@ -138,6 +138,7 @@ def main():
     prose = re.sub(r"^#+ .*$", "", prose, flags=re.M)
     plain = re.sub(r"\$[^$\n]*\$", "□", prose)
     plain = re.sub(r"[*`]", "", plain)
+    plain = re.sub(r"\n(?=(?:- |\d+[.)] ))", "\n\n", plain)
     paras = [p_.strip() for p_ in re.split(r"\n\s*\n", plain) if p_.strip() and not p_.strip().startswith(">")]
     split_s = (lambda t: [x for x in re.split(r"(?<=[.!?])\s+", t) if x.strip()]) if en else (lambda t: [x for x in re.split(r"[。；！？\n]", t) if x.strip()])
     sents = [x.strip() for p_ in paras for x in split_s(p_)]
@@ -160,8 +161,9 @@ def main():
     gl_terms = re.findall(r"^\|\s*([^|\n]+?)\s*\|", gl, flags=re.M)
     gl_text = gl
     bold_terms = [t.strip() for t in re.findall(r"\*\*([^*\n]{2,30})\*\*\s*[:：]", body.split("## 術語與來源")[0].split("## Terms and source")[0])]
+    label_words = re.compile(r"怎麼|為什麼|如何|推導|驗算|設定|設計|結果|限制|關係|回顧|演算法|數值|追蹤|檢查|問題|符號|做法|做法|兩個|三個|四個|你需要|本講義|網路|映射的|收斂|階段|Check|How |Why |Derivation|Relation|Result|Limit|Setup|Algorithm|Question|Meaning|Convergence|recalled|Prerequisite|Four things|Three things|Symbol|Fixed|Effect|What |A hand", re.I)
     stop = re.compile(r"^(白話說明|一句話重點|正式定義|例子|常見迷思|小練習|題|做法|結果|意思|設定|Plain|One-sentence|Formal|Example|Common|Practice|Question|Method|Results?|Meaning|Setup|Check|核對|怎麼記|To remember|實驗細節|Experiment details|答|解)")
-    bold_terms = [t for t in dict.fromkeys(bold_terms) if not stop.match(t) and not re.match(r"^[□\s\d]+$", t)]
+    bold_terms = [t for t in dict.fromkeys(bold_terms) if not stop.match(t) and not label_words.search(t) and "$" not in t and not re.match(r"^[□\s\d]+$", t)]
     miss_b = [t for t in bold_terms if t not in gl_text]
     acr = set(re.findall(r"\b[A-Z][A-Za-z]*[A-Z]{1,}[A-Za-z]*\b|\b[A-Z]{2,6}\b", re.sub(r"\$[^$]*\$", "", body.split("## 術語與來源")[0].split("## Terms and source")[0])))
     acr -= {"KP", "XOR", "AND", "OR", "NOT", "TP", "FP", "FN", "TN", "RBF", "SVM", "MLP", "II", "PDF", "CART", "LMS", "IRLS", "KKT", "RKHS", "SVR"} if False else {"KP", "AND", "OR", "NOT", "PDF", "XOR", "SVM", "AdaBoost", "RBF", "MLP", "PNN", "MSE", "EM"}
@@ -228,7 +230,7 @@ def main():
     if mm: exempt_end = mm.start()
     early = []
     for t, pos in defs:
-        if stop.match(t) or pos <= exempt_end or re.search(r"[□$]", t): continue
+        if stop.match(t) or label_words.search(t) or pos <= exempt_end or re.search(r"[□$]", t): continue
         first = text.find(t, exempt_end)
         if 0 <= first < pos and not re.search(r"^### ", text[first:first + 1]):
             line_start = text.rfind("\n", 0, first) + 1
