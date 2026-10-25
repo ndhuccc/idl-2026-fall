@@ -33,7 +33,7 @@ description: Turn a lecture note (lectures/lecNN.md) or pasted text into a compl
 ## 1. 開始前
 
 1. 讀 `AGENTS.md` §5.11 與 `slides/FORMATS.md`。
-2. 讀 `lectures/lecNN.md`(NN 為週次)。講義是內容來源;投影片只呈現講義已有的內容,不加入新觀點。
+2. 讀 `lectures/lecNN.md`(NN 為週次)。講義是內容來源;投影片只呈現講義已有的內容,不加入新觀點。**前置關卡(硬規則,`../NARRATIVE.md` §0)**:該講義必須已通過 `audit_lecture.py`(FAIL 0,L12–L22 警告已處理)與講義冷讀;沒有通過就停止,先回頭修講義,不得由簡報反推講義。簡報內容有改動時,先改講義再同步簡報。
 3. 讀 `CLARITY.md`(清晰易讀修正原則,與其他規範衝突時以它為準)、`AI_AGENT_FILE_FORMAT_SPEC.md`、`PRESENTATION_DESIGN_GUIDE.md`、`VISUAL_AND_LAYOUT_GUIDE.md` 與 `AUDIT_CHECKLIST.md`。
 4. 確認比例。預設 16:9;若要 4:3,頁面參考尺寸改為 960×720。只有在無法判斷週次或內容範圍時才問老師。
 5. **語言(硬規則)**:本課程的投影片一律**中英對照**(§4C),除非老師明確說「只要中文」。盤點表(§1A)必須有一欄寫出語言決定。不要自行改成「中文加英文術語」。
