@@ -194,6 +194,33 @@ def schedule_kp_labels() -> dict[str, str]:
     return {m.group(2): m.group(1) for m in pat.finditer(p.read_text(encoding="utf-8"))}
 
 
+def schedule_weeks() -> dict[str, int]:
+    """從 schedule.md 的表格列取得 {講義 stem: 週次};同一份 lecNN 檔可橫跨兩週(例如第 5、6 週)。"""
+    p = ROOT / "schedule.md"
+    out: dict[str, int] = {}
+    if not p.exists():
+        return out
+    row = re.compile(r"^\|\s*(\d+)\s*\|")
+    link = re.compile(r"\]\(lectures/([^)#/]+)\.md\)")
+    for line in p.read_text(encoding="utf-8").splitlines():
+        m = row.match(line)
+        if m:
+            for stem in link.findall(line):
+                out.setdefault(stem, int(m.group(1)))
+    return out
+
+
+def english_title(stem: str) -> str:
+    """英文講義(lectures/en/<stem>.md)第一個標題,去掉「KPNN 」前綴;沒有英文版回傳空字串。"""
+    p = ROOT / "lectures" / "en" / f"{stem}.md"
+    if not p.exists():
+        return ""
+    for line in p.read_text(encoding="utf-8").splitlines():
+        if line.startswith("# "):
+            return re.sub(r"^KP\d{2}\s+", "", line[2:].strip())
+    return ""
+
+
 def slide_label(stem: str, kp_labels: dict[str, str]) -> tuple[str, str]:
     """投影片檔的顯示名稱與排序鍵:優先用進度表的「KPNN 標題」,漫畫版加註。"""
     base, comics = (stem[: -len("-with-comics")], True) if stem.endswith("-with-comics") else (stem, False)
@@ -246,6 +273,7 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
         return 0
     lecture_re = re.compile(r"^(lec\d{2})(?:-([a-z0-9][a-z0-9-]*))?\.(jbd\.json|pptx|pdf|html)$")
     kp_labels = schedule_kp_labels()
+    sched_week = schedule_weeks()
     weeks: dict[str, dict[str, list[tuple[str, str]]]] = {}
     others: list[str] = []
     for p in sorted(base.iterdir()):
@@ -253,11 +281,16 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
             continue
         m = lecture_re.match(p.name)
         if m:
-            week, slug, fmt = m.group(1), m.group(2) or "", m.group(3)
-            weeks.setdefault(week, {}).setdefault(slug, []).append((fmt, p.name))
+            lec, slug, fmt = m.group(1), m.group(2) or "", m.group(3)
+            core = slug[: -len("-en")] if slug.endswith("-en") else slug
+            core = core[: -len("-with-comics")] if core.endswith("-with-comics") else core
+            n = sched_week.get(lec if core == "" else f"{lec}-{core}", int(lec[3:]))
+            week = f"week{n:02d}"
+            stem = lec if slug == "" else f"{lec}-{slug}"
+            weeks.setdefault(week, {}).setdefault(stem, []).append((fmt, p.name))
             html_name = p.name[: -len(".jbd.json")] + ".html"
             if fmt == "jbd.json" and html_name in generated:
-                weeks[week][slug].append(("html", html_name))  # 建置時由 JSON 轉出的離線網頁
+                weeks[week][stem].append(("html", html_name))  # 建置時由 JSON 轉出的離線網頁
         else:
             others.append(p.name)
 
@@ -284,25 +317,27 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
     if weeks:
         # 一週一個頁籤、一個頁籤一張表(pymdownx.tabbed);週次多、檔案多時不會擠成一張大表。
         lines += ["同一週的所有教材在該週的頁籤裡,請點選週次。", ""]
-        for lec in sorted(weeks):
-            num = int(lec[3:])
-            lines += [f'=== "第 {num} 週"', "", "    | 教材 | 中文版 | 英文版 |", "    |---|---|---|"]
-            # 英文版(slug 以 -en 結尾,且有對應的中文版)併入同一列的「英文版」欄。
-            en_of = {sl[: -len("-en")]: sl for sl in weeks[lec] if sl.endswith("-en") and sl[: -len("-en")] in weeks[lec]}
-            en_slugs = set(en_of.values())
+        for wk in sorted(weeks):
+            num = int(wk[4:])
+            lines += [f'=== "第 {num} 週"', "", "    | 教材 | Chinese | English |", "    |---|---|---|"]
+            # 英文版(檔名以 -en 結尾,且有對應的中文版)併入同一列的 English 欄。
+            en_of = {st[: -len("-en")]: st for st in weeks[wk] if st.endswith("-en") and st[: -len("-en")] in weeks[wk]}
+            en_stems = set(en_of.values())
 
-            def order(slug: str, lec: str = lec) -> str:
-                stem = lec if slug == "" else f"{lec}-{slug}"
-                return slide_label(stem, kp_labels)[1] if slide_label(stem, kp_labels)[0] else "~~" + slug
+            def order(stem: str) -> str:
+                lab = slide_label(stem, kp_labels)
+                return lab[1] if lab[0] else "~~" + stem
 
             def cell(items: list[tuple[str, str]]) -> str:
                 return " · ".join(f"[{SLIDE_SHORT.get(f, f)}]({n})" for f, n in sorted(items, key=lambda t: t[0])) or "—"
 
-            for slug in sorted((x for x in weeks[lec] if x not in en_slugs), key=order):
-                stem = lec if slug == "" else f"{lec}-{slug}"
-                label = slide_label(stem, kp_labels)[0] or ("本週正課" if slug == "" else slug)
-                en_items = weeks[lec].get(en_of.get(slug, "\0"), [])
-                lines.append(f"    | {label} | {cell(weeks[lec][slug])} | {cell(en_items)} |")
+            for stem in sorted((x for x in weeks[wk] if x not in en_stems), key=order):
+                label = slide_label(stem, kp_labels)[0] or ("本週正課" if re.fullmatch(r"lec\d{2}", stem) else stem)
+                en_title = english_title(stem[: -len("-with-comics")] if stem.endswith("-with-comics") else stem)
+                if en_title:
+                    label += "<br>" + en_title + ("(Comics)" if stem.endswith("-with-comics") else "")
+                en_items = weeks[wk].get(en_of.get(stem, "\0"), [])
+                lines.append(f"    | {label} | {cell(weeks[wk][stem])} | {cell(en_items)} |")
             lines.append("")
     if others:
         lines += ["## 其他檔案", ""] + [f"- [{name}]({name})" for name in others] + [""]
