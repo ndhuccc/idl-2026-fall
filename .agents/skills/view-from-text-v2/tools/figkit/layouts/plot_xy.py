@@ -4,7 +4,7 @@ from . import layout
 
 @layout("plot_xy", "a small x-y chart drawn natively: axes with ticks, lines with markers and value labels, scatter dots, reference lines, an optional side panel of cards")
 def build(spec, lang=None):
-    """spec: id, alt, plot{x[min,max], y[min,max], x_ticks, y_ticks, x_label, y_label, w, h, x_names?}, series[...], notes[{x, y, text, role?, ha?}],
+    """spec: id, alt, plot{x[min,max], y[min,max], x_ticks, y_ticks, x_label, y_label, w, h, x_names?, legend_pos?("left" = upper-left; default upper-right)}, series[...], notes[{x, y, text, role?, ha?}],
     side[{title, text, role, name?}], takeaway.  Height 80 + plot h + 60.
     series kinds: {"kind":"line","points":[(x,y)..],"role","width","markers":bool,"labels":[str|None..],"label_dy":int,"name":legend text}
                   {"kind":"dots","points":[(x,y)..],"role"|"roles":[..],"shape":"circle|square","d":int,"name":legend text}
@@ -36,7 +36,7 @@ def build(spec, lang=None):
                 for i, (x, y) in enumerate(pts):
                     f.ellipse(sx(x), sy(y), 14, solid(role))
                     lb = (s.get("labels") or [None] * len(pts))[i]
-                    if lb: f.text(sx(x), sy(y) + s.get("label_dy", -20), lb, "TXT", 16, True, w=90)
+                    if lb: f.text(sx(x), sy(y) + s.get("label_dy", -20), T(lb, lang), "TXT", 16, True, w=90)
         elif k == "dots":
             roles = s.get("roles")
             for i, (x, y) in enumerate(s["points"]):
@@ -45,27 +45,31 @@ def build(spec, lang=None):
                 (f.ellipse(sx(x), sy(y), s.get("d", 8), c) if s.get("shape", "circle") == "circle" else f.square(sx(x), sy(y), s.get("d", 8), c))
         elif k == "hline":
             f.line(ox, sy(s["y"]), ox + pw, sy(s["y"]), solid(role), s.get("width", 2))
-            if s.get("label"): f.text(ox + pw + 8, sy(s["y"]), s["label"], "TXT", 16, False, "left", w=70)
+            if s.get("label"): f.text(ox + pw + 8, sy(s["y"]), T(s["label"], lang), "TXT", 16, False, "left", w=70)
         elif k == "vline":
             f.line(sx(s["x"]), oy, sx(s["x"]), oy + ph, solid(role), s.get("width", 2))
-            if s.get("label"): f.text(sx(s["x"]), oy - 10, s["label"], "TXT", 16, True, w=100)
+            if s.get("label"): f.text(sx(s["x"]), oy - 10, T(s["label"], lang), "TXT", 16, True, w=150)
         elif k == "seg":
             f.line(sx(s["a"][0]), sy(s["a"][1]), sx(s["b"][0]), sy(s["b"][1]), solid(role), s.get("width", 3))
         if s.get("name"): legend.append((k, role, T(s["name"], lang), s.get("shape", "circle")))
     for n in spec.get("notes", []):
         f.text(sx(n["x"]), sy(n["y"]), T(n["text"], lang), n.get("color", "TXT"), 16, True, n.get("ha", "center"), w=n.get("w"), math=bool(n.get("math")))
     for i, (k, role, nm, shp) in enumerate(legend):
-        lx, ly = ox + pw - 190, oy + 8 + 26 * i
+        lx, ly = (ox + 14 if P.get("legend_pos") == "left" else ox + pw - 190), oy + 8 + 26 * i
         f.rect(lx, ly + 6, 26, 6, fill=solid(role)) if k == "line" else f.ellipse(lx + 8, ly + 9, 12, solid(role))
         f.text(lx + 34, ly + 9, nm, "TXT", 16, False, "left", w=170)
     sd = spec.get("side", [])
     if sd:
-        sx0 = ox + pw + 60; sw = 1160 - sx0; y = oy; hh = (ph + 40 - 12 * (len(sd) - 1)) / len(sd)
-        for c in sd:
+        sx0 = ox + pw + 60; sw = 1160 - sx0; total = ph + 40 - 12 * (len(sd) - 1)
+        wts = [c.get("h", 1) for c in sd]; hs = [total * w / sum(wts) for w in wts]; y = oy
+        for c, hh in zip(sd, hs):
             panel(f, sx0, y, sw, hh, c["role"])
             f.text(sx0 + 14, y + 22, T(c["title"], lang), "TXT", 18, True, "left", w=sw - 24)
-            txt = T(c["text"], lang); mth = "$" in txt; nl = txt.count("\n") + 1; lh = 29 if mth else 18.4
-            f.text(sx0 + 14, y + 40 + nl * lh / 2, txt, "TXT", 16, False, "left", w=sw - 24, math=mth, name=T(c["name"], lang) if c.get("name") else None)
+            if c.get("draw"):          # custom drawing inside the card: draw(f, x, y, w, h) with the card's top-left corner and size
+                c["draw"](f, sx0, y + 40, sw, hh - 44, lang)
+            else:
+                txt = T(c["text"], lang); mth = "$" in txt; nl = txt.count("\n") + 1; lh = 29 if mth else 18.4
+                f.text(sx0 + 14, y + 40 + nl * lh / 2, txt, "TXT", 16, False, "left", w=sw - 24, math=mth, name=T(c["name"], lang) if c.get("name") else None)
             y += hh + 12
     if spec.get("takeaway"):
         takeaway(f, 0, H - 44, 1160, 40, T(spec["takeaway"], lang))
