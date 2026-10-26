@@ -473,6 +473,11 @@ def main():
         if m_: Wn("X1", f"{tag}: the page body points back to another page ({m_.group(0)!r}); a reader should not have to flip back: repeat the needed definition, symbol, number or figure on this page (CLARITY.md C21)")
         m_ = TECH_META.search(body_txt)
         if m_: Wn("X4", f"{tag}: the page body talks about the material itself ({m_.group(0)!r}); say where the example comes from in plain words, or leave it to the notes (CLARITY.md C16)")
+        has_img = any(n["type"] == "image" for n in pages.get(key, []))
+        n_cjk = len(CJK.findall(re.sub(r"\$[^$]*\$", "", "\n".join(n.get("text", "") for n in body_nodes if "-tbl-" not in n.get("id", "") + n.get("name", "")))))
+        n_num = len(re.findall(r"(?<![\w.])\d+(?:\.\d+)?%?", "\n".join(n.get("text", "") for n in body_nodes if "-tbl-" not in n.get("id", "") + n.get("name", ""))))
+        if not has_img and n_num >= 4 and n_cjk > 100 and not t["label"].startswith("延伸：練習"):
+            Wn("X6", f"{tag}: no figure, {n_num} numbers and {n_cjk} Chinese characters of text: would a schematic (grouped points, side-by-side bars, a flow) say it faster with half the words? (CLARITY.md C22)")
         plain_txt = re.sub(r"\s", "", body_txt)
         nums_ = re.findall(r"(?<![\w.])\d+\.\d{2,}|\d+\.?\d*\s*%", body_txt)
         if len(nums_) >= 3 and "=" not in body_txt:
