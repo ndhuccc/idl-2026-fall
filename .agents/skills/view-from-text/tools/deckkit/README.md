@@ -12,6 +12,17 @@
 4. 稽核:`py tools/audit_deck.py W/draft.jbd.json ...`;縮圖:`preview_deck.py W/draft.jbd.json --sheets`;看 `W/prev/sheet_1.png`。
 5. 通過後複製 `W/draft.jbd.json` 到 `slides/<name>.jbd.json`。
 
+## 原生節點繪圖(優先於嵌入圖片,CLARITY C23)
+由方框、長條、圓點、方塊、三角形、直線與文字組成的圖,用 `nativefig.NFig` 寫一次規格,輸出兩份:簡報用原生 JianBauDau 節點(幾 KB,文字可搜尋可編輯,放大不糊),講義用同一份規格輸出 PNG(`to_png`),數字與版面一致。
+```python
+from nativefig import NFig
+f = NFig("lec05-kp23-dI", 540, 440, alt="圖上所有數字與結論")
+f.rect(70, 232, 85, 36, fill="#5fb8a8"); f.ellipse(100, 128, 17, "#6a9fd6"); f.line(30, 150, 510, 150, "MUT", 2); f.text(270, 16, "label", "TXT", 16, True)
+f.to_nodes(page, 60, y, "dark")      # 簡報;節點名稱 fig:<id>#k,區域節點 fig:<id>|<alt> 讓稽核認得是圖
+f.to_png("assets/light/lec05-kp23-dI.png")   # 講義
+```
+規則:字級至少 16;旋轉單位是度;`TXT`、`MUT`、`GAP`、`TRACK` 隨主題變色,其餘用十六進位色;標籤用純文字(`* _ $ #` 會自動跳脫)。**畫不出來的才用 SVG 或 matplotlib**:連續曲線、數百個點的散布圖、需要數學排版的圖。稽核把 `fig:` 開頭的節點視為圖的零件,不算正文,但仍檢查字級與對比。`run_kp.sh` 要把 `*_nfigs.py` 與 `nativefig.py` 複製進工作資料夾(已處理)。
+
 ## 常用語法
 `u = kit.Unit("u01", 標題, 0, 0)`;`u.flow(label, zh標題, en標題, 講稿, bridge(...), C(...), Table(...), Row(...))`;
 手排頁:`p=u.page(label, zh, en)`、`p.card(key,x,y,w,h,text,c=色)`、`p.conn(a,hook,b,hook)`、`p.figure(id,x,y,w)`、`p.step(講稿)`。

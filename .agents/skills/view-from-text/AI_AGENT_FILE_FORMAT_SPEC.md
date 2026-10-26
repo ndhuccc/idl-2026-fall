@@ -115,7 +115,7 @@ JianBauDau 不是「一張一張投影片」的線性模型，而是：
 | `sceneId` | string | **必須**等於這個節點所屬 Scene 的 `id`，並且這個 id 要出現在該 Scene 的 `nodeIds` 裡（雙向一致）。 |
 | `transform.x` / `transform.y` | number | 節點左上角在該 Scene 座標系裡的位置（不是中心點）。 |
 | `transform.scaleX` / `transform.scaleY` | number | 額外縮放倍率，預設 `1`，不能是 `0`。一般情況下直接固定填 `1`，用 `width`/`height` 決定實際尺寸即可，不需要用縮放。 |
-| `transform.rotation` | number | 旋轉角度，**單位是弧度**，不是角度（例如轉 90 度要填 `Math.PI/2 ≈ 1.5708`）。沒有旋轉需求就填 `0`。 |
+| `transform.rotation` | number | 旋轉角度，**單位是度（deg）**。實測：JianBauDau 的 `src/App.tsx` 以 `rotate(${rotation}deg)` 繪製，網頁匯出也是 deg；舊文件曾寫成弧度，是錯的。繞節點中心旋轉。沒有旋轉需求就填 `0`。 |
 | `width` / `height` | number | 節點的寬高，**必須 > 0**。 |
 | `zIndex` | number | 疊放順序，數字越大越上層。同一個 Scene 裡的節點建議給遞增的整數（0, 1, 2, ...），數字本身沒有絕對意義，只用來比大小。 |
 | `locked` | boolean | 是否鎖定禁止編輯，agent 產生內容時填 `false` 即可。 |

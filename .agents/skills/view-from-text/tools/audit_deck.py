@@ -251,7 +251,7 @@ def main():
         f = parse(st["fill"])
         if f: bg = over(f, canvas)
         r = cr(parse(st["textColor"]), bg)
-        if r < 4.5: F("E10", f"contrast {r:.2f} on {nid}")
+        if r < 4.5 and n.get("text", "").strip(): F("E10", f"contrast {r:.2f} on {nid}")
         if st["fontSize"] < 16: F("D4", f"font {st['fontSize']}px on {nid}")
 
     # ------------------------------------------------------------ pages: titles, fonts, bilingual layout
@@ -261,6 +261,14 @@ def main():
         for nid in sc["nodeIds"]:
             n = N[nid]
             if n["type"] == "connector": continue
+            nm_ = n.get("name", "")
+            if nm_.startswith("fig:") and n["type"] != "image":
+                # native figure (nativefig.py): the invisible region node carries "fig:<id>|<alt>" and counts as the page's figure;
+                # its drawing parts (boxes, dots, labels) are not body text
+                if "|" in nm_:
+                    n = dict(n, type="image", text=nm_.split("|", 1)[1], image={"src": "native", "alt": nm_.split("|", 1)[1]})
+                else:
+                    continue
             pages.setdefault((sid, int((n["transform"]["x"] + n["width"] / 2) // PITCH)), []).append(n)
     no_en_nodes = total_nodes = 0
     for (sid, idx), ns in sorted(pages.items()):
