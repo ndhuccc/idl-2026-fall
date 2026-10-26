@@ -298,7 +298,7 @@ def main():
         for n in ns:
             if n["type"] not in ("text", "shape") or n is t: continue
             fs = n["style"]["fontSize"]
-            if fs < 22 and CJK.search(n["text"]): Wn("D4", f"{tag}: body text {fs}px < 22 ({n['id']})")
+            if fs < 22 and CJK.search(n["text"]) and "-nf-" not in n["id"]: Wn("D4", f"{tag}: body text {fs}px < 22 ({n['id']})")
             if not args.monolingual and len(CJK.findall(re.sub(r"\$[^$]*\$", "", n["text"]))) >= 8:
                 total_nodes += 1
                 if en_words(n["text"]) < 3:

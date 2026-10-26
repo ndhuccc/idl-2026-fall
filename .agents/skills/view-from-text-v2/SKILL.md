@@ -1,6 +1,6 @@
 ---
 name: view-from-text-v2
-description: Turn a lecture (text) into a JianBauDau deck whose pages are information graphics drawn with native nodes -- one figure can replace several pages. Plans the pages first (which figure covers which lecture sections), draws each figure from a layout spec (columns_compare, two_options, before_after, steps_flow, freeform; extensible), builds deck nodes and lecture PNGs from the same spec, and audits. Use instead of view-from-text when the deck should be figure-first and compact.
+description: Turn a lecture (text) into a JianBauDau deck whose pages are information graphics drawn with native nodes -- one figure can replace several pages. Plans the pages first (which figure covers which lecture sections), draws each figure from a layout spec (12 layouts: columns_compare, two_options, before_after, steps_flow, grid_flow, columns_text, bars_compare, tree_diagram, network_layers, quadrant_2x2, concept_card, equation_parts; plus freeform; extensible), builds deck nodes and lecture PNGs from the same spec, and audits. Use instead of view-from-text when the deck should be figure-first and compact.
 ---
 
 # view-from-text-v2:一頁一圖、圖優先、一次到位
@@ -31,4 +31,5 @@ v2 沿用 `view-from-text`(v1)的規則與工具(CLARITY C1–C23、LEVELS、NAR
 
 ## 驗收樣本
 - KP23(決策樹):`examples/kp23_specs.py`(三張版型圖)與 `examples/kp23_plan.json`(頁面規劃)。
-- 第二個樣本見 `examples/` 與 COURSE_STATE 的記錄。
+- KP12(權重共享):`examples/kp12_specs.py` 與 `examples/kp12_plan.json`;舊版 17 頁 → 8 頁。
+- 後六組版型的範例:`examples/layout_gallery.py`。

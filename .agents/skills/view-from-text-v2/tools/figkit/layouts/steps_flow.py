@@ -12,10 +12,10 @@ def build(spec, lang=None):
         header_chip(f, x, 0, w, 36, s["role"], T(s["title"], lang), size=18)
         panel(f, x, 40, w, 190, s["role"])
         for j, ln in enumerate(s["lines"]):
-            m = isinstance(ln, str) and ln.startswith("$")
+            m = "$" in T(ln, lang)
             f.text(x + w / 2, 70 + 34 * j, T(ln, lang), "TXT", 18, w=w - 16, math=m)
         if s.get("result"):
-            f.rect(x + 20, 176, w - 40, 44, fill=tint(s["role"], 0.30), radius=12, text=s["result"], tcolor="TXT", size=22, bold=True, math=True)
+            f.rect(x + 20, 176, w - 40, 44, fill=tint(s["role"], 0.30), radius=12, text=T(s["result"], lang), tcolor="TXT", size=22, bold=True, math=True)
         if i < n - 1:
             f.text(x + w + gap / 2, 135, "→", "TXT", 30, True)
     takeaway(f, 0, 246, 1160, 44, T(spec["takeaway"], lang))

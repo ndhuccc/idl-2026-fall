@@ -111,6 +111,47 @@ def leg_items(lg=None):
     return None
 
 
+# ---- grids (images, kernels, feature maps) and glossary strips ---------------------------------------------------------------------
+def grid(f, x, y, rows, cols, cell, cells=None, role="orange", show=False, scale=None, window=None, numfmt="{:g}"):
+    """Draw a rows x cols grid with its top-left corner at (x, y). Cost: one outline + (rows-1)+(cols-1) lines + one box per non-zero cell.
+    cells: matrix of numbers (None = empty grid). Non-zero cells are filled with the role colour, stronger for larger values (relative to
+    `scale`, default the maximum); show=True prints the number in every cell. window=(r, c, h, w): a thick outline over a sub-block."""
+    cells = cells or [[0] * cols for _ in range(rows)]
+    sc = scale or max(max(abs(v) for v in r) for r in cells) or 1
+    for r in range(rows):
+        for c in range(cols):
+            v = cells[r][c]
+            if v:
+                f.rect(x + c * cell, y + r * cell, cell, cell, fill=tint(role, 0.25 + 0.65 * min(abs(v) / sc, 1)))
+    f.rect(x, y, cols * cell, rows * cell, stroke="MUT", sw=1.5)
+    for r in range(1, rows):
+        f.line(x, y + r * cell, x + cols * cell, y + r * cell, "MUT", 1)
+    for c in range(1, cols):
+        f.line(x + c * cell, y, x + c * cell, y + rows * cell, "MUT", 1)
+    if show:
+        for r in range(rows):
+            for c in range(cols):
+                f.text(x + c * cell + cell / 2, y + r * cell + cell / 2, numfmt.format(cells[r][c]), "TXT", 16, bool(cells[r][c]), w=cell)
+    if window:
+        wr, wc, wh, ww = window
+        f.rect(x + wc * cell - 1, y + wr * cell - 1, ww * cell + 2, wh * cell + 2, stroke=solid("yellow"), sw=3)
+    return x + cols * cell, y + rows * cell
+
+
+def ring(f, cx, cy, r, color="MUT", sw=2):
+    f.rect(cx - r, cy - r, 2 * r, 2 * r, stroke=color, sw=sw, radius=r)
+
+
+def terms_strip(f, y, terms, h=76, role="blue"):
+    """terms: [(name, definition)]. Each entry is one text node named 'term:<name>' (the term audit looks for it)."""
+    n = len(terms); gap = 14; w = (1160 - gap * (n - 1)) / n
+    for i, (nm, df) in enumerate(terms):
+        x = i * (w + gap)
+        f.rect(x, y, w, h, fill=tint(role, 0.12), stroke=tint(role, 0.5), sw=1.5, radius=12)
+        f.text(x + 12, y + 15, nm, "TXT", 18, True, "left", w=w - 20)
+        f.text(x + 12, y + (54 if "$" in df else 44), df, "TXT", 16, False, "left", w=w - 20, math="$" in df, name="term:" + nm)
+
+
 # ---- sketches (small drawings used inside panels) ---------------------------------------------------------------------------------
 def tree_shallow(f, cx, y, root_text, leaf_text, role_root="blue", role_leaf=("blue", "orange")):
     f.rect(cx - 55, y, 110, 32, fill=solid(role_root), radius=9, text=root_text, tcolor=INK, size=18, bold=True)
@@ -140,4 +181,14 @@ def magnifier_note(f, cx, cy, text_lines, bubble=(1004, 140, 148, 50)):
         f.text(bx + bw / 2, by + 16 + i * 21, ln, "TXT", 16, w=bw - 2)
 
 
-SKETCHES = {"tree_shallow": tree_shallow, "tree_deep": tree_deep, "magnifier_note": magnifier_note}
+def grid_tags(f, cx, y, n, tag, role="blue", cell=34, caption=None):
+    """n x n small squares, each carrying the same tag (e.g. the number of parameters it owns)."""
+    x0 = cx - n * cell / 2
+    for r in range(n):
+        for c in range(n):
+            f.rect(x0 + c * cell + 2, y + r * cell + 2, cell - 4, cell - 4, fill=tint(role, 0.35), radius=6, text=tag, tcolor="TXT", size=16, bold=True)
+    if caption:
+        f.text(cx, y + n * cell + 18, caption, "TXT", 16, w=n * cell + 120)
+
+
+SKETCHES = {"grid_tags": grid_tags, "tree_shallow": tree_shallow, "tree_deep": tree_deep, "magnifier_note": magnifier_note}

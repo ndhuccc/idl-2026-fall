@@ -13,7 +13,7 @@ def build(spec, lang=None):
         panel(f, x0, 38, 560, 286, role)
         for name, kw in p.get("sketch", []):
             SKETCHES[name](f, **tr_deep(kw, lang))
-        chip(f, x0 + (150 if x0 == 0 else 100), 192, 260, 26, "grey", T(p["caption"], lang), bold=True, alpha=0.10)
+        chip(f, x0 + 30, 192, 500, 26, "grey", T(p["caption"], lang), bold=True, alpha=0.10)
         for off, s in enumerate(p["stats"]):
             xx = x0 + 10 + off * 276
             f.rect(xx, 226, 266, 58, fill=tint(s["role"], 0.30), radius=12)
@@ -26,7 +26,7 @@ def build(spec, lang=None):
         if b.get("kind", "text") == "text":
             chip(f, x + 10, 336, b.get("title_w", 190), 28, "blue", T(b["title"], lang), size=18, bold=True, dark=True)
             ls = [T(l, lang) for l in b["lines"]]
-            f.text(x + 14, 392 if len(ls) > 1 else 396, "\n".join(ls), "TXT", 16, False, "left", w=w - 20, name=T(b["name"], lang) if b.get("name") else None)
+            f.text(x + 14, (398 if b.get("math") else 392) if len(ls) > 1 else 396, "\n".join(ls), "TXT", 16, False, "left", w=w - 20, math=bool(b.get("math")), name=T(b["name"], lang) if b.get("name") else None)
         else:
             chip(f, x + 12, 340, 100, 40, "green", T(b["left"], lang), size=18, bold=True)
             f.text(x + w / 2, 360, "→", "TXT", 26, True)

@@ -27,7 +27,7 @@ def _esc(s):
 def _text_w(s, size, bold):
     w = 0.0
     for ch in s:
-        w += size * (1.0 if ord(ch) > 0x2E80 else (0.62 if bold else 0.56))
+        w += size * (1.0 if ord(ch) > 0x2E80 else (0.68 if bold else 0.62))
     return w
 
 
@@ -142,7 +142,9 @@ class NFig:
             if kind == "rect":
                 kw = dict(fc=col(d["fill"]) if d["fill"] else "none", ec=col(d["stroke"]) if d["stroke"] else "none", lw=d["sw"] * 0.72,
                           ls=(0, (4, 3)) if d["dash"] else "-")
-                if d["radius"]:
+                if d["radius"] and d["radius"] >= min(d["w"], d["h"]) / 2 - 0.5:
+                    ax.add_patch(Ellipse((d["x"] + d["w"] / 2, d["y"] + d["h"] / 2), d["w"], d["h"], fc=kw["fc"], ec=kw["ec"], lw=kw["lw"]))
+                elif d["radius"]:
                     r = min(d["radius"], d["h"] / 2, d["w"] / 2)
                     ax.add_patch(FancyBboxPatch((d["x"] + r, d["y"] + r), d["w"] - 2 * r, d["h"] - 2 * r, boxstyle=f"round,pad={r},rounding_size={r}", **kw))
                 else:
