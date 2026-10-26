@@ -14,7 +14,7 @@ def build(spec, lang=None):
         x = i * (w + gap)
         panel(f, x, 160, w, 150, p["role"])
         chip(f, x + 12, 170, 100, 28, p["role"], T(p["label"], lang), size=16, bold=True, alpha=0.4)
-        f.text(x + 14, 242, T(p["text"], lang), "TXT", 18, False, "left", w=w - 28, math=True)
+        f.text(x + 14, 252, T(p["text"], lang), "TXT", 18, False, "left", w=w - 28, math="$" in T(p["text"], lang))
     if spec.get("formula"):
         f.rect(0, 322, 1160, 44, fill=tint("blue", 0.14), radius=12)
         f.text(580, 344, spec["formula"], "TXT", 24, w=900, math=True)
