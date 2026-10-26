@@ -53,9 +53,9 @@ class NFig:
     def line(self, x1, y1, x2, y2, color, lw=2):
         self.items.append(("line", dict(x1=x1, y1=y1, x2=x2, y2=y2, color=color, lw=lw)))
 
-    def text(self, x, y, s, color="TXT", size=16, bold=False, ha="center", math=False, w=None):
+    def text(self, x, y, s, color="TXT", size=16, bold=False, ha="center", math=False, w=None, name=None):
         """math=True: the string may contain $...$ KaTeX (rendered by the player; mathtext in the PNG); give w (box width) for such strings."""
-        self.items.append(("text", dict(x=x, y=y, s=s, size=size, color=color, bold=bold, ha=ha, math=math, w=w)))
+        self.items.append(("text", dict(x=x, y=y, s=s, size=size, color=color, bold=bold, ha=ha, math=math, w=w, name=name)))
 
     # ---- native JianBauDau nodes
     def to_nodes(self, page, x0, y0, theme="dark"):
@@ -85,8 +85,17 @@ class NFig:
                 st = base(col(d["fill"]) if d["fill"] else "transparent", col(d["stroke"]) if d["stroke"] else "transparent",
                           borderWidth=d["sw"], radius=d["radius"], borderStyle="dashed" if d["dash"] else "solid")
                 if d["text"]:
-                    st.update(textColor=col(d["tcolor"]), fontSize=d["size"], fontWeight=700 if d["bold"] else 400, textAlign="center", lineHeight=1.15)
-                    add("shape", d["x"], d["y"], d["w"], d["h"], st, d["text"] if d["math"] else _esc(d["text"]), "rectangle", z=2)
+                    # a box with a label: the player pads shape labels by 12 px and clips, so a small chip is a TEXT node whose line height
+                    # equals the box height (one line, centred, fill + radius kept); a chip with an outline is a plain shape plus a label node
+                    txt = d["text"] if d["math"] else _esc(d["text"])
+                    ts = dict(textColor=col(d["tcolor"]), fontSize=d["size"], fontWeight=700 if d["bold"] else 400, textAlign="center",
+                              lineHeight=round(d["h"] / d["size"], 3))
+                    if d["stroke"]:
+                        add("shape", d["x"], d["y"], d["w"], d["h"], st, "", "rectangle", z=2)
+                        add("text", d["x"], d["y"], d["w"], d["h"], base(**ts), txt, "rectangle", z=3)
+                    else:
+                        st.update(ts)
+                        add("text", d["x"], d["y"], d["w"], d["h"], st, txt, "rectangle", z=2)
                 else:
                     add("shape" if d["stroke"] else "text", d["x"], d["y"], d["w"], d["h"], st, "", "rectangle")
             elif kind == "ellipse":
@@ -100,10 +109,13 @@ class NFig:
                 add("text", cx - L / 2, cy - d["lw"] / 2, L, d["lw"], base(col(d["color"])), "", "rectangle", rot=round(deg, 3))
             elif kind == "text":
                 w = d["w"] or (_text_w(d["s"], d["size"], d["bold"]) + 12)
-                h = round(d["size"] * (1.8 if d["math"] else 1.15))
+                h = round(d["size"] * (1.8 if d["math"] else 1.15) * d["s"].count("\n") + d["size"] * (1.8 if d["math"] else 1.15)) if "\n" in d["s"] else round(d["size"] * (1.8 if d["math"] else 1.15))
                 x = d["x"] - w / 2 if d["ha"] == "center" else (d["x"] if d["ha"] == "left" else d["x"] - w)
                 st = base(textColor=col(d["color"]), fontSize=d["size"], fontWeight=700 if d["bold"] else 400, textAlign=d["ha"], lineHeight=1.15)
-                add("text", x, d["y"] - h / 2, w, h, st, d["s"] if d["math"] else _esc(d["s"]), "rectangle", z=3)
+                nid_ = add("text", x, d["y"] - h / 2, w, h, st, d["s"] if d["math"] else _esc(d["s"]), "rectangle", z=3)
+                if d.get("name"):
+                    import kit as K2
+                    K2.nodes[nid_]["name"] = d["name"]   # e.g. "term:過擬合": a definition node the term audit (J1) can find
         return y0 + self.h
 
     # ---- PNG for the lecture

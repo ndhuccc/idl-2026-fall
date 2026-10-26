@@ -66,7 +66,7 @@ def page_html(N, ids, ox):
         if n["type"] in ("text", "shape"):
             bw = st.get("borderWidth", 0)
             border = f"border:{bw}px solid {st['stroke']};" if bw else ""
-            cls = "n plain" if (st["fill"] == "transparent" and not bw) or not n["text"].strip() else "n"
+            cls = "n plain" if n["type"] == "text" or (st["fill"] == "transparent" and not bw) or not n["text"].strip() else "n"
             items.append(f"<div class='{cls}' data-id='{nid}' style='left:{x}px;top:{y}px;width:{w}px;height:{h}px;background:{st['fill']};{border}"
                          f"border-radius:{st.get('radius', 0)}px;color:{st['textColor']};font-size:{st['fontSize']}px;font-weight:{st.get('fontWeight', 400)};"
                          f"text-align:{st.get('textAlign', 'left')};line-height:{st.get('lineHeight', 1.4)};"
