@@ -26,6 +26,7 @@ Added 2026-10-26 (readability for weak-background readers, see CLARITY.md C19 an
   L20 skipped-step wording ("顯然", "易知", "不難看出", "obviously" ...)
   L21 teaching text too short (under 1200 zh characters / 700 en words, math and captions excluded)
   L22 a defined term is used before its definition (headings, objectives and the one-sentence summary are exempt)
+  L23 figure files that are text cards (almost no filled shapes and no long lines or shapes, only short text strokes); needs Pillow, numpy and scipy; FAIL when over 40% of the figures
 Usage:  py .agents/skills/textbook-lecture-notes/scripts/audit_lecture.py lectures/lecNN.md
 Exit code 1 when there is a FAIL.
 """
@@ -157,15 +158,17 @@ def main():
     has_symtab = bool(re.search(r"符號表|符號說明|Symbol table|Notation|\|\s*(符號|Symbol)\s*\|", text))
     if n_inline >= 20 and not has_symtab: W("L14", f"{n_inline} inline formulas but no symbol table (symbol, meaning, dimension, where defined)")
     # L15 glossary
-    gl = text.split("## 術語與來源")[-1] if "## 術語與來源" in text else (text.split("## Terms and source")[-1] if "## Terms and source" in text else "")
+    GL_HEAD = re.compile(r"^## (?:術語與來源|術語|Terms and sources?|Glossary[^\n]*|Terminology[^\n]*)\s*$", re.M)
+    _gm = GL_HEAD.search(text)
+    gl = text[_gm.end():] if _gm else ""
     gl_terms = re.findall(r"^\|\s*([^|\n]+?)\s*\|", gl, flags=re.M)
     gl_text = gl
-    bold_terms = [t.strip() for t in re.findall(r"\*\*([^*\n]{2,30})\*\*\s*[:：]", body.split("## 術語與來源")[0].split("## Terms and source")[0])]
+    bold_terms = [t.strip() for t in re.findall(r"\*\*([^*\n]{2,30})\*\*\s*[:：]", body[:(GL_HEAD.search(body).start() if GL_HEAD.search(body) else len(body))])]
     label_words = re.compile(r"怎麼|為什麼|如何|推導|驗算|設定|設計|結果|限制|關係|回顧|演算法|數值|追蹤|檢查|問題|符號|做法|做法|兩個|三個|四個|你需要|本講義|網路|映射的|收斂|階段|Check|How |Why |Derivation|Relation|Result|Limit|Setup|Algorithm|Question|Meaning|Convergence|recalled|Prerequisite|Four things|Three things|Symbol|Fixed|Effect|What |A hand", re.I)
     stop = re.compile(r"^(白話說明|一句話重點|正式定義|例子|常見迷思|小練習|題|做法|結果|意思|設定|Plain|One-sentence|Formal|Example|Common|Practice|Question|Method|Results?|Meaning|Setup|Check|核對|怎麼記|To remember|實驗細節|Experiment details|答|解)")
     bold_terms = [t for t in dict.fromkeys(bold_terms) if not stop.match(t) and not label_words.search(t) and "$" not in t and not re.match(r"^[□\s\d]+$", t)]
     miss_b = [t for t in bold_terms if t not in gl_text]
-    acr = set(re.findall(r"\b[A-Z][A-Za-z]*[A-Z]{1,}[A-Za-z]*\b|\b[A-Z]{2,6}\b", re.sub(r"\$[^$]*\$", "", body.split("## 術語與來源")[0].split("## Terms and source")[0])))
+    acr = set(re.findall(r"\b[A-Z][A-Za-z]*[A-Z]{1,}[A-Za-z]*\b|\b[A-Z]{2,6}\b", re.sub(r"\$[^$]*\$", "", body[:(GL_HEAD.search(body).start() if GL_HEAD.search(body) else len(body))])))
     acr -= {"KP", "XOR", "AND", "OR", "NOT", "TP", "FP", "FN", "TN", "RBF", "SVM", "MLP", "II", "PDF", "CART", "LMS", "IRLS", "KKT", "RKHS", "SVR"} if False else {"KP", "AND", "OR", "NOT", "PDF", "XOR", "SVM", "AdaBoost", "RBF", "MLP", "PNN", "MSE", "EM"}
     miss_a = sorted(a for a in acr if a not in gl_text)
     if bold_terms and len(miss_b) / len(bold_terms) > 0.4: W("L15", f"glossary lists only {len(bold_terms)-len(miss_b)}/{len(bold_terms)} bold-defined terms; missing e.g. {miss_b[:4]}")
@@ -237,6 +240,32 @@ def main():
             if text[line_start:line_start + 3] == "###": continue
             early.append(t)
     if early: W("L22", f"term(s) used before their definition: {early[:5]}")
+
+    # L23 text-card figures (images that carry only text and thin lines)
+    try:
+        import os
+        import numpy as np
+        from PIL import Image, ImageFilter
+        base = os.path.dirname(os.path.abspath(args.lecture))
+        paths = [os.path.normpath(os.path.join(base, m)) for m in re.findall(r"!\[[^\]]*\]\(([^)\s]+\.png)\)", text)]
+        flagged = []
+        for pth in paths:
+            if not os.path.exists(pth): continue
+            a_ = np.asarray(Image.open(pth).convert("RGB")).astype(int)
+            m_ = np.abs(a_ - a_[0, 0]).sum(2) > 60
+            if m_.sum() == 0: continue
+            er = np.asarray(Image.fromarray((m_ * 255).astype("uint8")).filter(ImageFilter.MinFilter(7))).astype(bool)
+            if er.sum() / m_.sum() >= 0.02: continue
+            from scipy import ndimage as ndi
+            lab, n_ = ndi.label(ndi.binary_dilation(m_, iterations=2))
+            area = np.bincount(lab.ravel())[1:]
+            big = sum(ar for sl, ar in zip(ndi.find_objects(lab), area) if max(sl[0].stop - sl[0].start, sl[1].stop - sl[1].start) >= 120)
+            if big / max(1, area.sum()) < 0.30: flagged.append(os.path.basename(pth))
+        if flagged:
+            msg = f"{len(flagged)} of {len(paths)} figures look like text cards (almost no filled shapes, only text and thin lines): {flagged[:4]}; put the content in the text (table, numbered steps, formula) or draw a real figure (CLARITY.md C20)"
+            (F if len(flagged) > 0.4 * len(paths) else W)("L23", msg)
+    except ImportError:
+        pass
 
     if args.source:
         cj = re.compile(r"[㐀-鿿豈-﫿]")
