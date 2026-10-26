@@ -15,6 +15,9 @@ plan.json:
   P4 a page covering 2+ sections should be 圖 with a layout           (WARN: a table or cards page is probably two pages in disguise)
   P5 more pages than lecture sections                                  (WARN: plan figures that cover several sections)
   P6 the same section is the only content of 3+ pages                  (WARN)
+  P7 a figure page lacks its evidence-table fields: question (one core question), takeaway (one sentence the reader must keep),
+     numbers (what is shown and how it was recomputed: "recomputed from unrounded values", "textbook prints X, recomputed Y", or "none"),
+     source (lecture section / page it comes from)        (WARN; fields come from page-to-teaching-diagram, step 2 "content evidence table")
 Prints the coverage matrix; writes modality.json for audit_deck.py --modality (page number -> kind, reason, layout).
 """
 import argparse
@@ -50,6 +53,9 @@ def main():
         if p["main"] == "圖" and p.get("layout", "none") == "none": fails.append(f"P2 page {i}: main 圖 needs a layout (or freeform)")
         if p["main"] != "圖" and ("讀者" not in p.get("reason", "") or len(p.get("reason", "")) < 10):
             fails.append(f"P3 page {i} '{p['title']}': not a figure page: reason must say what the 讀者 does and why a figure would not help")
+        if p["main"] == "圖":
+            miss = [k for k in ("question", "takeaway", "numbers", "source") if not p.get(k)]
+            if miss: warns.append(f"P7 page {i} '{p['title']}': evidence-table fields missing: {', '.join(miss)}")
         hit = []
         for c in p.get("covers", []):
             m = [s for s in secs if c in s]

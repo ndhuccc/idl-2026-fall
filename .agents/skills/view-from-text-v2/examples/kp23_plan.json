@@ -9,7 +9,11 @@
     "2. 四件事"
    ],
    "main": "圖",
-   "layout": "freeform"
+   "layout": "freeform",
+   "question": "分類能不能不畫邊界，只問一連串簡單的是非題？",
+   "takeaway": "決策樹把平面切成軸平行的區域，每個節點只問一個特徵與門檻。",
+   "numbers": "無數字",
+   "source": "講義 §1"
   },
   {
    "title": "候選問題與門檻",
@@ -17,7 +21,11 @@
     "2. 四件事"
    ],
    "main": "圖",
-   "layout": "freeform"
+   "layout": "freeform",
+   "question": "建一棵樹要先決定哪些事？門檻怎麼挑？",
+   "takeaway": "四件事；門檻只試相鄰兩值的中點，最多 N−1 個。",
+   "numbers": "10 個值 → 9 個中點，由程式由未四捨五入的值算出",
+   "source": "講義 §2"
   },
   {
    "title": "不純度（曲線與定義）",
@@ -25,7 +33,11 @@
     "3. 不純度"
    ],
    "main": "圖",
-   "layout": "plot_xy"
+   "layout": "plot_xy",
+   "question": "怎麼量一個節點有多亂？",
+   "takeaway": "各類一樣多時最大（2 類為 1），全是同一類為 0。",
+   "numbers": "熵曲線由程式取 39 個點計算",
+   "source": "講義 §3"
   },
   {
    "title": "三個節點算一遍",
@@ -33,7 +45,11 @@
     "3. 不純度"
    ],
    "main": "圖",
-   "layout": "columns_compare"
+   "layout": "columns_compare",
+   "question": "三個節點的不純度各是多少？",
+   "takeaway": "(4,4,2)=1.522、(1,1,1)=1.585、(5,0,0)=0；越平均越大。",
+   "numbers": "由未四捨五入的比例重算；教材寫 1.521，差在四捨五入",
+   "source": "講義 §3"
   },
   {
    "title": "不純度下降量",
@@ -41,7 +57,11 @@
     "4. 不純度下降量"
    ],
    "main": "圖",
-   "layout": "freeform"
+   "layout": "freeform",
+   "question": "問完問題後怎麼比較兩個問題？",
+   "takeaway": "ΔI=1.522−0.325−0.875=0.322，選 ΔI 最大的。",
+   "numbers": "由未四捨五入的值重算；教材印 0.315，與自己的計數不符，列出原值與重算值",
+   "source": "講義 §4"
   },
   {
    "title": "為什麼要加權（含算式與兩種算法對照）",
@@ -49,7 +69,11 @@
     "5. 為什麼要加權"
    ],
    "main": "圖",
-   "layout": "two_options"
+   "layout": "two_options",
+   "question": "為什麼子節點要依點數加權？",
+   "takeaway": "不加權，只切出 1 個點的壞分裂（A=0.504）會被誤當成好分裂；加權時 B（0.278）勝 A（0.108）。",
+   "numbers": "由未取位熵重算，不從已取位的 0.991 再推導",
+   "source": "講義 §5"
   },
   {
    "title": "樹要多大（含兩端數字）",
@@ -57,7 +81,11 @@
     "6. 樹要多大"
    ],
    "main": "圖",
-   "layout": "before_after"
+   "layout": "before_after",
+   "question": "樹越大越好嗎？",
+   "takeaway": "訓練升到 100%，新資料停在約 85%，差距從 3.2 拉到 14.9 個百分點。",
+   "numbers": "單次實驗：153/200、1466/2000、200/200、1702/2000；不推論成普遍保證",
+   "source": "講義 §6"
   },
   {
    "title": "剪枝（含各 α 的判對數）",
@@ -65,7 +93,11 @@
     "7. 剪枝"
    ],
    "main": "圖",
-   "layout": "plot_xy"
+   "layout": "plot_xy",
+   "question": "怎麼把長太大的樹修小？",
+   "takeaway": "剪枝後訓練下降而新資料反而進步：85.1% → 87.3%（10 片葉）。",
+   "numbers": "單次實驗，各 α 的判對數",
+   "source": "講義 §7"
   },
   {
    "title": "高變異",
@@ -73,7 +105,11 @@
     "8. 高變異"
    ],
    "main": "圖",
-   "layout": "plot_xy"
+   "layout": "plot_xy",
+   "question": "同一個問題換一份訓練資料，樹會一樣嗎？",
+   "takeaway": "第一刀的門檻在 0.09 到 0.42 之間跳動，葉數 22 到 33。",
+   "numbers": "8 份資料（種子 40–47）的實際門檻與葉數",
+   "source": "講義 §8"
   },
   {
    "title": "Bagging",
@@ -81,7 +117,11 @@
     "8. 高變異"
    ],
    "main": "圖",
-   "layout": "freeform"
+   "layout": "freeform",
+   "question": "怎麼用多棵樹降低變異？",
+   "takeaway": "有放回抽樣、各長一棵樹、多數決；示意圖不是實驗資料。",
+   "numbers": "(1−1/N)^N→0.368；示意",
+   "source": "講義 §8"
   },
   {
    "title": "Bagging 的結果",
@@ -89,7 +129,11 @@
     "8. 高變異"
    ],
    "main": "圖",
-   "layout": "plot_xy"
+   "layout": "plot_xy",
+   "question": "多棵樹投票實際升多少？",
+   "takeaway": "單棵樹 84.4±1.4、Bagging 87.7±1.1、隨機森林 87.8±1.1。",
+   "numbers": "20 份訓練集的平均與標準差，同一份程式",
+   "source": "講義 §8"
   },
   {
    "title": "延伸：斜向問題（含各深度數字）",
@@ -97,7 +141,11 @@
     "延伸"
    ],
    "main": "圖",
-   "layout": "plot_xy"
+   "layout": "plot_xy",
+   "question": "資料的分界是斜線時，軸平行的樹會怎樣？",
+   "takeaway": "要 13 到 14 片葉才到約 95%，斜向問題一刀就夠。",
+   "numbers": "深度 1、3、6 與完整樹的判對數／3000",
+   "source": "講義 延伸"
   },
   {
    "title": "延伸：練習",
@@ -105,7 +153,11 @@
     "延伸"
    ],
    "main": "圖",
-   "layout": "freeform"
+   "layout": "freeform",
+   "question": "用一題練習核對 ΔI 的算法。",
+   "takeaway": "兩個分裂各算 ΔI，哪個較好？",
+   "numbers": "題目數字與已知 I(3,1)=0.811",
+   "source": "講義 延伸"
   },
   {
    "title": "延伸：解題示範",
@@ -113,7 +165,11 @@
     "延伸"
    ],
    "main": "圖",
-   "layout": "steps_flow"
+   "layout": "steps_flow",
+   "question": "完整算一次，哪個比較好？",
+   "takeaway": "A 的 ΔI=0.189，B 為 0，A 比較好；(4,0)|(0,4) 的 ΔI=1 最大。",
+   "numbers": "由未取位值重算",
+   "source": "講義 延伸"
   }
  ]
 }

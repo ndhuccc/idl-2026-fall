@@ -8,7 +8,11 @@
     "1. 從移動的筆畫"
    ],
    "main": "圖",
-   "layout": "grid_flow"
+   "layout": "grid_flow",
+   "question": "怎麼讓網路判斷移動後的筆畫仍同類，又不要求每個數字都不變？",
+   "takeaway": "同一組 3×3 權重滑過影像；要的是類別不變，不是每個數字不變。",
+   "numbers": "窗口分數 1+1+1=3",
+   "source": "講義 §1"
   },
   {
    "title": "等變與不變",
@@ -16,7 +20,11 @@
     "2. 先有等變"
    ],
    "main": "圖",
-   "layout": "grid_flow"
+   "layout": "grid_flow",
+   "question": "筆畫移動後，整張特徵圖會怎樣？",
+   "takeaway": "特徵圖跟著筆畫移動（等變）；取最大值，讀出才不隨位置改變（不變）。",
+   "numbers": "F(x)、F(Tx) 由程式逐格算出；最大值都是 3",
+   "source": "講義 §2"
   },
   {
    "title": "參數與更新",
@@ -24,7 +32,11 @@
     "3. 參數如何計數"
    ],
    "main": "圖",
-   "layout": "before_after"
+   "layout": "before_after",
+   "question": "共享省多少參數？共享權重怎麼更新？",
+   "takeaway": "參數從 160 降到 10，運算仍是 16 次；更新 k=1−0.1×0.5=0.95。",
+   "numbers": "16×(9+1)、9+1、0.2×3+(−0.1)×1=0.5",
+   "source": "講義 §3"
   },
   {
    "title": "三條不變性路線",
@@ -32,7 +44,11 @@
     "4. 把不變性"
    ],
    "main": "圖",
-   "layout": "columns_text"
+   "layout": "columns_text",
+   "question": "除了共享，還有哪些路線能讓分類不隨變換改變？",
+   "takeaway": "三條路線可以並用；先判斷這個變換是否保留類別。",
+   "numbers": "無數字",
+   "source": "講義 §4"
   },
   {
    "title": "平移與旋轉的共享條件",
@@ -41,7 +57,11 @@
     "6. 平方項"
    ],
    "main": "圖",
-   "layout": "freeform"
+   "layout": "freeform",
+   "question": "像素兩兩相乘時，平移與旋轉各保留什麼？",
+   "takeaway": "平移保留位移、旋轉保留長度；一個項對稱不代表整個模型對稱。",
+   "numbers": "(1,0)、(0,1) 的分數 b+1+c 與 b+c",
+   "source": "講義 §5–6"
   },
   {
    "title": "延伸：練習",
@@ -58,7 +78,11 @@
     "7. 小練習"
    ],
    "main": "圖",
-   "layout": "steps_flow"
+   "layout": "steps_flow",
+   "question": "8×8 影像的位置數與參數數各是多少？",
+   "takeaway": "36 個位置；不共享 360、共享 10；高分位置跟著移動是等變。",
+   "numbers": "8−3+1=6、6×6=36、36×10=360",
+   "source": "講義 §7"
   },
   {
    "title": "延伸：精確式與邊界",
