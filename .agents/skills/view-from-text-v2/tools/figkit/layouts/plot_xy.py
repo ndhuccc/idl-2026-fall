@@ -9,7 +9,7 @@ def build(spec, lang=None):
     series kinds: {"kind":"line","points":[(x,y)..],"role","width","markers":bool,"labels":[str|None..],"label_dy":int,"name":legend text}
                   {"kind":"dots","points":[(x,y)..],"role"|"roles":[..],"shape":"circle|square","d":int,"name":legend text}
                   {"kind":"hline","y":v,"role","label":str} | {"kind":"vline","x":v,"role","label":str} | {"kind":"seg","a":(x,y),"b":(x,y),"role","width"}"""
-    P = spec["plot"]; pw, ph = P.get("w", 700), P.get("h", 300); ox, oy = 90, 40
+    P = spec["plot"]; pw, ph = P.get("w", 700), P.get("h", 300); ox, oy = (200 if P.get("y_names") else 90), 40
     H = oy + ph + 96 + (46 if spec.get("takeaway") else 0)
     f = NFig(spec["id"], 1160, H, T(spec["alt"], lang))
     (x0, x1), (y0, y1) = P["x"], P["y"]
@@ -21,6 +21,8 @@ def build(spec, lang=None):
         f.text(sx(t), oy + ph + 24, T(nm, lang) if nm else f"{t:g}", "MUT", 16)
     for t in P.get("y_ticks", []):
         f.line(ox - 7, sy(t), ox, sy(t), "MUT", 2); f.text(ox - 12, sy(t), f"{t:g}", "MUT", 16, False, "right", w=70)
+    for t, nm in (P.get("y_names") or {}).items():
+        f.text(ox - 12, sy(float(t)), T(nm, lang), "TXT", 16, True, "right")
     if P.get("x_label"): f.text(ox + pw / 2, oy + ph + 52, T(P["x_label"], lang), "TXT", 16, True, w=pw)
     if P.get("y_label"): f.text(ox - 18, oy - 28, T(P["y_label"], lang), "TXT", 16, True, "left", w=300)
     inside = lambda x, y: x0 <= x <= x1 and y0 <= y <= y1

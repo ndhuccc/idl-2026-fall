@@ -1,7 +1,10 @@
 """KP23 (decision trees) pages expressed as layout specs -- the acceptance sample of view-from-text-v2.
 Each function returns (layout_name, spec). Numbers are computed here, never typed; strings are {"zh","en"} pairs.
 Use:  from figkit import layouts;  f = layouts.build(*impurity_examples());  f.to_nodes(page, 60, y, "dark");  f.to_png(path)"""
+import os, sys
 import numpy as np
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "tools"))
+from figkit.parts import T
 
 
 def H(c):
@@ -208,3 +211,200 @@ def variance_chart():
         "takeaway": tr("門檻在 " + f"{min(thr):.2f} 到 {max(thr):.2f}" + " 之間跳動：換一份資料，樹就長得不一樣。", f"The threshold jumps between {min(thr):.2f} and {max(thr):.2f}: a new training set grows a different tree."),
     }
     return "plot_xy", spec
+
+
+def impurity_decrease():
+    """Freeform infographic: the split drawn as icons, the bar of what is left, the formula with the numbers, a definition card."""
+    from figkit.parts import NFig as _N, outline_box, icon, icon_rows, chip, panel, takeaway as _tk, tint as _tint, solid as _solid, header_chip
+    par, yes, no = (4, 4, 2), (3, 1, 0), (1, 3, 2)
+    Ip, Iy, In = H(par), H(yes), H(no); s1, s2 = 0.4 * Iy, 0.6 * In; d = Ip - s1 - s2
+    f = _N("lec05-kp23-dI", 1160, 452, T(tr(
+        f"不純度下降量：父節點 (4,4,2) 共 10 點、I={Ip:.3f}，被問題分成「是」(3,1,0) 4 點 I={Iy:.3f} 與「否」(1,3,2) 6 點 I={In:.3f}；ΔI=I(t)−(4/10)I(tY)−(6/10)I(tN)=1.522−0.325−0.875={d:.3f}；教材印 0.315。",
+        f"Impurity decrease: the parent (4,4,2) has 10 points and I={Ip:.3f}; the question splits it into yes (3,1,0) with 4 points, I={Iy:.3f} and no (1,3,2) with 6 points, I={In:.3f}; ΔI=I(t)−(4/10)I(tY)−(6/10)I(tN)=1.522−0.325−0.875={d:.3f}; the textbook prints 0.315.")))
+    def row(x, y, kinds):
+        k = 0
+        for kind, n in kinds:
+            for _ in range(n):
+                icon(f, kind, x + 14 + k * 28, y); k += 1
+    # parent
+    outline_box(f, 150, 0, 316, 56, "TXT", 1.5); row(158, 28, [("circle", 4), ("square", 4), ("tri", 2)])
+    f.text(308, 70, T(tr("父節點 t = (4,4,2)：10 點，I = 1.522", "parent t = (4,4,2): 10 points, I = 1.522")), "TXT", 16, True, w=330)
+    # children
+    f.line(308, 88, 214, 112, "MUT", 2.5); f.line(308, 88, 402, 112, "MUT", 2.5)
+    f.text(236, 100, T(tr("是", "yes")), "MUT", 16, True); f.text(380, 100, T(tr("否", "no")), "MUT", 16, True)
+    outline_box(f, 150, 112, 128, 48, "TXT", 1.5); row(158, 136, [("circle", 3), ("square", 1)])
+    outline_box(f, 338, 112, 184, 48, "TXT", 1.5); row(346, 136, [("circle", 1), ("square", 3), ("tri", 2)])
+    f.text(214, 178, T(tr("「是」(3,1,0)：4 點", "yes (3,1,0): 4 points")), "TXT", 16, True, w=200); f.text(214, 200, f"I = {Iy:.3f}", "TXT", 16, w=200)
+    f.text(430, 178, T(tr("「否」(1,3,2)：6 點", "no (1,3,2): 6 points")), "TXT", 16, True, w=220); f.text(430, 200, f"I = {In:.3f}", "TXT", 16, w=200)
+    # definition card
+    header_chip(f, 640, 0, 520, 34, "blue", T(tr("不純度下降量", "Impurity decrease")), size=20)
+    panel(f, 640, 38, 520, 168, "blue")
+    f.text(656, 112, T(tr("問完一個問題，節點分成「是」「否」兩堆；\n分完以後不純度少了多少，就用它比較問題，\n選 $\\Delta I$ 最大的那個。", "After a question the node splits into a yes and a no pile;\nhow much impurity is gone after the split compares the\nquestions, and the largest $\\Delta I$ wins.")), "TXT", 18, False, "left", w=490, math=True, name=T(tr("term:不純度下降量", "term:Impurity decrease")))
+    f.text(656, 180, T(tr("$N_{tY}=4$、$N_{tN}=6$：「是」「否」堆的點數；$N_t=10$", "$N_{tY}=4$, $N_{tN}=6$: points in the yes and no piles; $N_t=10$")), "TXT", 16, False, "left", w=490, math=True)
+    # bar
+    sc = 400 / Ip; x0 = 0; y = 232
+    f.text(x0, y - 4, T(tr("灰條 ＝ 分裂前 $I(t)$；彩色 ＝ 分完剩下的", "grey bar = $I(t)$ before; colours = what is left after")), "TXT", 16, False, "left", w=560, math=True)
+    xx = x0
+    for val, col in ((s1, "#5fb8a8"), (s2, "#a98bd0"), (d, "GAP")):
+        f.rect(xx, y + 14, val * sc, 34, fill=col); xx += val * sc
+    f.text(x0 + s1 * sc / 2, y + 66, f"0.4 × {Iy:.3f}", "TXT", 16, w=110); f.text(x0 + s1 * sc / 2, y + 86, f"= {s1:.3f}", "TXT", 16)
+    f.text(x0 + s1 * sc + s2 * sc / 2, y + 66, f"0.6 × {In:.3f}", "TXT", 16, w=110); f.text(x0 + s1 * sc + s2 * sc / 2, y + 86, f"= {s2:.3f}", "TXT", 16)
+    f.text(x0 + (s1 + s2) * sc + d * sc / 2, y + 66, T(tr("缺口 ＝ ΔI", "gap = ΔI")), "#7dbb8c", 16, True, w=100); f.text(x0 + (s1 + s2) * sc + d * sc / 2, y + 86, f"{d:.3f}", "#7dbb8c", 16, True)
+    # formula
+    f.rect(580, 226, 580, 130, fill=_tint("green", 0.12), stroke=_tint("green", 0.55), sw=1.5, radius=14)
+    f.text(870, 262, "$\\Delta I=I(t)-\\frac{N_{tY}}{N_t}I(t_Y)-\\frac{N_{tN}}{N_t}I(t_N)$", "TXT", 22, w=540, math=True)
+    f.text(870, 322, f"$=1.522-{s1:.3f}-{s2:.3f}={d:.3f}$", "TXT", 24, True, w=540, math=True)
+    _tk(f, 0, 392, 1160, 40, T(tr("教材印 0.315；用它自己的計數重算是 0.322。", "The textbook prints 0.315; its own counts give 0.322.")))
+    return f
+
+
+def _fb(f, x, y, w, h):
+    from figkit.parts import outline_box
+    outline_box(f, x, y, w, h, "TXT", 1.5)
+
+
+def tree_intro():
+    from figkit.parts import NFig as _N, outline_box, header_chip, panel, chip, takeaway as _tk, tint as _tint, solid as _solid, INK
+    f = _N("lec05-kp23-partition", 1160, 440, T(tr("決策樹把平面切成區域：左圖用兩個軸平行的問題把平面切成 A、B、C 三塊（x₂>0.5 切上下，x₁≤0.4 切下半左右），右圖是對應的樹；每個圓圈是節點，最下面的葉節點寫最後的類別；OBCT 每個節點只問一個特徵是否小於等於門檻。",
+                                  "A decision tree cuts the plane into regions: the left figure cuts it into A, B and C with two axis-parallel questions (x₂>0.5 splits top and bottom, x₁≤0.4 splits the lower half) and the right figure is the matching tree; each circle is a node and the leaf nodes at the bottom carry the final class; an OBCT asks one feature against a threshold at each node.")))
+    header_chip(f, 0, 0, 560, 34, "blue", T(tr("一連串是非題＝把平面切成區域", "A series of yes/no questions cuts the plane")), size=20)
+    panel(f, 0, 38, 560, 300, "blue")
+    f.rect(30, 62, 200, 200, stroke="TXT", sw=2.2); f.line(30, 148, 230, 148, "TXT", 2.4); f.line(112, 148, 112, 262, "TXT", 2.4)
+    for (x, y, t, c) in ((130, 105, "A", "#6a9fd6"), (71, 205, "B", "#d97757"), (171, 205, "C", "#7dbb8c")): f.text(x, y, t, c, 26, True)
+    f.text(14, 148, "0.5", "MUT", 16); f.text(112, 280, "0.4", "MUT", 16); f.text(246, 280, "x₁", "MUT", 16); f.text(30, 50, "x₂", "MUT", 16)
+    def box(x, y, t, c="TXT"):
+        f.rect(x - 52, y - 18, 104, 36, stroke=c, sw=2, radius=8); f.text(x, y, t, c, 16, True)
+    box(400, 80, "x₂ > 0.5 ?"); box(340, 170, "x₁ ≤ 0.4 ?"); box(470, 170, T(tr("葉 A", "leaf A")), "#6a9fd6"); box(290, 260, T(tr("葉 B", "leaf B")), "#d97757"); box(400, 260, T(tr("葉 C", "leaf C")), "#7dbb8c")
+    for (a, b) in (((400, 98), (340, 152)), ((400, 98), (470, 152)), ((340, 188), (290, 242)), ((340, 188), (400, 242))): f.line(a[0], a[1], b[0], b[1], "MUT", 2)
+    f.text(354, 124, T(tr("否", "no")), "MUT", 16); f.text(450, 124, T(tr("是", "yes")), "MUT", 16); f.text(300, 214, T(tr("是", "yes")), "MUT", 16); f.text(390, 214, T(tr("否", "no")), "MUT", 16)
+    header_chip(f, 600, 0, 560, 34, "green", T(tr("決策樹", "Decision tree")), size=20)
+    panel(f, 600, 38, 560, 200, "green")
+    f.text(618, 138, T(tr("一連串是非題排成一棵樹。\n每個圓圈叫節點，問一個問題；\n最下面不再問的叫葉節點，寫著最後判成哪一類。\nOBCT（普通二元分類樹）：每個節點只問\n一個特徵是否 $x_k\\leq\\alpha$？是走一邊，否走另一邊。", "A series of yes/no questions arranged as a tree.\nEach circle is a node and asks one question;\nthe bottom nodes that ask no more are leaf nodes and carry the final class.\nOBCT (ordinary binary classification tree): each node asks\nonly whether one feature $x_k\\leq\\alpha$; yes goes one way, no the other.")), "TXT", 18, False, "left", w=530, math=True, name=T(tr("term:決策樹", "term:Decision tree")))
+    panel(f, 600, 248, 560, 90, "red")
+    f.text(618, 293, T(tr("切出的區域邊都與座標軸平行（二維是長方形）。\n左圖三塊、右圖是對應的樹。", "Cut regions have edges parallel to the axes.\nLeft: three regions; right: the matching tree.")), "TXT", 18, False, "left", w=530)
+    _tk(f, 0, 356, 1160, 44, T(tr("不畫邊界，只問一連串簡單的是非題。", "No boundary is drawn, only a series of simple yes/no questions.")))
+    return f
+
+
+def four_things():
+    import numpy as np
+    from figkit.parts import NFig as _N, header_chip, panel, takeaway as _tk, tint as _tint, solid as _solid, icon
+    xs = np.array([1.0, 1.4, 2.2, 2.8, 3.5, 4.1, 5.0, 5.5, 6.2, 7.0]); mids = (xs[1:] + xs[:-1]) / 2
+    f = _N("lec05-kp23-cands", 1160, 428, T(tr("建一棵樹要先決定四件事：①候選問題 ②分裂準則 ③停止規則 ④葉的類別；每個特徵的門檻只試相鄰兩值的中點：10 個值 " + "、".join(f"{v:g}" for v in xs) + " 得到 9 個門檻 " + "、".join(f"{m:.4g}" for m in mids) + "；最多 N−1 個問題。",
+                                  "Four decisions to build a tree: (1) candidate questions (2) splitting criterion (3) stopping rule (4) class of a leaf; each feature's thresholds are only the midpoints of neighbouring values: 10 values " + ", ".join(f"{v:g}" for v in xs) + " give 9 thresholds " + ", ".join(f"{m:.4g}" for m in mids) + "; at most N−1 questions.")))
+    items = [("blue", tr("① 候選問題", "① candidate questions"), tr("每個節點能問哪些", "questions a node may ask")), ("green", tr("② 分裂準則", "② splitting criterion"), tr("哪個問題最好", "which question is best")),
+             ("orange", tr("③ 停止規則", "③ stopping rule"), tr("何時不再分", "when to stop splitting")), ("violet", tr("④ 葉的類別", "④ class of a leaf"), tr("常用多數的那一類", "usually the majority class"))]
+    w = (1160 - 18 * 3) / 4
+    for i, (role, h, t) in enumerate(items):
+        x = i * (w + 18); header_chip(f, x, 0, w, 36, role, T(h), size=18); panel(f, x, 40, w, 56, role); f.text(x + w / 2, 68, T(t), "TXT", 18, w=w - 16)
+    f.text(580, 126, T(tr("① 候選問題：每個特徵只試「相鄰兩個值的中點」", "① candidate questions: each feature only tries the midpoints of neighbouring values")), "TXT", 20, True, w=1100)
+    sx = lambda v: 40 + (v - 1) / 6 * 1080; y = 290
+    f.line(30, y, 1130, y, "MUT", 2)
+    for v in xs: f.ellipse(sx(v), y, 16, "#6a9fd6"); f.text(sx(v), y + 28, f"{v:g}", "MUT", 16)
+    for m in mids: f.line(sx(m), y - 30, sx(m), y + 30, "#7dbb8c", 3)
+    for i, m in enumerate(mids): f.text(sx(m), y - 48 - (18 if i % 2 else 0), f"{m:.4g}", "#7dbb8c", 16, True)
+    f.text(580, 156, T(tr("10 個不同的值（藍點）→ 9 個中點門檻（綠線）；$(1.0+1.4)/2=1.2$、$(1.4+2.2)/2=1.8$、…", "10 distinct values (blue dots) → 9 midpoint thresholds (green lines); $(1.0+1.4)/2=1.2$, $(1.4+2.2)/2=1.8$, …")), "TXT", 18, w=1100, math=True)
+    f.rect(0, 338, 1160, 40, fill=_tint("blue", 0.14), radius=12)
+    f.text(580, 358, T(tr("特徵 $x_k$ 在節點內有 $N_{tk}$ 個不同的值 → 最多 $N_{tk}-1$ 個問題（教材寫 $N_{tk}$ 個）", "feature $x_k$ takes $N_{tk}$ distinct values in the node → at most $N_{tk}-1$ questions (the textbook writes $N_{tk}$)")), "TXT", 20, True, w=1120, math=True)
+    _tk(f, 0, 386, 1160, 36, T(tr("門檻是有限的一串，不是無限多個。", "The thresholds are a finite list, not infinitely many.")))
+    return f
+
+
+def bagging_full():
+    import numpy as np
+    from figkit.parts import NFig as _N, header_chip, panel, outline_box, icon, chip, takeaway as _tk, tint as _tint, solid as _solid, INK
+    rng = np.random.default_rng(3); n = 8
+    f = _N("lec05-kp23-bagsample", 1160, 432, T(tr("Bagging：從訓練集有放回地抽 B 份（和原來一樣大，有些點重複、有些沒抽到），各長一棵樹，最後多數決；圖是 8 個編號點的示意（不是實驗資料），三份樣本如第一份 1,2,2,2,5,7,7,7 漏掉 3,4,6,8；一個點沒被抽到的機率 (1−1/N)^N 趨近 0.368；隨機森林每個節點只從隨機挑的特徵裡選。",
+                                  "Bagging: draw B sets from the training set with replacement (as large as the original, some points repeated and some missed), grow a tree on each and take a majority vote; the figure is an illustration with 8 numbered points (not experiment data), e.g. the first sample 1,2,2,2,5,7,7,7 misses 3,4,6,8; the chance a point is never drawn, (1−1/N)^N, approaches 0.368; a random forest lets each node choose among randomly picked features only.")))
+    header_chip(f, 0, 0, 560, 34, "blue", T(tr("有放回地抽樣（示意，不是實驗資料）", "Drawing with replacement (illustration, not experiment data)")), size=18)
+    panel(f, 0, 38, 560, 330, "blue")
+    def row(y, nums):
+        for k, v in enumerate(nums):
+            cx = 130 + 36 * k; f.rect(cx - 14, y - 14, 28, 28, stroke="TXT", sw=1.8, radius=14); f.text(cx, y, str(v), "TXT", 16, True)
+    f.text(60, 72, T(tr("原本", "original")), "TXT", 16, True); row(72, range(1, 9))
+    for i in range(3):
+        sm = sorted(rng.integers(1, n + 1, n).tolist()); y = 124 + i * 52
+        f.text(60, y, T(tr(f"樣本 {i+1}", f"sample {i+1}")), "TXT", 16, True); row(y, sm)
+        miss = [v for v in range(1, n + 1) if v not in sm]
+        f.text(424, y, T(tr("沒抽到：", "missed: ")) + (" ".join(map(str, miss)) if miss else T(tr("無", "none"))), "#e07a70", 16, True, "left")
+    f.text(280, 270, T(tr("每份樣本長一棵樹，三棵樹投票：", "each sample grows a tree and the three trees vote:")), "TXT", 16, True, w=520)
+    for i, k in enumerate(("circle", "square", "circle")):
+        x = 120 + i * 150; f.text(x, 308, T(tr(f"樹 {i+1}", f"tree {i+1}")), "TXT", 16, True); icon(f, k, x + 50, 308)
+    chip(f, 60, 326, 440, 30, "green", T(tr("多數決：圓形 2 票對 1 票，圓形勝", "majority: circle wins 2 votes to 1")), size=18, bold=True)
+    header_chip(f, 600, 0, 560, 34, "green", "Bagging", size=20)
+    panel(f, 600, 38, 560, 206, "green")
+    f.text(618, 120, T(tr("Bagging：從訓練集有放回地抽 $B$ 份\n（和原來一樣大，有些點重複、有些沒抽到），\n各長一棵樹，最後多數決。\n隨機森林：再加一招，每個節點只從\n隨機挑的特徵裡選（這裡每次只看 1 個）。", "Bagging: draw $B$ sets from the training set with replacement\n(as large as the original, some points repeated, some missed),\ngrow a tree on each and take a majority vote.\nRandom forest: one more trick, each node chooses only among\nrandomly picked features (here just 1 at a time).")), "TXT", 18, False, "left", w=530, math=True, name=T(tr("term:Bagging", "term:Bagging")))
+    panel(f, 600, 256, 560, 112, "orange")
+    f.text(880, 312, T(tr("一個點一次都沒被抽到的機率\n$(1-1/N)^N\\rightarrow 0.368$（約 37% 的點沒被抽到）", "chance that a given point is never drawn\n$(1-1/N)^N\\rightarrow 0.368$ (about 37% of the points are missed)")), "TXT", 18, w=530, math=True)
+    _tk(f, 0, 384, 1160, 44, T(tr("每份樣本都不一樣，各樹的錯也不一樣，投票時互相抵消。", "Every sample differs, so the trees err differently and the vote cancels the errors.")))
+    return f
+
+
+def bagres_plot():
+    import json, os
+    from sklearn.tree import DecisionTreeClassifier
+    from sklearn.ensemble import RandomForestClassifier, BaggingClassifier
+    import numpy as np
+    N = _nums(); cp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "kp23_bagres_cache.json")
+    if os.path.exists(cp): single, bag, rf = json.load(open(cp))
+    else:
+        Xte, yte = N.moons2(1000, 2); single, bag, rf = [], [], []
+        for s in range(20):
+            X, y = N.moons2(100, 100 + s)
+            single.append(DecisionTreeClassifier(criterion="entropy", random_state=0).fit(X, y).score(Xte, yte))
+            bag.append(BaggingClassifier(DecisionTreeClassifier(criterion="entropy"), n_estimators=25, random_state=0).fit(X, y).score(Xte, yte))
+            rf.append(RandomForestClassifier(n_estimators=25, criterion="entropy", max_features=1, random_state=0).fit(X, y).score(Xte, yte))
+        json.dump([single, bag, rf], open(cp, "w"))
+    rr = np.random.default_rng(1); rows = [(tr("單棵樹", "single tree"), single, "red", 2.0), ("Bagging", bag, "green", 1.0), (tr("隨機森林", "random forest"), rf, "blue", 0.0)]
+    ms = lambda v: (float(np.mean(v)) * 100, float(np.std(v)) * 100)
+    series = []
+    for nm, v, role, yc in rows:
+        series.append({"kind": "dots", "points": [(a * 100, yc + float(rr.uniform(-0.28, 0.28))) for a in v], "role": role, "d": 11})
+        series.append({"kind": "seg", "a": (ms(v)[0], yc - 0.42), "b": (ms(v)[0], yc + 0.42), "role": role, "width": 5})
+    sm = [ms(v) for _, v, _, _ in rows]
+    spec = {"id": "lec05-kp23-bagres",
+            "alt": tr(f"20 份訓練集（種子 100 到 119）在 2000 個新點上的準確率，每點一份、直條是平均：單棵樹 {sm[0][0]:.1f}±{sm[0][1]:.1f}%、Bagging {sm[1][0]:.1f}±{sm[1][1]:.1f}%、隨機森林 {sm[2][0]:.1f}±{sm[2][1]:.1f}%。",
+                      f"Accuracy of 20 training sets (seeds 100 to 119) on 2000 new points, one dot each, the bar is the mean: single tree {sm[0][0]:.1f}±{sm[0][1]:.1f}%, bagging {sm[1][0]:.1f}±{sm[1][1]:.1f}%, random forest {sm[2][0]:.1f}±{sm[2][1]:.1f}%."),
+            "plot": {"x": [80, 90], "y": [-0.6, 2.6], "x_ticks": [80, 82, 84, 86, 88, 90], "y_ticks": [], "y_names": {"2": tr("單棵樹", "single tree"), "1": "Bagging", "0": tr("隨機森林", "random forest")}, "x_label": tr("新資料準確率（%）", "accuracy on new data (%)"), "w": 560, "h": 300},
+            "series": series,
+            "side": [{"title": tr("怎麼讀", "How to read"), "role": "blue", "text": tr("20 份不同的訓練集（種子 100–119）\n每點＝一份在 2000 個新點的準確率\n直條＝20 份的平均；每個森林 $B=25$ 棵", "20 different training sets (seeds 100-119)\neach dot = accuracy on 2000 new points\nbar = mean of the 20; every forest $B=25$ trees")},
+                     {"title": tr("結果（平均 ± 標準差）", "Result (mean ± sd)"), "role": "green", "text": tr(f"單棵樹 {sm[0][0]:.1f} ± {sm[0][1]:.1f}%\nBagging {sm[1][0]:.1f} ± {sm[1][1]:.1f}%\n隨機森林 {sm[2][0]:.1f} ± {sm[2][1]:.1f}%", f"single tree {sm[0][0]:.1f} ± {sm[0][1]:.1f}%\nbagging {sm[1][0]:.1f} ± {sm[1][1]:.1f}%\nrandom forest {sm[2][0]:.1f} ± {sm[2][1]:.1f}%")}],
+            "takeaway": tr("多棵樹的錯不同，投票時互相抵消：平均升高、散布變小。", "The errors of many trees differ and cancel in the vote: higher mean, smaller spread.")}
+    return "plot_xy", spec
+
+
+def practice_page():
+    from figkit.parts import NFig as _N, header_chip, panel, outline_box, icon, chip, takeaway as _tk, tint as _tint, solid as _solid
+    f = _N("lec05-kp23-practice", 1160, 420, T(tr("練習：節點 t=(4,4)（4 個第一類、4 個第二類），N_t=8，I(t)=1；分裂 A：是 (3,1)、否 (1,3)；分裂 B：是 (2,2)、否 (2,2)；已知 I(3,1)=0.811。求兩個分裂的 ΔI，哪個較好？",
+                                  "Exercise: node t=(4,4) (4 of class 1, 4 of class 2), N_t=8, I(t)=1; split A: yes (3,1), no (1,3); split B: yes (2,2), no (2,2); I(3,1)=0.811 is given. Find ΔI of both splits; which is better?")))
+    def box(x, y, c1, c2):
+        w = max(c1, c2) * 30 + 20; outline_box(f, x, y, w, 76, "TXT", 1.5)
+        for k in range(c1): icon(f, "circle", x + 10 + 15 + k * 30 - 10 + 10, y + 24)
+        for k in range(c2): icon(f, "square", x + 10 + 15 + k * 30 - 10 + 10, y + 54)
+        return w
+    outline_box(f, 460, 0, 240, 76, "TXT", 1.5)
+    for k in range(4): icon(f, "circle", 484 + k * 30, 24); icon(f, "square", 484 + k * 30, 54)
+    f.text(580, 100, T(tr("節點 $t=(4,4)$：$N_t=8$，$I(t)=1$", "node $t=(4,4)$: $N_t=8$, $I(t)=1$")), "TXT", 18, True, w=420, math=True)
+    for x0, role, hd, ys, ns in ((0, "red", tr("分裂 A", "Split A"), ((3, 1), (1, 3)), "yes (3,1) | no (1,3)"), (600, "blue", tr("分裂 B", "Split B"), ((2, 2), (2, 2)), "yes (2,2) | no (2,2)")):
+        header_chip(f, x0, 126, 560, 34, role, T(hd), size=20); panel(f, x0, 164, 560, 130, role)
+        bx = x0 + 70
+        for c1, c2 in ys:
+            w = box(bx, 180, c1, c2); f.line(x0 + 280, 168, bx + w / 2, 180, "MUT", 2); bx += w + 120
+        f.text(x0 + 280, 280, T(tr("是／否 兩堆各 4 點", "yes and no piles of 4 points each")), "TXT", 16, w=500)
+    chip(f, 0, 312, 380, 40, "yellow", T(tr("① 分裂 A 的 ΔI ＝ ？", "① ΔI of split A = ?")), size=20, bold=True)
+    chip(f, 390, 312, 380, 40, "yellow", T(tr("② 分裂 B 的 ΔI ＝ ？", "② ΔI of split B = ?")), size=20, bold=True)
+    chip(f, 780, 312, 380, 40, "yellow", T(tr("③ 哪個分裂比較好？", "③ which split is better?")), size=20, bold=True)
+    f.text(580, 378, T(tr("已知 $I(3,1)=0.811$；$\\Delta I=I(t)-\\frac{N_{tY}}{N_t}I(t_Y)-\\frac{N_{tN}}{N_t}I(t_N)$", "given $I(3,1)=0.811$; $\\Delta I=I(t)-\\frac{N_{tY}}{N_t}I(t_Y)-\\frac{N_{tN}}{N_t}I(t_N)$")), "TXT", 20, w=1100, math=True)
+    return f
+
+
+def solution_steps():
+    a = 1 - 0.5 * H((3, 1)) - 0.5 * H((1, 3)); b = 1 - 0.5 * 1 - 0.5 * 1
+    spec = {"id": "lec05-kp23-practice-sol",
+            "alt": tr(f"解答：分裂 A 兩堆各 4 點、I=0.811，ΔI=1−(4/8)0.811−(4/8)0.811={a:.3f}；分裂 B 兩堆 (2,2)、I=1，ΔI=1−(4/8)·1−(4/8)·1={b:g}；A 比較好；若分成 (4,0) 與 (0,4)，ΔI=1 最大。",
+                      f"Solution: split A has two piles of 4 points, I=0.811, ΔI=1−(4/8)0.811−(4/8)0.811={a:.3f}; split B has piles (2,2), I=1, ΔI=1−(4/8)·1−(4/8)·1={b:g}; A is better; splitting into (4,0) and (0,4) gives the maximum ΔI=1."),
+            "steps": [{"role": "red", "title": tr("① 分裂 A", "① split A"), "lines": ["$I(3,1)=I(1,3)=0.811$", "$1-\\frac{4}{8}\\cdot0.811-\\frac{4}{8}\\cdot0.811$"], "result": f"$\\Delta I={a:.3f}$"},
+                      {"role": "blue", "title": tr("② 分裂 B", "② split B"), "lines": ["$I(2,2)=1$", "$1-\\frac{4}{8}\\cdot1-\\frac{4}{8}\\cdot1$"], "result": f"$\\Delta I={b:g}$"},
+                      {"role": "green", "title": tr("③ 核對", "③ check"), "lines": [tr("A 比較好；", "A is better;"), tr("B 完全沒有降低不純度", "B lowers the impurity by nothing"), tr("若分成 (4,0)、(0,4)：ΔI = 1，最大", "(4,0)|(0,4) split: ΔI = 1, max")], "result": tr("選 A", "pick A")}],
+            "takeaway": tr("ΔI 越大，分裂後整體改善越多。", "The larger ΔI, the more the split improves overall.")}
+    return "steps_flow", spec
