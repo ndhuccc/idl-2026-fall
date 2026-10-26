@@ -36,7 +36,7 @@ def build(spec, lang=None):
                 for i, (x, y) in enumerate(pts):
                     f.ellipse(sx(x), sy(y), 14, solid(role))
                     lb = (s.get("labels") or [None] * len(pts))[i]
-                    if lb: f.text(sx(x), sy(y) + s.get("label_dy", -20), T(lb, lang), "TXT", 16, True, w=90)
+                    if lb: f.text(sx(x), sy(y) + s.get("label_dy", -20), T(lb, lang), "TXT", 16, True, w=64)
         elif k == "dots":
             roles = s.get("roles")
             for i, (x, y) in enumerate(s["points"]):
