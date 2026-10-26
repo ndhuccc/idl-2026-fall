@@ -25,10 +25,13 @@ def _esc(s):
 
 
 def _text_w(s, size, bold):
-    w = 0.0
-    for ch in s:
-        w += size * (1.0 if ord(ch) > 0x2E80 else (0.68 if bold else 0.62))
-    return w
+    best = 0.0
+    for ln in s.split("\n"):
+        w = 0.0
+        for ch in ln:
+            w += size * (1.0 if ord(ch) > 0x2E80 else (0.68 if bold else 0.62))
+        best = max(best, w)
+    return best
 
 
 class NFig:
@@ -103,6 +106,9 @@ class NFig:
             elif kind == "tri":
                 add("shape", d["cx"] - d["d"] / 2, d["cy"] - d["d"] / 2, d["d"], d["d"], base(col(d["fill"])), "", "triangle")
             elif kind == "line":
+                if abs(d["x2"] - d["x1"]) < 1e-6:     # vertical: a thin upright box, no rotation (keeps the box inside its page bounds)
+                    add("text", d["x1"] - d["lw"] / 2, min(d["y1"], d["y2"]), d["lw"], abs(d["y2"] - d["y1"]), base(col(d["color"])), "", "rectangle")
+                    continue
                 L = math.hypot(d["x2"] - d["x1"], d["y2"] - d["y1"])
                 cx, cy = (d["x1"] + d["x2"]) / 2, (d["y1"] + d["y2"]) / 2
                 deg = math.degrees(math.atan2(d["y2"] - d["y1"], d["x2"] - d["x1"]))

@@ -18,10 +18,11 @@
 | 兩個是非問題產生四種情形 | `quadrant_2x2` | 兩軸標籤、四個彩色格(標題、說明、數字)、結論 | 混淆矩陣 |
 | 學一個名詞或規則 | `concept_card` | 名詞、白話定義、例子/反例/為什麼等標籤區塊、公式列、結論 | 感受野 |
 | 拆解一條公式,看每一項是什麼 | `equation_parts` | 公式各項各一個色塊、名稱與白話意思、代入數字、結論 | 不純度下降量的三個部分 |
+| 小型 x-y 圖:曲線、折線、散點、參考線,右側可附說明卡 | `plot_xy` | 座標軸與刻度、折線(含標記與數值)、散點、水平/垂直參考線、側欄卡片、結論 | KP23 熵曲線、剪枝、高變異、斜向問題 |
 | 以上都不合 | `freeform` | 用 `parts.py` 的零件自己組 `NFig` | KP23 分區圖、KP12 平移與旋轉 |
-| 曲線、大量散點 | SVG(v1 `jbd_figure.py`) | 原生畫不出來 | 熵曲線、剪枝折線 |
+| 超過數百點的散點、需要平滑填色的曲面 | SVG(v1 `jbd_figure.py`) | 原生節點太多或畫不出來 | (目前沒有) |
 
-目前共 **12 組版型**(上表前 12 列);`examples/layout_gallery.py` 有後六組的範例 spec,`kp23_specs.py` 與 `kp12_specs.py` 示範前六組。PNG 輸出用 matplotlib 的數學排版,**不支援 `\tfrac`、`\dfrac`,請用 `\frac`**;簡報用 KaTeX 兩者皆可。
+目前共 **13 組版型**(上表前 13 列);`examples/layout_gallery.py` 有後六組(及 `plot_xy`)的範例 spec,`kp23_specs.py` 與 `kp12_specs.py` 示範前六組。PNG 輸出用 matplotlib 的數學排版,**不支援 `\tfrac`、`\dfrac`,請用 `\frac`**;簡報用 KaTeX 兩者皆可。
 
 ## 零件(`parts.py`)
 `header_chip`、`panel`、`chip`、`outline_box`、`formula_bar`、`takeaway`、`legend`、`icon`/`icon_rows`(圓、方、三角代表三類)、`SKETCHES`(`tree_shallow`、`tree_deep`、`magnifier_note`)。色彩角色:`red blue green orange violet yellow teal grey`。新增零件直接寫在 `parts.py`,並在這裡加一行。

@@ -20,12 +20,12 @@
    "layout": "freeform"
   },
   {
-   "title": "不純度",
+   "title": "不純度（曲線與定義）",
    "covers": [
     "3. 不純度"
    ],
    "main": "圖",
-   "layout": "freeform"
+   "layout": "plot_xy"
   },
   {
    "title": "三個節點算一遍",
@@ -52,7 +52,7 @@
    "layout": "two_options"
   },
   {
-   "title": "樹要多大（含各深度的兩端數字）",
+   "title": "樹要多大（含兩端數字）",
    "covers": [
     "6. 樹要多大"
    ],
@@ -60,21 +60,12 @@
    "layout": "before_after"
   },
   {
-   "title": "剪枝",
+   "title": "剪枝（含各 α 的判對數）",
    "covers": [
     "7. 剪枝"
    ],
    "main": "圖",
-   "layout": "freeform"
-  },
-  {
-   "title": "剪枝的數字",
-   "covers": [
-    "7. 剪枝"
-   ],
-   "main": "表",
-   "layout": "none",
-   "reason": "讀者要把圖上每個準確率對回判對數除以總數；圖放不下逐列計數"
+   "layout": "plot_xy"
   },
   {
    "title": "高變異",
@@ -82,7 +73,7 @@
     "8. 高變異"
    ],
    "main": "圖",
-   "layout": "freeform"
+   "layout": "plot_xy"
   },
   {
    "title": "Bagging",
@@ -101,21 +92,12 @@
    "layout": "freeform"
   },
   {
-   "title": "延伸：斜向問題",
+   "title": "延伸：斜向問題（含各深度數字）",
    "covers": [
     "延伸"
    ],
    "main": "圖",
-   "layout": "freeform"
-  },
-  {
-   "title": "延伸：斜向的數字",
-   "covers": [
-    "延伸"
-   ],
-   "main": "表",
-   "layout": "none",
-   "reason": "讀者要核對各深度的判對數，圖放不下"
+   "layout": "plot_xy"
   },
   {
    "title": "延伸：練習",

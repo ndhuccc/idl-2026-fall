@@ -74,8 +74,8 @@ def weighting():
 def tree_size():
     import os, sys
     from sklearn.tree import DecisionTreeClassifier
-    sys.path.insert(0, os.environ.get("KP23_NUMS", "."))
-    import nums23 as N
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import kp23_nums as N
     Xtr, ytr = N.moons2(100, 1); Xte, yte = N.moons2(1000, 2)
     R = []
     for d in (1, None):
@@ -107,3 +107,104 @@ def tree_size():
         "footnote": tr("單次實驗：含雜訊的雙月牙資料，訓練 200 點、新資料 2000 點；不代表所有資料。", "One experiment: noisy two-moon data, 200 training and 2000 new points; not all data."),
     }
     return "before_after", spec
+
+
+def _nums():
+    import os, sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import kp23_nums as N
+    return N
+
+
+def entropy_curve():
+    ps = [i / 40 for i in range(1, 40)]
+    pts = [(0, 0)] + [(p, H([p, 1 - p])) for p in ps] + [(1, 0)]
+    spec = {
+        "id": "lec05-kp23-entropy",
+        "alt": tr("兩類時的不純度（熵）曲線：橫軸是第一類的比例 p，縱軸是 I(t)；兩類各占一半（p=0.5）時最大，I=1；全是同一類（p=0 或 1）時 I=0。公式 I(t)=−Σ P(ωᵢ|t) log₂ P(ωᵢ|t)。",
+                  "Two-class impurity (entropy) curve: the horizontal axis is the share p of class 1, the vertical axis is I(t); it is largest at p=0.5 (equal classes) with I=1 and 0 when all points are one class (p=0 or 1). Formula I(t)=−Σ P(ωᵢ|t) log₂ P(ωᵢ|t)."),
+        "plot": {"x": [0, 1], "y": [0, 1.14], "x_ticks": [0, 0.25, 0.5, 0.75, 1], "y_ticks": [0, 0.5, 1], "x_label": tr("第一類的比例 p", "share p of class 1"), "y_label": tr("不純度 I", "impurity I"), "w": 470, "h": 300},
+        "series": [{"kind": "vline", "x": 0.5, "role": "grey", "width": 1.5}, {"kind": "line", "points": pts, "role": "orange", "width": 4}],
+        "notes": [{"x": 0.5, "y": 1.08, "text": tr("各占一半：I = 1（最大）", "equal halves: I = 1 (largest)"), "ha": "center"}, {"x": 0.2, "y": 0.1, "text": tr("全是同一類：I = 0", "one class: I = 0"), "ha": "center"}],
+        "side": [
+            {"title": tr("不純度", "Impurity"), "role": "blue", "name": tr("term:不純度", "term:Impurity"), "text": tr("各類的點都有叫不純，\n全是同一類叫純。\n$I(t)=-\\sum_{i=1}^{M}P(\\omega_i|t)\\log_2P(\\omega_i|t)$", "several classes: impure;\none class only: pure.\n$I(t)=-\\sum_{i=1}^{M}P(\\omega_i|t)\\log_2P(\\omega_i|t)$")},
+            {"title": tr("符號", "Symbols"), "role": "green", "text": tr("$t$ 節點，$M$ 類別數，$N_t$ 節點內點數，\n$N_t^i$ 第 $i$ 類點數，$P(\\omega_i|t)=N_t^i/N_t$", "$t$ node, $M$ classes, $N_t$ points in node,\n$N_t^i$ points of class $i$, $P(\\omega_i|t)=N_t^i/N_t$")},
+            {"title": tr("性質", "Properties"), "role": "orange", "text": tr("各類一樣多最大（$\\log_2M$）；\n全是同一類是 0（約定 $0\\log0=0$）", "largest when classes are equal ($\\log_2M$);\n0 when all one class ($0\\log0=0$)")}],
+        "takeaway": tr("越平均越混亂：看的是各類的比例，不是總點數。", "The more even the classes, the more mixed: it is the shares that count, not the total."),
+    }
+    return "plot_xy", spec
+
+
+def prune_chart():
+    from sklearn.tree import DecisionTreeClassifier
+    N = _nums(); Xtr, ytr = N.moons2(100, 1); Xte, yte = N.moons2(1000, 2)
+    als = (0.0, 0.01, 0.02, 0.05); rows = []
+    for a in als:
+        t = DecisionTreeClassifier(criterion="entropy", ccp_alpha=a, random_state=0).fit(Xtr, ytr)
+        rows.append((a, int(t.get_n_leaves()), int(round(t.score(Xtr, ytr) * 200)), int(round(t.score(Xte, yte) * 2000))))
+    best = max(range(4), key=lambda i: rows[i][3])
+    names = {str(i): tr(f"α={a:g}\n{l} 片葉", f"α={a:g}\n{l} leaves") for i, (a, l, _, _) in enumerate(rows)}
+    spec = {
+        "id": "lec05-kp23-prune",
+        "alt": tr("剪枝強度 α 與準確率：" + "；".join(f"α={a:g}：{l} 片葉，訓練 {t}/200={t/2:.1f}%，新點 {n}/2000={n/20:.1f}%" for a, l, t, n in rows) + "。訓練分數下降、新資料反而進步。",
+                  "Pruning strength α and accuracy: " + "; ".join(f"α={a:g}: {l} leaves, training {t}/200={t/2:.1f}%, new points {n}/2000={n/20:.1f}%" for a, l, t, n in rows) + ". Training falls while new data improves."),
+        "plot": {"x": [-0.4, 3.4], "y": [80, 102], "x_ticks": [0, 1, 2, 3], "x_names": names, "y_ticks": [80, 85, 90, 95, 100], "x_label": tr("剪枝強度 α（剩下的葉數）", "pruning strength α (leaves left)"), "y_label": tr("準確率（%）", "accuracy (%)"), "w": 560, "h": 300},
+        "series": [{"kind": "line", "points": [(i, r[2] / 2) for i, r in enumerate(rows)], "role": "blue", "markers": True, "labels": [("100%" if r[2] == 200 else f"{r[2] / 2:.1f}%") for r in rows], "label_dy": -22, "name": tr("訓練", "training")},
+                   {"kind": "line", "points": [(i, r[3] / 20) for i, r in enumerate(rows)], "role": "red", "markers": True, "labels": [f"{r[3] / 20:.1f}%" for r in rows], "label_dy": 24, "name": tr("新資料", "new data")}],
+        "side": [{"title": tr("剪枝", "Pruning"), "role": "orange", "name": tr("term:剪枝", "term:Pruning"), "text": tr("先長成大樹，再剪掉\n不值得的分支；α 越大剪得越兇。", "grow a big tree, then cut the\nbranches not worth keeping;\na larger α prunes harder.")},
+                 {"title": tr("怎麼讀", "How to read"), "role": "blue", "text": tr("同一份 200 個訓練點、\n2000 個新點，只改 α。", "Same 200 training and 2000\nnew points, only α changes.")},
+                 {"title": tr("判對數", "Right counts"), "role": "green", "text": "\n".join(tr(f"α={a:g}：訓練 {t}/200，新點 {n}/2000", f"α={a:g}: training {t}/200, new {n}/2000")["zh" if True else "en"] for a, l, t, n in rows) if False else tr("\n".join(f"α={a:g}：訓練 {t}/200，新點 {n}/2000" for a, l, t, n in rows), "\n".join(f"α={a:g}: training {t}/200, new {n}/2000" for a, l, t, n in rows))}],
+        "takeaway": tr(f"訓練分數下降，新資料反而進步：{rows[0][3]/20:.1f}% → {rows[best][3]/20:.1f}%（{rows[best][1]} 片葉）。", f"Training falls, new data improves: {rows[0][3]/20:.1f}% → {rows[best][3]/20:.1f}% ({rows[best][1]} leaves)."),
+    }
+    return "plot_xy", spec
+
+
+def oblique_chart():
+    import numpy as np
+    from sklearn.tree import DecisionTreeClassifier
+    rng = np.random.default_rng(5); X = rng.uniform(-1, 1, (300, 2)); y = (X[:, 0] + X[:, 1] > 0).astype(int)
+    Xt = rng.uniform(-1, 1, (3000, 2)); yt = (Xt[:, 0] + Xt[:, 1] > 0).astype(int)
+    rows = []
+    for d in (1, 3, 6, None):
+        t = DecisionTreeClassifier(criterion="entropy", max_depth=d, random_state=0).fit(X, y)
+        rows.append((d, int(t.get_n_leaves()), int(round(t.score(Xt, yt) * 3000))))
+    pts0 = [(float(a), float(b)) for (a, b), c in zip(X, y) if c == 0]; pts1 = [(float(a), float(b)) for (a, b), c in zip(X, y) if c == 1]
+    lab = lambda d: tr("不限深度" if d is None else f"深度 {d}", "full tree" if d is None else f"depth {d}")
+    zh = "\n".join(f"{lab(d)['zh']}：{l} 片葉，新點 {c}/3000＝{c/30:.1f}%" for d, l, c in rows)
+    en = "\n".join(f"{lab(d)['en']}: {l} leaves, new {c}/3000 = {c/30:.1f}%" for d, l, c in rows)
+    spec = {
+        "id": "lec05-kp23-oblique",
+        "alt": tr("類別由斜線 x₁+x₂=0 決定（300 個訓練點）：一個斜向問題就完全分對；軸平行的樹要用階梯逼近：" + "；".join(f"{lab(d)['zh']} {l} 片葉、新點 {c}/3000={c/30:.1f}%" for d, l, c in rows) + "。",
+                  "The class is set by the oblique line x₁+x₂=0 (300 training points): one oblique question separates them exactly; axis-parallel trees need a staircase: " + "; ".join(f"{lab(d)['en']} {l} leaves, new {c}/3000={c/30:.1f}%" for d, l, c in rows) + "."),
+        "plot": {"x": [-1, 1], "y": [-1, 1], "x_ticks": [-1, 0, 1], "y_ticks": [-1, 0, 1], "x_label": "x₁", "y_label": "x₂", "w": 300, "h": 300},
+        "series": [{"kind": "dots", "points": pts0, "role": "blue", "d": 9, "shape": "circle"}, {"kind": "dots", "points": pts1, "role": "orange", "d": 8, "shape": "square"},
+                   {"kind": "seg", "a": (-1, 1), "b": (1, -1), "role": "green", "width": 4}],
+        "notes": [{"x": 0.62, "y": -0.78, "text": tr("x₁ + x₂ = 0", "x₁ + x₂ = 0"), "color": "TXT"}],
+        "side": [{"title": tr("斜向問題一刀就夠", "One oblique question is enough"), "role": "green", "text": tr("$x_1+x_2\\leq 0$？\n切得完全正確", "$x_1+x_2\\leq 0$ ?\nexact split")},
+                 {"title": tr("軸平行的樹要階梯逼近", "Axis-parallel trees need a staircase"), "role": "red", "text": tr(zh, en), "math": False}],
+        "takeaway": tr("要 13 到 14 片葉才到約 95%；斜向問題切得好，但訓練更複雜。", "13 to 14 leaves are needed for about 95%; oblique questions cut well but are harder to train."),
+    }
+    return "plot_xy", spec
+
+
+def variance_chart():
+    from sklearn.tree import DecisionTreeClassifier
+    N = _nums(); X, yy = N.moons2(100, 40)
+    thr = []; leaves = []
+    for s in range(8):
+        Xs, ys = N.moons2(100, 40 + s); t = DecisionTreeClassifier(criterion="entropy", random_state=0).fit(Xs, ys); thr.append(float(t.tree_.threshold[0])); leaves.append(int(t.get_n_leaves()))
+    pts0 = [(float(a), float(b)) for (a, b), c in zip(X, yy) if c == 0]; pts1 = [(float(a), float(b)) for (a, b), c in zip(X, yy) if c == 1]
+    srt = sorted(zip(thr, range(40, 48)))
+    spec = {
+        "id": "lec05-kp23-var",
+        "alt": tr("8 份訓練資料（種子 40 到 47）各長一棵不限深度的樹，第一刀都切第二個特徵，門檻：" + "、".join(f"{t:.2f}" for t in thr) + f"，在 {min(thr):.2f} 到 {max(thr):.2f} 之間；葉數 {min(leaves)} 到 {max(leaves)}。圖上的點是種子 40 那份資料，水平線是各棵樹的第一刀。",
+                  "Trees without depth limit grown on 8 training sets (seeds 40 to 47) all cut the second feature first, with thresholds " + ", ".join(f"{t:.2f}" for t in thr) + f", between {min(thr):.2f} and {max(thr):.2f}; leaves {min(leaves)} to {max(leaves)}. The points are training set 40, the horizontal lines the first cuts of the trees."),
+        "plot": {"x": [-1.5, 2.5], "y": [-0.4, 0.8], "x_ticks": [-1, 0, 1, 2], "y_ticks": [-0.25, 0, 0.25, 0.5, 0.75], "x_label": tr("特徵 1", "feature 1"), "y_label": tr("特徵 2", "feature 2"), "w": 560, "h": 300},
+        "series": [{"kind": "dots", "points": pts0, "role": "blue", "d": 8, "shape": "circle"}, {"kind": "dots", "points": pts1, "role": "orange", "d": 7, "shape": "square"}] +
+                  [{"kind": "hline", "y": t, "role": "red", "width": 2} for t in thr],
+        "side": [{"title": tr("高變異", "High variance"), "role": "red", "name": tr("term:高變異", "term:High variance"), "text": tr("訓練資料稍微不同，\n長出來的樹就很不同。", "slightly different training data\ngrow very different trees.")},
+                 {"title": tr("8 棵樹的第一刀", "First cut of 8 trees"), "role": "blue", "text": tr("都切第二個特徵，門檻在\n" + f"{min(thr):.2f} 到 {max(thr):.2f} 之間\n（紅線；種子 40 到 47）", "all on feature 2, thresholds between\n" + f"{min(thr):.2f} and {max(thr):.2f}\n(red lines; seeds 40 to 47)")},
+                 {"title": tr("葉數", "Leaves"), "role": "orange", "text": tr(f"{min(leaves)} 到 {max(leaves)} 片葉；\n樹是階層式的，高處的錯\n會傳到下面所有葉。", f"{min(leaves)} to {max(leaves)} leaves;\na tree is hierarchical, so an\nerror high up spreads below.")}],
+        "takeaway": tr("門檻在 " + f"{min(thr):.2f} 到 {max(thr):.2f}" + " 之間跳動：換一份資料，樹就長得不一樣。", f"The threshold jumps between {min(thr):.2f} and {max(thr):.2f}: a new training set grows a different tree."),
+    }
+    return "plot_xy", spec
