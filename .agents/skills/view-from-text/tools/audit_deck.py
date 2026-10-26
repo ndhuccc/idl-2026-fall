@@ -105,6 +105,8 @@ def main():
     ap.add_argument("--source", action="append", default=[], help="source text file(s): O2 warns when pages repeat long runs of the source (14+ identical CJK characters)")
     ap.add_argument("--narrative", action="store_true", help="require a bridge node (name contains 'bridge') on every content page and speaker notes that link to the previous and next page (R1, R3); see .agents/skills/NARRATIVE.md")
     ap.add_argument("--terms", help="term registry JSON (CLARITY.md C12): {\"term\": {\"aliases\": [synonyms only], \"co_defined\": [related terms defined on the same card]}}; every term needs a card node named 'term:<term>' on or before its first use, and on a main-line page if any main-line page uses it (J1-J3)")
+    ap.add_argument("--modality", help="JSON {\"1\": {\"kind\": \"圖|表|算式|文字|題目\", \"reason\": \"...\"}, ...} keyed by content-page number: the main way each page speaks (CLARITY.md C23); every page needs an entry (X9)")
+    ap.add_argument("--modality-report", action="store_true", help="print, per page, what it really contains (figure, table, formula, text) next to its declaration, and list the pages whose declared reason must be reviewed by the teacher")
     ap.add_argument("--outline", action="store_true", help="print the title chain and bridge line of every page, per unit, for the reading test (NARRATIVE.md section 5)")
     ap.add_argument("--kps", type=int, help="number of knowledge points; with --minutes, prints the per-KP budget")
     ap.add_argument("--level", choices=sorted(LEVEL_LIMITS), help="teaching level (see .agents/skills/LEVELS.md): warns when a page exceeds the level's display-formula and body-text budget (Q1, Q2)")
@@ -476,8 +478,9 @@ def main():
         has_img = any(n["type"] == "image" for n in pages.get(key, []))
         n_cjk = len(CJK.findall(re.sub(r"\$[^$]*\$", "", "\n".join(n.get("text", "") for n in body_nodes if "-tbl-" not in n.get("id", "") + n.get("name", "")))))
         n_num = len(re.findall(r"(?<![\w.])\d+(?:\.\d+)?%?", "\n".join(n.get("text", "") for n in body_nodes if "-tbl-" not in n.get("id", "") + n.get("name", ""))))
-        if not has_img and n_num >= 4 and n_cjk > 100 and not t["label"].startswith("延伸：練習"):
-            Wn("X6", f"{tag}: no figure, {n_num} numbers and {n_cjk} Chinese characters of text: would a schematic (grouped points, side-by-side bars, a flow) say it faster with half the words? (CLARITY.md C22)")
+        n_tnum = len(re.findall(r"(?<![\w.])\d+(?:\.\d+)?%?", "\n".join(n.get("text", "") for n in nodes_ if "-tbl-" in n.get("id", "") + n.get("name", ""))))
+        if not has_img and (n_num >= 4 or n_tnum >= 6) and (n_cjk > 100 or n_tnum >= 6) and not t["label"].startswith("延伸：練習"):
+            Wn("X6", f"{tag}: no figure, {n_num} numbers ({n_tnum} more in the table) and {n_cjk} Chinese characters of text: would a schematic (grouped points, side-by-side bars, a flow) say it faster with half the words? (CLARITY.md C22)")
         plain_txt = re.sub(r"\s", "", body_txt)
         nums_ = re.findall(r"(?<![\w.])\d+\.\d{2,}|\d+\.?\d*\s*%", body_txt)
         if len(nums_) >= 3 and "=" not in body_txt:
@@ -485,6 +488,54 @@ def main():
         for n in body_nodes:
             if n.get("text", "").count("；") >= 3 and len(re.findall(r"\d+\.?\d*\s*%", n["text"])) >= 4:
                 Wn("X3", f"{tag}: a card strings together {len(re.findall(r'%', n['text']))} percentages with '；': use a table with the counts beside each percentage"); break
+
+
+    # ---- C23 figure first, text as annotation: every page declares its main way of speaking (X9, X10)
+    MOD_KINDS = ("圖", "表", "算式", "文字", "題目")
+    decl = {}
+    if args.modality:
+        decl = json.load(open(args.modality, encoding="utf-8"))
+    rep = []
+    for i_, (key, t) in enumerate(page_list, 1):
+        nodes_ = pages.get(key, [])
+        tag = f"{key[0]}#p{i_}"
+        imgs = [n for n in nodes_ if n["type"] == "image"]
+        tbl = [n for n in nodes_ if "-tbl-" in n.get("id", "") + n.get("name", "")]
+        body_ = [n for n in nodes_ if n["type"] in ("text", "shape") and n not in tbl and "bridge" not in (n.get("name", "") + n.get("id", "")).lower() and n.get("text")]
+        txt_ = "\n".join(n["text"] for n in body_)
+        n_formula = len(re.findall(r"\$[^$]+\$", txt_))
+        n_frac = len(re.findall(r"\\frac|\\tfrac|\\times|\\Delta", txt_))
+        tbl_nums = len(re.findall(r"(?<![\w.])\d+(?:\.\d+)?%?", "\n".join(n.get("text", "") for n in tbl)))
+        n_num_all = len(re.findall(r"(?<![\w.])\d+(?:\.\d+)?%?", txt_)) + tbl_nums
+        n_cjk_ = len(CJK.findall(re.sub(r"\$[^$]*\$", "", txt_)))
+        signal = (not imgs) and (tbl_nums >= 6 or n_num_all >= 6 or (tbl and n_frac)) and not t["label"].startswith("延伸：練習")
+        d_ = decl.get(str(i_))
+        kind = (d_ or {}).get("kind", "")
+        reason = (d_ or {}).get("reason", "")
+        status = ""
+        if args.modality:
+            if not d_ or kind not in MOD_KINDS:
+                F("X9", f"{tag}: no declaration of the page's main way of speaking (one of {'/'.join(MOD_KINDS)}) with the reader's task and why not a figure (CLARITY.md C23)"); status = "MISSING"
+            elif kind == "圖" and not imgs:
+                F("X9", f"{tag}: declared 圖 but the page has no figure"); status = "NO-FIGURE"
+            elif kind != "圖" and signal:
+                if len(reason) < 10 or "讀者" not in reason:
+                    Wn("X9", f"{tag}: no figure, but the page compares {n_num_all} numbers (table cells {tbl_nums}, formulas {n_formula}); declare 'reader task + why a figure would not help' (must mention 讀者) or draw the figure (CLARITY.md C23)"); status = "WEAK-REASON"
+                else:
+                    status = "REVIEW"
+            elif kind == "圖" and imgs and n_cjk_ > 220:
+                Wn("X9", f"{tag}: figure page with {n_cjk_} Chinese characters of text: move text onto the figure as labels (CLARITY.md C23)"); status = "TEXT-HEAVY"
+        for n in imgs:
+            if len(n.get("text", "")) < 30:
+                Wn("X10", f"{tag}: figure alt text is short ({len(n.get('text', ''))} chars): list every number and the conclusion of the figure in it (CLARITY.md C23)")
+        rep.append((i_, t["label"], len(imgs), len(tbl), tbl_nums, n_formula, n_cjk_, kind or "-", status or ("signal" if signal else "ok"), reason))
+    if args.modality_report:
+        print("\n== modality report (page, label, figures, table cells, numbers in table, formulas, CJK chars, declared, status)")
+        for r in rep: print("  p%-2d %-22s fig=%d tbl=%-3d tnum=%-3d fml=%-2d cjk=%-4d %-4s %s" % r[:9])
+        rv = [r for r in rep if r[8] == "REVIEW"]
+        if rv:
+            print("  pages declared without a figure although they compare many numbers (teacher reviews each reason):")
+            for r in rv: print(f"    p{r[0]} {r[1]}: {r[9]}")
 
     for fid, fr in frames.items():
         sc = S.get(fr["frame"]["childSceneId"])
