@@ -56,9 +56,9 @@ class NFig:
     def line(self, x1, y1, x2, y2, color, lw=2):
         self.items.append(("line", dict(x1=x1, y1=y1, x2=x2, y2=y2, color=color, lw=lw)))
 
-    def text(self, x, y, s, color="TXT", size=16, bold=False, ha="center", math=False, w=None, name=None):
+    def text(self, x, y, s, color="TXT", size=16, bold=False, ha="center", math=False, w=None, name=None, h=None):
         """math=True: the string may contain $...$ KaTeX (rendered by the player; mathtext in the PNG); give w (box width) for such strings."""
-        self.items.append(("text", dict(x=x, y=y, s=s, size=size, color=color, bold=bold, ha=ha, math=math, w=w, name=name)))
+        self.items.append(("text", dict(x=x, y=y, s=s, size=size, color=color, bold=bold, ha=ha, math=math, w=w, name=name, h=h)))
 
     # ---- native JianBauDau nodes
     def to_nodes(self, page, x0, y0, theme="dark"):
@@ -116,6 +116,7 @@ class NFig:
             elif kind == "text":
                 w = d["w"] or (_text_w(d["s"], d["size"], d["bold"]) + 12)
                 h = round(d["size"] * (1.8 if d["math"] else 1.15) * d["s"].count("\n") + d["size"] * (1.8 if d["math"] else 1.15)) if "\n" in d["s"] else round(d["size"] * (1.8 if d["math"] else 1.15))
+                if d.get("h"): h = d["h"]
                 if d["w"] and not d["math"]:    # a plain string wider than its box wraps in the player: give the box the wrapped height
                     nl = sum(max(1, math.ceil(_text_w(ln, d["size"], d["bold"]) / (1.15 * max(d["w"] - 12, 1)))) for ln in d["s"].split("\n"))
                     h = max(h, round(d["size"] * 1.15 * nl))
