@@ -116,6 +116,9 @@ class NFig:
             elif kind == "text":
                 w = d["w"] or (_text_w(d["s"], d["size"], d["bold"]) + 12)
                 h = round(d["size"] * (1.8 if d["math"] else 1.15) * d["s"].count("\n") + d["size"] * (1.8 if d["math"] else 1.15)) if "\n" in d["s"] else round(d["size"] * (1.8 if d["math"] else 1.15))
+                if d["w"] and not d["math"]:    # a plain string wider than its box wraps in the player: give the box the wrapped height
+                    nl = sum(max(1, math.ceil(_text_w(ln, d["size"], d["bold"]) / (1.15 * max(d["w"] - 12, 1)))) for ln in d["s"].split("\n"))
+                    h = max(h, round(d["size"] * 1.15 * nl))
                 x = d["x"] - w / 2 if d["ha"] == "center" else (d["x"] if d["ha"] == "left" else d["x"] - w)
                 st = base(textColor=col(d["color"]), fontSize=d["size"], fontWeight=700 if d["bold"] else 400, textAlign=d["ha"], lineHeight=1.15)
                 nid_ = add("text", x, d["y"] - h / 2, w, h, st, d["s"] if d["math"] else _esc(d["s"]), "rectangle", z=3)

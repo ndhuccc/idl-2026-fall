@@ -57,7 +57,7 @@ def build(spec, lang=None):
     for i, (k, role, nm, shp) in enumerate(legend):
         lx, ly = (ox + 14 if P.get("legend_pos") == "left" else ox + pw - 190), oy + 8 + 26 * i
         f.rect(lx, ly + 6, 26, 6, fill=solid(role)) if k == "line" else f.ellipse(lx + 8, ly + 9, 12, solid(role))
-        f.text(lx + 34, ly + 9, nm, "TXT", 16, False, "left", w=170)
+        f.text(lx + 34, ly + 9, nm, "TXT", 16, False, "left", w=(None if P.get("legend_pos") == "left" else 170))
     sd = spec.get("side", [])
     if sd:
         sx0 = ox + pw + 60; sw = 1160 - sx0; total = ph + 40 - 12 * (len(sd) - 1)
