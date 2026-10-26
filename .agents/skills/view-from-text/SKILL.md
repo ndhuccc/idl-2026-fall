@@ -25,6 +25,7 @@ description: Turn a lecture note (lectures/lecNN.md) or pasted text into a compl
 | `PRESENTATION_DESIGN_GUIDE.md` | 巢狀 Scene/Frame 結構、Step 路徑、構圖(瞄準框)、視覺多樣性 | 設計結構前 |
 | `VISUAL_AND_LAYOUT_GUIDE.md` | 拆頁、內容預算、色彩語意、版型 A–T、示意圖做法與嵌入預算 | 設計每一頁前 |
 | `tools/deckkit/nativefig.py` | **優先**:同一份規格輸出原生 JianBauDau 節點(簡報)與 PNG(講義);方框、長條、點、線、標籤 | 畫示意圖時先用它(CLARITY C23) |
+| `tools/deckkit/example_infographic.py` | **目標輸出的參考範例**:一頁一圖的資訊圖(圖例、並排彩色欄、公式列、一句結論),照它的結構改資料與字串 | 設計任何以圖為主的頁之前 |
 | `jbd_figure.py` | 用 matplotlib 畫精準 SVG 示意圖並包成 image 節點 | 原生節點畫不出來的曲線、大量散點、數學排版 |
 | `FIGURE_RECIPES.md` | 必圖類內容的 matplotlib 配方(R1–R5,已實際執行驗證) | 畫圖前 |
 | `example-page-spec.json` | 單頁匯入範例(僅附錄 A 使用) | 附錄 A |
