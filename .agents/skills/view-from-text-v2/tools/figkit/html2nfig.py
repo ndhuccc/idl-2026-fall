@@ -106,7 +106,7 @@ def to_nfig(prims, fid, w, h, alt=""):
             else: f.rect(d["x"], d["y"], d["w"], d["h"], fill=_c(d["fill"]), stroke=_c(d["stroke"]), sw=d["sw"], radius=d["radius"])
         elif k == "ellipse": f.ellipse(d["cx"], d["cy"], d["d"], _c(d["fill"]))
         elif k == "line": f.line(d["x1"], d["y1"], d["x2"], d["y2"], _c(d["color"]), d["lw"])
-        elif k == "text": f.text(d["x"], d["y"], d["s"], _c(d["color"], True), max(16, round(d["size"])) if d["size"] < 16 else round(d["size"]), d["bold"], d["ha"], math=d["math"], w=(d["w"] if d["math"] else round(max(d["w"], _tw(d["s"], d["size"], d["bold"]) / 1.15 + 14))), name=d["name"], h=(max(d.get("h") or 0, round(d["size"] * 2.75)) if d["math"] and "\\left" in d["s"] else d.get("h")))
+        elif k == "text": f.text(d["x"], d["y"] + (6 if d["math"] and "\\left" in d["s"] else 0), d["s"], _c(d["color"], True), max(16, round(d["size"])) if d["size"] < 16 else round(d["size"]), d["bold"], d["ha"], math=d["math"], w=(d["w"] if d["math"] else round(max(d["w"], _tw(d["s"], d["size"], d["bold"]) / 1.15 + 14))), name=d["name"], h=(max(d.get("h") or 0, round(d["size"] * 2.75)) if d["math"] and "\\left" in d["s"] else d.get("h")))
     return f
 
 
