@@ -70,6 +70,29 @@ def lecture_inventory(path):
 LEVEL_LIMITS = {"public": (0, 80), "highschool": (1, 100), "undergrad": (2, 120), "grad": (2, 120), "pro": (2, 120)}
 
 
+def lecture_symbols(path):
+    """(symbol, meaning) rows of the lecture's symbol table (header cell starts with 符號 or Symbol)."""
+    rows, on = [], False
+    for ln in open(path, encoding="utf-8").read().splitlines():
+        cells = [c.strip() for c in ln.strip().strip("|").split("|")] if ln.strip().startswith("|") else None
+        if cells and re.match(r"(符號|Symbol)", cells[0]):
+            on = True; continue
+        if on:
+            if not cells: on = False; continue
+            if all(set(c) <= set("-: ") for c in cells): continue
+            if len(cells) >= 2:
+                for inner in re.findall(r"\$([^$]+)\$", cells[0]):
+                    depth, cur, parts = 0, "", []
+                    for ch in inner:
+                        depth += ch in "{(["; depth -= ch in "})]"
+                        if ch == "," and depth == 0: parts.append(cur); cur = ""
+                        else: cur += ch
+                    parts.append(cur)
+                    for p_ in parts:
+                        if len(re.sub(r"[\s\\]", "", p_)) >= 2: rows.append((p_.strip(), cells[1] + " " + (cells[2] if len(cells) > 2 else "")))
+    return rows
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("deck")
@@ -252,7 +275,12 @@ def main():
             if blocks > max_blocks: Wn("Q1", f"{tag}: {blocks} display formulas; level {args.level} allows {max_blocks}")
             body = sum(len(CJK.findall(re.sub(r"\$[^$]*\$", "", n["text"]))) for n in ns
                        if n["type"] in ("text", "shape") and n["style"]["fontSize"] < 40 and n["transform"]["y"] >= 130)
-            if max_chars and body > max_chars: Wn("Q2", f"{tag}: {body} Chinese body characters; level {args.level} allows {max_chars}")
+            if max_chars and body > int(max_chars * 1.5): Wn("Q2", f"{tag}: {body} Chinese body characters; level {args.level} allows {int(max_chars * 1.5)} per page (table cells do not count more than once; split the page rather than cut the derivation, CLARITY.md C21)")
+            if max_chars:
+                for n in ns:
+                    if n["type"] in ("text", "shape") and n["style"]["fontSize"] < 40 and n["transform"]["y"] >= 130 and "-tbl-" not in n.get("id", "") + n.get("name", ""):
+                        c_ = len(CJK.findall(re.sub(r"\$[^$]*\$", "", n["text"])))
+                        if c_ > max_chars: Wn("Q2", f"{tag}: one card has {c_} Chinese characters (limit {max_chars} per card): split it into two cards")
         if not args.monolingual:
             sub = [n for n in ns if n["type"] == "text" and n["style"]["fontSize"] < 40 and n["transform"]["y"] < 130 and n is not t
                    and not CJK.search(n["text"]) and en_words(n["text"]) >= 3]
@@ -433,6 +461,26 @@ def main():
     for m, c in meta_hits.items():
         if c >= 2: Wn("V2", f"the phrase {m!r} appears {c} times: it talks about the slide instead of the subject; say it the way a teacher would (CLARITY.md C16)")
 
+    # ---- C21 self-contained pages and C6 traceable numbers (X1-X4)
+    BACKREF = re.compile(r"上一頁|前一頁|前頁|前面(?:說|提|的|已)|如前所述|同前|見第\s*\d+\s*頁|上面(?:說|的|提)|previous page|as (?:above|before|shown earlier)|see page|earlier page|the page before", re.I)
+    TECH_META = re.compile(r"本講義(?:設計|重算|另)?|本教材|designed (?:here|for this lecture)|this lecture's|\(補充\)|［補充］")
+    for key, t in page_list:
+        nodes_ = [n for n in pages.get(key, []) if n["type"] in ("text", "shape")]
+        body_nodes = [n for n in nodes_ if "bridge" not in n.get("name", "").lower() and "bridge" not in n.get("id", "").lower()]
+        body_txt = "\n".join(n.get("text", "") for n in body_nodes)
+        tag = f"{key[0]}#p{key[1] + 1}"
+        m_ = BACKREF.search(body_txt)
+        if m_: Wn("X1", f"{tag}: the page body points back to another page ({m_.group(0)!r}); a reader should not have to flip back: repeat the needed definition, symbol, number or figure on this page (CLARITY.md C21)")
+        m_ = TECH_META.search(body_txt)
+        if m_: Wn("X4", f"{tag}: the page body talks about the material itself ({m_.group(0)!r}); say where the example comes from in plain words, or leave it to the notes (CLARITY.md C16)")
+        plain_txt = re.sub(r"\s", "", body_txt)
+        nums_ = re.findall(r"(?<![\w.])\d+\.\d{2,}|\d+\.?\d*\s*%", body_txt)
+        if len(nums_) >= 3 and "=" not in body_txt:
+            Wn("X3", f"{tag}: {len(nums_)} computed numbers but no worked step ('=' with the formula and the substitution); a reader must be able to recompute each one from this page (CLARITY.md C6, C21)")
+        for n in body_nodes:
+            if n.get("text", "").count("；") >= 3 and len(re.findall(r"\d+\.?\d*\s*%", n["text"])) >= 4:
+                Wn("X3", f"{tag}: a card strings together {len(re.findall(r'%', n['text']))} percentages with '；': use a table with the counts beside each percentage"); break
+
     for fid, fr in frames.items():
         sc = S.get(fr["frame"]["childSceneId"])
         if sc and sc["name"] != fr["text"] and sc["name"].startswith(fr["text"]) and len(sc["name"]) > len(fr["text"]):
@@ -477,7 +525,7 @@ def main():
             if tg["sceneId"] == root: continue
             idx = int((tg["point"]["x"]) // PITCH)
             ns = pages.get((tg["sceneId"], idx), [])
-            if t["label"].startswith(("延伸:", "延伸:")) or t["label"].lower().startswith("extension"):
+            if t["label"].startswith("延伸") or t["label"].lower().startswith("extension"):
                 ext += 1
                 continue
             text = "\n".join(n.get("text", "") for n in ns if n["type"] in ("text", "shape"))
@@ -507,6 +555,32 @@ def main():
         if missing_nums:
             Wn("N6", f"{len(missing_nums)}/{len(numbers)} numbers of the lecture are not on any slide: {', '.join(missing_nums[:30])}"
                      + (" ..." if len(missing_nums) > 30 else ""))
+        # X2: every symbol of the lecture's symbol table used on a page must be explained on that page (C1, C21)
+        for sym, meaning in lecture_symbols(args.lecture):
+            sn = re.sub(r"[\s$]", "", sym)
+            mb = {meaning[k:k + 2] for k in range(len(meaning) - 1) if CJK.match(meaning[k]) and CJK.match(meaning[k + 1])} | {w.lower() for w in re.findall(r"[A-Za-z]{4,}", meaning)}
+            if not mb: continue
+            for key, t in page_list:
+                txt = "\n".join(n.get("text", "") for n in pages.get(key, []) if n["type"] in ("text", "shape") and "bridge" not in n.get("name", "").lower())
+                if sn and sn in re.sub(r"[\s$]", "", txt):
+                    rest = re.sub(r"\$[^$]*\$", " ", txt).lower()
+                    if not any(b_ in rest for b_ in mb):
+                        Wn("X2", f"{key[0]}#p{key[1] + 1}: symbol {sym!r} is used but its meaning ({meaning[:20]!r}) is not stated on this page (CLARITY.md C1, C21)")
+        # X5: bold-defined terms of the lecture must be in the term registry
+        if args.terms:
+            reg_ = json.load(open(args.terms, encoding="utf-8"))
+            ltxt = open(args.lecture, encoding="utf-8").read()
+            gl_ = re.split(r"^##\s*(?:術語與來源|Terms and source)\s*$", ltxt, maxsplit=1, flags=re.M)
+            terms_ = []
+            if len(gl_) == 2:
+                for ln in gl_[1].splitlines():
+                    if ln.startswith("|") and not re.match(r"\|\s*(中文|---)", ln):
+                        c0 = ln.strip().strip("|").split("|")[0].strip()
+                        if c0: terms_.append(re.sub(r"[（(].*?[）)]", "", c0).strip())
+            for term in terms_:
+                names_ = set(reg_) | {x for v in reg_.values() for x in (v or {}).get("co_defined", []) + (v or {}).get("aliases", [])}
+                if not any(term.lower() in k.lower() or k.lower() in term.lower() for k in names_):
+                    Wn("X5", f"the lecture's glossary has {term!r} but the term registry has no entry: a reader of the deck may meet it undefined (CLARITY.md C12)")
         print(f"lecture: {args.lecture} | figures {len(figs)} (missing {sum(1 for f in figs if f not in args.exclude_fig and f'fig:{f}' not in names)}, "
               f"excluded {len(args.exclude_fig)})  formulas {len(formulas)} (missing {len(miss)})  numbers {len(numbers)} (missing {len(missing_nums)})")
 
