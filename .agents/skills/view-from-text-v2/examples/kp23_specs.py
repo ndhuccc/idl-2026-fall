@@ -408,3 +408,65 @@ def solution_steps():
                       {"role": "green", "title": tr("③ 核對", "③ check"), "lines": [tr("A 比較好；", "A is better;"), tr("B 完全沒有降低不純度", "B lowers the impurity by nothing"), tr("若分成 (4,0)、(0,4)：ΔI = 1，最大", "(4,0)|(0,4) split: ΔI = 1, max")], "result": tr("選 A", "pick A")}],
             "takeaway": tr("ΔI 越大，分裂後整體改善越多。", "The larger ΔI, the more the split improves overall.")}
     return "steps_flow", spec
+
+
+def bagging_story():
+    """One figure that replaces the three pages 高變異 / Bagging / Bagging 的結果: (1) the first cut jumps, (2) draw with replacement and vote, (3) the accuracy result."""
+    import json
+    from sklearn.tree import DecisionTreeClassifier
+    from figkit.parts import NFig as _N, header_chip, panel, chip, takeaway as _tk, tint as _tint, solid as _solid, icon
+    N = _nums(); thr = []; leaves = []
+    for s in range(8):
+        Xs, ys = N.moons2(100, 40 + s); t = DecisionTreeClassifier(criterion="entropy", random_state=0).fit(Xs, ys); thr.append(float(t.tree_.threshold[0])); leaves.append(int(t.get_n_leaves()))
+    single, bag, rf = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "kp23_bagres_cache.json")))
+    ms = lambda v: (float(np.mean(v)) * 100, float(np.std(v)) * 100)
+    s0, s1, s2 = ms(single), ms(bag), ms(rf)
+    f = _N("lec05-kp23-story", 1160, 456, T(tr(
+        f"一圖看高變異與 Bagging：①8 份各 200 點的訓練集，第一刀都切第二個特徵，門檻卻在 {min(thr):.2f} 到 {max(thr):.2f} 之間跳動（高變異）；②Bagging 從訓練集有放回地抽 B 份、各長一棵樹、最後多數決；③20 份訓練集在 2000 個新點上的準確率：單棵樹 {s0[0]:.1f}±{s0[1]:.1f}%、Bagging {s1[0]:.1f}±{s1[1]:.1f}%、隨機森林 {s2[0]:.1f}±{s2[1]:.1f}%。",
+        f"High variance and bagging in one figure: (1) trees on 8 training sets of 200 points all cut feature 2 first, but the threshold jumps between {min(thr):.2f} and {max(thr):.2f} (high variance); (2) bagging draws B sets with replacement, grows a tree on each and takes a majority vote; (3) accuracy of 20 training sets on 2000 new points: single tree {s0[0]:.1f}±{s0[1]:.1f}%, bagging {s1[0]:.1f}±{s1[1]:.1f}%, random forest {s2[0]:.1f}±{s2[1]:.1f}%.")))
+    cw, gap = 370, 25
+    X = [k * (cw + gap) for k in range(3)]
+    for k, (role, hd) in enumerate((("red", tr("① 高變異：換一份資料，樹就不同", "① High variance: new data, new tree")), ("green", tr("② Bagging：抽樣、各長一棵、投票", "② Bagging: sample, grow, vote")), ("blue", tr("③ 結果：新點準確率", "③ Result: accuracy on new points")))):
+        header_chip(f, X[k], 0, cw, 36, role, T(hd), size=17); panel(f, X[k], 40, cw, 336, role)
+        if k < 2: f.text(X[k] + cw + gap / 2, 200, "→", "TXT", 26, True, w=gap)
+    # panel 1: thresholds on a number line
+    x0 = X[0]
+    f.text(x0 + 14, 82, T(tr("訓練資料稍微不同，長出來的樹就很不同。", "slightly different data grow\nvery different trees.")), "TXT", 16, False, "left", w=cw - 24, name=T(tr("term:高變異", "term:High variance")))
+    f.text(x0 + cw / 2, 136, T(tr(f"8 份訓練集、8 棵不限深度的樹，\n第一刀都切第二個特徵；\n門檻從 {min(thr):.2f} 到 {max(thr):.2f}：", f"8 training sets, 8 unlimited-depth trees,\nthe first cut is always feature 2;\nthresholds from {min(thr):.2f} to {max(thr):.2f}:")), "TXT", 16, w=cw - 24)
+    ax0, ax1, ay = x0 + 30, x0 + cw - 30, 232; lo, hi = 0.0, 0.5; sxx = lambda v: ax0 + (v - lo) / (hi - lo) * (ax1 - ax0)
+    f.line(ax0, ay, ax1, ay, "MUT", 2)
+    for tk in (0, 0.1, 0.2, 0.3, 0.4, 0.5): f.line(sxx(tk), ay, sxx(tk), ay + 7, "MUT", 2); f.text(sxx(tk), ay + 24, f"{tk:g}", "MUT", 16, w=40)
+    seen = {}
+    for t in thr:
+        key = round(t, 2); n = seen.get(key, 0); seen[key] = n + 1
+        f.ellipse(sxx(t), ay - 22 - n * 18, 14, _solid("red"))
+    f.text(x0 + cw / 2, 300, T(tr(f"葉數 {min(leaves)} 到 {max(leaves)}；樹是階層式的，\n高處的一個錯會傳到下面所有葉。", f"{min(leaves)} to {max(leaves)} leaves; a tree is hierarchical,\nso one error high up spreads below.")), "TXT", 16, w=cw - 24)
+    f.text(x0 + cw / 2, 352, T(tr("紅點＝8 份資料各自的第一刀門檻", "red dot = first cut of one set")), "MUT", 16, w=cw - 24)
+    # panel 2: sampling with replacement + vote
+    x0 = X[1]
+    f.text(x0 + 14, 88, T(tr("從訓練集有放回地抽 $B$ 份，各長一棵樹，多數決。\n隨機森林：每個節點只從隨機挑的特徵裡選。", "draw $B$ sets with replacement, grow a tree\non each, majority vote. Random forest:\nnodes pick only among random features.")), "TXT", 16, False, "left", w=cw - 24, math=True, name=T(tr("term:Bagging", "term:Bagging")))
+    rng = np.random.default_rng(3); n = 8
+    def row(y, nums, lab):
+        f.text(x0 + 14, y, T(lab), "TXT", 16, True, "left", w=82)
+        for k2, v in enumerate(nums):
+            cx = x0 + 112 + 32 * k2; f.rect(cx - 13, y - 13, 26, 26, stroke="TXT", sw=1.6, radius=13); f.text(cx, y, str(v), "TXT", 16, True)
+    row(150, range(1, 9), tr("原本", "original"))
+    for i in range(2):
+        sm = sorted(rng.integers(1, n + 1, n).tolist()); row(196 + i * 42, sm, tr(f"樣本{i+1}", f"sample {i+1}"))
+    f.text(x0 + cw / 2, 270, T(tr("編號重複＝同一點被抽到多次（示意）", "repeated number = same point drawn again")), "MUT", 16, w=cw - 20)
+    for i, kd in enumerate(("circle", "square", "circle")):
+        xx = x0 + 70 + i * 110; f.text(xx, 306, T(tr(f"樹 {i+1}", f"tree {i+1}")), "TXT", 16, True, w=70); icon(f, kd, xx + 44, 306)
+    chip(f, x0 + 30, 334, cw - 60, 32, "green", T(tr("多數決：圓形 2 票對 1 票", "majority: circle wins 2 to 1")), size=17, bold=True)
+    # panel 3: dot plot
+    x0 = X[2]; px0, px1, lo, hi = x0 + 124, x0 + cw - 16, 80.0, 90.0; spx = lambda v: px0 + (v - lo) / (hi - lo) * (px1 - px0)
+    f.line(px0, 290, px1, 290, "MUT", 2)
+    for tk in (80, 84, 88): f.line(spx(tk), 290, spx(tk), 297, "MUT", 2); f.text(spx(tk), 312, str(tk), "MUT", 16, w=40)
+    f.text(x0 + cw / 2, 340, T(tr("準確率（%）：點＝一份訓練集，直條＝平均", "accuracy (%): dot = a training set, bar = mean")), "MUT", 16, w=cw - 14)
+    rr = np.random.default_rng(1)
+    for i, (nm, v, role, st) in enumerate(((tr("單棵樹", "single tree"), single, "red", s0), ("Bagging", bag, "green", s1), (tr("隨機森林", "random forest"), rf, "blue", s2))):
+        yc = 94 + i * 62; f.text(x0 + 14, yc - 8, T(nm), "TXT", 16, True, "left", w=112)
+        for a in v: f.ellipse(spx(a * 100), yc + float(rr.uniform(-17, 17)), 10, _solid(role))
+        f.line(spx(st[0]), yc - 27, spx(st[0]), yc + 27, _solid(role), 4)
+        f.text(x0 + 14, yc + 16, f"{st[0]:.1f}±{st[1]:.1f}%", "TXT", 16, True, "left", w=100)
+    _tk(f, 0, 392, 1160, 44, T(tr(f"門檻在 {min(thr):.2f} 到 {max(thr):.2f} 間跳動；有放回抽樣、各長一棵再投票，新點準確率從 {s0[0]:.1f}% 升到 {s1[0]:.1f}%。", f"The first threshold jumps between {min(thr):.2f} and {max(thr):.2f}; bagging lifts accuracy from {s0[0]:.1f}% to {s1[0]:.1f}%.")))
+    return f
