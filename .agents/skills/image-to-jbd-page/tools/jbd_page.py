@@ -32,9 +32,13 @@ def text_width(s, size, bold=False):
 
 class Page:
     def __init__(self, src_w=PAGE_W, src_h=PAGE_H, prefix="pg"):
-        self.k = PAGE_W / src_w
+        if not (math.isfinite(src_w) and math.isfinite(src_h) and src_w > 0 and src_h > 0):
+            raise ValueError("source dimensions must be positive finite numbers")
+        self.k = min(PAGE_W / src_w, PAGE_H / src_h)
+        self.offset_x = (PAGE_W - src_w * self.k) / 2
+        self.offset_y = (PAGE_H - src_h * self.k) / 2
         self.src_w, self.src_h = src_w, src_h
-        if abs(src_h * self.k - PAGE_H) > 2: print(f"[warn] source aspect {src_w}x{src_h} is not 16:9; page will be letterboxed vertically")
+        if self.offset_x > 1 or self.offset_y > 1: print(f"[info] source {src_w}x{src_h} fitted without cropping; centred with margins")
         self.prefix, self.nodes, self.warnings = prefix, [], []
 
     # ---------------------------------------------------------------- internals
@@ -42,7 +46,7 @@ class Page:
 
     def _add(self, typ, x, y, w, h, style, text="", kind=None, z=2, name=None):
         n = {"id": f"{self.prefix}-{len(self.nodes) + 1}", "type": typ, "name": name or f"{typ}#{len(self.nodes) + 1}", "sceneId": "SCENE",
-             "transform": {"x": round(self._s(x), 2), "y": round(self._s(y), 2), "scaleX": 1, "scaleY": 1, "rotation": 0},
+             "transform": {"x": round(self.offset_x + self._s(x), 2), "y": round(self.offset_y + self._s(y), 2), "scaleX": 1, "scaleY": 1, "rotation": 0},
              "width": max(round(self._s(w), 2), 1), "height": max(round(self._s(h), 2), 1), "zIndex": z, "locked": False, "style": style, "text": text}
         if kind: n["shapeKind"] = kind
         self.nodes.append(n)

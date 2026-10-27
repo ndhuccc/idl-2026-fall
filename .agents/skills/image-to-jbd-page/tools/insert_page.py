@@ -20,7 +20,7 @@ def main():
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--after", type=int); g.add_argument("--replace", type=int)
     ap.add_argument("--label", default=None); ap.add_argument("--notes", default=None); ap.add_argument("--scene", default=None, help="child scene id (default: the only non-root scene)")
-    ap.add_argument("--prefix", default=None, help="node id prefix (default: <scene id>-pNEW)"); ap.add_argument("--out", default=None)
+    ap.add_argument("--prefix", default=None, help="node id prefix (default: automatically chosen unused prefix)"); ap.add_argument("--out", default=None)
     a = ap.parse_args()
     d = json.load(open(a.deck, encoding="utf-8")); N, S, st = d["nodes"], d["scenes"], d["steps"]
     sid = a.scene or [k for k in S if k != d["rootSceneId"]][0]; sc = S[sid]
@@ -50,6 +50,11 @@ def main():
         for i, s in enumerate(st): s["order"] = i
         at = len(sc["nodeIds"])
     pre = a.prefix or f"{sid}-pnew{n}"
+    if a.prefix is None:
+        base, suffix = pre, 1
+        while any(f"{pre}-{i + 1}" in N for i in range(len(new))):
+            pre = f"{base}-v{suffix}"
+            suffix += 1
     for i, nd in enumerate(new):
         nd = copy.deepcopy(nd); nd["id"] = f"{pre}-{i + 1}"; nd["sceneId"] = sid; nd["transform"]["x"] = round(nd["transform"]["x"] + x0, 2)
         if nd["id"] in N: raise SystemExit(f"node id clash: {nd['id']} (use --prefix)")

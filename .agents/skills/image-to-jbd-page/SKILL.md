@@ -13,12 +13,13 @@ description: 把一張圖片(投影片截圖、資訊圖、示意圖)精準復�
 
 | 路徑 | 用途 |
 |---|---|
-| `tools/jbd_page.py` | 頁面建構庫 `Page`:所有座標用**原圖像素**,自動縮到 1280×720;`rect / ellipse / text / label / poly / line(含箭頭、虛線、曲線)/ grid`;`dump()` 會檢查字太小、可能溢出、超出頁面 |
+| `tools/jbd_page.py` | 頁面建構庫 `Page`:所有座標用**原圖像素**,等比例完整縮放並置中於 1280×720（非 16:9 留白、不裁切）;`rect / ellipse / text / label / poly / line(含箭頭、虛線、曲線)/ grid`;`dump()` 會檢查字太小、可能溢出、超出頁面 |
 | `tools/measure.py` | 量原圖:`grid`(加座標格線)、`crop`(放大局部)、`colors`(取點色碼)、`palette`(主色) |
 | `tools/new_deck.py` | 產生空白簡報(只在沒有現成簡報時用) |
 | `tools/insert_page.py` | 把頁插入(`--after N`)或取代(`--replace N`)簡報的第 N 頁,自動順延後面各頁與相機步驟 |
 | `tools/compare.py` | 渲染某頁,和原圖並排(可加 50% 疊合),找出差異 |
 | `tools/preview_deck.py`、`tools/deckkit/` | 近似渲染器(Chromium + KaTeX),`compare.py` 會呼叫 |
+| `tests/test_regressions.py` | 回歸測試：等比例置中、重複插頁／取代、其他頁內容與相機位置保留；執行 `python3 -m unittest discover -s tests -v` |
 | `examples/example_page.py` | 完整範例:建頁 → 新簡報 → 插入;跑一次就知道每個函式怎麼用 |
 | `docs/AI_AGENT_FILE_FORMAT_SPEC.md` | JianBauDau v3 格式說明書(含 polyline、漸層、陰影) |
 
@@ -47,6 +48,9 @@ description: 把一張圖片(投影片截圖、資訊圖、示意圖)精準復�
 - **只重畫圖上有的內容。** 不補充說明、不加講者備註以外的文字;講者備註只在使用者要求(或專案規範要求)時寫。
 
 ## 已知陷阱
+
+- 非 16:9 原圖採 contain 等比例縮放與置中留白；仍以原圖像素提供座標，切勿自行再加置中偏移。比對圖也採相同留白方式。
+- 插入／取代頁面的預設節點前綴會自動避開現存 ID；若指定 `--prefix`，請自行確保唯一，衝突會拒絕寫入。
 
 - `Page.text` 的框寬不夠會自動換行、框高不夠會溢出:`dump()` 的警告就是在抓這個,警告出現就加高或加寬,不要忽略。
 - **KaTeX**:不支援 `\dfrac`、`\iff`、`cases` 環境(用 `\frac`、`\Leftrightarrow`);`\text{}` 內不要放中文;下標用 `_`,多字元用 `{}`。
