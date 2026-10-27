@@ -211,6 +211,8 @@ python -m playwright install chromium     # 只有需要公式圖片時才需要
 
 ## 5. 視覺素材
 
+> **第 5 章 KP 講義的圖**：已有 v3 簡報的單元，講義圖由簡報頁產生（`.agents/skills/view-from-text-v3/SKILL.md` 的「發佈細節」：`make_specs.py`、`gen_figs.py`、`insert_figs.py`），圖說格式與上述 §5.0 的「功能」標記相同；新單元請先做簡報頁再產生講義圖，不另畫 Matplotlib 圖。
+
 ### 5.0 目標與判準
 
 示意圖的主要訴求有三點，**每張圖都必須至少服務其中一點**：
