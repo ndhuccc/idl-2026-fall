@@ -1,0 +1,134 @@
+[
+{
+"id": "curvature",
+"before": "2.",
+"zh": [
+"先看左邊兩張圖：A 的權重 0.2 但曲線陡（曲率 100），刪除代價 2；B 的權重 1 但曲線平（曲率 0.02），刪除代價 0.01；右側三張卡片是剪枝、曲率、海森矩陣的定義。〔功能：2〕",
+"局部二次損失：小權重 A 刪除代價 2，大權重 B 刪除代價 0.01。"
+],
+"en": [
+"First see the two charts on the left: A has weight 0.2 but a steep curve (curvature 100) and deletion cost 2; B has weight 1 but a flat curve (curvature 0.02) and deletion cost 0.01; the cards on the right define pruning, curvature and the Hessian. [Function: 2]",
+"Local quadratic losses: small-weight A costs 2 to delete, large-weight B costs 0.01."
+]
+},
+{
+"id": "saliency",
+"before": "3.",
+"zh": [
+"由上而下看左邊四步：泰勒展開、g≈0、對角近似、代入 δw=−w 得顯著度；再看右邊對數刻度上 A（2）與 B（0.01）的長條，相差 200 倍。〔功能：2〕",
+"顯著度的四步推導，以及對數刻度上 A 與 B 的刪除代價 2 與 0.01。"
+],
+"en": [
+"Read the four steps on the left from top to bottom: Taylor expansion, g≈0, the diagonal approximation, substituting δw=−w to get saliency; then see the bars for A (2) and B (0.01) on the log scale on the right, a 200-fold gap. [Function: 2]",
+"Four-step derivation of saliency, and the deletion costs 2 and 0.01 of A and B on a log scale."
+]
+},
+{
+"id": "flow",
+"before": "4.",
+"zh": [
+"上面由左到右看四步循環：訓練、估顯著度、少量刪除、再訓練並用驗證資料檢查，然後回到第 2 步；下面四格是這個估計會失準的情況。〔功能：2〕",
+"剪枝四步循環，以及顯著度估計失準的四種情況。"
+],
+"en": [
+"Follow the four-step loop across the top: train, estimate saliency, delete a few, retrain and check on validation data, then back to step 2; the four boxes below are cases where the estimate fails. [Function: 2]",
+"The four-step pruning loop and four cases where the saliency estimate fails."
+]
+},
+{
+"id": "reg",
+"before": "延伸",
+"zh": [
+"先看上面的總代價公式，再比較兩個面板的堆疊長條：α=0.1 時 A 是 0.50、B 是 0.30，選 B；α=0 時只看資料誤差，選 A。〔功能：2〕",
+"正則化：α=0.1 時模型 A 總代價 0.50、B 為 0.30，選 B；α=0 時只看資料誤差，選 A。"
+],
+"en": [
+"First see the total-cost formula on top, then compare the stacked bars of the two panels: at α=0.1 A is 0.50 and B is 0.30, so B; at α=0 only the data error counts, so A. [Function: 2]",
+"Regularization: at α=0.1 model A totals 0.50 and B 0.30, so B; at α=0 only the data error counts, so A."
+]
+},
+{
+"id": "rho",
+"before": "延伸",
+"zh": [
+"先看綠色曲線在 w 小時貼近 0、大時飽和到 1，再讀三個點：w=0.2、1、3 時約 0.0385、0.5、0.9；橘色曲線是導數，在原點為零，所以平滑的懲罰本身不保證精確的零權重。〔功能：2〕",
+"飽和懲罰與它的導數；w 為 0.2、1、3 時懲罰約 0.0385、0.5、0.9，導數在零點為零。"
+],
+"en": [
+"First see the green curve stay near 0 for small w and saturate at 1 for large w, then read the three points: about 0.0385, 0.5 and 0.9 at w=0.2, 1 and 3; the orange curve is the derivative, zero at the origin, so a smooth penalty alone does not guarantee exactly zero weights. [Function: 2]",
+"The saturating penalty and its derivative; at w=0.2, 1, 3 the penalty is about 0.0385, 0.5, 0.9 and the derivative is zero at 0."
+]
+},
+{
+"id": "ops",
+"before": "延伸",
+"zh": [
+"逐欄比較：刪連線、刪單元、縮小數值是三種不同的操作；最右欄是來源的複雜度項，A 加倍變 8 倍，只是量級摘要，不是分類錯誤率。〔功能：2〕",
+"刪連線、刪單元、縮小數值三種操作，以及來源複雜度項 A 的三次方。"
+],
+"en": [
+"Compare column by column: deleting connections, deleting units and shrinking values are three different operations; the last column is the source's complexity term, 8 times when A doubles, only an order-of-magnitude summary and not a classification error rate. [Function: 2]",
+"Deleting connections, deleting units and shrinking values, and the source's complexity term A cubed."
+]
+},
+{
+"id": "cascade",
+"before": "延伸",
+"zh": [
+"先看上面的階段與四步（兩個階段分開）和殘差、級聯相關法的定義；下面是教學分數 S：候選 v=(−1,1) 得 2，常數候選得 0。〔功能：2〕",
+"級聯相關法的兩階段四步與教學分數 S：候選 (−1,1) 得 2，常數候選得 0。"
+],
+"en": [
+"First see the stages and four steps on top (the two stages kept apart) and the definitions of residual and cascade correlation; below is the teaching score S: candidate v=(−1,1) gives 2 and the constant candidate 0. [Function: 2]",
+"The two stages and four steps of cascade correlation and the teaching score S: candidate (−1,1) gives 2, the constant candidate 0."
+]
+},
+{
+"id": "data",
+"before": "延伸",
+"zh": [
+"先看八個群的位置（A 四群、B 四群）與它們互相穿插的情形；右側是資料、網路與兩組動量設定。圖用相同的分布設定與固定種子 20261025 重抽，只核對資料分布，不是原始樣本，也沒有重跑網路訓練。〔功能：1〕",
+"按來源八組均值與每組 50 點重抽的 400 個樣本，變異數 0.08，固定種子 20261025；不是原始資料。"
+],
+"en": [
+"First see the positions of the eight clusters (four of A, four of B) and how they interleave; the right side lists the data, network and two momentum settings. The chart is redrawn from the same distribution with the fixed seed 20261025, checks the distribution only, is not the original sample and no network was retrained. [Function: 1]",
+"400 samples redrawn from the source's eight means with 50 points per cluster and variance 0.08, fixed seed 20261025; not the original data."
+]
+},
+{
+"id": "counts",
+"before": "延伸",
+"zh": [
+"左邊先看三根長條：剪枝前 480、刪除 455、保留 25，再讀比例：保留約 5.21%、刪除約 94.79%；右邊是［補充］p=0.5 等高線，不是訓練實驗。來源案例報告權重數從 480 減至 25；本講義未宣稱重跑原實驗。〔功能：2〕",
+"來源案例報告權重數從 480 減至 25；右為補充的 p=0.5 等高線，不是訓練實驗。"
+],
+"en": [
+"On the left see the three bars: 480 before pruning, 455 deleted, 25 kept, then the ratios: about 5.21% kept and 94.79% deleted; the right is the [supplementary] p=0.5 contour, not a training experiment. The source case reports weights cut from 480 to 25; this lecture does not claim to rerun it. [Function: 2]",
+"The source case reports weights cut from 480 to 25; the right is a supplementary p=0.5 contour, not a training experiment."
+]
+},
+{
+"id": "comp",
+"before": "延伸",
+"zh": [
+"由左到右看三步：只刪 w₁ 代價 0.5；允許 w₂ 補償出現交叉項；取最小得 δw₂=0.25、代價 0.4375；右邊是拋物線與中心差分的數值檢查。〔功能：2〕",
+"補充二次例子：只刪 w₁ 代價 0.5，允許 w₂ 補償後降到 0.4375；中心差分估得 H=2。"
+],
+"en": [
+"Read three steps from left to right: deleting only w1 costs 0.5; allowing w2 to compensate brings in a cross term; the minimum gives δw2=0.25 and cost 0.4375; the right shows the parabola and the central-difference check. [Function: 2]",
+"Supplementary quadratic example: deleting only w1 costs 0.5, allowing w2 to compensate lowers it to 0.4375; the central difference gives H=2."
+]
+},
+{
+"id": "solution",
+"before": "延伸",
+"zh": [
+"由左到右看兩個框：C 與 D 的顯著度 1 與 0.2，先刪 D；ρ(2)=0.5，權重仍是 2；懲罰不等於刪除。〔功能：3〕",
+"練習的解答：C 與 D 的顯著度為 1 與 0.2；ρ(2)=0.5，權重仍是 2。"
+],
+"en": [
+"Read the two boxes from left to right: saliency 1 and 0.2 for C and D, so D first; ρ(2)=0.5 and the weight is still 2; a penalty is not a deletion. [Function: 3]",
+"Exercise answers: saliency of C and D is 1 and 0.2; ρ(2)=0.5 and the weight is still 2."
+]
+}
+]
