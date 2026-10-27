@@ -133,7 +133,7 @@ JianBauDau 不是「一張一張投影片」的線性模型，而是：
 | `transform.scaleX` / `transform.scaleY` | number | 額外縮放倍率，預設 `1`，不能是 `0`。一般情況下直接固定填 `1`，用 `width`/`height` 決定實際尺寸即可，不需要用縮放。 |
 | `transform.rotation` | number | 旋轉角度，**單位是度**（例如轉 90 度填 `90`）。沒有旋轉需求就填 `0`。 |
 | `width` / `height` | number | 節點的寬高，**必須 > 0**。 |
-| `zIndex` | number | 疊放順序，數字越大越上層。同一個 Scene 裡的節點建議給遞增的整數（0, 1, 2, ...），數字本身沒有絕對意義，只用來比大小。**頁面背景放最低、文字放最高。** |
+| `zIndex` | number | 疊放順序，數字越大越上層。同一個 Scene 裡的節點建議給遞增的整數（0, 1, 2, ...），數字本身沒有絕對意義，只用來比大小。**頁面背景放最低、文字放最高。**（連接線不受 `zIndex` 影響，永遠畫在所有物件之上。） |
 | `locked` | boolean | 是否鎖定禁止編輯，agent 產生內容時填 `false` 即可。 |
 | `style` | NodeStyle | 見下方。 |
 | `text` | string | 這個節點顯示的文字（`text`／`shape` 節點會實際渲染文字內容；`frame` 節點的 `text` 是它的標題；其他型別節點這個欄位可以填一個辨識用的名稱字串，不會顯示出來，但仍須是字串，不能省略）。 |
@@ -256,7 +256,7 @@ JianBauDau 不是「一張一張投影片」的線性模型，而是：
 ### `type: "text"` / `type: "shape"`
 
 - 純文字或幾何圖形卡片。`text` 欄位放要顯示的內容（支援 Markdown，見下一節）。
-- `shape` 節點另外需要 `shapeKind`：`"rectangle" | "ellipse" | "triangle" | "diamond" | "pentagon" | "star" | "arrow" | "polygon"`。
+- `shape` 節點另外需要 `shapeKind`：`"rectangle" | "ellipse" | "triangle" | "diamond" | "pentagon" | "star" | "arrow" | "polygon" | "polyline"`。
 - **非矩形形狀（`ellipse`／`triangle`／`diamond`／`pentagon`／`star`／`arrow`／`polygon`）裡不要放長文字**——文字是置中的矩形範圍，塞進尖角形狀會被截斷。用這些形狀當語意化圖示（例如 `star` 代表能量、`ellipse` 代表液體、`diamond` 代表分子、`arrow` 代表流動），文字另外用一個獨立的 `text` 節點放在旁邊。
 
 ### `shapeKind: "polygon"`：任意多邊形與曲線路徑
@@ -282,7 +282,7 @@ JianBauDau 不是「一張一張投影片」的線性模型，而是：
 
 - `polygonPoints`：`{ x, y }[]`，**3～200 個頂點**，依序連線並**自動封閉**。座標是**該節點自己外框的 0～100**：`x` 由左到右、`y` 由上到下（不是 Scene 座標）。所以改 `width`／`height` 時，多邊形會跟著縮放。
 - **外框要貼齊頂點**：`transform.x/y` 與 `width/height` 請設成頂點範圍的外接矩形（頂點最好有碰到 0 與 100），選取框才會貼合圖形。agent 的作法：先在 Scene 座標寫好每個頂點 → 取最小／最大 x、y 當外框 → 每個頂點換算成 `((x − 外框x) / width) × 100`。
-- 頂點少於 3 個、含非有限數字、或超過 200 個時，匯入會**退回成一般矩形**（`shapeKind` 與 `polygonPoints` 被丟掉），不會整份被拒絕。
+- 頂點少於 3 個（`polyline` 少於 2 個）、含非有限數字、或超過 200 個時，匯入會**退回成一般矩形**（`shapeKind` 與 `polygonPoints` 被丟掉），不會整份被拒絕。
 - 多邊形可以套用所有填色效果（透明度、漸層、陰影）與邊框設定。
 
 **曲線路徑**：頂點加上 `"smooth": true` 就是**曲線點**，輪廓會平滑地穿過它（用 Catmull-Rom 曲線，頂點的切線方向由前後兩個鄰點決定）；沒有 `smooth` 的頂點仍是**尖角**。尖角與曲線點可以混用——例如愛心下方的尖端是尖角、其餘是曲線點；一片葉子兩端是尖角、兩側是曲線點。全部頂點都 `smooth` 就是一個圓潤的塊面。
@@ -300,6 +300,31 @@ JianBauDau 不是「一張一張投影片」的線性模型，而是：
 ```
 
 曲線點越少、距離越遠，彎曲越大；想要更貼近形狀就多放幾個曲線點。曲線可能略微超出頂點圍成的範圍，邊緣留一點空間即可。
+
+### `shapeKind: "polyline"`：開放的折線／曲線
+
+`polyline` 是**不封閉**的路徑：頂點依序連線，**最後一點不會接回第一點**。格式與 `polygon` 完全相同（`polygonPoints`、座標是節點外框的 0～100、`smooth` 曲線點），差別只有：
+
+- **至少 2 個頂點**（`polygon` 要 3 個），最多 200 個。少於 2 個、或含非有限數字，匯入時退回成一般矩形。
+- **以描邊為主**：`style.fill` 建議用 `"transparent"`（若填色，路徑會以首尾連線為界填滿），`style.stroke` 是線的顏色（不能是 `"transparent"`），`style.borderWidth` 是線寬（建議 3～8），`borderStyle` 可設 `"dashed"`／`"dotted"` 做虛線。線端與轉角是圓的。
+- 曲線點的端點也可以是曲線點：端點的切線由它唯一的鄰點決定。
+- 可以搭配陰影（`shadow*`）。漸層填色對線本身沒有意義（它只影響被封起來的填色區）。
+- 連接線（Connector）連到 polyline 時，掛點落在外框上（開放的線沒有「內部」可以射線求交）。
+
+```jsonc
+// 一條開放的波浪線：粉紅、線寬 6、全是曲線點
+{
+  "id": "wave-line", "type": "shape", "shapeKind": "polyline", "name": "波浪線", "sceneId": "scene-root",
+  "polygonPoints": [
+    { "x": 0, "y": 80, "smooth": true }, { "x": 20, "y": 10, "smooth": true }, { "x": 45, "y": 90, "smooth": true },
+    { "x": 70, "y": 10, "smooth": true }, { "x": 100, "y": 60, "smooth": true }
+  ],
+  "transform": { "x": 80, "y": 600, "scaleX": 1, "scaleY": 1, "rotation": 0 }, "width": 400, "height": 70,
+  "zIndex": 4, "locked": false,
+  "style": { "fill": "transparent", "stroke": "#f9a8d4", "textColor": "#ffffff", "fontSize": 20, "radius": 0, "borderWidth": 6 },
+  "text": ""
+}
+```
 
 ### `type: "image"`
 
@@ -369,7 +394,18 @@ JianBauDau 不是「一張一張投影片」的線性模型，而是：
 - `direction`：`"none" | "forward" | "backward" | "both"`，決定箭頭方向，可省略。
 - `arrowSize`：`"small" | "medium" | "large"`，可省略。
 - `waypoints`（可省略）：`{x,y}[]`，手動指定連接線經過的中繼點。
-- `label`（可省略）：`{ text, t, offset }`——`t` 是 0～1，代表標籤沿連線的相對位置（0.5 = 中點）；`offset` 是 `"on" | "above" | "below"`。**`label.text` 的 `style.textColor` 一律要用深色**（見上方 NodeStyle 一節的說明）。
+- `label`（可省略）：`{ text, t, offset }`——`t` 是 0～1，代表標籤沿連線的相對位置（0.5 = 中點）；`offset` 是 `"on" | "above" | "below"`。**`label.text` 的 `style.textColor` 一律要用深色**（見上方 NodeStyle 一節的說明）。標籤是一張不小的白色卡片（字級 20 的 4 個中文字就約 120 寬），**兩端點距離太短時會把整條線蓋住**——要放標籤，兩端點之間請留 200 以上的距離，或乾脆不放標籤。
+- `style.stroke` 是線與箭頭的顏色，`style.borderWidth` 是線寬（預設 3），`style.borderStyle` 可設 `"dashed"`／`"dotted"`。
+
+**連接線畫在哪、掛點在哪（影響你選 hook 與判斷畫面）：**
+
+- **連接線永遠畫在所有物件之上**，不受 `zIndex` 影響（所以不會被不透明的頁面背景蓋住）。連接線節點本身的 `zIndex` 不影響畫面。
+- 16 個掛點是從節點**中心**往 16 個等角度方向射出的射線，與節點**實際輪廓**的交點：
+  - **矩形外框**（`text`、矩形 `shape`、圖片、Frame…）：在外框邊上；有圓角（`style.radius`）時，落在圓角內的掛點會沿圓角的弧線，不會浮在直角上。
+  - **橢圓、三角形、菱形、五邊形、星形、箭頭、`polygon`（含曲線點）**：在**繪製出來的輪廓上**（凹形狀如星形取最外側的交點）。
+  - **`polyline`**（開放的線，沒有「內部」）：在外框邊上。
+- 想讓兩個物件之間的線最短，選**面向彼此**的掛點：A 在左、B 在右時，用 A 的 `4`（右）與 B 的 `12`（左）；A 在上、B 在下時，用 A 的 `8`（下）與 B 的 `0`（上）。
+- 在編輯器裡拖曳連接線放在目標物件**本體上**時，會自動連到面向起點那一側的掛點；放在空白處則取消。
 
 ---
 
@@ -538,7 +574,7 @@ App 匯入檔案時會執行結構驗證，以下任何一條不成立，整份�
 - `gradientType` 只認 `"radial"`，其他值當作線性。
 - `gradientStops` 裡 `offset` 不是有限數字、`color` 不是非空字串的項目會被丟掉；`offset` 被夾進 0.01～0.99、依 `offset` 排序、最多留 8 個；整個陣列都不可用就視為沒有。
 - `shadowColor` 不是非空字串 → 沒有陰影。
-- `shapeKind: "polygon"` 但 `polygonPoints` 不足 3 個、超過 200 個、或含非有限數字 → **退回成一般矩形**。`smooth` 只認 `true`。
+- `shapeKind: "polygon"` 但 `polygonPoints` 不足 3 個（`"polyline"` 不足 2 個）、超過 200 個、或含非有限數字 → **退回成一般矩形**。`smooth` 只認 `true`。
 
 除了上面這些之外，還有幾個**不會報錯、但會讓畫面明顯出錯**的地方，agent 產生內容時要主動避免：
 

@@ -17,7 +17,7 @@
 | `svg()` 的 line / rect / circle / ellipse | 線、矩形、橢圓 |
 
 ## 一定要避免
-- 漸層(轉成中間色)、陰影(丟棄)、polygon/star 等多邊形(改用圓、矩形、線組合)。
+- `filter: drop-shadow`、圓弧 `A` 路徑(仍不支援;漸層、陰影、polygon 與曲線路徑已支援,見最後的「新功能」各節)。
 - 圓形加外框(改成圓角矩形或另畫橢圓)。
 - 多行文字放進 chip(行高等於 chip 高,會溢出)→ 拆成多個文字節點,或改單行。
 - 字級 < 16px;內容超出畫布;文字自己換行(轉換後寬度不同,會重疊)。
@@ -76,7 +76,12 @@ JianBauDau 取消了每個 Frame 上方給 KP 標題的標題區,並新增四項
 | N3 / X3 數字沒有算式 | 頁面出現數字卻沒有「=」的代入步驟或〔程式計算〕標記 | 頁面上寫標記 `〔程式計算〕`(英文 `(computed)`,不要被換行拆開),或寫出算式 |
 | G3 Unicode 上下標 | 圖內用了 ², ₁ 等 | 可接受(WARN);公式一律 KaTeX |
 | PNG 圖畫不出公式 | 講義 PNG 用 matplotlib mathtext | 用 `\leq`(不用 `\le`)、`\frac`(不用 `\dfrac`)、`\sqrt{2}`(不用 `\sqrt2`)、不用 `\tfrac`、`bmatrix`、`\iff` |
+| 講義 PNG 失敗(`\\iff`、`\\begin{cases}`、`\\mathbf x`) | matplotlib mathtext 不支援 | 用 `\\Leftrightarrow`、分行寫兩條公式、`\\mathbf{x}` |
+| 發佈後圖說重複 | 舊講義是「圖片在前、圖說在後」,`insert_figs.py` 只認「圖說在前」 | 發佈前先把該講義的圖說區塊調成圖說在前(中英都要),單獨提交(發佈鎖內)再發佈 |
 | 公式框高度 overflow(差幾單位) | `\frac` 的高度估計 | 縮小字級或加大 `formula` 的 `h`;差 < 10 且畫面無問題可接受 |
 | 文字 < 16px 的 lint | svg 文字或小標籤 | 全部 ≥ 16 |
 | 背景跑超過 2 分鐘 | `run_unit.sh` 約 3 分鐘 | `nohup bash -c '...' &` 背景執行,輪詢 `run.log` 直到出現 `screenshots:`;不要用 `pkill -f`(會殺掉自己) |
+
+**polyline(開放折線／曲線,JianBauDau 新增)**:`shapeKind: "polyline"`,格式與 `polygon` 相同(`polygonPoints` 為外框 0~100 的座標、`smooth: true` 曲線點),差別在**不封閉**(最後一點不接回第一點)、**至少 2 個頂點**、以描邊為主:`fill` 用 `"transparent"`、`stroke` 是線色(不能是 transparent)、`borderWidth` 是線寬(建議 3~8)、`borderStyle: "dashed"|"dotted"` 可做虛線、線端與轉角是圓的;可搭配陰影;Connector 連到 polyline 時掛點在外框上。頂點少於 2 個或含非有限數字會退回矩形。完整格式見 `docs/AI_AGENT_FILE_FORMAT_SPEC.md` 的「`shapeKind: "polyline"`」一節,範例在 `docs/fill-effects-and-polygons.json`(第 5 頁後半的曲線與折線頁)。
+- **目前工具鏈尚未對應 polyline**:`html2nfig`(HTML → 原生節點)與 `NFig.poly` 只輸出封閉的 polygon,開放的 SVG `<polyline>` 或沒有 `Z` 的 `<path>` 會被當成封閉多邊形(首尾連線)。需要開放線時,暫時用 `line`(線段)或在 SVG 路徑末端留成封閉形,並在回報中告知教授;若要實作支援,在 `nativefig.py` 的 `poly()` 加 `closed=False` → `shapeKind: "polyline"`,在 `html2nfig.py` 把 `<polyline>` 與無 `Z` 的 `<path>`(`fill="none"`)輸出成 `closed: false` 的 path,並更新 `preview_deck.py`、`audit_deck.py` 的形狀判斷與 `to_png`。
 

@@ -43,11 +43,19 @@ fc-list | grep -i "zen hei\|noto sans cjk"                         # 要有中�
 6. 更新 `CHANGELOG.md`(最上方一行)、`COURSE_STATE.md`(末尾一行,含「v3 已重做」清單與下一步)、`schedule.md`(只在講義或簡報檔名變動時)、`my-jarvis/logs/2026-10-24-lec05-投影片重做.md`(檔尾「時間為推算」之前加一行)。
 7. 逐一 `git add`(`CHANGELOG.md COURSE_STATE.md assets/figures lectures slides .agents/skills/view-from-text-v3/examples`),提交前看 `git diff --cached --name-status HEAD`:只該有 A、M,以及你刻意刪的舊圖 D;提交到 `main` 並推送;同步 `examples/kpNN_*.py` 到 course-template 與 idl-2026-fall 並各自推送。my-jarvis 的日誌另外提交推送。
 
+**一鍵發佈(多個 agent 平行時必用)**:`tools/publish_unit.py` 把上面 1–7 步包成一個指令,並用鎖(`/tmp/pr-publish.lock`)讓多個 agent 依序發佈、不會互相踩到:
+```bash
+python3 .agents/skills/view-from-text-v3/tools/publish_unit.py --unit-dir <單元資料夾> --kp kp09 --pages 10 \
+  --lecture lec05-kp09-cost-functions --map map.json --caps caps.json --remove "lec05-kp09-舊圖.png,..." --en-before "延伸=Extension" \
+  --changelog "[更新] KP09 簡報以 view-from-text-v3 重做並發佈:..." --state "KP09 簡報以 v3 重做並發佈(內容頁 N 頁,中英文版),講義換圖;..." --log "依教授指示 ... 重做 KP09 並發佈 ..."
+```
+先加 `--dry-run` 看圖與檢查結果(之後用 `git checkout -- . && git clean -fdq assets` 還原);沒問題再正式執行。腳本會在 `git status` 不乾淨時中止,不要在 repo 裡留未提交的手動修改。
+
 ## 與教授互動的固定節奏
 規劃(每頁標題、主圖、對應講義節、數字)→ 教授回「如你建議」→ 製作並稽核到 FAIL 0 → 傳中英文截圖(`tools/sheet.py` 拼圖)→ 教授說「發佈 KPNN」才寫入 repo。教授沒說發佈,不寫入;不要自己決定合併或刪頁。
 
 ## 新功能(2026-10-27)
-填色透明度、漸層、陰影與多邊形已可用,頁面也不再保留 KP 標題區(整頁 1280×720);用法見 `DESIGN.md` 最後一節與 `docs/`。
+填色透明度、漸層(含多色、徑向)、陰影、多邊形、曲線路徑與開放折線 polyline 已可用(polyline 的工具鏈對應尚未實作,見 `DESIGN.md` 最後一節),頁面也不再保留 KP 標題區(整頁 1280×720);用法見 `DESIGN.md` 最後一節與 `docs/`。
 
 ## 規則(摘要)
 - 原生節點成品;字級 ≥ 16px;可用填色透明度、單色與多色漸層、徑向漸層、陰影、多邊形與曲線路徑(用法見 `DESIGN.md` 最後一節與 `docs/`);圖寬 1160、高 ≤ 480(整頁畫布為 1280×720)。

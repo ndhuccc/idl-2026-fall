@@ -74,6 +74,9 @@
         "p5c-leaf",
         "p5c-wave",
         "p5c-blob",
+        "p5c-line",
+        "p5c-line-cap",
+        "p5c-link",
         "p5c-heart-cap",
         "p5c-drop-cap",
         "p5c-leaf-cap",
@@ -2457,10 +2460,138 @@
       },
       "text": ""
     },
-    "p5c-heart-cap": {
+    "p5c-line": {
       "locked": false,
       "sceneId": "scene-root",
       "zIndex": 67,
+      "id": "p5c-line",
+      "type": "shape",
+      "name": "開放曲線",
+      "shapeKind": "polyline",
+      "polygonPoints": [
+        {
+          "x": 0,
+          "y": 63.64
+        },
+        {
+          "x": 17.95,
+          "y": 0,
+          "smooth": true
+        },
+        {
+          "x": 38.46,
+          "y": 100,
+          "smooth": true
+        },
+        {
+          "x": 58.97,
+          "y": 0,
+          "smooth": true
+        },
+        {
+          "x": 79.49,
+          "y": 100,
+          "smooth": true
+        },
+        {
+          "x": 100,
+          "y": 21.21,
+          "smooth": true
+        }
+      ],
+      "transform": {
+        "x": 7180,
+        "y": 598,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 390,
+      "height": 66,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#f9a8d4",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 6,
+        "shadowColor": "#0b0614",
+        "shadowOpacity": 0.55,
+        "shadowBlur": 14,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 10
+      },
+      "text": ""
+    },
+    "p5c-line-cap": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 68,
+      "id": "p5c-line-cap",
+      "type": "text",
+      "name": "開放曲線說明",
+      "transform": {
+        "x": 7180,
+        "y": 672,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 420,
+      "height": 34,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#d9cdf0",
+        "fontSize": 20,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "Polyline：開放的曲線，不封閉"
+    },
+    "p5c-link": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 69,
+      "id": "p5c-link",
+      "type": "connector",
+      "name": "愛心到水滴",
+      "transform": {
+        "x": 7100,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 10,
+      "height": 10,
+      "style": {
+        "fill": "transparent",
+        "stroke": "#f9a8d4",
+        "textColor": "#1c1712",
+        "fontSize": 20,
+        "radius": 0,
+        "borderStyle": "solid",
+        "borderWidth": 3
+      },
+      "text": "",
+      "connector": {
+        "sourceNodeId": "p5c-heart",
+        "sourceHook": 4,
+        "targetNodeId": "p5c-drop",
+        "targetHook": 12,
+        "curve": true,
+        "direction": "forward",
+        "arrowSize": "medium"
+      }
+    },
+    "p5c-heart-cap": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 70,
       "id": "p5c-heart-cap",
       "type": "text",
       "name": "愛心說明",
@@ -2489,7 +2620,7 @@
     "p5c-drop-cap": {
       "locked": false,
       "sceneId": "scene-root",
-      "zIndex": 68,
+      "zIndex": 71,
       "id": "p5c-drop-cap",
       "type": "text",
       "name": "水滴說明",
@@ -2518,7 +2649,7 @@
     "p5c-leaf-cap": {
       "locked": false,
       "sceneId": "scene-root",
-      "zIndex": 69,
+      "zIndex": 72,
       "id": "p5c-leaf-cap",
       "type": "text",
       "name": "葉片說明",
@@ -2547,7 +2678,7 @@
     "p5c-wave-cap": {
       "locked": false,
       "sceneId": "scene-root",
-      "zIndex": 70,
+      "zIndex": 73,
       "id": "p5c-wave-cap",
       "type": "text",
       "name": "波浪說明",
@@ -2576,7 +2707,7 @@
     "p5c-blob-cap": {
       "locked": false,
       "sceneId": "scene-root",
-      "zIndex": 71,
+      "zIndex": 74,
       "id": "p5c-blob-cap",
       "type": "text",
       "name": "圓潤塊說明",
@@ -2605,7 +2736,7 @@
     "p6-bg": {
       "locked": false,
       "sceneId": "scene-root",
-      "zIndex": 72,
+      "zIndex": 75,
       "id": "p6-bg",
       "type": "shape",
       "name": "頁面背景",
@@ -2634,7 +2765,7 @@
     "p6-blob-a": {
       "locked": false,
       "sceneId": "scene-root",
-      "zIndex": 73,
+      "zIndex": 76,
       "id": "p6-blob-a",
       "type": "shape",
       "name": "紫粉曲線塊",
@@ -2696,7 +2827,7 @@
     "p6-blob-b": {
       "locked": false,
       "sceneId": "scene-root",
-      "zIndex": 74,
+      "zIndex": 77,
       "id": "p6-blob-b",
       "type": "shape",
       "name": "青綠曲線塊",
@@ -2758,7 +2889,7 @@
     "p6-blob-c": {
       "locked": false,
       "sceneId": "scene-root",
-      "zIndex": 75,
+      "zIndex": 78,
       "id": "p6-blob-c",
       "type": "shape",
       "name": "橘黃曲線塊",
@@ -2815,7 +2946,7 @@
     "p6-glass": {
       "locked": false,
       "sceneId": "scene-root",
-      "zIndex": 76,
+      "zIndex": 79,
       "id": "p6-glass",
       "type": "shape",
       "name": "深色玻璃卡片",
@@ -2850,7 +2981,7 @@
     "p6-title": {
       "locked": false,
       "sceneId": "scene-root",
-      "zIndex": 77,
+      "zIndex": 80,
       "id": "p6-title",
       "type": "text",
       "name": "綜合標題",
@@ -2879,7 +3010,7 @@
     "p6-body": {
       "locked": false,
       "sceneId": "scene-root",
-      "zIndex": 78,
+      "zIndex": 81,
       "id": "p6-body",
       "type": "text",
       "name": "綜合說明",
@@ -3037,7 +3168,7 @@
       "durationMs": 1000,
       "holdMs": 600,
       "easing": "smooth",
-      "speakerNotes": "曲線路徑：頂點加 smooth:true 就是曲線點，輪廓平滑穿過它；沒有 smooth 的頂點仍是尖角，可以混用（愛心的尖端、葉片的兩端）。Ctrl + 雙擊頂點可切換，Shift + 點擊是直接放曲線點。"
+      "speakerNotes": "曲線路徑：頂點加 smooth:true 就是曲線點，輪廓平滑穿過它；沒有 smooth 的頂點仍是尖角，可以混用（愛心的尖端、葉片的兩端）。Ctrl + 雙擊頂點可切換，Shift + 點擊是直接放曲線點。左下角是 polyline（開放路徑）；愛心與水滴之間的連接線，端點貼著形狀的實際輪廓。"
     },
     {
       "id": "step-7",
@@ -3064,8 +3195,8 @@
   ],
   "metadata": {
     "title": "填色效果與多邊形範例",
-    "createdAt": "2026-10-27T00:58:07.867Z",
-    "updatedAt": "2026-10-27T00:58:07.867Z",
+    "createdAt": "2026-10-27T08:00:55.084Z",
+    "updatedAt": "2026-10-27T08:00:55.084Z",
     "aspectRatio": "16:9"
   }
 }

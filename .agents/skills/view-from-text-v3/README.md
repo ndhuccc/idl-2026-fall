@@ -8,3 +8,5 @@ python3 tools/new_unit.py /tmp/kp17 KP17 "單元名" "Unit name"
 python3 examples/kp18_pnn.py /tmp/out       # 範例:HTML 設計 → zh/en 的 .html/.png/.json
 MIN=40 bash tools/run_unit.sh /tmp/kp17 kp17_deck
 ```
+
+**2026-10-28 起**:JianBauDau 另支援 `shapeKind: "polyline"`(開放折線/曲線);格式說明與範例已更新在 `docs/`,工具鏈對應見 `DESIGN.md` 最後一節。
