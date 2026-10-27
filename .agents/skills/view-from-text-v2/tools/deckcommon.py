@@ -1,7 +1,7 @@
 """Shared helpers for the KP decks: one script builds the zh, en (or bilingual) deck, switched by KP_LANG."""
 import json, os, re, sys
 os.environ.setdefault("DECK_WORK", os.getcwd())
-sys.path.insert(0, "/home/user/pr-2026-fall/.agents/skills/view-from-text/tools/deckkit")
+sys.path.insert(0, os.path.abspath(os.path.join(os.environ.get("SKILLS_DIR") or os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."), "view-from-text", "tools", "deckkit")))   # deckcommon is copied into unit folders: set SKILLS_DIR there (run_unit.sh does)
 import kit
 from kit import AUX, EDGE, MAIN, OK, REF, WARN
 VIO, ROSE = "#a98bd0", "#d08bb0"

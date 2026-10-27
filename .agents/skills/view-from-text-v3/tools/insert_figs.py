@@ -1,10 +1,10 @@
 """Insert figure captions + images into a lecture (zh and en) from a JSON file.
-    python3 insert_figs.py <captions.json> <lecture_zh.md> <lecture_en.md> [--prefix lec05-kp18]
+    python3 insert_figs.py <captions.json> <lecture_zh.md> <lecture_en.md> [--prefix lec06-kp04]
 captions.json: [{"id": "cost", "before": "延伸", "zh": ["圖說文字（含〔功能：N〕）", "alt 文字"], "en": ["Figure text [Function: N]", "alt text"]}, ...]
   "before": the start of the heading to insert before (matched against ### headings; use "END" for the end, before the terms section).
 An existing block `圖說 `<prefix>-<id>`` / `Figure `<prefix>-<id>`` is replaced. The English file uses the -en PNG. Paths are ../assets (zh) and ../../assets (en)."""
 import re, sys, json
-cap_file, zh_path, en_path = sys.argv[1:4]; prefix = sys.argv[sys.argv.index("--prefix") + 1] if "--prefix" in sys.argv else "lec05-kp"
+cap_file, zh_path, en_path = sys.argv[1:4]; prefix = sys.argv[sys.argv.index("--prefix") + 1] if "--prefix" in sys.argv else "lec06-kp"
 caps = json.load(open(cap_file))
 for path, lang in ((zh_path, "zh"), (en_path, "en")):
     s = open(path).read(); en = lang == "en"

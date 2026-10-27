@@ -20,7 +20,7 @@ v3 沿用 v1/v2 的規則與工具(CLARITY、LEVELS、NARRATIVE、`deckv2`、`au
    - **D. 要視覺探索**:先用 `anthropic-skills:page-to-teaching-diagram` 產生提示詞/設計稿,再用 A 實作。
 4. **建置與稽核**:`MIN=<分鐘> bash tools/run_unit.sh <dir> kpNN_deck`(fit → audit_deck → preview → bottoms)。FAIL 必須為 0;看 `W_zh/prev`、`W_en/prev` 的截圖。
 5. **交教授確認**:傳中、英文各一張截圖;**教授說「發佈」才寫入 repo**。
-6. **發佈**:複製 `draft.jbd.json` 到 `slides/lec05-kpNN-*.jbd.json`(英文加 `-en`);`tools/gen_figs.py` 產生講義 PNG;`tools/insert_figs.py` 更新講義(中英)圖說;更新 `CHANGELOG.md`、`COURSE_STATE.md`、`schedule.md`(若有變動)、日誌;跑 `check_slides.py` 與 `build_docs.py && mkdocs build`;提交推送 `main`;把 skills 資料夾同步到 course-template 與 idl-2026-fall。
+6. **發佈**(本份是 idl-2026-fall 的副本,檔名前綴 `lecWW`,第 6 週為 `lec06`):複製 `draft.jbd.json` 到 `slides/lecWW-kpNN-*.jbd.json`(英文加 `-en`);`tools/gen_figs.py` 產生講義 PNG;`tools/insert_figs.py` 更新講義(中英)圖說;更新 `CHANGELOG.md`、`COURSE_STATE.md`、`schedule.md`(若有變動)、日誌;跑 `check_slides.py` 與 `build_docs.py && mkdocs build`;提交推送 `main`;把 skills 資料夾同步到 course-template 與 idl-2026-fall。
 
 ## 環境準備(新環境第一次做,一次就好)
 ```bash
@@ -32,18 +32,19 @@ fc-list | grep -i "zen hei\|noto sans cjk"                         # 要有中�
 暫存資料夾(例如 `scratchpad/kpNN`)在對話結束後會消失;每個單元做完把 `kpNN_nums.py`、`kpNN_pages.py`、`kpNN_text.py` 放進 `examples/`(發佈時一起提交),`caps.json`、`map.json` 也保留為範本(見 `examples/kp13_caps.json`)。
 
 ## 發佈細節(教授說「發佈 KPNN」之後,逐步)
-1. 複製 `W_zh/draft.jbd.json`、`W_en/draft.jbd.json` 到 `slides/lec05-kpNN-<名稱>.jbd.json` 與 `...-en.jbd.json`。
-2. **講義圖**:`python3 tools/make_specs.py <單元資料夾> kpNN <頁數>` 產生 `kpNN_specs.py`;寫 `map.json`(`{"p1": "lec05-kpNN-<id>", ...}`,一頁對一個圖檔名;有合併的頁可只保留一張);再
+1. 複製 `W_zh/draft.jbd.json`、`W_en/draft.jbd.json` 到 `slides/lecWW-kpNN-<名稱>.jbd.json` 與 `...-en.jbd.json`(例:`slides/lec06-kp04-discrete-conv-cross-correlation.jbd.json`)。
+   **IDL 注意**:IDL 講義是中英同檔(沒有 `lectures/en/`),而且講義圖已由 `assets/figures/src/lecWW-kpNN-figures.py`(Matplotlib)產生並經教授確認;除非教授另外指示,**跳過下面第 2、3 步**(不跑 `make_specs.py`、`gen_figs.py`、`insert_figs.py`),講義圖保持原樣。
+2. **講義圖**:`python3 tools/make_specs.py <單元資料夾> kpNN <頁數>` 產生 `kpNN_specs.py`;寫 `map.json`(`{"p1": "lecWW-kpNN-<id>", ...}`,一頁對一個圖檔名;有合併的頁可只保留一張);再
    `python3 tools/gen_figs.py <單元資料夾>/kpNN_specs.py <單元資料夾>/map.json assets/figures`(輸出中文與 `-en` 英文版 PNG)。
 3. **圖說**:寫 `caps.json`(格式見 `tools/insert_figs.py` 檔頭與 `examples/kp13_caps.json`;圖說含 `〔功能：N〕`,alt 文字含關鍵數字)。
-   `python3 tools/insert_figs.py caps.json lectures/lec05-kpNN-*.md lectures/en/lec05-kpNN-*.md --prefix lec05-kpNN`。
+   `python3 tools/insert_figs.py caps.json lectures/lecWW-kpNN-*.md lectures/en/lecWW-kpNN-*.md --prefix lecWW-kpNN`。
    「before」比對 `###` 標題,中英標題不同:第一輪中文會成功、英文在找不到的標題處報 IndexError;把 caps 裡中文標題字串換成英文標題的開頭(例如「延伸」→「Extension」)再跑第二輪,中文會原位取代,英文補齊。
 4. 已不用的舊圖:`grep` 確認講義沒有引用後 `git rm`;被合併的頁,講義裡對應的圖說區塊(`圖說 `...``/`Figure `...``與圖片行)一併刪除。
 5. `python3 scripts/check_slides.py`(只看本單元的行,其他單元的既有 FAIL 與本次無關)、`python3 scripts/build_docs.py && mkdocs build`。
-6. 更新 `CHANGELOG.md`(最上方一行)、`COURSE_STATE.md`(末尾一行,含「v3 已重做」清單與下一步)、`schedule.md`(只在講義或簡報檔名變動時)、`my-jarvis/logs/2026-10-24-lec05-投影片重做.md`(檔尾「時間為推算」之前加一行)。
+6. 更新 `CHANGELOG.md`(最上方一行)、`COURSE_STATE.md`(末尾一行,含「v3 已重做」清單與下一步)、`schedule.md`(只在講義或簡報檔名變動時)、IDL 的日誌 `my-jarvis/logs/<日期>-idl-lecWW-kpNN.md`(例:`2026-10-27-idl-lec06-kp04.md`;格式依 `logs/README.md`)。
 7. 逐一 `git add`(`CHANGELOG.md COURSE_STATE.md assets/figures lectures slides .agents/skills/view-from-text-v3/examples`),提交前看 `git diff --cached --name-status HEAD`:只該有 A、M,以及你刻意刪的舊圖 D;提交到 `main` 並推送;同步 `examples/kpNN_*.py` 到 course-template 與 idl-2026-fall 並各自推送。my-jarvis 的日誌另外提交推送。
 
-**一鍵發佈(多個 agent 平行時必用)**:`tools/publish_unit.py` 把上面 1–7 步包成一個指令,並用鎖(`/tmp/pr-publish.lock`)讓多個 agent 依序發佈、不會互相踩到:
+**一鍵發佈(多個 agent 平行時必用)**(IDL 注意:此腳本寫死 pr-2026-fall 路徑、`lec05` 前綴與 pr 日誌並會直接推送,**IDL 不要用**,改照上面 1–7 步手動做):`tools/publish_unit.py` 把上面 1–7 步包成一個指令,並用鎖(`/tmp/pr-publish.lock`)讓多個 agent 依序發佈、不會互相踩到:
 ```bash
 python3 .agents/skills/view-from-text-v3/tools/publish_unit.py --unit-dir <單元資料夾> --kp kp09 --pages 10 \
   --lecture lec05-kp09-cost-functions --map map.json --caps caps.json --remove "lec05-kp09-舊圖.png,..." --en-before "延伸=Extension" \

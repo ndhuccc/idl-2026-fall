@@ -4,6 +4,7 @@
 KP=$1; DK=$2; cd "$KP" || exit 1
 SK=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)            # .agents/skills
 for f in *_text.py $DK.py; do python3 -c "import ast,sys;ast.parse(open('$f').read())" || { echo "SYNTAX ERROR in $f"; exit 1; }; done
+export SKILLS_DIR=$SK
 export KATEX_DIR=$SK/slides-to-html/node_modules/katex
 T=$SK/view-from-text/tools
 for L in zh en; do
