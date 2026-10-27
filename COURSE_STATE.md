@@ -36,11 +36,12 @@
 - [ ] 期末專題確切截止日;e 學苑繳交說明
 - [ ] LabTube:在 LabTube 建課、匯入修課名單,並把「學生作業 Repo 名稱前綴」設為 `idl-2026`;向學生公告作業範本網址與 LabTube 網址
 - [ ] 之後修改 `student-template/` 時,要手動同步到 `ndhuccc/idl-2026-hw-template`(學生已建立的 Repo 不會自動更新)
-- [ ] 每週講義與投影片(第 1–3 週已完成:第 1 週 lec01 KP01–KP10、第 2 週 lec02 KP01–KP10、第 3 週 lec03 KP01–KP16;第 4 週 lec04 KP01–KP12(2026-10-21 由 18 個縮減);第 6 週 lec06 已完成 KP04(講義與中英文簡報),KP01–KP03、KP05–KP10 與全章地圖待補;其餘週次待補)
+- [ ] 每週講義與投影片(第 1–3 週已完成:第 1 週 lec01 KP01–KP10、第 2 週 lec02 KP01–KP10、第 3 週 lec03 KP01–KP16;第 4 週 lec04 KP01–KP12(2026-10-21 由 18 個縮減);第 6 週 lec06 已完成 KP01、KP04(講義與中英文簡報),KP02–KP03、KP05–KP10 與全章地圖待補;其餘週次待補)
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
 
+- 2026-10-27 20:19 — 老師說「發佈 KP01」:第 6 週 KP01「攤平與局部掃描」講義(`lectures/lec06-kp01-cnn-vs-flatten-mlp.md`,中英對照、大學部)、四張 Matplotlib 圖與產圖程式(`assets/figures/lec06-kp01-*`、`assets/figures/src/lec06-kp01-figures.py`)、以 view-from-text-v3 製作的中英文簡報各 13 頁(主線 11 頁、延伸 2 頁;`slides/lec06-kp01-cnn-vs-flatten-mlp.jbd.json`、`-en.jbd.json`)一併提交。講義只加上簡報下載連結;`schedule.md` 第 6 週列加入 KP01 講義與簡報,`mkdocs.yml` 選單由 `sync_nav.py` 加入 KP01。沿用 KP04 的決定:`[補充]` 內容以「補充/Added」小標籤標示、練習放延伸頁且只給提示、頁面只放重算過的數值。下一步:KP03,接著 KP05。
 - 2026-10-27 16:45 — v3 課程路徑修正最終驗證完成：本課 12 項回歸測試與 Shell 語法檢查全部通過（https://github.com/ndhuccc/idl-2026-fall/actions/runs/40475460437）；PR 同版 12 項亦通過（https://github.com/ndhuccc/pr-2026-fall/actions/runs/40475501465）。保留既有第6週 KP04 教材、進度表及中英同檔／Matplotlib 配圖政策；修正其範例固定機器路徑。測試涵蓋課程／章節切換、含空格路徑、搬移覆寫、講義結構、配圖保留及 dry-run 無寫入。實際教材發布與瀏覽器驗收未執行；網站自動建置仍由既有流程處理。本次紀錄只補驗證證據，程式版本未改。
 
 - 2026-10-27 16:42 — 完成 view-from-text-v3 課程路徑整合：預設跟隨本課工具位置，支援 --repo／COURSE_REPO、明確章節與本課課名；保留 LEC／SKILLS_DIR 舊腳本相容性。發布自動判別中英同檔／分檔；中英同檔保留核准配圖，無須建立 lectures/en/。跨課同步與日誌須明確指定，dry-run 只讀。新增 12 項路徑、講義結構與預覽測試；PR 初版 10 項與 Shell 語法已通過（https://github.com/ndhuccc/pr-2026-fall/actions/runs/40474873911），本次最終版本待 Actions 查核。IDL 同時新增的第6週 KP04 教材及紀錄保留，僅修正其範例的機器固定路徑。Codex 雲端執行環境無法啟動，未在此執行 Python、瀏覽器或教材發布。
