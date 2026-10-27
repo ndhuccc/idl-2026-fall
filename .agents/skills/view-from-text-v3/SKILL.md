@@ -22,6 +22,9 @@ v3 沿用 v1/v2 的規則與工具(CLARITY、LEVELS、NARRATIVE、`deckv2`、`au
 5. **交教授確認**:傳中、英文各一張截圖;**教授說「發佈」才寫入 repo**。
 6. **發佈**:複製 `draft.jbd.json` 到 `slides/lec05-kpNN-*.jbd.json`(英文加 `-en`);`tools/gen_figs.py` 產生講義 PNG;`tools/insert_figs.py` 更新講義(中英)圖說;更新 `CHANGELOG.md`、`COURSE_STATE.md`、`schedule.md`(若有變動)、日誌;跑 `check_slides.py` 與 `build_docs.py && mkdocs build`;提交推送 `main`;把 skills 資料夾同步到 course-template 與 idl-2026-fall。
 
+## 新功能(2026-10-27)
+填色透明度、漸層、陰影與多邊形已可用,頁面也不再保留 KP 標題區(整頁 1280×720);用法見 `DESIGN.md` 最後一節與 `docs/`。
+
 ## 規則(摘要)
 - 原生節點成品;字級 ≥ 16px;只用純色(漸層取中間色、陰影會被丟棄);圖寬 1160、高 ≤ 480。
 - 每頁自足:本頁符號與名詞在圖內定義;term 定義節點用 `named(..., name="term:詞")`。

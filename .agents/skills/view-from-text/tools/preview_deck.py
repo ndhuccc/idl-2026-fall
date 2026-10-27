@@ -57,6 +57,38 @@ def hook_point(n, hook, ox):
     return x + w / 2 + dx * t, y + h / 2 + dy * t
 
 
+def _rgba(c, a=1.0):
+    """CSS colour string -> rgba(...) with the alpha multiplied by a (hex, rgb(a) and 'transparent' accepted)."""
+    import re as _r
+    c = (c or "transparent").strip()
+    if c == "transparent": return c
+    m = _r.match(r"#([0-9a-fA-F]{6})$", c)
+    if m: v = m.group(1); return f"rgba({int(v[0:2], 16)},{int(v[2:4], 16)},{int(v[4:6], 16)},{a})"
+    m = _r.match(r"rgba?\(([^)]+)\)", c)
+    if m:
+        p = [x.strip() for x in m.group(1).split(",")]
+        al = float(p[3]) if len(p) > 3 else 1.0
+        return f"rgba({p[0]},{p[1]},{p[2]},{round(al * a, 4)})"
+    return c
+
+
+def _fill_css(st):
+    """background value for a node style: fill, fillOpacity, linear gradient (gradientTo/gradientAngle)."""
+    fo = st.get("fillOpacity", 1)
+    if st.get("gradientTo"): return f"linear-gradient({st.get('gradientAngle', 180)}deg,{_rgba(st['fill'], fo)},{_rgba(st['gradientTo'], fo)})"
+    return _rgba(st["fill"], fo) if fo != 1 else st["fill"]
+
+
+def _shadow_css(st):
+    if not st.get("shadowColor"): return ""
+    return f"filter:drop-shadow({st.get('shadowOffsetX', 0)}px {st.get('shadowOffsetY', 4)}px {st.get('shadowBlur', 8)}px {_rgba(st['shadowColor'], st.get('shadowOpacity', 1))});"
+
+
+def _poly_css(n):
+    if n.get("shapeKind") != "polygon" or not n.get("polygonPoints"): return ""
+    return "clip-path:polygon(" + ",".join(f"{p['x']}% {p['y']}%" for p in n["polygonPoints"]) + ");"
+
+
 def page_html(N, ids, ox):
     items, svg, labels = [], [], []
     for nid in ids:
@@ -67,12 +99,12 @@ def page_html(N, ids, ox):
             bw = st.get("borderWidth", 0)
             border = f"border:{bw}px solid {st['stroke']};" if bw else ""
             cls = "n plain" if n["type"] == "text" or (st["fill"] == "transparent" and not bw) or not n["text"].strip() else "n"
-            items.append(f"<div class='{cls}' data-id='{nid}' style='left:{x}px;top:{y}px;width:{w}px;height:{h}px;background:{st['fill']};{border}"
+            items.append(f"<div class='{cls}' data-id='{nid}' style='left:{x}px;top:{y}px;width:{w}px;height:{h}px;background:{_fill_css(st)};{border}"
                          f"border-radius:{st.get('radius', 0)}px;color:{st['textColor']};font-size:{st['fontSize']}px;font-weight:{st.get('fontWeight', 400)};"
                          f"text-align:{st.get('textAlign', 'left')};line-height:{st.get('lineHeight', 1.4)};"
                          f"{'transform:rotate(' + str(n['transform'].get('rotation', 0)) + 'deg);' if n['transform'].get('rotation') else ''}"
                          f"{'border-radius:50%;' if n.get('shapeKind') == 'ellipse' else ''}"
-                         f"{'clip-path:polygon(50% 0,0 100%,100% 100%);' if n.get('shapeKind') == 'triangle' else ''}'>{md(n['text'])}</div>")
+                         f"{'clip-path:polygon(50% 0,0 100%,100% 100%);' if n.get('shapeKind') == 'triangle' else ''}{_poly_css(n)}{_shadow_css(st) if n.get('shapeKind') != 'polygon' else ''}'>{md(n['text'])}</div>")
         elif n["type"] == "image":
             items.append(f"<img class='im' src='{n['image']['src']}' style='left:{x}px;top:{y}px;width:{w}px;height:{h}px'>")
         elif n["type"] == "connector":

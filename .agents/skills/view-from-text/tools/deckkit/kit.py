@@ -12,7 +12,7 @@ from flow import Card, Col, Fig, Flow, Row, Table  # noqa: E402
 
 PFX = os.environ.get("DECK_PFX", "lec03kp00")   # node-id prefix, unique per KP: set env DECK_PFX
 W, H = 1280, 720
-HEADROOM, GAP = 100, 160
+HEADROOM, GAP = int(os.environ.get("DECK_HEADROOM", "0")), 160   # JianBauDau dropped the per-frame title bar (2026-10-27): headroom 0 = a page fills the whole 1280x720 view; old decks used 100
 ZOOM, PITCH = H / (H + HEADROOM), W + GAP
 TEXT, MUTED = "#f2ede4", "#b7b0a5"
 MAIN, REF, EDGE, AUX, WARN, OK = "#d97757", "#6a9fd6", "#e0995f", "#5fb8a8", "#e07a70", "#7dbb8c"

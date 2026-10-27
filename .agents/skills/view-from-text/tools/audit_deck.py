@@ -23,7 +23,7 @@ import math
 import re
 import sys
 
-W, H, HEADROOM, PITCH = 1280, 720, 100, 1440
+W, H, HEADROOM, PITCH = 1280, 720, 0, 1440   # HEADROOM is re-derived from the deck's page cameras below (old decks 100, new decks 0)
 STD_FRAME_STYLE = {"fill": "transparent", "stroke": "transparent", "textColor": "#f2ede4", "fontSize": 22, "radius": 0}
 STD_FRAME_KEYS = {"childSceneId", "previewMode", "padding", "clip"}
 CJK = re.compile(r"[㐀-鿿豈-﫿]")
@@ -178,11 +178,13 @@ def main():
         if len(m) != 1: F("H5", f"frame {fid} has {len(m)} steps (must be exactly 1)")
         pages = [s for s in ST if s["target"]["sceneId"] == fr["frame"]["childSceneId"]]
         if len(pages) < 2: Wn("C5", f"{fr['frame']['childSceneId']} has only {len(pages)} page(s)")
+    _pts = [s for s in ST if s["target"]["sceneId"] != root and s["target"]["kind"] == "scene-point"]
+    HR = round(H / _pts[0]["target"]["zoom"] - H) if _pts else HEADROOM   # 100 = old decks (frame title bar), 0 = new decks
     for s in ST:
         t = s["target"]
         if t["sceneId"] != root and t["kind"] == "scene-point":
             idx = round((t["point"]["x"] - W / 2) / PITCH)
-            if abs(t["point"]["x"] - (idx * PITCH + W / 2)) > 0.5 or abs(t["point"]["y"] - (H / 2 - HEADROOM / 2)) > 0.5 or abs(t["zoom"] - H / (H + HEADROOM)) > 1e-6:
+            if abs(t["point"]["x"] - (idx * PITCH + W / 2)) > 0.5 or abs(t["point"]["y"] - (H / 2 - HR / 2)) > 0.5 or abs(t["zoom"] - H / (H + HR)) > 1e-6:
                 F("B6", f"camera of {s['id']} does not follow the page formula")
     for sid, sc in S.items():
         if sid == root: continue

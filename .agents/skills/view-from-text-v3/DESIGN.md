@@ -34,3 +34,27 @@
 2. 看 `<fid>_<lang>.png`(瀏覽器版)。
 3. `native()` 轉出節點 → `run_unit.sh` 的 preview 截圖與瀏覽器版對照(公式高度、文字寬度、標籤重疊)。
 4. audit_deck FAIL = 0。
+
+## 2026-10-27 起:JianBauDau 新功能(填色透明度、漸層、陰影、多邊形)與整頁可用
+
+JianBauDau 取消了每個 Frame 上方給 KP 標題的標題區,並新增四項樣式。格式說明在 `docs/AI_AGENT_FILE_FORMAT_SPEC.md`,範例在 `docs/fill-effects-and-polygons.json`。
+
+**頁面**
+- 一頁就是完整的 1280×720(`DECK_HEADROOM` 預設 0,相機 zoom = 1,中心在頁面正中央)。舊簡報(headroom 100)照舊能稽核,`audit_deck.py` 會從相機自動判斷。
+- 頁面標題、銜接條仍在上方,圖的可用高度 = 720 − 標題與銜接條(約 233)− 結論條所需。要更高的圖,可把中英文標題縮成一行或把銜接條縮短。
+- 螢幕上的字比以前大約 14% 大(zoom 從 0.878 變 1.0),字級下限仍用 16。
+
+**樣式(NodeStyle)**:`fillOpacity`、`gradientTo` + `gradientAngle`(0 由下往上、90 由左往右、180 由上往下)、`shadowColor/Opacity/Blur/OffsetX/OffsetY`、`shapeKind: "polygon"` + `polygonPoints`(3~200 點,座標為外框的 0~100)。
+
+**HTML 設計時怎麼寫,轉換器會對應**
+| HTML | 轉成 |
+|---|---|
+| `background: linear-gradient(135deg, #a, #b)`(兩色) | `fill` + `gradientTo` + `gradientAngle` |
+| `box-shadow: 0 16px 28px 0 rgba(0,0,0,.4)` | `shadow*` |
+| `rgba(...)` 填色、SVG 的 `fill-opacity` | 保留透明度 |
+| SVG `<polygon points>` 或只用 M/L/Z 的 `<path>`,可用 `fill="url(#lg)"`(兩色線性漸層) | `shapeKind: "polygon"`(`nativefig` 的 `NFig.poly`) |
+| `filter: drop-shadow`、多色漸層、徑向漸層、曲線路徑 | 仍不支援(漸層取首尾色,曲線路徑略過) |
+
+**Python 端**:`NFig.rect/ellipse(..., fx={"grad": (to, angle), "opacity": 0~1, "shadow": (color, opacity, blur, dx, dy)})`、`NFig.poly(points, fill, stroke, sw, fx)`;`to_png` 會畫多邊形與透明度,漸層取兩色的中間色,陰影略過。`preview_deck.py` 也能顯示多邊形、漸層、透明度與陰影(多邊形的陰影除外)。
+
+**注意**:非矩形形狀裡不要放字(規則不變)。陰影在深色底上要用有色光暈才看得到。

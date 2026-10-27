@@ -1,0 +1,2432 @@
+{
+  "schemaVersion": 3,
+  "rootSceneId": "scene-root",
+  "scenes": {
+    "scene-root": {
+      "id": "scene-root",
+      "name": "根畫布",
+      "parentFrameId": null,
+      "nodeIds": [
+        "p1-bg",
+        "p1-blob-a",
+        "p1-blob-b",
+        "p1-blob-c",
+        "p1-title",
+        "p1-sub",
+        "p1-tag",
+        "p2-bg",
+        "p2-title",
+        "p2-sub",
+        "p2-band-1",
+        "p2-band-2",
+        "p2-band-3",
+        "p2-band-4",
+        "p2-band-5",
+        "p2-card-100",
+        "p2-cap-100",
+        "p2-card-75",
+        "p2-cap-75",
+        "p2-card-50",
+        "p2-cap-50",
+        "p2-card-25",
+        "p2-cap-25",
+        "p2-card-10",
+        "p2-cap-10",
+        "p2-note",
+        "p3-bg",
+        "p3-title",
+        "p3-sub",
+        "p3-hero",
+        "p3-hero-note",
+        "p3-ellipse",
+        "p3-ellipse-cap",
+        "p3-diamond",
+        "p3-diamond-cap",
+        "p3-star",
+        "p3-star-cap",
+        "p4-bg",
+        "p4-title",
+        "p4-sub",
+        "p4-star",
+        "p4-soft",
+        "p4-soft-cap",
+        "p4-hard",
+        "p4-hard-cap",
+        "p4-glow",
+        "p4-glow-cap",
+        "p4-ellipse",
+        "p4-ellipse-cap",
+        "p4-note",
+        "p5-bg",
+        "p5-title",
+        "p5-sub",
+        "p5-steps",
+        "p5-house",
+        "p5-bolt",
+        "p5-bubble",
+        "p5-gem",
+        "p6-bg",
+        "p6-blob-a",
+        "p6-blob-b",
+        "p6-blob-c",
+        "p6-glass",
+        "p6-title",
+        "p6-body"
+      ],
+      "camera": {
+        "x": 640,
+        "y": 360,
+        "zoom": 0.7,
+        "rotation": 0
+      }
+    }
+  },
+  "nodes": {
+    "p1-bg": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 0,
+      "id": "p1-bg",
+      "type": "shape",
+      "name": "頁面背景",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1280,
+      "height": 720,
+      "style": {
+        "fill": "#0f1c3a",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0,
+        "gradientTo": "#0e6b73",
+        "gradientAngle": 135
+      },
+      "text": ""
+    },
+    "p1-blob-a": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 1,
+      "id": "p1-blob-a",
+      "type": "shape",
+      "name": "青藍多邊形",
+      "shapeKind": "polygon",
+      "polygonPoints": [
+        {
+          "x": 5,
+          "y": 7.89
+        },
+        {
+          "x": 72.5,
+          "y": 0
+        },
+        {
+          "x": 100,
+          "y": 55.26
+        },
+        {
+          "x": 60,
+          "y": 100
+        },
+        {
+          "x": 0,
+          "y": 81.58
+        }
+      ],
+      "transform": {
+        "x": 800,
+        "y": 90,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 400,
+      "height": 380,
+      "style": {
+        "fill": "#5eead4",
+        "stroke": "rgba(255,255,255,0.45)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#3b82f6",
+        "gradientAngle": 135,
+        "fillOpacity": 0.6,
+        "shadowColor": "#020617",
+        "shadowOpacity": 0.45,
+        "shadowBlur": 26,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 16
+      },
+      "text": ""
+    },
+    "p1-blob-b": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 2,
+      "id": "p1-blob-b",
+      "type": "shape",
+      "name": "粉橘多邊形",
+      "shapeKind": "polygon",
+      "polygonPoints": [
+        {
+          "x": 6.67,
+          "y": 0
+        },
+        {
+          "x": 100,
+          "y": 16.13
+        },
+        {
+          "x": 83.33,
+          "y": 100
+        },
+        {
+          "x": 0,
+          "y": 83.87
+        }
+      ],
+      "transform": {
+        "x": 880,
+        "y": 340,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 300,
+      "height": 310,
+      "style": {
+        "fill": "#f472b6",
+        "stroke": "rgba(255,255,255,0.45)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#fb923c",
+        "gradientAngle": 160,
+        "fillOpacity": 0.6,
+        "shadowColor": "#020617",
+        "shadowOpacity": 0.45,
+        "shadowBlur": 26,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 16
+      },
+      "text": ""
+    },
+    "p1-blob-c": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 3,
+      "id": "p1-blob-c",
+      "type": "shape",
+      "name": "黃色三角",
+      "shapeKind": "polygon",
+      "polygonPoints": [
+        {
+          "x": 0,
+          "y": 27.78
+        },
+        {
+          "x": 100,
+          "y": 0
+        },
+        {
+          "x": 84.62,
+          "y": 100
+        }
+      ],
+      "transform": {
+        "x": 730,
+        "y": 470,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 130,
+      "height": 180,
+      "style": {
+        "fill": "#fde68a",
+        "stroke": "rgba(255,255,255,0.45)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "fillOpacity": 0.75,
+        "shadowColor": "#020617",
+        "shadowOpacity": 0.4,
+        "shadowBlur": 18,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 10
+      },
+      "text": ""
+    },
+    "p1-title": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 4,
+      "id": "p1-title",
+      "type": "text",
+      "name": "封面標題",
+      "transform": {
+        "x": 110,
+        "y": 215,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 640,
+      "height": 100,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 66,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 800
+      },
+      "text": "填色效果 × 多邊形"
+    },
+    "p1-sub": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 5,
+      "id": "p1-sub",
+      "type": "text",
+      "name": "封面副標",
+      "transform": {
+        "x": 110,
+        "y": 335,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 640,
+      "height": 100,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#d6f3f0",
+        "fontSize": 32,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 500
+      },
+      "text": "透明度・漸層・陰影・任意多邊形"
+    },
+    "p1-tag": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 6,
+      "id": "p1-tag",
+      "type": "text",
+      "name": "封面註記",
+      "transform": {
+        "x": 110,
+        "y": 560,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 560,
+      "height": 40,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#c9f0ed",
+        "fontSize": 22,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "JianBauDau 範例簡報 · 共 6 頁"
+    },
+    "p2-bg": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 7,
+      "id": "p2-bg",
+      "type": "shape",
+      "name": "頁面背景",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 1420,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1280,
+      "height": 720,
+      "style": {
+        "fill": "#1e1b2e",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0,
+        "gradientTo": "#2b2640",
+        "gradientAngle": 180
+      },
+      "text": ""
+    },
+    "p2-title": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 8,
+      "id": "p2-title",
+      "type": "text",
+      "name": "頁面標題",
+      "transform": {
+        "x": 1500,
+        "y": 56,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 900,
+      "height": 80,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 52,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 800
+      },
+      "text": "① 填色透明度"
+    },
+    "p2-sub": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 9,
+      "id": "p2-sub",
+      "type": "text",
+      "name": "頁面副標",
+      "transform": {
+        "x": 1500,
+        "y": 130,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1100,
+      "height": 48,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#cfc8e8",
+        "fontSize": 26,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "Fill opacity 0–100%：底下的色帶會透出來"
+    },
+    "p2-band-1": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 10,
+      "id": "p2-band-1",
+      "type": "shape",
+      "name": "色帶 1",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 1480,
+        "y": 250,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 54,
+      "style": {
+        "fill": "#f59e0b",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0
+      },
+      "text": ""
+    },
+    "p2-band-2": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 11,
+      "id": "p2-band-2",
+      "type": "shape",
+      "name": "色帶 2",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 1480,
+        "y": 304,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 54,
+      "style": {
+        "fill": "#10b981",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0
+      },
+      "text": ""
+    },
+    "p2-band-3": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 12,
+      "id": "p2-band-3",
+      "type": "shape",
+      "name": "色帶 3",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 1480,
+        "y": 358,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 54,
+      "style": {
+        "fill": "#f43f5e",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0
+      },
+      "text": ""
+    },
+    "p2-band-4": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 13,
+      "id": "p2-band-4",
+      "type": "shape",
+      "name": "色帶 4",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 1480,
+        "y": 412,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 54,
+      "style": {
+        "fill": "#38bdf8",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0
+      },
+      "text": ""
+    },
+    "p2-band-5": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 14,
+      "id": "p2-band-5",
+      "type": "shape",
+      "name": "色帶 5",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 1480,
+        "y": 466,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1160,
+      "height": 54,
+      "style": {
+        "fill": "#a78bfa",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0
+      },
+      "text": ""
+    },
+    "p2-card-100": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 15,
+      "id": "p2-card-100",
+      "type": "shape",
+      "name": "白色 100%",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 1505,
+        "y": 210,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 190,
+      "height": 330,
+      "style": {
+        "fill": "#ffffff",
+        "stroke": "#ffffff",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 20,
+        "borderWidth": 2,
+        "fillOpacity": 1
+      },
+      "text": ""
+    },
+    "p2-cap-100": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 16,
+      "id": "p2-cap-100",
+      "type": "text",
+      "name": "標示 100%",
+      "transform": {
+        "x": 1505,
+        "y": 580,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 190,
+      "height": 50,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 34,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "center",
+        "fontWeight": 700
+      },
+      "text": "100%"
+    },
+    "p2-card-75": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 17,
+      "id": "p2-card-75",
+      "type": "shape",
+      "name": "白色 75%",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 1735,
+        "y": 210,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 190,
+      "height": 330,
+      "style": {
+        "fill": "#ffffff",
+        "stroke": "#ffffff",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 20,
+        "borderWidth": 2,
+        "fillOpacity": 0.75
+      },
+      "text": ""
+    },
+    "p2-cap-75": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 18,
+      "id": "p2-cap-75",
+      "type": "text",
+      "name": "標示 75%",
+      "transform": {
+        "x": 1735,
+        "y": 580,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 190,
+      "height": 50,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 34,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "center",
+        "fontWeight": 700
+      },
+      "text": "75%"
+    },
+    "p2-card-50": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 19,
+      "id": "p2-card-50",
+      "type": "shape",
+      "name": "白色 50%",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 1965,
+        "y": 210,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 190,
+      "height": 330,
+      "style": {
+        "fill": "#ffffff",
+        "stroke": "#ffffff",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 20,
+        "borderWidth": 2,
+        "fillOpacity": 0.5
+      },
+      "text": ""
+    },
+    "p2-cap-50": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 20,
+      "id": "p2-cap-50",
+      "type": "text",
+      "name": "標示 50%",
+      "transform": {
+        "x": 1965,
+        "y": 580,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 190,
+      "height": 50,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 34,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "center",
+        "fontWeight": 700
+      },
+      "text": "50%"
+    },
+    "p2-card-25": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 21,
+      "id": "p2-card-25",
+      "type": "shape",
+      "name": "白色 25%",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 2195,
+        "y": 210,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 190,
+      "height": 330,
+      "style": {
+        "fill": "#ffffff",
+        "stroke": "#ffffff",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 20,
+        "borderWidth": 2,
+        "fillOpacity": 0.25
+      },
+      "text": ""
+    },
+    "p2-cap-25": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 22,
+      "id": "p2-cap-25",
+      "type": "text",
+      "name": "標示 25%",
+      "transform": {
+        "x": 2195,
+        "y": 580,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 190,
+      "height": 50,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 34,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "center",
+        "fontWeight": 700
+      },
+      "text": "25%"
+    },
+    "p2-card-10": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 23,
+      "id": "p2-card-10",
+      "type": "shape",
+      "name": "白色 10%",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 2425,
+        "y": 210,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 190,
+      "height": 330,
+      "style": {
+        "fill": "#ffffff",
+        "stroke": "#ffffff",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 20,
+        "borderWidth": 2,
+        "fillOpacity": 0.1
+      },
+      "text": ""
+    },
+    "p2-cap-10": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 24,
+      "id": "p2-cap-10",
+      "type": "text",
+      "name": "標示 10%",
+      "transform": {
+        "x": 2425,
+        "y": 580,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 190,
+      "height": 50,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 34,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "center",
+        "fontWeight": 700
+      },
+      "text": "10%"
+    },
+    "p2-note": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 25,
+      "id": "p2-note",
+      "type": "text",
+      "name": "說明",
+      "transform": {
+        "x": 1500,
+        "y": 640,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1120,
+      "height": 40,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#cfc8e8",
+        "fontSize": 22,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "center",
+        "fontWeight": 400
+      },
+      "text": "同一個白色，只調整 Fill opacity；邊框維持不透明"
+    },
+    "p3-bg": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 26,
+      "id": "p3-bg",
+      "type": "shape",
+      "name": "頁面背景",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 2840,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1280,
+      "height": 720,
+      "style": {
+        "fill": "#14201f",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0,
+        "gradientTo": "#101826",
+        "gradientAngle": 160
+      },
+      "text": ""
+    },
+    "p3-title": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 27,
+      "id": "p3-title",
+      "type": "text",
+      "name": "頁面標題",
+      "transform": {
+        "x": 2920,
+        "y": 56,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 900,
+      "height": 80,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 52,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 800
+      },
+      "text": "② 漸層填色"
+    },
+    "p3-sub": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 28,
+      "id": "p3-sub",
+      "type": "text",
+      "name": "頁面副標",
+      "transform": {
+        "x": 2920,
+        "y": 130,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1100,
+      "height": 48,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#b7c9d6",
+        "fontSize": 26,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "從 Fill 色漸變到 Gradient to，角度自訂"
+    },
+    "p3-hero": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 29,
+      "id": "p3-hero",
+      "type": "shape",
+      "name": "主漸層卡片",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 2920,
+        "y": 200,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 620,
+      "height": 380,
+      "style": {
+        "fill": "#6d28d9",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 40,
+        "radius": 32,
+        "borderWidth": 0,
+        "gradientTo": "#0e7490",
+        "gradientAngle": 135,
+        "fontWeight": 700,
+        "shadowColor": "#000000",
+        "shadowOpacity": 0.4,
+        "shadowBlur": 30,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 18
+      },
+      "text": "線性漸層\nFill → Gradient to\n角度 135°"
+    },
+    "p3-hero-note": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 30,
+      "id": "p3-hero-note",
+      "type": "text",
+      "name": "角度說明",
+      "transform": {
+        "x": 2920,
+        "y": 612,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 620,
+      "height": 70,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#b7c9d6",
+        "fontSize": 22,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "0° 由下往上 · 90° 由左往右 · 180° 由上往下"
+    },
+    "p3-ellipse": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 31,
+      "id": "p3-ellipse",
+      "type": "shape",
+      "name": "橢圓漸層",
+      "shapeKind": "ellipse",
+      "transform": {
+        "x": 3630,
+        "y": 200,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 150,
+      "height": 150,
+      "style": {
+        "fill": "#f59e0b",
+        "stroke": "rgba(255,255,255,0.5)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#ef4444",
+        "gradientAngle": 180,
+        "shadowColor": "#000000",
+        "shadowOpacity": 0.4,
+        "shadowBlur": 16,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 10
+      },
+      "text": ""
+    },
+    "p3-ellipse-cap": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 32,
+      "id": "p3-ellipse-cap",
+      "type": "text",
+      "name": "橢圓說明",
+      "transform": {
+        "x": 3815,
+        "y": 230,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 260,
+      "height": 90,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#e5edf7",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 600
+      },
+      "text": "橢圓\n180° 由上往下"
+    },
+    "p3-diamond": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 33,
+      "id": "p3-diamond",
+      "type": "shape",
+      "name": "菱形漸層",
+      "shapeKind": "diamond",
+      "transform": {
+        "x": 3630,
+        "y": 375,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 150,
+      "height": 150,
+      "style": {
+        "fill": "#34d399",
+        "stroke": "rgba(255,255,255,0.5)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#3b82f6",
+        "gradientAngle": 90,
+        "shadowColor": "#000000",
+        "shadowOpacity": 0.4,
+        "shadowBlur": 16,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 10
+      },
+      "text": ""
+    },
+    "p3-diamond-cap": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 34,
+      "id": "p3-diamond-cap",
+      "type": "text",
+      "name": "菱形說明",
+      "transform": {
+        "x": 3815,
+        "y": 405,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 260,
+      "height": 90,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#e5edf7",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 600
+      },
+      "text": "菱形\n90° 由左往右"
+    },
+    "p3-star": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 35,
+      "id": "p3-star",
+      "type": "shape",
+      "name": "星形漸層",
+      "shapeKind": "star",
+      "transform": {
+        "x": 3630,
+        "y": 550,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 150,
+      "height": 150,
+      "style": {
+        "fill": "#f472b6",
+        "stroke": "rgba(255,255,255,0.5)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#8b5cf6",
+        "gradientAngle": 45,
+        "shadowColor": "#000000",
+        "shadowOpacity": 0.4,
+        "shadowBlur": 16,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 10
+      },
+      "text": ""
+    },
+    "p3-star-cap": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 36,
+      "id": "p3-star-cap",
+      "type": "text",
+      "name": "星形說明",
+      "transform": {
+        "x": 3815,
+        "y": 580,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 260,
+      "height": 90,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#e5edf7",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 600
+      },
+      "text": "星形\n45° 斜向"
+    },
+    "p4-bg": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 37,
+      "id": "p4-bg",
+      "type": "shape",
+      "name": "頁面背景",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 4260,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1280,
+      "height": 720,
+      "style": {
+        "fill": "#f4f7fb",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0,
+        "gradientTo": "#dce5f1",
+        "gradientAngle": 180
+      },
+      "text": ""
+    },
+    "p4-title": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 38,
+      "id": "p4-title",
+      "type": "text",
+      "name": "頁面標題",
+      "transform": {
+        "x": 4340,
+        "y": 56,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 900,
+      "height": 80,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#1b2434",
+        "fontSize": 52,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 800
+      },
+      "text": "③ 陰影"
+    },
+    "p4-sub": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 39,
+      "id": "p4-sub",
+      "type": "text",
+      "name": "頁面副標",
+      "transform": {
+        "x": 4340,
+        "y": 130,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1100,
+      "height": 48,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#44546a",
+        "fontSize": 26,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "沿著物件輪廓描出陰影：顏色、透明度、模糊、位移"
+    },
+    "p4-star": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 40,
+      "id": "p4-star",
+      "type": "shape",
+      "name": "裝飾星形",
+      "shapeKind": "star",
+      "transform": {
+        "x": 5320,
+        "y": 60,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 110,
+      "height": 110,
+      "style": {
+        "fill": "#fde047",
+        "stroke": "#b45309",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#f59e0b",
+        "gradientAngle": 180,
+        "shadowColor": "#7c2d12",
+        "shadowOpacity": 0.35,
+        "shadowBlur": 12,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 8
+      },
+      "text": ""
+    },
+    "p4-soft": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 41,
+      "id": "p4-soft",
+      "type": "shape",
+      "name": "柔和陰影",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 4340,
+        "y": 240,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 250,
+      "height": 220,
+      "style": {
+        "fill": "#ffffff",
+        "stroke": "#e3e9f2",
+        "textColor": "#1b2434",
+        "fontSize": 32,
+        "radius": 24,
+        "borderWidth": 2,
+        "shadowColor": "#1b2434",
+        "shadowOpacity": 0.28,
+        "shadowBlur": 28,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 16,
+        "fontWeight": 700
+      },
+      "text": "柔和陰影"
+    },
+    "p4-soft-cap": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 42,
+      "id": "p4-soft-cap",
+      "type": "text",
+      "name": "柔和陰影參數",
+      "transform": {
+        "x": 4340,
+        "y": 505,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 270,
+      "height": 80,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#44546a",
+        "fontSize": 20,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "模糊 28 · 位移 (0, 16)\n透明度 28%"
+    },
+    "p4-hard": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 43,
+      "id": "p4-hard",
+      "type": "shape",
+      "name": "硬邊位移陰影",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 4630,
+        "y": 240,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 250,
+      "height": 220,
+      "style": {
+        "fill": "#fde047",
+        "stroke": "#1b2434",
+        "textColor": "#1b2434",
+        "fontSize": 32,
+        "radius": 24,
+        "borderWidth": 4,
+        "shadowColor": "#1b2434",
+        "shadowOpacity": 1,
+        "shadowBlur": 0,
+        "shadowOffsetX": 14,
+        "shadowOffsetY": 14,
+        "fontWeight": 700
+      },
+      "text": "硬邊陰影"
+    },
+    "p4-hard-cap": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 44,
+      "id": "p4-hard-cap",
+      "type": "text",
+      "name": "硬邊位移陰影參數",
+      "transform": {
+        "x": 4630,
+        "y": 505,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 270,
+      "height": 80,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#44546a",
+        "fontSize": 20,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "模糊 0 · 位移 (14, 14)\n透明度 100%"
+    },
+    "p4-glow": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 45,
+      "id": "p4-glow",
+      "type": "shape",
+      "name": "光暈",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 4920,
+        "y": 240,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 250,
+      "height": 220,
+      "style": {
+        "fill": "#1e1b4b",
+        "stroke": "#a5b4fc",
+        "textColor": "#eef2ff",
+        "fontSize": 32,
+        "radius": 24,
+        "borderWidth": 2,
+        "shadowColor": "#818cf8",
+        "shadowOpacity": 0.9,
+        "shadowBlur": 34,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 0,
+        "fontWeight": 700
+      },
+      "text": "光暈"
+    },
+    "p4-glow-cap": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 46,
+      "id": "p4-glow-cap",
+      "type": "text",
+      "name": "光暈參數",
+      "transform": {
+        "x": 4920,
+        "y": 505,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 270,
+      "height": 80,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#44546a",
+        "fontSize": 20,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "模糊 34 · 位移 (0, 0)\n淡紫色光暈"
+    },
+    "p4-ellipse": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 47,
+      "id": "p4-ellipse",
+      "type": "shape",
+      "name": "橢圓陰影",
+      "shapeKind": "ellipse",
+      "transform": {
+        "x": 5210,
+        "y": 240,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 220,
+      "height": 220,
+      "style": {
+        "fill": "#fb7185",
+        "stroke": "#9a3412",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#f97316",
+        "gradientAngle": 180,
+        "shadowColor": "#7c2d12",
+        "shadowOpacity": 0.4,
+        "shadowBlur": 20,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 18
+      },
+      "text": ""
+    },
+    "p4-ellipse-cap": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 48,
+      "id": "p4-ellipse-cap",
+      "type": "text",
+      "name": "橢圓陰影參數",
+      "transform": {
+        "x": 5210,
+        "y": 505,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 270,
+      "height": 80,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#44546a",
+        "fontSize": 20,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "圓形、星形、多邊形\n陰影都貼著輪廓"
+    },
+    "p4-note": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 49,
+      "id": "p4-note",
+      "type": "text",
+      "name": "說明",
+      "transform": {
+        "x": 4340,
+        "y": 625,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1120,
+      "height": 40,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#44546a",
+        "fontSize": 22,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "陰影在編輯、播放、Player 與 PDF 匯出中的呈現一致"
+    },
+    "p5-bg": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 50,
+      "id": "p5-bg",
+      "type": "shape",
+      "name": "頁面背景",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 5680,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1280,
+      "height": 720,
+      "style": {
+        "fill": "#111827",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0,
+        "gradientTo": "#1f2937",
+        "gradientAngle": 180
+      },
+      "text": ""
+    },
+    "p5-title": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 51,
+      "id": "p5-title",
+      "type": "text",
+      "name": "頁面標題",
+      "transform": {
+        "x": 5760,
+        "y": 56,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 900,
+      "height": 80,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 52,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 800
+      },
+      "text": "④ 任意多邊形"
+    },
+    "p5-sub": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 52,
+      "id": "p5-sub",
+      "type": "text",
+      "name": "頁面副標",
+      "transform": {
+        "x": 5760,
+        "y": 130,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1100,
+      "height": 48,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#c3cede",
+        "fontSize": 26,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "自己決定每一個頂點"
+    },
+    "p5-steps": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 53,
+      "id": "p5-steps",
+      "type": "text",
+      "name": "操作說明",
+      "transform": {
+        "x": 5760,
+        "y": 215,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 470,
+      "height": 360,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#dbe3ee",
+        "fontSize": 25,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.55,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "• 工具列按 **+ Polygon**，在畫布上逐點點擊\n• **Enter**、雙擊，或點回第一個點即封閉\n• 選取後拖曳方形把手調整頂點\n• 右鍵頂點可刪除；Inspector 可新增頂點\n• 同樣能套用透明度、漸層、陰影"
+    },
+    "p5-house": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 54,
+      "id": "p5-house",
+      "type": "shape",
+      "name": "房子（7 個頂點）",
+      "shapeKind": "polygon",
+      "polygonPoints": [
+        {
+          "x": 0,
+          "y": 46.67
+        },
+        {
+          "x": 50,
+          "y": 0
+        },
+        {
+          "x": 100,
+          "y": 46.67
+        },
+        {
+          "x": 87.5,
+          "y": 46.67
+        },
+        {
+          "x": 87.5,
+          "y": 100
+        },
+        {
+          "x": 12.5,
+          "y": 100
+        },
+        {
+          "x": 12.5,
+          "y": 46.67
+        }
+      ],
+      "transform": {
+        "x": 6300,
+        "y": 205,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 320,
+      "height": 300,
+      "style": {
+        "fill": "#fbbf24",
+        "stroke": "rgba(255,255,255,0.45)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#f97316",
+        "gradientAngle": 180,
+        "shadowColor": "#000000",
+        "shadowOpacity": 0.45,
+        "shadowBlur": 20,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 14
+      },
+      "text": ""
+    },
+    "p5-bolt": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 55,
+      "id": "p5-bolt",
+      "type": "shape",
+      "name": "閃電",
+      "shapeKind": "polygon",
+      "polygonPoints": [
+        {
+          "x": 13.16,
+          "y": 0
+        },
+        {
+          "x": 81.58,
+          "y": 0
+        },
+        {
+          "x": 52.63,
+          "y": 36.36
+        },
+        {
+          "x": 100,
+          "y": 36.36
+        },
+        {
+          "x": 28.95,
+          "y": 100
+        },
+        {
+          "x": 44.74,
+          "y": 53.03
+        },
+        {
+          "x": 0,
+          "y": 53.03
+        }
+      ],
+      "transform": {
+        "x": 6665,
+        "y": 150,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 190,
+      "height": 330,
+      "style": {
+        "fill": "#fef08a",
+        "stroke": "rgba(255,255,255,0.45)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#eab308",
+        "gradientAngle": 180,
+        "shadowColor": "#000000",
+        "shadowOpacity": 0.45,
+        "shadowBlur": 20,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 14
+      },
+      "text": ""
+    },
+    "p5-bubble": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 56,
+      "id": "p5-bubble",
+      "type": "shape",
+      "name": "對話框",
+      "shapeKind": "polygon",
+      "polygonPoints": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 100,
+          "y": 0
+        },
+        {
+          "x": 100,
+          "y": 63.33
+        },
+        {
+          "x": 53.33,
+          "y": 63.33
+        },
+        {
+          "x": 35,
+          "y": 100
+        },
+        {
+          "x": 38.33,
+          "y": 63.33
+        },
+        {
+          "x": 0,
+          "y": 63.33
+        }
+      ],
+      "transform": {
+        "x": 6320,
+        "y": 545,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 300,
+      "height": 150,
+      "style": {
+        "fill": "#38bdf8",
+        "stroke": "rgba(255,255,255,0.45)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#6366f1",
+        "gradientAngle": 135,
+        "shadowColor": "#000000",
+        "shadowOpacity": 0.45,
+        "shadowBlur": 20,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 14
+      },
+      "text": ""
+    },
+    "p5-gem": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 57,
+      "id": "p5-gem",
+      "type": "shape",
+      "name": "不規則寶石",
+      "shapeKind": "polygon",
+      "polygonPoints": [
+        {
+          "x": 5.26,
+          "y": 16.67
+        },
+        {
+          "x": 52.63,
+          "y": 0
+        },
+        {
+          "x": 100,
+          "y": 27.78
+        },
+        {
+          "x": 89.47,
+          "y": 83.33
+        },
+        {
+          "x": 36.84,
+          "y": 100
+        },
+        {
+          "x": 0,
+          "y": 66.67
+        }
+      ],
+      "transform": {
+        "x": 6670,
+        "y": 495,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 190,
+      "height": 180,
+      "style": {
+        "fill": "#34d399",
+        "stroke": "rgba(255,255,255,0.45)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#0ea5e9",
+        "gradientAngle": 160,
+        "fillOpacity": 0.85,
+        "shadowColor": "#000000",
+        "shadowOpacity": 0.45,
+        "shadowBlur": 20,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 14
+      },
+      "text": ""
+    },
+    "p6-bg": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 58,
+      "id": "p6-bg",
+      "type": "shape",
+      "name": "頁面背景",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 7100,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 1280,
+      "height": 720,
+      "style": {
+        "fill": "#0b1020",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 0,
+        "gradientTo": "#1a1f4d",
+        "gradientAngle": 160
+      },
+      "text": ""
+    },
+    "p6-blob-a": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 59,
+      "id": "p6-blob-a",
+      "type": "shape",
+      "name": "紫粉多邊形",
+      "shapeKind": "polygon",
+      "polygonPoints": [
+        {
+          "x": 0,
+          "y": 8.7
+        },
+        {
+          "x": 76.36,
+          "y": 0
+        },
+        {
+          "x": 100,
+          "y": 56.52
+        },
+        {
+          "x": 50.91,
+          "y": 100
+        },
+        {
+          "x": 3.64,
+          "y": 78.26
+        }
+      ],
+      "transform": {
+        "x": 7200,
+        "y": 70,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 550,
+      "height": 460,
+      "style": {
+        "fill": "#f472b6",
+        "stroke": "rgba(255,255,255,0.45)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#8b5cf6",
+        "gradientAngle": 135,
+        "fillOpacity": 0.92,
+        "shadowColor": "#000000",
+        "shadowOpacity": 0.5,
+        "shadowBlur": 30,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 18
+      },
+      "text": ""
+    },
+    "p6-blob-b": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 60,
+      "id": "p6-blob-b",
+      "type": "shape",
+      "name": "青綠多邊形",
+      "shapeKind": "polygon",
+      "polygonPoints": [
+        {
+          "x": 8.16,
+          "y": 16
+        },
+        {
+          "x": 83.67,
+          "y": 0
+        },
+        {
+          "x": 100,
+          "y": 72
+        },
+        {
+          "x": 36.73,
+          "y": 100
+        },
+        {
+          "x": 0,
+          "y": 68
+        }
+      ],
+      "transform": {
+        "x": 7820,
+        "y": 290,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 490,
+      "height": 375,
+      "style": {
+        "fill": "#22d3ee",
+        "stroke": "rgba(255,255,255,0.45)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#34d399",
+        "gradientAngle": 45,
+        "fillOpacity": 0.92,
+        "shadowColor": "#000000",
+        "shadowOpacity": 0.5,
+        "shadowBlur": 30,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 18
+      },
+      "text": ""
+    },
+    "p6-blob-c": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 61,
+      "id": "p6-blob-c",
+      "type": "shape",
+      "name": "橘黃多邊形",
+      "shapeKind": "polygon",
+      "polygonPoints": [
+        {
+          "x": 0,
+          "y": 17.65
+        },
+        {
+          "x": 78.95,
+          "y": 0
+        },
+        {
+          "x": 100,
+          "y": 72.55
+        },
+        {
+          "x": 21.05,
+          "y": 100
+        }
+      ],
+      "transform": {
+        "x": 7660,
+        "y": 395,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 190,
+      "height": 255,
+      "style": {
+        "fill": "#fbbf24",
+        "stroke": "rgba(255,255,255,0.45)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 0,
+        "borderWidth": 2,
+        "gradientTo": "#fb7185",
+        "gradientAngle": 180,
+        "fillOpacity": 0.9,
+        "shadowColor": "#000000",
+        "shadowOpacity": 0.5,
+        "shadowBlur": 24,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 14
+      },
+      "text": ""
+    },
+    "p6-glass": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 62,
+      "id": "p6-glass",
+      "type": "shape",
+      "name": "深色玻璃卡片",
+      "shapeKind": "rectangle",
+      "transform": {
+        "x": 7390,
+        "y": 185,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 700,
+      "height": 350,
+      "style": {
+        "fill": "#0b1020",
+        "stroke": "rgba(255,255,255,0.6)",
+        "textColor": "#ffffff",
+        "fontSize": 28,
+        "radius": 36,
+        "borderWidth": 2,
+        "gradientTo": "#1e1b4b",
+        "gradientAngle": 135,
+        "fillOpacity": 0.64,
+        "shadowColor": "#000000",
+        "shadowOpacity": 0.5,
+        "shadowBlur": 44,
+        "shadowOffsetX": 0,
+        "shadowOffsetY": 26
+      },
+      "text": ""
+    },
+    "p6-title": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 63,
+      "id": "p6-title",
+      "type": "text",
+      "name": "綜合標題",
+      "transform": {
+        "x": 7440,
+        "y": 225,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 600,
+      "height": 70,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#ffffff",
+        "fontSize": 52,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.3,
+        "textAlign": "left",
+        "fontWeight": 800
+      },
+      "text": "綜合範例"
+    },
+    "p6-body": {
+      "locked": false,
+      "sceneId": "scene-root",
+      "zIndex": 64,
+      "id": "p6-body",
+      "type": "text",
+      "name": "綜合說明",
+      "transform": {
+        "x": 7440,
+        "y": 315,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 600,
+      "height": 190,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#eef2ff",
+        "fontSize": 27,
+        "radius": 0,
+        "borderWidth": 0,
+        "lineHeight": 1.5,
+        "textAlign": "left",
+        "fontWeight": 400
+      },
+      "text": "半透明玻璃卡片壓在多邊形上：\n**透明度**讓背景透出、**漸層**增加層次、\n**陰影**把卡片浮起來，\n底下的色塊則是自由繪製的**多邊形**。"
+    }
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 0,
+      "label": "封面",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "scene-root",
+        "point": {
+          "x": 640,
+          "y": 360
+        },
+        "zoom": 1,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "durationMs": 1000,
+      "holdMs": 600,
+      "easing": "smooth",
+      "speakerNotes": "封面：背景是 135° 的深藍到青綠漸層；右側三個多邊形各有漸層、半透明與陰影。"
+    },
+    {
+      "id": "step-2",
+      "order": 1,
+      "label": "① 填色透明度",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "scene-root",
+        "point": {
+          "x": 2060,
+          "y": 360
+        },
+        "zoom": 1,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "durationMs": 1000,
+      "holdMs": 600,
+      "easing": "smooth",
+      "speakerNotes": "Inspector → Style & appearance → Fill opacity：同一個白色，只改透明度。0% 完全看不到填色，邊框仍然不透明。"
+    },
+    {
+      "id": "step-3",
+      "order": 2,
+      "label": "② 漸層填色",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "scene-root",
+        "point": {
+          "x": 3480,
+          "y": 360
+        },
+        "zoom": 1,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "durationMs": 1000,
+      "holdMs": 600,
+      "easing": "smooth",
+      "speakerNotes": "勾選 Gradient，選第二個顏色與角度。矩形用 CSS 漸層、非矩形形狀用 SVG 漸層，看起來一致。"
+    },
+    {
+      "id": "step-4",
+      "order": 3,
+      "label": "③ 陰影",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "scene-root",
+        "point": {
+          "x": 4900,
+          "y": 360
+        },
+        "zoom": 1,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "durationMs": 1000,
+      "holdMs": 600,
+      "easing": "smooth",
+      "speakerNotes": "勾選 Shadow：顏色、透明度、模糊、X/Y 位移。陰影是 drop-shadow，沿著輪廓；硬邊陰影把模糊設成 0。"
+    },
+    {
+      "id": "step-5",
+      "order": 4,
+      "label": "④ 任意多邊形",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "scene-root",
+        "point": {
+          "x": 6320,
+          "y": 360
+        },
+        "zoom": 1,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "durationMs": 1000,
+      "holdMs": 600,
+      "easing": "smooth",
+      "speakerNotes": "工具列 + Polygon 逐點點擊建立；選取後可拖曳頂點、右鍵刪除，Inspector 的 Add polygon point 在最長邊的中間加一點。"
+    },
+    {
+      "id": "step-6",
+      "order": 5,
+      "label": "綜合範例",
+      "target": {
+        "kind": "scene-point",
+        "sceneId": "scene-root",
+        "point": {
+          "x": 7740,
+          "y": 360
+        },
+        "zoom": 1,
+        "referenceViewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "durationMs": 1000,
+      "holdMs": 600,
+      "easing": "smooth",
+      "speakerNotes": "綜合：深色半透明玻璃卡片 + 漸層 + 大陰影，壓在三個不規則多邊形上。"
+    }
+  ],
+  "metadata": {
+    "title": "填色效果與多邊形範例",
+    "createdAt": "2026-10-27T00:10:21.025Z",
+    "updatedAt": "2026-10-27T00:10:21.025Z",
+    "aspectRatio": "16:9"
+  }
+}

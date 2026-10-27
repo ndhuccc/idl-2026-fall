@@ -7,6 +7,9 @@
 Use it for diagrams made of boxes, bars, dots, markers, straight lines and labels. Continuous curves, big scatter plots and anything
 with hundreds of marks stay in matplotlib/SVG (see CLARITY.md C23).
 
+Extras (JianBauDau 2026-10-27): every rect/ellipse/poly can take fx={"grad": (to_colour, angle_deg), "opacity": 0-1, "shadow": (colour, opacity, blur, dx, dy)}
+(fill opacity, linear gradient, drop shadow); `poly(points, fill, ...)` draws an arbitrary polygon (shapeKind "polygon", 3-200 vertices).
+
 Coordinates are figure pixels (origin top-left, y down), the same unit as a JianBauDau node. Rotation is in DEGREES (the player does
 `rotate(<n>deg)`; the file-format spec text that says radians is wrong). Colours: "TXT" and "MUT" follow the theme, "GAP" is the
 neutral grey of a remainder, anything else is a hex colour used as is. Labels use plain text (no Markdown); `*`, `_`, `$` are escaped.
@@ -40,12 +43,17 @@ class NFig:
         self.items = []
 
     # ---- primitives
-    def rect(self, x, y, w, h, fill=None, stroke=None, sw=0, dash=False, radius=0, text=None, tcolor="TXT", size=16, bold=False, math=False):
+    def rect(self, x, y, w, h, fill=None, stroke=None, sw=0, dash=False, radius=0, text=None, tcolor="TXT", size=16, bold=False, math=False, fx=None):
         self.items.append(("rect", dict(x=x, y=y, w=w, h=h, fill=fill, stroke=stroke, sw=sw, dash=dash, radius=radius, text=text, tcolor=tcolor,
-                                        size=size, bold=bold, math=math)))
+                                        size=size, bold=bold, math=math, fx=fx)))
 
-    def ellipse(self, cx, cy, d, fill):
-        self.items.append(("ellipse", dict(cx=cx, cy=cy, d=d, fill=fill)))
+    def ellipse(self, cx, cy, d, fill, fx=None):
+        self.items.append(("ellipse", dict(cx=cx, cy=cy, d=d, fill=fill, fx=fx)))
+
+    def poly(self, pts, fill, stroke=None, sw=0, fx=None):
+        """An arbitrary polygon; pts = [(x, y), ...] in figure pixels (3-200 vertices)."""
+        assert 3 <= len(pts) <= 200
+        self.items.append(("poly", dict(pts=[(float(a), float(b)) for a, b in pts], fill=fill, stroke=stroke, sw=sw, fx=fx)))
 
     def square(self, cx, cy, d, fill):
         self.items.append(("rect", dict(x=cx - d / 2, y=cy - d / 2, w=d, h=d, fill=fill, stroke=None, sw=0, dash=False, radius=0, text=None, tcolor="TXT", size=16, bold=False, math=False)))
@@ -77,6 +85,16 @@ class NFig:
             page._add(node)
             return nid
 
+        def fxs(fx):
+            """NodeStyle extras for an fx dict (opacity, gradient, shadow)."""
+            o = {}
+            if not fx: return o
+            if fx.get("opacity") is not None and fx["opacity"] < 1: o["fillOpacity"] = round(fx["opacity"], 3)
+            if fx.get("grad"): o["gradientTo"] = col(fx["grad"][0]); o["gradientAngle"] = fx["grad"][1]
+            if fx.get("shadow"):
+                c_, op_, bl_, dx_, dy_ = fx["shadow"]; o.update(shadowColor=col(c_), shadowOpacity=op_, shadowBlur=bl_, shadowOffsetX=dx_, shadowOffsetY=dy_)
+            return o
+
         base = lambda fill="transparent", stroke="transparent", **kw: dict({"fill": fill, "stroke": stroke, "textColor": "#ffffff", "fontSize": 16,
                                                                           "radius": 0, "borderWidth": 0}, **kw)
         # invisible region node: carries the figure id and its alt text in the name, so audits and editors can find the figure
@@ -86,7 +104,7 @@ class NFig:
         for kind, d in self.items:
             if kind == "rect":
                 st = base(col(d["fill"]) if d["fill"] else "transparent", col(d["stroke"]) if d["stroke"] else "transparent",
-                          borderWidth=d["sw"], radius=d["radius"], borderStyle="dashed" if d["dash"] else "solid")
+                          borderWidth=d["sw"], radius=d["radius"], borderStyle="dashed" if d["dash"] else "solid", **fxs(d.get("fx")))
                 if d["text"]:
                     # a box with a label: the player pads shape labels by 12 px and clips, so a small chip is a TEXT node whose line height
                     # equals the box height (one line, centred, fill + radius kept); a chip with an outline is a plain shape plus a label node
@@ -102,7 +120,12 @@ class NFig:
                 else:
                     add("shape" if d["stroke"] else "text", d["x"], d["y"], d["w"], d["h"], st, "", "rectangle")
             elif kind == "ellipse":
-                add("shape", d["cx"] - d["d"] / 2, d["cy"] - d["d"] / 2, d["d"], d["d"], base(col(d["fill"])), "", "ellipse")
+                add("shape", d["cx"] - d["d"] / 2, d["cy"] - d["d"] / 2, d["d"], d["d"], base(col(d["fill"]), **fxs(d.get("fx"))), "", "ellipse")
+            elif kind == "poly":
+                xs_ = [p[0] for p in d["pts"]]; ys_ = [p[1] for p in d["pts"]]; bx, by, bw_, bh_ = min(xs_), min(ys_), max(max(xs_) - min(xs_), 1), max(max(ys_) - min(ys_), 1)
+                nid_ = add("shape", bx, by, bw_, bh_, base(col(d["fill"]) if d["fill"] else "transparent", col(d["stroke"]) if d["stroke"] else "transparent", borderWidth=d["sw"], **fxs(d.get("fx"))), "", "polygon")
+                import kit as K3
+                K3.nodes[nid_]["polygonPoints"] = [{"x": round((px - bx) / bw_ * 100, 2), "y": round((py - by) / bh_ * 100, 2)} for px, py in d["pts"]]
             elif kind == "tri":
                 add("shape", d["cx"] - d["d"] / 2, d["cy"] - d["d"] / 2, d["d"], d["d"], base(col(d["fill"])), "", "triangle")
             elif kind == "line":
@@ -136,6 +159,13 @@ class NFig:
         from matplotlib.patches import Rectangle, Ellipse, Polygon, FancyBboxPatch
         T = THEMES[theme]
         import re as _re
+        def mix(a, b):
+            ca, cb = matplotlib.colors.to_rgba(col(a)), matplotlib.colors.to_rgba(col(b)); return tuple((x + y) / 2 for x, y in zip(ca, cb))
+        def fxcol(c, fx):
+            if not c: return "none"
+            r = mix(c, fx["grad"][0]) if fx and fx.get("grad") else matplotlib.colors.to_rgba(col(c))
+            if fx and fx.get("opacity") is not None: r = (r[0], r[1], r[2], r[3] * fx["opacity"])
+            return r
         def col(c):
             c = T.get(c, c)
             m = _re.match(r"rgba\((\d+),(\d+),(\d+),([\d.]+)\)", c or "")
@@ -150,7 +180,7 @@ class NFig:
         ax = fig.add_axes([0, 0, 1, 1]); ax.set_xlim(0, self.w); ax.set_ylim(self.h, 0); ax.axis("off")
         for kind, d in self.items:
             if kind == "rect":
-                kw = dict(fc=col(d["fill"]) if d["fill"] else "none", ec=col(d["stroke"]) if d["stroke"] else "none", lw=d["sw"] * 0.72,
+                kw = dict(fc=fxcol(d["fill"], d.get("fx")), ec=col(d["stroke"]) if d["stroke"] else "none", lw=d["sw"] * 0.72,
                           ls=(0, (4, 3)) if d["dash"] else "-")
                 if d["radius"] and d["radius"] >= min(d["w"], d["h"]) / 2 - 0.5:
                     ax.add_patch(Ellipse((d["x"] + d["w"] / 2, d["y"] + d["h"] / 2), d["w"], d["h"], fc=kw["fc"], ec=kw["ec"], lw=kw["lw"]))
@@ -163,7 +193,9 @@ class NFig:
                     ax.text(d["x"] + d["w"] / 2, d["y"] + d["h"] / 2, d["text"] if d["math"] else d["text"].replace("$", r"\$"), color=col(d["tcolor"]),
                             fontsize=d["size"] * 0.72, ha="center", va="center", fontweight="bold" if d["bold"] else "normal")
             elif kind == "ellipse":
-                ax.add_patch(Ellipse((d["cx"], d["cy"]), d["d"], d["d"], fc=col(d["fill"]), ec="none"))
+                ax.add_patch(Ellipse((d["cx"], d["cy"]), d["d"], d["d"], fc=fxcol(d["fill"], d.get("fx")), ec="none"))
+            elif kind == "poly":
+                ax.add_patch(Polygon(d["pts"], closed=True, fc=fxcol(d["fill"], d.get("fx")), ec=col(d["stroke"]) if d["stroke"] else "none", lw=d["sw"] * 0.72))
             elif kind == "tri":
                 r = d["d"] / 2
                 ax.add_patch(Polygon([(d["cx"], d["cy"] - r), (d["cx"] - r, d["cy"] + r), (d["cx"] + r, d["cy"] + r)], fc=col(d["fill"]), ec="none"))
