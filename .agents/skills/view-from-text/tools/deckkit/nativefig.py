@@ -7,8 +7,9 @@
 Use it for diagrams made of boxes, bars, dots, markers, straight lines and labels. Continuous curves, big scatter plots and anything
 with hundreds of marks stay in matplotlib/SVG (see CLARITY.md C23).
 
-Extras (JianBauDau 2026-10-27): every rect/ellipse/poly can take fx={"grad": (to_colour, angle_deg), "opacity": 0-1, "shadow": (colour, opacity, blur, dx, dy)}
-(fill opacity, linear gradient, drop shadow); `poly(points, fill, ...)` draws an arbitrary polygon (shapeKind "polygon", 3-200 vertices).
+Extras (JianBauDau 2026-10-27/28): every rect/ellipse/poly can take fx={"grad": (to_colour, angle_deg), "gtype": "linear"|"radial", "stops": [(offset, colour), ...],
+"opacity": 0-1, "shadow": (colour, opacity, blur, dx, dy)} (fill opacity, linear/multi-stop/radial gradient, drop shadow); `poly(points, fill, ...)` draws an arbitrary polygon
+(shapeKind "polygon", 3-200 vertices); a point may be (x, y, True) = a curve point (`smooth: true`, Catmull-Rom), otherwise a corner.
 
 Coordinates are figure pixels (origin top-left, y down), the same unit as a JianBauDau node. Rotation is in DEGREES (the player does
 `rotate(<n>deg)`; the file-format spec text that says radians is wrong). Colours: "TXT" and "MUT" follow the theme, "GAP" is the
@@ -21,6 +22,21 @@ THEMES = {
     "dark": {"TXT": "#f2ede4", "MUT": "#b7b0a5", "GAP": "#6b645a", "TRACK": "#3b352c", "BG": "#1c1712", "WHITE": "#ffffff"},
     "light": {"TXT": "#1c1712", "MUT": "#6b645a", "GAP": "#c9c4b8", "TRACK": "#dedbd3", "BG": "#ffffff", "WHITE": "#ffffff"},
 }
+
+
+def smooth_outline(pts, n=10):
+    """Closed outline through pts = [(x, y, smooth_flag), ...]: sharp vertices stay corners, smooth ones are joined by a Catmull-Rom (cubic Hermite) curve
+    (JianBauDau `smooth: true`). Returns a polyline [(x, y), ...] sampled n points per curved segment."""
+    m = len(pts); out = []
+    P = [(p[0], p[1]) for p in pts]; S = [bool(p[2]) if len(p) > 2 else False for p in pts]
+    tan = [((P[(i + 1) % m][0] - P[i - 1][0]) / 2, (P[(i + 1) % m][1] - P[i - 1][1]) / 2) if S[i] else (0.0, 0.0) for i in range(m)]
+    for i in range(m):
+        j = (i + 1) % m; p0, p1, m0, m1 = P[i], P[j], tan[i], tan[j]; out.append(p0)
+        if S[i] or S[j]:
+            for k in range(1, n):
+                t = k / n; h00, h10, h01, h11 = 2 * t**3 - 3 * t**2 + 1, t**3 - 2 * t**2 + t, -2 * t**3 + 3 * t**2, t**3 - t**2
+                out.append((h00 * p0[0] + h10 * m0[0] + h01 * p1[0] + h11 * m1[0], h00 * p0[1] + h10 * m0[1] + h01 * p1[1] + h11 * m1[1]))
+    return out
 
 
 def _esc(s):
@@ -53,7 +69,7 @@ class NFig:
     def poly(self, pts, fill, stroke=None, sw=0, fx=None):
         """An arbitrary polygon; pts = [(x, y), ...] in figure pixels (3-200 vertices)."""
         assert 3 <= len(pts) <= 200
-        self.items.append(("poly", dict(pts=[(float(a), float(b)) for a, b in pts], fill=fill, stroke=stroke, sw=sw, fx=fx)))
+        self.items.append(("poly", dict(pts=[(float(p[0]), float(p[1]), bool(p[2]) if len(p) > 2 else False) for p in pts], fill=fill, stroke=stroke, sw=sw, fx=fx)))
 
     def square(self, cx, cy, d, fill):
         self.items.append(("rect", dict(x=cx - d / 2, y=cy - d / 2, w=d, h=d, fill=fill, stroke=None, sw=0, dash=False, radius=0, text=None, tcolor="TXT", size=16, bold=False, math=False)))
@@ -90,7 +106,10 @@ class NFig:
             o = {}
             if not fx: return o
             if fx.get("opacity") is not None and fx["opacity"] < 1: o["fillOpacity"] = round(fx["opacity"], 3)
-            if fx.get("grad"): o["gradientTo"] = col(fx["grad"][0]); o["gradientAngle"] = fx["grad"][1]
+            if fx.get("grad"):
+                o["gradientTo"] = col(fx["grad"][0]); o["gradientAngle"] = fx["grad"][1]
+                if fx.get("gtype") == "radial": o["gradientType"] = "radial"
+                if fx.get("stops"): o["gradientStops"] = [{"offset": round(float(a), 3), "color": col(c)} for a, c in fx["stops"]][:8]
             if fx.get("shadow"):
                 c_, op_, bl_, dx_, dy_ = fx["shadow"]; o.update(shadowColor=col(c_), shadowOpacity=op_, shadowBlur=bl_, shadowOffsetX=dx_, shadowOffsetY=dy_)
             return o
@@ -125,7 +144,7 @@ class NFig:
                 xs_ = [p[0] for p in d["pts"]]; ys_ = [p[1] for p in d["pts"]]; bx, by, bw_, bh_ = min(xs_), min(ys_), max(max(xs_) - min(xs_), 1), max(max(ys_) - min(ys_), 1)
                 nid_ = add("shape", bx, by, bw_, bh_, base(col(d["fill"]) if d["fill"] else "transparent", col(d["stroke"]) if d["stroke"] else "transparent", borderWidth=d["sw"], **fxs(d.get("fx"))), "", "polygon")
                 import kit as K3
-                K3.nodes[nid_]["polygonPoints"] = [{"x": round((px - bx) / bw_ * 100, 2), "y": round((py - by) / bh_ * 100, 2)} for px, py in d["pts"]]
+                K3.nodes[nid_]["polygonPoints"] = [dict({"x": round((p[0] - bx) / bw_ * 100, 2), "y": round((p[1] - by) / bh_ * 100, 2)}, **({"smooth": True} if p[2] else {})) for p in d["pts"]]
             elif kind == "tri":
                 add("shape", d["cx"] - d["d"] / 2, d["cy"] - d["d"] / 2, d["d"], d["d"], base(col(d["fill"])), "", "triangle")
             elif kind == "line":
@@ -163,7 +182,10 @@ class NFig:
             ca, cb = matplotlib.colors.to_rgba(col(a)), matplotlib.colors.to_rgba(col(b)); return tuple((x + y) / 2 for x, y in zip(ca, cb))
         def fxcol(c, fx):
             if not c: return "none"
-            r = mix(c, fx["grad"][0]) if fx and fx.get("grad") else matplotlib.colors.to_rgba(col(c))
+            if fx and fx.get("grad") and fx.get("stops"):   # multi-stop: the stop nearest the middle stands for the gradient
+                mid = min(fx["stops"], key=lambda s_: abs(s_[0] - 0.5)); r = mix(c, fx["grad"][0]); r = tuple((a + b) / 2 for a, b in zip(r, matplotlib.colors.to_rgba(col(mid[1]))))
+            else:
+                r = mix(c, fx["grad"][0]) if fx and fx.get("grad") else matplotlib.colors.to_rgba(col(c))
             if fx and fx.get("opacity") is not None: r = (r[0], r[1], r[2], r[3] * fx["opacity"])
             return r
         def col(c):
@@ -195,7 +217,7 @@ class NFig:
             elif kind == "ellipse":
                 ax.add_patch(Ellipse((d["cx"], d["cy"]), d["d"], d["d"], fc=fxcol(d["fill"], d.get("fx")), ec="none"))
             elif kind == "poly":
-                ax.add_patch(Polygon(d["pts"], closed=True, fc=fxcol(d["fill"], d.get("fx")), ec=col(d["stroke"]) if d["stroke"] else "none", lw=d["sw"] * 0.72))
+                ax.add_patch(Polygon(smooth_outline(d["pts"]) if any(p[2] for p in d["pts"]) else [(p[0], p[1]) for p in d["pts"]], closed=True, fc=fxcol(d["fill"], d.get("fx")), ec=col(d["stroke"]) if d["stroke"] else "none", lw=d["sw"] * 0.72))
             elif kind == "tri":
                 r = d["d"] / 2
                 ax.add_patch(Polygon([(d["cx"], d["cy"] - r), (d["cx"] - r, d["cy"] + r), (d["cx"] + r, d["cy"] + r)], fc=col(d["fill"]), ec="none"))

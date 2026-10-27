@@ -75,7 +75,11 @@ def _rgba(c, a=1.0):
 def _fill_css(st):
     """background value for a node style: fill, fillOpacity, linear gradient (gradientTo/gradientAngle)."""
     fo = st.get("fillOpacity", 1)
-    if st.get("gradientTo"): return f"linear-gradient({st.get('gradientAngle', 180)}deg,{_rgba(st['fill'], fo)},{_rgba(st['gradientTo'], fo)})"
+    if st.get("gradientTo"):
+        stops = [(_rgba(st["fill"], fo), 0.0)] + [(_rgba(g["color"], fo), g["offset"]) for g in sorted(st.get("gradientStops") or [], key=lambda g: g["offset"])] + [(_rgba(st["gradientTo"], fo), 1.0)]
+        cs = ",".join(f"{c} {round(o * 100, 1)}%" for c, o in stops)
+        if st.get("gradientType") == "radial": return f"radial-gradient(ellipse closest-side at 50% 50%,{cs})"
+        return f"linear-gradient({st.get('gradientAngle', 180)}deg,{cs})"
     return _rgba(st["fill"], fo) if fo != 1 else st["fill"]
 
 
@@ -86,7 +90,14 @@ def _shadow_css(st):
 
 def _poly_css(n):
     if n.get("shapeKind") != "polygon" or not n.get("polygonPoints"): return ""
-    return "clip-path:polygon(" + ",".join(f"{p['x']}% {p['y']}%" for p in n["polygonPoints"]) + ");"
+    pts = n["polygonPoints"]
+    if any(p.get("smooth") for p in pts):
+        import sys as _s, os as _o
+        _s.path.insert(0, _o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "deckkit"))
+        from nativefig import smooth_outline
+        out = smooth_outline([(p["x"], p["y"], bool(p.get("smooth"))) for p in pts])
+        return "clip-path:polygon(" + ",".join(f"{x:.2f}% {y:.2f}%" for x, y in out) + ");"
+    return "clip-path:polygon(" + ",".join(f"{p['x']}% {p['y']}%" for p in pts) + ");"
 
 
 def page_html(N, ids, ox):

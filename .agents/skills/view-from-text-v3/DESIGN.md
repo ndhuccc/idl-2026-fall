@@ -49,12 +49,17 @@ JianBauDau 取消了每個 Frame 上方給 KP 標題的標題區,並新增四項
 **HTML 設計時怎麼寫,轉換器會對應**
 | HTML | 轉成 |
 |---|---|
-| `background: linear-gradient(135deg, #a, #b)`(兩色) | `fill` + `gradientTo` + `gradientAngle` |
+| `background: linear-gradient(135deg, #a, #b 50%, #c)`(可多色)或 `radial-gradient(...)` | `fill` + `gradientTo` + `gradientAngle`,中間色進 `gradientStops`,徑向 `gradientType: "radial"` |
 | `box-shadow: 0 16px 28px 0 rgba(0,0,0,.4)` | `shadow*` |
 | `rgba(...)` 填色、SVG 的 `fill-opacity` | 保留透明度 |
-| SVG `<polygon points>` 或只用 M/L/Z 的 `<path>`,可用 `fill="url(#lg)"`(兩色線性漸層) | `shapeKind: "polygon"`(`nativefig` 的 `NFig.poly`) |
-| `filter: drop-shadow`、多色漸層、徑向漸層、曲線路徑 | 仍不支援(漸層取首尾色,曲線路徑略過) |
+| SVG `<polygon points>`,可用 `fill="url(#lg)"` | `shapeKind: "polygon"`(`nativefig` 的 `NFig.poly`) |
+| SVG `<path>` 用 M/L/H/V/C/Q/Z 畫的曲線,或 `<polygon data-smooth="all">` | 多邊形,曲線取樣成「曲線點」(`smooth: true`,Catmull-Rom);直線頂點維持尖角 |
+| SVG `<radialGradient>`、多色 `<linearGradient>` | 徑向、多色漸層 |
+| `border-radius: 50%` | 圓形(圓角矩形,半徑 = 短邊一半) |
+| `filter: drop-shadow`、圓弧 `A` 路徑 | 仍不支援 |
 
 **Python 端**:`NFig.rect/ellipse(..., fx={"grad": (to, angle), "opacity": 0~1, "shadow": (color, opacity, blur, dx, dy)})`、`NFig.poly(points, fill, stroke, sw, fx)`;`to_png` 會畫多邊形與透明度,漸層取兩色的中間色,陰影略過。`preview_deck.py` 也能顯示多邊形、漸層、透明度與陰影(多邊形的陰影除外)。
 
 **注意**:非矩形形狀裡不要放字(規則不變)。陰影在深色底上要用有色光暈才看得到。
+
+**2026-10-28 更新**:JianBauDau 再加入多色漸層(`gradientStops`)、徑向漸層(`gradientType: "radial"`)與曲線路徑(多邊形頂點 `smooth: true`)。`NFig` 的 `fx` 可帶 `"gtype": "radial"` 與 `"stops": [(offset, colour), ...]`,`poly` 的點可寫 `(x, y, True)` 表示曲線點;`to_png` 與預覽都會畫曲線(`nativefig.smooth_outline`),多色漸層在 PNG 取中間色近似。另外修正:CSS `border-radius: 50%` 現在會變成真正的圓。範例檔與說明書已更新在 `docs/`。
