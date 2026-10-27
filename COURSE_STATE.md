@@ -36,11 +36,12 @@
 - [ ] 期末專題確切截止日;e 學苑繳交說明
 - [ ] LabTube:在 LabTube 建課、匯入修課名單,並把「學生作業 Repo 名稱前綴」設為 `idl-2026`;向學生公告作業範本網址與 LabTube 網址
 - [ ] 之後修改 `student-template/` 時,要手動同步到 `ndhuccc/idl-2026-hw-template`(學生已建立的 Repo 不會自動更新)
-- [ ] 每週講義與投影片(第 1–3 週已完成:第 1 週 lec01 KP01–KP10、第 2 週 lec02 KP01–KP10、第 3 週 lec03 KP01–KP16;第 4 週 lec04 KP01–KP12(2026-10-21 由 18 個縮減);其餘週次待補)
+- [ ] 每週講義與投影片(第 1–3 週已完成:第 1 週 lec01 KP01–KP10、第 2 週 lec02 KP01–KP10、第 3 週 lec03 KP01–KP16;第 4 週 lec04 KP01–KP12(2026-10-21 由 18 個縮減);第 6 週 lec06 已完成 KP04(講義與中英文簡報),KP01–KP03、KP05–KP10 與全章地圖待補;其餘週次待補)
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
 
+- 2026-10-27 16:27 — 老師說「發佈 KP04」:第 6 週 KP04「離散卷積與互相關」講義(`lectures/lec06-kp04-discrete-conv-cross-correlation.md`,中英對照、大學部)、三張 Matplotlib 圖與產圖程式(`assets/figures/lec06-kp04-*`、`assets/figures/src/lec06-kp04-figures.py`)、以 view-from-text-v3 製作的中英文簡報各 14 頁(主線 12 頁、延伸 2 頁;`slides/lec06-kp04-discrete-conv-cross-correlation.jbd.json`、`-en.jbd.json`)一併提交。講義只加上簡報下載連結;`schedule.md` 第 6 週列加入 KP04 講義與簡報,`mkdocs.yml` 選單由 `sync_nav.py` 加入第 6 週。老師今天的決定:講義 `[補充]` 內容在簡報上以小標籤「補充/Added」標示;練習放在延伸頁、只給提示(頁面與講者備註都不放答案);沿用講義的 Matplotlib 圖;全章地圖 lec06-kp00 與 KP03 銜接句之後再做。IDL 的 view-from-text-v3 技能副本改為相對路徑、`lec06` 前綴、IDL 課名與大學部程度(另一次提交;pr 母版未動)。下一步:第 6 週 KP01–KP03、KP05–KP10(KP02、KP10 為自主學習)與全章地圖。
 - 2026-10-24 07:49 — 依老師指示,網站的簡報下載只提供 HTML:`scripts/build_docs.py` 不再把 `.jbd.json` 發佈到網站(來源檔仍在 Repo)、下載頁移除 JSON 欄與 JianBauDau 播放器連結,進度表與講義指向 `slides/…jbd.json` 的連結改指向同名 HTML;僅在某份簡報沒有網頁版(轉換失敗或缺少 Node.js)時才退回提供 JSON 與播放器連結。網站體積隨之縮小(idl 約 713→361 MB、pr 約 637→390 MB)。三個課程 Repo 相同。
 - 2026-10-24 — 投影片下載頁改為以 HTML 網頁版為主:新增專案技能 `.agents/skills/slides-to-html/`(JianBauDau JSON 轉單檔離線 HTML,公式用 KaTeX 預先排版、圖片音檔內嵌),`scripts/build_docs.py` 在建置時自動轉換 `slides/` 第一層的 `.jbd.json` 並把 HTML 列在下載頁(JSON 與播放器連結保留為選用);`deploy-site.yml` 新增 Node 20 與 `npm ci` 步驟、`.gitignore` 排除 `node_modules/`。HTML 不提交進 Git,只存在網站。三個課程 Repo 相同。
 - 2026-10-22 — lec03 KP09、KP10、KP11 簡報依 view-from-text 重做(不畫漫畫,大學生程度,CLARITY 規則):各 21、16、22 頁,稽核 FAIL 0,預覽無溢出。頁數超過「每單元 6 頁」準則,原因是每個玩具算例逐步代入、圖與練習各獨立成頁。舊簡報內嵌的旁白隨舊頁面移除,新簡報沒有音檔;老師指示旁白與講稿不必重錄。待辦:老師在 JianBauDau 逐頁確認排版。
