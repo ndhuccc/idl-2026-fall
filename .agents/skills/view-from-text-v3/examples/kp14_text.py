@@ -1,0 +1,77 @@
+import os, sys
+HERE = os.path.dirname(os.path.abspath(__file__)); HERE = HERE[:-5] if HERE.endswith(("/W_zh", "/W_en")) else HERE; SK = "/home/user/pr-2026-fall/.agents/skills"
+for p in ("view-from-text-v3/tools", "view-from-text-v2/tools", "view-from-text-v2/examples"): sys.path.insert(0, os.path.join(SK, p))
+sys.path.insert(0, HERE)
+import kp14_pages as KP
+from htmlkit import native
+JD = os.path.join(HERE, "out")
+UNIT_ZH, UNIT_EN = "Cover 定理", "Cover's theorem"
+TITLE_ZH = "圖型識別 第四章 KP14：Cover 定理（大三）"; TITLE_EN = "Pattern Recognition, Chapter 4, KP14: Cover's theorem (undergraduate)"
+NOTE_ZH = "教材程度：大學三年級（undergrad）。依講義 lec05-kp14 以 view-from-text-v3 製作：先規劃頁面，每頁以一張原生資訊圖（HTML 設計後轉成原生節點）為主，名詞在同一頁圖內定義。共 9 頁，本單元為自主學習，課堂不講授；所有數字皆由程式計算。"
+NOTE_EN = "Level: undergraduate (year 3). Made from the lecture lec05-kp14 with view-from-text-v3: pages were planned first and each page is mainly one native infographic (designed in HTML and converted to native nodes), with the terms defined on the same page. 9 pages; this unit is self-study and is not taught in class; every number is computed by program."
+def fig(n, alt_zh, alt_en):
+    return lambda: native(f"kp14_p{n}", f"lec05-kp14-p{n}", KP.W, KP.H, JD, alt_en if os.environ.get("KP_LANG") == "en" else alt_zh)
+P = []
+NXT = {1: ("Cover 公式", "Cover's formula"), 2: ("可分機率", "the separability probability"), 3: ("相變", "the phase transition"), 4: ("隨機實測", "the random trials"), 5: ("升維的效果", "the effect of lifting"), 6: ("要幾維才夠", "how many dimensions are enough"), 7: ("可分不等於泛化", "separable is not generalizable"), 8: ("小練習", "the exercises")}
+PREV = {2: ("四個角的 16 種標法", "the 16 labelings of the four corners"), 3: ("Cover 公式", "Cover's formula"), 4: ("可分機率", "the separability probability"), 5: ("相變", "the phase transition"), 6: ("隨機實測", "the random trials"), 7: ("升維的效果", "the effect of lifting"), 8: ("要幾維才夠", "how many dimensions are enough"), 9: ("可分不等於泛化", "separable is not generalizable")}
+def add(n, lab, title, bridge, notes, alt):
+    zh, en = notes
+    if n in PREV: zh = f"承接上一頁的「{PREV[n][0]}」。" + zh; en = f"Following the previous page on {PREV[n][1]}. " + en
+    if n == 9: zh += "到這裡這個單元就結束了；之後請接著讀下一單元。"; en += " That ends this unit; next, move on to the next unit."
+    if n in NXT: zh += f"接下來的下一頁是「{NXT[n][0]}」。"; en += f" Next, the next page covers {NXT[n][1]}."
+    P.append(dict(lab=lab, title=title, bridge=bridge, notes=(zh, en), layout="freeform", spec=fig(n, *alt)))
+add(1, ("四角的標法", "Corner labelings"),
+    ("正方形四個角有 16 種標法，14 種可分，不可分的是 XOR 與 XNOR", "The four corners of a square have 16 labelings, 14 separable; the two that fail are XOR and XNOR"),
+    ("KP13 說升維能讓原本分不開的資料變得可分。升維真的有幫助嗎？先數一數：一條線能把幾個點分成兩類。", "KP13 lifted data that no line could separate. Does lifting really help? Count first: how many labelings of points can one line separate?"),
+    ("這是 KP14 的第一頁，這個單元是自主學習。先備三件事：線性可分（KP03）、升維（KP13）、組合數（從 n 個取 i 個的取法數）。二分是把 N 個點分成兩類的一種標法；一條線做得到的叫線性二分。三個一般位置的點有 2 的 3 次方等於 8 種標法，全部可分；正方形的四個角有 2 的 4 次方等於 16 種標法，程式逐一檢查，14 種可分。不可分的 2 種是對角同類：左上與右下同類是 XOR，把兩類名稱對調是 XNOR（程式計算）。",
+     "This is the first page of KP14, a self-study unit. Prerequisites: linear separability (KP03), lifting (KP13) and the binomial coefficient (the number of ways to pick i out of n). A dichotomy is one way of labeling N points with two classes; if a line can do it, it is a linear dichotomy. Three points in general position have 2 to the 3rd equal to 8 labelings and all are separable; the four corners of a square have 2 to the 4th equal to 16 labelings, and a program checks each one: 14 are separable. The 2 that fail pair the diagonal corners: top-left with bottom-right is XOR, and the same with the class names swapped is XNOR (computed by program)."),
+    ("Sixteen labelings of the four corners of a square: 14 green (separable) and 2 red (XOR and XNOR, the diagonal corners share a class).",) * 2)
+add(2, ("Cover 公式", "Cover's formula"),
+    ("Cover 公式 O(N, l) = 2 Σ C(N−1, i)：N = 4、l = 2 得 14 種可分標法", "Cover's formula O(N, l) = 2 Σ C(N−1, i): N = 4 and l = 2 give 14 separable labelings"),
+    ("四個角的 16 種標法中有 14 種可分，不可分的是 XOR 與 XNOR。有沒有公式一次算出 N 個點、l 維的可分標法數？", "Of the 16 labelings of the four corners, 14 are separable; the two that fail are XOR and XNOR. Is there a formula for the separable labelings of N points in l dimensions?"),
+    ("這一頁給計數公式。一般位置是 l 維空間的點沒有任何 l 加 1 個落在同一個 l 減 1 維超平面上，二維就是任三點不共線。Cover 公式：O(N, l) 等於 2 乘以 i 從 0 到 l 的 C(N 減 1, i) 的總和。N 等於 4、l 等於 2：C(3, i) 是 1、3、3，所以 O 等於 2 乘 7 等於 14。N 等於 3：C(2, i) 是 1、2、1，O 等於 2 乘 4 等於 8，也就是 2 的 3 次方。一般地，N 不超過 l 加 1 時 O 等於 2 的 N 次方，全部標法都可分。右邊是 l 等於 2、N 從 1 到 8 的表：O 是 2、4、8、14、22、32、44、58，2 的 N 次方是 2、4、8、16、32、64、128、256（程式計算）。",
+     "This page gives the counting formula. General position means that no l plus 1 of the points lie on one hyperplane of dimension l minus 1; in 2-D, no three points are collinear. Cover's formula: O(N, l) equals 2 times the sum over i from 0 to l of C(N minus 1, i). For N equal to 4 and l equal to 2: C(3, i) is 1, 3, 3, so O equals 2 times 7, that is 14. For N equal to 3: C(2, i) is 1, 2, 1 and O equals 2 times 4, that is 8, which is 2 to the 3rd. In general, when N is at most l plus 1, O equals 2 to the N and every labeling is separable. On the right is the table for l equal to 2 and N from 1 to 8: O is 2, 4, 8, 14, 22, 32, 44, 58 and 2 to the N is 2, 4, 8, 16, 32, 64, 128, 256 (computed by program)."),
+    ("Cover formula O(N,l)=2*sum_{i=0}^{l} C(N-1,i); N=4,l=2 gives 14; N=3,l=2 gives 8; table for l=2, N=1..8: O = 2,4,8,14,22,32,44,58 versus 2^N = 2,4,8,16,32,64,128,256.",) * 2)
+add(3, ("可分機率", "Separability probability"),
+    ("可分機率 P = O/2ᴺ：N 超過 l + 1 就開始掉，l = 2 時 N = 6 剛好一半", "Separability probability P = O/2ᴺ: it falls once N exceeds l + 1, and is exactly one half at N = 6 for l = 2"),
+    ("Cover 公式算出 l = 2 時 O(N, 2) 是 2、4、8、14、22。隨機貼標籤時，可分的機率是多少？", "Cover's formula gives 14 separable labelings for N = 4 and l = 2, and O(N, 2) = 2, 4, 8, 14, 22. With random labels, what is the probability that the points are separable?"),
+    ("這一頁把標法數換成機率。隨機貼標籤時，2 的 N 次方種標法機會均等，所以可分機率 P 等於 O(N, l) 除以 2 的 N 次方；N 不超過 l 加 1 時 P 等於 1。l 等於 2、N 從 1 到 10 的 P 是 1、1、1、0.875、0.6875、0.5、0.344、0.227、0.145、0.090（程式計算）。N 一超過 l 加 1 等於 3，機率就開始掉；N 等於 6 剛好一半。",
+     "This page turns the counts into probabilities. With random labels all 2 to the N labelings are equally likely, so the separability probability P equals O(N, l) over 2 to the N; when N is at most l plus 1, P equals 1. For l equal to 2 and N from 1 to 10, P is 1, 1, 1, 0.875, 0.6875, 0.5, 0.344, 0.227, 0.145, 0.090 (computed by program). As soon as N exceeds l plus 1, which is 3, the probability starts to fall, and at N equal to 6 it is exactly one half."),
+    ("Separability probability for l=2: P=1 for N=1..3, then 0.875, 0.6875, 0.5 at N=6, 0.344, 0.227, 0.145, 0.090 at N=10.",) * 2)
+add(4, ("相變", "Phase transition"),
+    ("相變：令 N = r(l + 1)，所有曲線都通過 (2, ½)，l 越大台階越陡", "Phase transition: with N = r(l + 1) every curve passes (2, ½), and the larger l, the steeper the step"),
+    ("l = 2 時可分機率 P 在 N = 3 是 1，到 N = 6 剛好一半。維度更高時，這條下降的曲線會是什麼樣子？", "For l = 2 the separability probability falls from 1 at N = 3 to exactly one half at N = 6. What does this curve look like in higher dimensions?"),
+    ("這一頁看維度更高的曲線。相變是機率從 1 掉到 0 的轉折，維度越大轉折越陡，像水結成冰。令 N 等於 r 乘 l 加 1，r 是點數除以自由度。r 等於 2 時機率恰為 1/2，四步：一，N 等於 2l 加 2，所以 N 減 1 等於 2l 加 1；二，C(2l 加 1, i) 等於 C(2l 加 1, 2l 加 1 減 i)，前一半與後一半對稱；三，i 不超過 l 的和正好是全部的一半，也就是 2 的 2l 次方；四，O 等於 2 乘 2 的 2l 次方，P 等於 1/2。l 等於 1、3、9、19、49、99 的曲線全部通過 (2, 1/2)。r 等於 1.5 的 P：l 等於 1、19、99 時是 0.75、0.97、1.00；r 等於 2.5：0.31、0.08、0.0007（程式計算）。",
+     "This page looks at the curves in higher dimensions. A phase transition is the turn where the probability drops from 1 to 0; the larger the dimension, the sharper the turn, like water freezing. Let N equal r times l plus 1, where r is the number of points over the degrees of freedom. At r equal to 2 the probability is exactly 1/2, in four steps: one, N equals 2l plus 2, so N minus 1 equals 2l plus 1; two, C(2l plus 1, i) equals C(2l plus 1, 2l plus 1 minus i), the front half mirrors the back half; three, the sum over i up to l is exactly half of the total, that is 2 to the 2l; four, O equals 2 times 2 to the 2l and P equals 1/2. The curves for l equal to 1, 3, 9, 19, 49, 99 all pass through (2, 1/2). P at r equal to 1.5 for l equal to 1, 19, 99 is 0.75, 0.97, 1.00; at r equal to 2.5 it is 0.31, 0.08, 0.0007 (computed by program)."),
+    ("P against r=N/(l+1) for l=1,3,9,19,49,99: every curve passes (2, 1/2) and is steeper for larger l; P at r=1.5: 0.75, 0.97, 1.00; at r=2.5: 0.31, 0.08, 0.0007 for l=1,19,99.",) * 2)
+add(5, ("隨機實測", "Random trials"),
+    ("隨機實測與公式吻合：N = 4 為 0.865 對 0.875，N = 6 為 0.503 對 0.500", "Random trials match the formula: 0.865 against 0.875 at N = 4, 0.503 against 0.500 at N = 6"),
+    ("所有曲線都通過 (2, ½)，N = 2(l + 1) 時機率剛好一半。公式說得對嗎？用隨機點實測看看。", "Every curve passes (2, ½), so the probability is one half at N = 2(l + 1). Is the formula right? Test it with random points."),
+    ("這一頁用隨機實驗檢驗公式。實驗設定是本講義設計、可重現：每次抽 N 個二維標準常態點，各配隨機正負 1 標籤，用線性規劃判斷是否存在一條直線完全分開兩類；每個 N 做 1500 次，亂數種子 1。N 等於 4：實測 0.865，公式 0.875，差 0.010；N 等於 6：實測 0.503，公式 0.500，差 0.003。1500 次的標準誤約根號 0.25 除以 1500 等於 0.013，兩個差距都在約一個標準誤以內，公式與實測吻合（程式計算）。",
+     "This page tests the formula with a random experiment. The setup is my own design and reproducible: each trial draws N standard-normal points in 2-D, gives each a random plus or minus 1 label, and a linear program checks whether a line separates the two classes; 1500 trials per N with seed 1. At N equal to 4 the measured value is 0.865 against 0.875 from the formula, a gap of 0.010; at N equal to 6 it is 0.503 against 0.500, a gap of 0.003. The standard error of 1500 trials is about the square root of 0.25 over 1500, which is 0.013, so both gaps are within about one standard error and formula and measurement agree (computed by program)."),
+    ("Formula versus measured separable fraction: N=4: 0.875 vs 0.865; N=6: 0.500 vs 0.503; 1500 trials each, standard error about 0.013.",) * 2)
+add(6, ("升維的效果", "Effect of lifting"),
+    ("加三個二次座標，l 從 2 升到 5：N = 6 的可分比例從 0.494 升到 1.000", "Adding three quadratic coordinates, l goes from 2 to 5: the separable fraction at N = 6 rises from 0.494 to 1.000"),
+    ("實測的 0.865 與 0.503 和公式的 0.875 與 0.500 吻合。升維真的能把可分比例拉高嗎？", "The measured 0.865 and 0.503 match the formula's 0.875 and 0.500. Can lifting really raise the separable fraction?"),
+    ("這一頁看升維的效果。同樣的隨機點與標籤、N 等於 6、1500 次：原本 x1、x2，l 等於 2，公式預測 0.5，實測 0.494；加上 x1 平方、x2 平方與 x1 乘 x2 三個二次座標，l 等於 5，N 等於 6 不超過 l 加 1 等於 6，所以 P 等於 1，實測 1500 次全部可分，1.000（程式計算）。兩者之間只差在多加了三個二次座標。",
+     "This page shows the effect of lifting. With the same kind of random points and labels, N equal to 6 and 1500 trials: with the original x1 and x2, l equals 2, the formula predicts 0.5 and the measurement is 0.494; adding the three quadratic coordinates x1 squared, x2 squared and x1 times x2 gives l equal to 5, and N equal to 6 does not exceed l plus 1 equal to 6, so P equals 1 and all 1500 trials are separable, 1.000 (computed by program). The only difference is the three added quadratic coordinates."),
+    ("Separable fraction at N=6: original l=2: formula 0.5, measured 0.494; with three quadratic terms l=5: formula 1, measured 1.000.",) * 2)
+add(7, ("要幾維才夠", "How many dimensions"),
+    ("N = 100 時維度要到 l = 49 才過半，到 l = 68 才接近 1", "At N = 100 the dimension must reach l = 49 to pass one half and l = 68 to approach 1"),
+    ("加三個二次座標後，N = 6 的可分比例從 0.494 升到 1.000。資料多的時候，要升到幾維才夠？", "After adding three quadratic coordinates, the separable fraction at N = 6 rose from 0.494 to 1.000. With much more data, how many dimensions are enough?"),
+    ("這一頁固定 N 等於 100，改變維度 l。N 超過 l 加 1 就有分不開的標法；N 超過 2 乘 l 加 1 時可分機率低於一半。表中 l 等於 40、48、49、56、60、68 的 P 是 0.035、0.42、0.5、0.92、0.987、0.9999（程式計算）。要靠升維把隨機標籤全部分開，維度得接近資料量的一半以上。",
+     "This page fixes N at 100 and varies the dimension l. Once N exceeds l plus 1 some labelings fail; when N exceeds 2 times l plus 1 the separability probability is below one half. In the table, l equal to 40, 48, 49, 56, 60, 68 gives P equal to 0.035, 0.42, 0.5, 0.92, 0.987, 0.9999 (computed by program). To separate random labels by lifting, the dimension must reach about half the data size or more."),
+    ("N=100: separability probability against dimension l: 0.035 at l=40, 0.42 at 48, 0.5 at 49, 0.92 at 56, 0.987 at 60, 0.9999 at 68.",) * 2)
+add(8, ("可分不等於泛化", "Not generalization"),
+    ("可分不等於泛化：訓練全對，新資料只有 50.4%", "Separable is not generalizable: training is all correct, new data only 50.4%"),
+    ("N = 100 時維度要到 l = 49 才過半。升維後訓練資料分得開，新資料也會分對嗎？", "At N = 100 the dimension must reach l = 49 to pass one half. Once lifting separates the training data, will new data be classified correctly too?"),
+    ("這一頁處理常見迷思：升維後訓練資料分得開，新資料也會分對。實驗設定是本講義設計、可重現：5 個二維標準常態點，各配隨機正負 1 標籤，用二次特徵也就是 5 維以線性規劃找分開的超平面，共做 300 次，亂數種子 1；每次再抽 200 個新點，也配隨機標籤，用找到的超平面預測。結果：300 次全部找得到，N 等於 5 不超過 l 加 1 等於 6，與公式一致，訓練全對；新點平均只對 50.4%，就是亂猜（程式計算）。升維只保證訓練資料分得開；有規律的資料才學得到東西，泛化要另外看。",
+     "This page handles a common myth: if lifting separates the training data, new data will be classified correctly too. The setup is my own design and reproducible: 5 standard-normal points in 2-D with random plus or minus 1 labels, a separating hyperplane found by linear programming in the quadratic features, that is 5 dimensions, 300 times with seed 1; each time 200 new points, also randomly labeled, are predicted by that hyperplane. Result: all 300 runs found one, since N equal to 5 does not exceed l plus 1 equal to 6, as the formula says, and training is all correct; new points are right only 50.4% of the time on average, which is guessing (computed by program). Lifting only guarantees that the training data separate; only data with structure teach anything, and generalization has to be examined separately."),
+    ("Training accuracy 100% versus new-data accuracy 50.4% for the same classifier; 300 runs, 5 training points, quadratic features, 200 new random points each.",) * 2)
+add(9, ("小練習", "Exercises"),
+    ("兩題小練習：O(5, 2) = 22、P = 0.6875；升到 l = 3，P = 0.9375", "Two exercises: O(5, 2) = 22 and P = 0.6875; raising l to 3 gives P = 0.9375"),
+    ("可分不等於泛化：升維後訓練全對，新資料只有 50.4%。用 Cover 公式再算一次，N = 5 的可分機率是多少？", "Separable is not generalizable: training is all correct after lifting but new data only 50.4%. Using Cover's formula once more, what is the separability probability for N = 5?"),
+    ("兩題小練習，N 等於 5 個一般位置的點。題 1：l 等於 2 時的 O(5, 2) 與 P。C(4, i) 是 1、4、6、4、1，O 等於 2 乘 1 加 4 加 6 等於 22，P 等於 22 除以 32 等於 0.6875；核對：22 與第 2 頁的表相同。題 2：升到 l 等於 3，O(5, 3) 等於 2 乘 1 加 4 加 6 加 4 等於 30，P 等於 30 除以 32 等於 0.9375；升一維，可分機率從 0.6875 升到 0.9375（程式計算）。",
+     "Two exercises with N equal to 5 points in general position. Q1: O(5, 2) and P for l equal to 2. C(4, i) is 1, 4, 6, 4, 1, so O equals 2 times 1 plus 4 plus 6, which is 22, and P equals 22 over 32, which is 0.6875; check: 22 matches the table on page 2. Q2: raise l to 3, then O(5, 3) equals 2 times 1 plus 4 plus 6 plus 4, which is 30, and P equals 30 over 32, which is 0.9375; one more dimension lifts the separability probability from 0.6875 to 0.9375 (computed by program)."),
+    ("Exercise 1: O(5,2)=2(1+4+6)=22, P=22/32=0.6875. Exercise 2: O(5,3)=2(1+4+6+4)=30, P=30/32=0.9375.",) * 2)
+PAGES = P
