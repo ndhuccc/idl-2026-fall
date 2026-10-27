@@ -1,0 +1,122 @@
+[
+{
+"id": "valley",
+"before": "2.",
+"zh": [
+"先看藍色橢圓等高線：很扁，表示 w₂ 方向曲率 20、w₁ 方向曲率 1；再看紅色軌跡從起點 (−4, 1) 出發，在 w₂ 方向上下擺，走 100 步才到 |w| < 0.001（程式計算）。〔功能：1〕",
+"狹長谷底的等高線與普通梯度下降的軌跡：100 步，在 w₂ 方向上下擺。"
+],
+"en": [
+"First see the blue elliptical contours: very flat, meaning curvature 20 along w₂ and 1 along w₁; then see the red path from the start (−4, 1) swinging up and down along w₂ and needing 100 steps to reach |w| < 0.001 (computed). [Function: 1]",
+"Contours of a narrow valley and the plain gradient-descent path: 100 steps, swinging along w₂."
+]
+},
+{
+"id": "zigzag",
+"before": "3.",
+"zh": [
+"先看左圖：w₂ 每步變號、只縮到 0.6 倍（1、−0.6、0.36、−0.216）；再看右圖：w₁ 每步同方向、只縮 8%（−4、−3.68、−3.386）；下方是 μ < 0.1 的限制，μ = 0.12 時 60 步後 |w| = 5.86×10⁸。〔功能：1〕",
+"w₂ 每步變號縮到 0.6 倍、w₁ 每步縮 8%；μ 要小於 0.1，μ = 0.12 時 60 步後 |w| = 5.86×10⁸。"
+],
+"en": [
+"First see the left chart: w₂ flips sign every step and shrinks only to 0.6 times (1, −0.6, 0.36, −0.216); then the right chart: w₁ keeps its direction and shrinks only 8% per step (−4, −3.68, −3.386); below is the limit μ < 0.1, and μ = 0.12 gives |w| = 5.86×10⁸ after 60 steps. [Function: 1]",
+"w₂ flips sign and shrinks to 0.6 times per step, w₁ shrinks 8%; μ must be below 0.1, and μ = 0.12 gives |w| = 5.86×10⁸ after 60 steps."
+]
+},
+{
+"id": "momentum",
+"before": "4.",
+"zh": [
+"先看左邊的動量式 Δw(t) = αΔw(t−1) − μg(t)，慣性項與梯度步各一格；再看右邊三步手算表，第 2 步 w₂ 的慣性 −0.96 與梯度 +0.96 剛好抵銷，Δw = (0.4864, 0)。〔功能：2〕",
+"動量式與前三步手算：Δw 為 (0.32, −1.6)、(0.4864, 0)、(0.5473, 0.96)，w 到 (−2.646, 0.36)。"
+],
+"en": [
+"First see the momentum formula Δw(t) = αΔw(t−1) − μg(t) on the left, with the inertia term and the gradient step; then the three-step hand calculation on the right, where at step 2 the w₂ inertia −0.96 and gradient +0.96 cancel, giving Δw = (0.4864, 0). [Function: 2]",
+"The momentum formula and the first three steps: Δw is (0.32, −1.6), (0.4864, 0), (0.5473, 0.96) and w reaches (−2.646, 0.36)."
+]
+},
+{
+"id": "expo",
+"before": "5.",
+"zh": [
+"先看左邊的長條：α = 0.6 與 α = 0.8 時權重 αᵗ 隨 t 遞減；再看右邊：固定梯度下總權重 1/(1 − α)，α = 0.6 是 2.5、α = 0.8 是 5，梯度正負交替則互相抵消。〔功能：2〕",
+"權重 αᵗ 的遞減，以及固定梯度下總權重 1/(1−α) = 2.5 與 5。"
+],
+"en": [
+"First see the bars on the left: the weights αᵗ for α = 0.6 and 0.8 fall with t; then the right: with a fixed gradient the total weight is 1/(1 − α), 2.5 for α = 0.6 and 5 for α = 0.8, while alternating gradients cancel. [Function: 2]",
+"The decay of the weights αᵗ and the total weight 1/(1−α) = 2.5 and 5 for a fixed gradient."
+]
+},
+{
+"id": "two-paths",
+"before": "6.",
+"zh": [
+"先看左圖：紅色（普通）軌跡在 w₂ 方向擺很多回，綠色（動量 α = 0.6）的擺幅縮得更快；再看右邊的長條：100 步對 28 步，約快 3.6 倍。〔功能：2〕",
+"普通 100 步與動量 28 步的兩條軌跡，與步數長條。"
+],
+"en": [
+"First see the left chart: the red (plain) path swings many times along w₂ while the green (momentum, α = 0.6) swing shrinks faster; then the bars on the right: 100 steps against 28, about 3.6 times faster. [Function: 2]",
+"The plain 100-step and momentum 28-step paths, with the step bars."
+]
+},
+{
+"id": "alpha-curve",
+"before": "7.",
+"zh": [
+"先看曲線在 α = 0.6 最低（28 步）；再看紅色區：α ≥ 0.9 時 137 步、247 步，比 α = 0 的 100 步（虛線）還高。〔功能：2〕",
+"α 與所需步數：100、65、36、28、44、63、137、247；α ≥ 0.9 比不用動量更慢。"
+],
+"en": [
+"First see that the curve is lowest at α = 0.6 (28 steps); then the red zone: α ≥ 0.9 needs 137 and 247 steps, more than the 100 steps at α = 0 (dashed line). [Function: 2]",
+"Steps against α: 100, 65, 36, 28, 44, 63, 137, 247; α ≥ 0.9 is slower than no momentum."
+]
+},
+{
+"id": "adaptive",
+"before": "8.",
+"zh": [
+"先看左邊的三條規則：比值 < 1 乘 1.05、> 1.04 乘 0.7、其餘不變；再看右邊的長條：μ₀ = 0.02 是 411 步對 61 步，μ₀ = 0.12 普通爆開、自適應 95 步，μ₀ = 0.08 是 100 步對 93 步。〔功能：3〕",
+"自適應規則與三種起始 μ₀ 的步數：普通 411、爆開、100；自適應 61、95、93。"
+],
+"en": [
+"First see the three rules on the left: ratio < 1 multiplies μ by 1.05, > 1.04 by 0.7, otherwise unchanged; then the bars on the right: μ₀ = 0.02 takes 411 steps against 61, μ₀ = 0.12 blows up for plain descent but takes 95 steps adaptively, and μ₀ = 0.08 takes 100 against 93. [Function: 3]",
+"The adaptive rules and the steps for three initial μ₀: plain 411, blows up, 100; adaptive 61, 95, 93."
+]
+},
+{
+"id": "compare",
+"before": "延伸",
+"zh": [
+"先看左邊五根長條的長度（步數）：411、61、100、28、5，quickprop 最短，但前提是每個切面是拋物線；再看右邊牛頓法：Δw = −H⁻¹g，本例一步到原點。〔功能：3〕",
+"五種做法的步數 411、61、100、28、5，與牛頓法一步到原點。"
+],
+"en": [
+"First see the lengths of the five bars on the left (steps): 411, 61, 100, 28, 5, quickprop is shortest but assumes every slice is a parabola; then Newton's method on the right: Δw = −H⁻¹g, one step to the origin here. [Function: 3]",
+"The steps of five methods 411, 61, 100, 28, 5, and Newton's method reaching the origin in one step."
+]
+},
+{
+"id": "secant",
+"before": "延伸",
+"zh": [
+"先看沿 w₂ 的拋物線 J = 10w₂² 與兩點的斜率 20 和 −12；再看右邊：α = −12/(20 + 12) = −0.375，Δ = +0.6，第 2 步剛好落在 w₂ = 0。〔功能：3〕",
+"quickprop 在 w₂ 方向用兩點斜率一次跳到谷底：α = −0.375，Δ = +0.6。"
+],
+"en": [
+"First see the parabola J = 10w₂² along w₂ with slopes 20 and −12 at two points; then the right: α = −12/(20 + 12) = −0.375 and Δ = +0.6, so step 2 lands exactly on w₂ = 0. [Function: 3]",
+"quickprop jumps to the floor along w₂ from two slopes: α = −0.375, Δ = +0.6."
+]
+},
+{
+"id": "practice",
+"before": "END",
+"zh": [
+"左邊是題 1：g = (−3.1936, −12)；右邊是題 2：Δw(3) = (0.5473, 0.96)、w = (−2.6463, 0.36)，各附核對。〔功能：2〕",
+"兩題小練習與解題示範：g = (−3.1936, −12)；Δw(3) = (0.5473, 0.96)，w = (−2.6463, 0.36)。"
+],
+"en": [
+"The left is Q1: g = (−3.1936, −12); the right is Q2: Δw(3) = (0.5473, 0.96) and w = (−2.6463, 0.36), each with its check. [Function: 2]",
+"Two exercises with worked answers: g = (−3.1936, −12); Δw(3) = (0.5473, 0.96), w = (−2.6463, 0.36)."
+]
+}
+]
