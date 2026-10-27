@@ -16,3 +16,5 @@
 驗證：
 
     python3 -m unittest discover -s .agents/skills/view-from-text-v3/tests -v
+
+**2026-10-28 起**:JianBauDau 另支援 `shapeKind: "polyline"`(開放折線/曲線);格式說明與範例已更新在 `docs/`,工具鏈已對應(`<polyline>`、無 `Z` 的 `<path>`),見 `DESIGN.md` 最後一節與 `examples/polyline_demo.py`。

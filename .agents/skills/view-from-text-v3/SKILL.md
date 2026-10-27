@@ -40,6 +40,9 @@ description: Turn a lecture into a JianBauDau deck of native-node information gr
 
 **依本課講義結構處理**：有 lectures/en/<講義檔名>.md 時，處理中英分檔及雙語配圖；僅有 lectures/<講義檔名>.md 時，視為中英同檔，預設保留既有核准配圖，不要求新增 lectures/en/。IDL 已核准的 Matplotlib 圖維持原樣。預覽會列出 lecture_layout 與 lecture_figures；可用 --lecture-figures preserve 明確保留配圖。
 
+## 新功能(2026-10-27)
+填色透明度、漸層(含多色、徑向)、陰影、多邊形、曲線路徑與開放折線 polyline 已可用(polyline 的寫法見 `DESIGN.md` 最後一節與 `examples/polyline_demo.py`),頁面也不再保留 KP 標題區(整頁 1280×720);用法見 `DESIGN.md` 最後一節與 `docs/`。
+
 在已核准的課程工作副本執行：
 
     python3 tools/publish_unit.py --unit-dir <工作目錄> --kp kpNN --pages <頁數> \

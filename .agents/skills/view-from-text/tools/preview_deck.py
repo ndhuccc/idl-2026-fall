@@ -106,6 +106,17 @@ def page_html(N, ids, ox):
         n = N[nid]
         x, y, w, h = n["transform"]["x"] - ox, n["transform"]["y"], n["width"], n["height"]
         st = n["style"]
+        if n.get("shapeKind") == "polyline" and n.get("polygonPoints"):     # open line: an SVG stroke, no box
+            import sys as _s, os as _o
+            _s.path.insert(0, _o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "deckkit"))
+            from nativefig import smooth_outline
+            P = [(p["x"], p["y"], bool(p.get("smooth"))) for p in n["polygonPoints"]]
+            pts = smooth_outline(P, closed=False) if any(p[2] for p in P) else [(p[0], p[1]) for p in P]
+            d = " ".join(("M" if i == 0 else "L") + f"{x + q[0] / 100 * w:.1f},{y + q[1] / 100 * h:.1f}" for i, q in enumerate(pts))
+            dash = {"dashed": "12 8", "dotted": "2 8"}.get(st.get("borderStyle"), "")
+            svg.append(f"<path d='{d}' fill='none' stroke='{st['stroke']}' stroke-width='{st.get('borderWidth', 3)}' stroke-linecap='round' stroke-linejoin='round'"
+                       f"{(' stroke-dasharray=' + chr(39) + dash + chr(39)) if dash else ''} style='{_shadow_css(st)}'/>")
+            continue
         if n["type"] in ("text", "shape"):
             bw = st.get("borderWidth", 0)
             border = f"border:{bw}px solid {st['stroke']};" if bw else ""

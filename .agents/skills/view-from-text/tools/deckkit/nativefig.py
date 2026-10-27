@@ -24,18 +24,25 @@ THEMES = {
 }
 
 
-def smooth_outline(pts, n=10):
-    """Closed outline through pts = [(x, y, smooth_flag), ...]: sharp vertices stay corners, smooth ones are joined by a Catmull-Rom (cubic Hermite) curve
-    (JianBauDau `smooth: true`). Returns a polyline [(x, y), ...] sampled n points per curved segment."""
+def smooth_outline(pts, n=10, closed=True):
+    """Outline through pts = [(x, y, smooth_flag), ...]: sharp vertices stay corners, smooth ones are joined by a Catmull-Rom (cubic Hermite) curve
+    (JianBauDau `smooth: true`). closed=True wraps around (polygon); closed=False is an open polyline whose end points take the tangent from their only neighbour.
+    Returns a polyline [(x, y), ...] sampled n points per curved segment."""
     m = len(pts); out = []
     P = [(p[0], p[1]) for p in pts]; S = [bool(p[2]) if len(p) > 2 else False for p in pts]
-    tan = [((P[(i + 1) % m][0] - P[i - 1][0]) / 2, (P[(i + 1) % m][1] - P[i - 1][1]) / 2) if S[i] else (0.0, 0.0) for i in range(m)]
-    for i in range(m):
+    if closed: tan = [((P[(i + 1) % m][0] - P[i - 1][0]) / 2, (P[(i + 1) % m][1] - P[i - 1][1]) / 2) if S[i] else (0.0, 0.0) for i in range(m)]
+    else:
+        def tg(i):
+            a, b = P[max(i - 1, 0)], P[min(i + 1, m - 1)]; d = 2 if 0 < i < m - 1 else 1
+            return ((b[0] - a[0]) / d, (b[1] - a[1]) / d)
+        tan = [tg(i) if S[i] else (0.0, 0.0) for i in range(m)]
+    for i in range(m if closed else m - 1):
         j = (i + 1) % m; p0, p1, m0, m1 = P[i], P[j], tan[i], tan[j]; out.append(p0)
         if S[i] or S[j]:
             for k in range(1, n):
                 t = k / n; h00, h10, h01, h11 = 2 * t**3 - 3 * t**2 + 1, t**3 - 2 * t**2 + t, -2 * t**3 + 3 * t**2, t**3 - t**2
                 out.append((h00 * p0[0] + h10 * m0[0] + h01 * p1[0] + h11 * m1[0], h00 * p0[1] + h10 * m0[1] + h01 * p1[1] + h11 * m1[1]))
+    if not closed: out.append(P[-1])
     return out
 
 
@@ -66,10 +73,11 @@ class NFig:
     def ellipse(self, cx, cy, d, fill, fx=None):
         self.items.append(("ellipse", dict(cx=cx, cy=cy, d=d, fill=fill, fx=fx)))
 
-    def poly(self, pts, fill, stroke=None, sw=0, fx=None):
-        """An arbitrary polygon; pts = [(x, y), ...] in figure pixels (3-200 vertices)."""
-        assert 3 <= len(pts) <= 200
-        self.items.append(("poly", dict(pts=[(float(p[0]), float(p[1]), bool(p[2]) if len(p) > 2 else False) for p in pts], fill=fill, stroke=stroke, sw=sw, fx=fx)))
+    def poly(self, pts, fill, stroke=None, sw=0, fx=None, closed=True, dash=False):
+        """An arbitrary polygon (closed=True, 3-200 vertices) or an open polyline (closed=False, 2-200 vertices, stroke only: shapeKind "polyline");
+        pts = [(x, y), ...] in figure pixels; a point (x, y, True) is a curve point."""
+        assert (3 if closed else 2) <= len(pts) <= 200
+        self.items.append(("poly", dict(pts=[(float(p[0]), float(p[1]), bool(p[2]) if len(p) > 2 else False) for p in pts], fill=fill, stroke=stroke, sw=sw, fx=fx, closed=closed, dash=dash)))
 
     def square(self, cx, cy, d, fill):
         self.items.append(("rect", dict(x=cx - d / 2, y=cy - d / 2, w=d, h=d, fill=fill, stroke=None, sw=0, dash=False, radius=0, text=None, tcolor="TXT", size=16, bold=False, math=False)))
@@ -142,7 +150,8 @@ class NFig:
                 add("shape", d["cx"] - d["d"] / 2, d["cy"] - d["d"] / 2, d["d"], d["d"], base(col(d["fill"]), **fxs(d.get("fx"))), "", "ellipse")
             elif kind == "poly":
                 xs_ = [p[0] for p in d["pts"]]; ys_ = [p[1] for p in d["pts"]]; bx, by, bw_, bh_ = min(xs_), min(ys_), max(max(xs_) - min(xs_), 1), max(max(ys_) - min(ys_), 1)
-                nid_ = add("shape", bx, by, bw_, bh_, base(col(d["fill"]) if d["fill"] else "transparent", col(d["stroke"]) if d["stroke"] else "transparent", borderWidth=d["sw"], **fxs(d.get("fx"))), "", "polygon")
+                closed_ = d.get("closed", True)
+                nid_ = add("shape", bx, by, bw_, bh_, base(col(d["fill"]) if d["fill"] and closed_ else "transparent", col(d["stroke"]) if d["stroke"] else "transparent", borderWidth=d["sw"], **({} if not closed_ else fxs(d.get("fx"))), **({"borderStyle": "dashed"} if d.get("dash") else {})), "", "polygon" if closed_ else "polyline")
                 import kit as K3
                 K3.nodes[nid_]["polygonPoints"] = [dict({"x": round((p[0] - bx) / bw_ * 100, 2), "y": round((p[1] - by) / bh_ * 100, 2)}, **({"smooth": True} if p[2] else {})) for p in d["pts"]]
             elif kind == "tri":
@@ -217,7 +226,9 @@ class NFig:
             elif kind == "ellipse":
                 ax.add_patch(Ellipse((d["cx"], d["cy"]), d["d"], d["d"], fc=fxcol(d["fill"], d.get("fx")), ec="none"))
             elif kind == "poly":
-                ax.add_patch(Polygon(smooth_outline(d["pts"]) if any(p[2] for p in d["pts"]) else [(p[0], p[1]) for p in d["pts"]], closed=True, fc=fxcol(d["fill"], d.get("fx")), ec=col(d["stroke"]) if d["stroke"] else "none", lw=d["sw"] * 0.72))
+                outl = smooth_outline(d["pts"], closed=d.get("closed", True)) if any(p[2] for p in d["pts"]) else [(p[0], p[1]) for p in d["pts"]]
+                if d.get("closed", True): ax.add_patch(Polygon(outl, closed=True, fc=fxcol(d["fill"], d.get("fx")), ec=col(d["stroke"]) if d["stroke"] else "none", lw=d["sw"] * 0.72))
+                else: ax.plot([q[0] for q in outl], [q[1] for q in outl], color=col(d["stroke"]) if d["stroke"] else col("TXT"), lw=d["sw"] * 0.72, solid_capstyle="round", solid_joinstyle="round", ls=(0, (4, 3)) if d.get("dash") else "-")
             elif kind == "tri":
                 r = d["d"] / 2
                 ax.add_patch(Polygon([(d["cx"], d["cy"] - r), (d["cx"] - r, d["cy"] + r), (d["cx"] + r, d["cy"] + r)], fc=col(d["fill"]), ec="none"))
