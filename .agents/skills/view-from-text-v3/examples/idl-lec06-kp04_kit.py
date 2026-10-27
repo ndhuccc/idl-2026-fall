@@ -3,7 +3,7 @@ New here: mt() = one text node that mixes words and inline LaTeX ($...$). In the
 (so lint and screenshots measure the real width); on conversion the node becomes ONE native text node whose text keeps the
 $...$ source (JianBauDau renders inline KaTeX), instead of htmlkit's math-only k() nodes. Never put math inside chip()."""
 import os, sys, html as _html, json
-SK = "/workspace/idl-2026-fall/.agents/skills"
+SK = os.environ.get("COURSE_SKILLS") or os.environ.get("SKILLS_DIR") or (os.path.join(os.path.abspath(os.environ["COURSE_REPO"]), ".agents", "skills") if os.environ.get("COURSE_REPO") else os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 for p in ("view-from-text-v3/tools", "view-from-text-v2/tools", "view-from-text/tools/deckkit"): sys.path.insert(0, os.path.join(SK, p))
 os.environ.setdefault("KATEX_DIR", os.path.join(SK, "slides-to-html/node_modules/katex/dist"))
 import htmlkit as HK

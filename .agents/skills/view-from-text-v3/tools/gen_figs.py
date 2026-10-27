@@ -1,6 +1,6 @@
 """Write the lecture PNGs (light theme) of a unit from the same specs as the deck.
     python3 gen_figs.py <specs_module_file.py> <map.json> <outdir>     map.json: {"function_name": "figure-file-stem", ...}
-e.g. {"pnn": "lec05-kp18-arch"}  ->  outdir/lec05-kp18-arch.png and lec05-kp18-arch-en.png.   A spec function returns an NFig or (layout_name, spec)."""
+e.g. {"pnn": "lecNN-kpNN-arch"}  ->  outdir/lecNN-kpNN-arch.png and lecNN-kpNN-arch-en.png.   A spec function returns an NFig or (layout_name, spec)."""
 import os, sys, json, importlib.util
 HERE = os.path.dirname(os.path.abspath(__file__)); SK = os.path.abspath(os.path.join(HERE, "..", ".."))
 for p in ("view-from-text-v3/tools", "view-from-text-v2/tools", "view-from-text-v2/examples", "view-from-text/tools/deckkit"): sys.path.insert(0, os.path.join(SK, p))

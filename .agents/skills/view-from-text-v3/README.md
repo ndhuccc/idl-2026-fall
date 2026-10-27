@@ -1,12 +1,18 @@
 # view-from-text-v3
 
-講義 → JianBauDau 原生簡報:先規劃,再用 HTML/CSS/SVG(KaTeX)自由設計圖,自動轉成原生節點。流程與規則見 `SKILL.md`,設計限制見 `DESIGN.md`。
+已核准講義 → 頁面規劃 → HTML/CSS/SVG（KaTeX）→ JianBauDau 原生節點 → 稽核 → 教師確認 → 本課發布。
 
-快速開始:
-```bash
-python3 tools/new_unit.py /tmp/kp17 KP17 "單元名" "Unit name"
-python3 examples/kp18_pnn.py /tmp/out       # 範例:HTML 設計 → zh/en 的 .html/.png/.json
-MIN=40 bash tools/run_unit.sh /tmp/kp17 kp17_deck
-```
+完整流程見 SKILL.md，視覺規則見 DESIGN.md。
 
-**2026-10-28 起**:JianBauDau 另支援 `shapeKind: "polyline"`(開放折線/曲線);格式說明與範例已更新在 `docs/`,工具鏈對應見 `DESIGN.md` 最後一節。
+從課程根目錄建立單元：
+
+    python3 .agents/skills/view-from-text-v3/tools/new_unit.py /tmp/unit-work KP03 "單元名" "Unit name" --lecture lec07
+    MIN=40 bash .agents/skills/view-from-text-v3/tools/run_unit.sh /tmp/unit-work kp03_deck
+
+預設跟隨工具所在課程；可用 --repo 或 COURSE_REPO 明確指定。課名從本課設定讀取，章節必須指定，course-unit.json 保存單元設定。空白腳手架須先填入核准的頁面內容再建置。
+
+發布預覽用 publish_unit.py --dry-run，只列計畫，不改檔。跨課程同步須明確加 --sync-to，日誌須明確加 --log-file；詳見 SKILL.md。examples/ 保留歷史 PR 教材供設計參考，不作新課程內容的預設。
+
+驗證：
+
+    python3 -m unittest discover -s .agents/skills/view-from-text-v3/tests -v

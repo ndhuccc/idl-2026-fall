@@ -6,7 +6,7 @@ Typical use (see examples/kp18_pnn.py):
     def design(lang):                    # returns the BODY html of one figure; strings come from a {"zh":..,"en":..} dict
         return card(0,0,330,400,"blue") + head(0,0,330,"blue","① ...") + ...
     build("kp18_pnn", design, W, H, outdir)   # writes <fid>_<lang>.html/.png/.json and prints lint warnings
-    fig = native("kp18_pnn", "lec05-kp18-arch", W, H, jsondir, alt)   # NFig (freeform page / lecture PNG)
+    fig = native("kp18_pnn", "lecNN-kpNN-arch", W, H, jsondir, alt)   # NFig (freeform page / lecture PNG)
 
 Rules baked in: dark deck theme, text >= 16 px, the 8-role palette of figkit.parts, flat fills (a gradient is flattened to its middle colour), math via
 `k(...)` (KaTeX in the page, `$...$` native math node), explicit <br> for line breaks (the player wraps by its own width estimate).

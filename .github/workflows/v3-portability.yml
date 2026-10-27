@@ -1,0 +1,33 @@
+name: v3-portability
+
+on:
+  push:
+    paths:
+      - ".agents/skills/view-from-text-v3/**"
+      - ".agents/skills/view-from-text-v2/tools/deckcommon.py"
+      - ".agents/skills/view-from-text-v2/examples/kp18_pnn_html.py"
+      - ".github/workflows/v3-portability.yml"
+  pull_request:
+    paths:
+      - ".agents/skills/view-from-text-v3/**"
+      - ".agents/skills/view-from-text-v2/tools/deckcommon.py"
+      - ".agents/skills/view-from-text-v2/examples/kp18_pnn_html.py"
+      - ".github/workflows/v3-portability.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paths:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Course paths and read-only publication preview
+        run: python3 -m unittest discover -s .agents/skills/view-from-text-v3/tests -v
+      - name: Shell syntax
+        run: bash -n .agents/skills/view-from-text-v3/tools/run_unit.sh

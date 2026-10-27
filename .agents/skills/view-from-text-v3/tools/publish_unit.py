@@ -1,80 +1,194 @@
-"""Publish one finished unit (slides + lecture figures + captions + records) under a repo-wide lock, so several agents can publish safely in parallel.
-    python3 publish_unit.py --unit-dir <dir> --kp kp09 --pages 10 --lecture lec05-kp09-cost-functions --map map.json --caps caps.json \
-        --remove "lec05-kp09-old.png,lec05-kp09-old2.png" --en-before "延伸=Extension" \
-        --changelog "[更新] KP09 簡報以 view-from-text-v3 重做並發佈:..." --state "KP09 簡報以 v3 重做並發佈 ...;下一步 ..." --log "依教授指示 ... 重做 KP09 並發佈 ..." [--dry-run]
-<dir> holds kpNN_pages.py, kpNN_text.py, kpNN_nums.py (+ data), out/ (the HTML-designed pages), W_zh/draft.jbd.json, W_en/draft.jbd.json (from run_unit.sh), map.json, caps.json.
---lecture is the file stem under lectures/ (zh) and lectures/en/; slides are slides/<stem>.jbd.json and <stem>-en.jbd.json.
---en-before maps a Chinese heading prefix used in caps.json 'before' to the English heading prefix (second pass for the English lecture).
---dry-run stops after the checks (nothing is committed; run `git -C <repo> checkout -- . && git -C <repo> clean -fdq assets` to discard)."""
-import argparse, os, re, shutil, subprocess, sys, time, json, glob
-REPO = "/home/user/pr-2026-fall"; OTHERS = ["/home/user/course-template", "/home/user/idl-2026-fall"]; JARVIS = "/home/user/my-jarvis"
-SK = f"{REPO}/.agents/skills/view-from-text-v3"; LOCK = "/tmp/pr-publish.lock"
-ap = argparse.ArgumentParser()
-for a in ("unit-dir", "kp", "pages", "lecture", "map", "caps", "remove", "en-before", "changelog", "state", "log"): ap.add_argument("--" + a, default="")
-ap.add_argument("--dry-run", action="store_true"); A = ap.parse_args()
-def sh(cmd, cwd=REPO, check=True):
-    r = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True)
-    if check and r.returncode: raise SystemExit(f"FAILED: {cmd}\n{r.stdout[-1500:]}\n{r.stderr[-1500:]}")
-    return r.stdout + r.stderr
-def acquire():
-    for _ in range(360):
-        try: os.mkdir(LOCK); return
+"""Publish one approved unit in the selected course.
+--dry-run only prints a plan. Other repositories and optional logs are written
+only when explicitly supplied with --sync-to and --log-file.
+"""
+import argparse
+from contextlib import contextmanager
+from datetime import datetime
+import glob
+import hashlib
+import json
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+from zoneinfo import ZoneInfo
+from course_context import figure_prefix, lecture_prefix, repo_root
+
+
+def run(repo, *args, check=True):
+    result = subprocess.run(list(map(str, args)), cwd=repo, capture_output=True, text=True)
+    if result.stdout:
+        print(result.stdout.rstrip())
+    if result.stderr:
+        print(result.stderr.rstrip(), file=sys.stderr)
+    if check and result.returncode:
+        raise RuntimeError(f"Command failed ({result.returncode}): {args}")
+    return result
+
+
+@contextmanager
+def course_lock(repo):
+    identity = hashlib.sha256(str(repo).encode("utf-8")).hexdigest()[:20]
+    lock = Path(tempfile.gettempdir()) / f"jbd-publish-{identity}.lock"
+    for attempt in range(120):
+        try:
+            lock.mkdir()
+            break
         except FileExistsError:
-            if time.time() - os.path.getmtime(LOCK) > 1800: shutil.rmtree(LOCK, ignore_errors=True)
-            time.sleep(5)
-    raise SystemExit("could not get the publish lock")
-def main():
-    d = os.path.abspath(A.unit_dir); kp = A.kp; T = subprocess.check_output("TZ=Asia/Taipei date '+%Y-%m-%d %H:%M'", shell=True, text=True).strip()
-    for f in (f"{d}/W_zh/draft.jbd.json", f"{d}/W_en/draft.jbd.json", f"{d}/{A.map}", f"{d}/{A.caps}", f"{d}/{kp}_pages.py", f"{d}/{kp}_text.py"):
-        if not os.path.exists(f): raise SystemExit(f"missing {f}")
-    if sh("git status --porcelain").strip(): raise SystemExit("repo working tree is not clean:\n" + sh("git status --porcelain"))
-    sh("git pull --rebase origin main")
-    stem = A.lecture; zh_md = f"lectures/{stem}.md"; en_md = f"lectures/en/{stem}.md"
-    shutil.copy(f"{d}/W_zh/draft.jbd.json", f"{REPO}/slides/{stem}.jbd.json"); shutil.copy(f"{d}/W_en/draft.jbd.json", f"{REPO}/slides/{stem}-en.jbd.json")
-    sh(f"python3 {SK}/tools/make_specs.py {d} {kp} {A.pages}")
-    print(sh(f"python3 -W ignore {SK}/tools/gen_figs.py {d}/{kp}_specs.py {d}/{A.map} assets/figures").splitlines()[-1])
-    rm = [x for x in A.remove.split(",") if x]
-    for x in rm:   # drop caption blocks of removed figures from both lectures
-        fid = x[:-4] if x.endswith(".png") else x
-        for path in (zh_md, en_md):
-            s = open(f"{REPO}/{path}").read(); s2 = re.sub(r"(圖說|Figure) `%s`.*?%s(-en)?\.png\)\n\n?" % (re.escape(fid), re.escape(fid.split(kp + "-")[-1])), "", s, flags=re.S)
-            open(f"{REPO}/{path}", "w").write(s2)
-    ins = f"python3 {SK}/tools/insert_figs.py"; pre = f"lec05-{kp}"
-    print(sh(f"{ins} {d}/{A.caps} {zh_md} {en_md} --prefix {pre}", check=False).strip().splitlines()[-1])   # zh done; en may stop at a heading it cannot find
-    caps = open(f"{d}/{A.caps}").read()
-    for pair in [p for p in A.en_before.split(";") if p]:
-        z, e = pair.split("="); caps = re.sub(r'("before"\s*:\s*")' + re.escape(z) + '"', lambda m: m.group(1) + e + '"', caps)
-    open("/tmp/_caps_en.json", "w").write(caps)
-    print(sh(f"{ins} /tmp/_caps_en.json {zh_md} {en_md} --prefix {pre}").strip().splitlines()[-1])
-    for x in rm:
-        if os.path.exists(f"{REPO}/assets/figures/{x}"): sh(f"git rm -q -f assets/figures/{x}")
-    print(sh(f"python3 scripts/check_slides.py 2>&1 | grep -i '{stem}' || true", check=False))
-    out = sh("python3 scripts/build_docs.py >/dev/null 2>&1; mkdocs build 2>&1 | grep -i 'error\\|warning:' || true", check=False); print("mkdocs:", out.strip() or "ok")
-    if A.dry_run: print(sh("git status --short")); return
-    ex = f"{SK}/examples"
-    for f in (f"{kp}_nums.py", f"{kp}_pages.py", f"{kp}_text.py"): shutil.copy(f"{d}/{f}", f"{ex}/{f}")
-    for g in glob.glob(f"{d}/{kp}_data.py"): shutil.copy(g, f"{ex}/{kp}_data.py")
-    shutil.copy(f"{d}/{A.caps}", f"{ex}/{kp}_caps.json"); shutil.copy(f"{d}/{A.map}", f"{ex}/{kp}_map.json")
-    s = open("CHANGELOG.md").read().replace("## 2026 秋季\n\n", f"## 2026 秋季\n\n- {T} — {A.changelog}\n", 1); open("CHANGELOG.md", "w").write(s)
-    open("COURSE_STATE.md", "a").write(f"- {T} — {A.state}\n")
-    lp = f"{JARVIS}/logs/2026-10-24-lec05-投影片重做.md"; s = open(lp).read().replace("- 時間為推算,可能差幾分鐘。", f"- {T} {A.log}\n- 時間為推算,可能差幾分鐘。", 1); open(lp, "w").write(s)
-    sh(f"git add CHANGELOG.md COURSE_STATE.md assets/figures lectures slides .agents/skills/view-from-text-v3/examples")
-    names = sh("git diff --cached --name-status HEAD"); bad = [l for l in names.splitlines() if l[0] not in "AM" and not (l[0] == "D" and os.path.basename(l.split()[-1]) in rm)]
-    if bad: raise SystemExit("unexpected changes staged:\n" + "\n".join(bad))
-    msg = f"{kp.upper()} 簡報以 v3 重做並發佈,講義換圖\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01VtCC9aDbSiytjfhjv3FCFV"
-    open("/tmp/_msg.txt", "w").write(msg); sh("git commit -q -F /tmp/_msg.txt")
-    for i in range(4):
-        r = subprocess.run("git push -q origin main", shell=True, cwd=REPO, capture_output=True, text=True)
-        if r.returncode == 0: break
-        sh("git pull --rebase origin main"); time.sleep(2 ** i)
-    else: raise SystemExit("push failed")
-    for R in OTHERS:
-        for f in glob.glob(f"{ex}/{kp}_*"):
-            if "__pycache__" not in f: shutil.copy(f, f"{R}/.agents/skills/view-from-text-v3/examples/")
-        sh(f"git pull -q --rebase origin main; git add .agents/skills/view-from-text-v3/examples; git commit -q -m '同步 {kp.upper()} 範例檔\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01VtCC9aDbSiytjfhjv3FCFV'; git push -q origin main", cwd=R)
-    sh(f"git pull -q --rebase origin main; git add logs; git commit -q -m '記錄 {kp.upper()} 簡報重做發佈\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01VtCC9aDbSiytjfhjv3FCFV'; git push -q origin main", cwd=JARVIS)
-    print("PUBLISHED", kp, sh("git status -sb | head -1").strip())
-os.chdir(REPO)
-acquire()
-try: main()
-finally: shutil.rmtree(LOCK, ignore_errors=True)
+            if attempt == 119:
+                raise RuntimeError(f"Publish lock is busy: {lock}")
+            time.sleep(1)
+    try:
+        yield
+    finally:
+        lock.rmdir()
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    for flag in ("unit-dir", "kp", "pages", "lecture"):
+        parser.add_argument("--" + flag, required=True)
+    parser.add_argument("--map", default="map.json")
+    parser.add_argument("--caps", default="caps.json")
+    parser.add_argument("--lecture-figures", choices=("auto", "preserve", "regenerate"), default="auto")
+    for flag in ("remove", "en-before", "changelog", "state", "log"):
+        parser.add_argument("--" + flag, default="")
+    parser.add_argument("--repo", help="Defaults to this tool's course repository")
+    parser.add_argument("--log-file", help="Optional log path; relative paths are within the selected course")
+    parser.add_argument("--sync-to", action="append", default=[], help="Explicit additional repository for example files")
+    parser.add_argument("--dry-run", action="store_true")
+    args = parser.parse_args(argv)
+    repo = repo_root(args.repo)
+    unit = Path(args.unit_dir).expanduser().resolve()
+    stem, kp = args.lecture, args.kp.lower()
+    if not re.fullmatch(r"lec\d+-kp\d+(?:-[A-Za-z0-9_-]+)?", stem):
+        parser.error("--lecture must be a filename stem such as lec07-kp03-topic")
+    prefix = figure_prefix(stem)
+    if prefix.split("-")[1] != kp:
+        parser.error("--kp and --lecture refer to different units")
+    if not args.pages.isdigit() or int(args.pages) < 1:
+        parser.error("--pages must be a positive integer")
+    zh_md, en_md = repo / f"lectures/{stem}.md", repo / f"lectures/en/{stem}.md"
+    layout = "split" if en_md.is_file() else "bilingual"
+    figures = args.lecture_figures
+    if figures == "auto":
+        figures = "regenerate" if layout == "split" else "preserve"
+    if layout == "bilingual" and figures == "regenerate":
+        parser.error("A bilingual lecture keeps approved figures; use --lecture-figures preserve")
+    others = [repo_root(path) for path in args.sync_to]
+    if repo in others or len(set(others)) != len(others):
+        parser.error("--sync-to must name distinct additional repositories")
+    log = Path(args.log_file).expanduser() if args.log_file else None
+    if log is not None:
+        log = (log if log.is_absolute() else repo / log).resolve()
+    removed = [name for name in args.remove.split(",") if name]
+    if any(Path(name).name != name or not name.startswith(prefix + "-") or not name.endswith(".png") for name in removed):
+        parser.error("--remove must contain PNG basenames belonging to the selected unit")
+    if figures == "preserve" and removed:
+        parser.error("--remove cannot be used while preserving lecture figures")
+    plan = dict(repo=str(repo), lecture=stem, prefix=prefix, lecture_layout=layout, lecture_figures=figures,
+                slides=[f"slides/{stem}.jbd.json", f"slides/{stem}-en.jbd.json"],
+                log_file=str(log) if log else None, sync_to=list(map(str, others)),
+                remove=removed)
+    # Return before creating locks, temporary files, running Git, or writing content.
+    if args.dry_run:
+        print(json.dumps(plan, ensure_ascii=False, indent=2))
+        return 0
+    tools = repo / ".agents/skills/view-from-text-v3/tools"
+    sources = [unit / f"W_{lang}/draft.jbd.json" for lang in ("zh", "en")]
+    sources += [unit / f"{kp}_pages.py", unit / f"{kp}_text.py", unit / f"{kp}_nums.py"]
+    if figures == "regenerate":
+        sources += [unit / args.map, unit / args.caps]
+    for path in sources:
+        if not path.is_file():
+            parser.error(f"Missing input: {path}")
+    if not zh_md.is_file():
+        parser.error("The approved lecture must exist in the selected course")
+    for target in [repo] + others:
+        if run(target, "git", "status", "--porcelain").stdout.strip():
+            parser.error(f"Working tree is not clean: {target}")
+    now = datetime.now(ZoneInfo("Asia/Taipei")).strftime("%Y-%m-%d %H:%M")
+    with course_lock(repo), tempfile.TemporaryDirectory(prefix="jbd-publish-") as temporary:
+        run(repo, "git", "pull", "--rebase", "origin", "main")
+        for lang, suffix in (("zh", ""), ("en", "-en")):
+            shutil.copy(unit / f"W_{lang}/draft.jbd.json", repo / f"slides/{stem}{suffix}.jbd.json")
+        if figures == "regenerate":
+            run(repo, sys.executable, tools / "make_specs.py", unit, kp, args.pages,
+                "--repo", repo, "--lecture", lecture_prefix(stem))
+            run(repo, sys.executable, "-W", "ignore", tools / "gen_figs.py",
+                unit / f"{kp}_specs.py", unit / args.map, repo / "assets/figures")
+            for name in removed:
+                fid = name[:-4]
+                for path in (zh_md, en_md):
+                    text = path.read_text(encoding="utf-8")
+                    pattern = r"(圖說|Figure) \x60%s\x60.*?%s(-en)?\.png\)\n\n?" % (re.escape(fid), re.escape(fid.split(kp + "-")[-1]))
+                    path.write_text(re.sub(pattern, "", text, flags=re.S), encoding="utf-8")
+            caps = json.loads((unit / args.caps).read_text(encoding="utf-8"))
+            translations = dict(pair.split("=", 1) for pair in args.en_before.split(";") if pair)
+            for caption in caps:
+                caption.setdefault("before_en", translations.get(caption["before"], caption["before"]))
+            cap_path = Path(temporary) / "captions.json"
+            cap_path.write_text(json.dumps(caps, ensure_ascii=False), encoding="utf-8")
+            run(repo, sys.executable, tools / "insert_figs.py", cap_path, zh_md, en_md, "--prefix", prefix)
+            for name in removed:
+                path = repo / "assets/figures" / name
+                if path.exists():
+                    run(repo, "git", "rm", "--", path)
+        run(repo, sys.executable, repo / "scripts/check_slides.py",
+            repo / f"slides/{stem}.jbd.json", repo / f"slides/{stem}-en.jbd.json")
+        run(repo, sys.executable, repo / "scripts/build_docs.py")
+        run(repo, sys.executable, "-m", "mkdocs", "build")
+        examples = tools.parent / "examples"
+        archived = []
+        for pattern in (f"{kp}_nums.py", f"{kp}_pages.py", f"{kp}_text.py", f"{kp}_data.py"):
+            for source in unit.glob(pattern):
+                destination = examples / source.name
+                shutil.copy(source, destination)
+                archived.append(destination)
+        for source_name, suffix in ((args.caps, "caps.json"), (args.map, "map.json")):
+            destination = examples / f"{kp}_{suffix}"
+            if (unit / source_name).is_file():
+                shutil.copy(unit / source_name, destination)
+                archived.append(destination)
+        if args.changelog:
+            path = repo / "CHANGELOG.md"
+            lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+            position = next((i + 1 for i, line in enumerate(lines) if line.startswith("## ")), 1)
+            lines.insert(position, f"\n- {now} — {args.changelog}\n")
+            path.write_text("".join(lines), encoding="utf-8")
+        if args.state:
+            with (repo / "COURSE_STATE.md").open("a", encoding="utf-8") as stream:
+                stream.write(f"\n- {now} — {args.state}\n")
+        if log:
+            log.parent.mkdir(parents=True, exist_ok=True)
+            with log.open("a", encoding="utf-8") as stream:
+                stream.write(f"- {now} — {args.log or args.state or stem}\n")
+        run(repo, "git", "add", "--", "CHANGELOG.md", "COURSE_STATE.md",
+            "assets/figures", "lectures", "slides", ".agents/skills/view-from-text-v3/examples")
+        if log and log.is_relative_to(repo):
+            run(repo, "git", "add", "--", log)
+        if run(repo, "git", "diff", "--cached", "--quiet", check=False).returncode:
+            run(repo, "git", "commit", "-m", f"{kp.upper()} 簡報以 v3 發佈，講義換圖")
+            run(repo, "git", "push", "origin", "main")
+        for target in others:
+            with course_lock(target):
+                if run(target, "git", "status", "--porcelain").stdout.strip():
+                    raise RuntimeError(f"Sync target changed during publication: {target}")
+                run(target, "git", "pull", "--rebase", "origin", "main")
+                for source in archived:
+                    destination = target / ".agents/skills/view-from-text-v3/examples" / source.name
+                    shutil.copy(source, destination)
+                    run(target, "git", "add", "--", destination)
+                if run(target, "git", "diff", "--cached", "--quiet", check=False).returncode:
+                    run(target, "git", "commit", "-m", f"同步 {kp.upper()} v3 範例")
+                    run(target, "git", "push", "origin", "main")
+    print("PUBLISHED", repo.name, stem)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,7 +1,7 @@
 """KP20 page 5 (hand trace of the kernel perceptron on four XOR-type points), HTML design -> native nodes (view-from-text-v3)."""
 import os, sys
 import numpy as np
-SK = "/home/user/pr-2026-fall/.agents/skills"
+SK = os.environ.get("COURSE_SKILLS") or (os.path.join(os.path.abspath(os.environ["COURSE_REPO"]), ".agents", "skills") if os.environ.get("COURSE_REPO") else os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 sys.path.insert(0, SK + "/view-from-text-v3/tools")
 from htmlkit import *
 formula = k

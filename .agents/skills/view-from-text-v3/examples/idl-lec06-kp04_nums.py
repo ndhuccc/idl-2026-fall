@@ -4,7 +4,7 @@ figure script assets/figures/src/lec06-kp04-figures.py (same functions, same dat
 Exercise answers are asserted here but are NEVER written to a slide or to the speaker notes (hints only)."""
 import importlib.util, os, sys
 import numpy as np
-REPO = os.environ.get("IDL_REPO", "/workspace/idl-2026-fall")
+REPO = os.environ.get("COURSE_REPO") or os.environ.get("IDL_REPO") or os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".."))
 _src = os.path.join(REPO, "assets/figures/src/lec06-kp04-figures.py")
 sys.path.insert(0, os.path.dirname(_src))
 _spec = importlib.util.spec_from_file_location("lec06kp04fig", _src); F = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(F)

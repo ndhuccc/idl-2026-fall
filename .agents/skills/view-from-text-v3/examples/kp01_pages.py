@@ -1,9 +1,8 @@
 """KP01 pages designed in HTML (view-from-text-v3, route A). pageN(lang) -> body HTML of a 1160x480 figure."""
 import os, sys
-SK = "/home/user/pr-2026-fall/.agents/skills"
+SK = os.environ.get("COURSE_SKILLS") or (os.path.join(os.path.abspath(os.environ["COURSE_REPO"]), ".agents", "skills") if os.environ.get("COURSE_REPO") else os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 HERE = os.path.dirname(os.path.abspath(__file__)); HERE = HERE[:-5] if HERE.endswith(("/W_zh", "/W_en")) else HERE
 sys.path.insert(0, SK + "/view-from-text-v3/examples"); sys.path.insert(0, SK + "/view-from-text-v3/tools"); sys.path.insert(0, HERE)
-sys.path.insert(0, "/tmp/claude-0/-home-user/45feda6c-d91f-5d4d-a7e1-176e77f608e6/scratchpad/agentC/kp02")
 from kp02_pages import *          # helpers: Axes, region, poly_svg, line_svg, arrow, axes_svg, mark, ring, txt, card, ...
 import kp01_nums as N
 W, H = 1160, 480

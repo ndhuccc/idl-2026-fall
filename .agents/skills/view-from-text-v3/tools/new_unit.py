@@ -1,29 +1,76 @@
-"""Scaffold a unit working folder:  python3 new_unit.py <dir> <KPNN> "<zh unit name>" "<en unit name>"
-Set LEC=lec06 (default) for the IDL week prefix.
-Creates <dir>/{KPNN_deck.py, KPNN_text.py (one example page), terms.json, terms_en.json, deckcommon.py, W_zh/, W_en/} ready for run_unit.sh."""
-import os, sys, shutil
-d, kp, zh, en = sys.argv[1:5]; kp = kp.lower(); LEC = os.environ.get("LEC", "lec06"); WEEK = int(LEC[3:]); HERE = os.path.dirname(os.path.abspath(__file__)); V2 = os.path.join(HERE, "..", "..", "view-from-text-v2", "tools")
-os.makedirs(d + "/W_zh", exist_ok=True); os.makedirs(d + "/W_en", exist_ok=True); shutil.copy(os.path.join(V2, "deckcommon.py"), d)
-open(f"{d}/W_zh/figs.json", "w").write("{}"); open(f"{d}/W_en/figs.json", "w").write("{}"); open(f"{d}/terms.json", "w").write("{}"); open(f"{d}/terms_en.json", "w").write("{}")
-open(f"{d}/{kp}_deck.py", "w").write(f'''import os, sys
-os.environ["DECK_PFX"] = "{LEC}{kp}"
-HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
-V2 = "{os.path.abspath(os.path.join(HERE, '..', '..', 'view-from-text-v2'))}"; sys.path.insert(0, os.path.join(V2, "tools"))
+"""Scaffold a unit for the selected course: new_unit.py DIR KPNN ZH EN --lecture lecNN."""
+import argparse
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+from course_context import course_names, lecture_prefix, repo_root
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("directory")
+    parser.add_argument("kp")
+    parser.add_argument("zh")
+    parser.add_argument("en")
+    parser.add_argument("--lecture", default=os.environ.get("LEC"), help="Lecture prefix, for example lec07; LEC is a legacy alias")
+    parser.add_argument("--repo", help="Course repository; defaults to this tool's repository")
+    parser.add_argument("--course-zh")
+    parser.add_argument("--course-en")
+    args = parser.parse_args(argv)
+    root = repo_root(args.repo)
+    if not args.lecture:
+        parser.error("--lecture is required (or set LEC explicitly)")
+    lecture = lecture_prefix(args.lecture)
+    kp = args.kp.lower()
+    if not re.fullmatch(r"kp\d+", kp):
+        parser.error("KP must have the form KPNN")
+    directory = Path(args.directory).expanduser().resolve()
+    if directory.exists() and any(directory.iterdir()):
+        parser.error("Use an empty unit directory to avoid replacing existing work")
+    zh, en = course_names(root)
+    config = dict(repo_root=str(root), lecture=lecture,
+                  course_zh=zh if args.course_zh is None else args.course_zh,
+                  course_en=en if args.course_en is None else args.course_en)
+    directory.mkdir(parents=True, exist_ok=True)
+    (directory / "course-unit.json").write_text(json.dumps(config, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    tools = root / ".agents/skills"
+    shutil.copy(Path(__file__).with_name("course_context.py"), directory)
+    shutil.copy(tools / "view-from-text-v2/tools/deckcommon.py", directory)
+    for lang in ("zh", "en"):
+        work = directory / f"W_{lang}"
+        work.mkdir()
+        (work / "figs.json").write_text("{}\n", encoding="utf-8")
+    for name in ("terms.json", "terms_en.json"):
+        (directory / name).write_text("{}\n", encoding="utf-8")
+    deck = f'''import os, sys
+from pathlib import Path
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+from course_context import load_unit
+CONTEXT = load_unit(__file__)
+os.environ["DECK_PFX"] = CONTEXT["lecture"] + {kp!r}
 from deckv2 import run
 from {kp}_text import PAGES, UNIT_ZH, UNIT_EN, TITLE_ZH, TITLE_EN, NOTE_ZH, NOTE_EN
 if __name__ == "__main__":
-    run(PAGES, UNIT_ZH, UNIT_EN, TITLE_ZH, TITLE_EN, NOTE_ZH, NOTE_EN, os.path.join(HERE, "draft.jbd.json"))
-''')
-open(f"{d}/{kp}_text.py", "w").write(f'''import os, sys
-HERE = os.path.dirname(os.path.abspath(__file__)); SK = "{os.path.abspath(os.path.join(HERE, '..', '..'))}"
-for p in ("view-from-text-v3/tools", "view-from-text-v2/tools", "view-from-text-v2/examples"): sys.path.insert(0, os.path.join(SK, p))
-UNIT_ZH, UNIT_EN = {zh!r}, {en!r}
-TITLE_ZH = "深度學習導論 第{WEEK}週 {kp.upper()}：" + UNIT_ZH + "（大學部）"; TITLE_EN = "Introduction to Deep Learning, Week {WEEK}, {kp.upper()}: " + UNIT_EN + " (undergraduate)"
-NOTE_ZH = "教材程度：大學部。"; NOTE_EN = "Level: undergraduate."
-P = []
-# one page = one dict; lab/title/bridge/notes are (zh, en) tuples, e.g. dict(lab=("標籤","Label"), title=(...), bridge=(...), notes=(...), layout=..., spec=...).
-# one page = one dict.  freeform HTML page:  layout="freeform", spec=lambda: my_fig()   (my_fig returns an NFig, e.g. htmlkit.native(...))
-# layout-library page: layout="plot_xy", spec=lambda: spec_dict   (see view-from-text-v2/LAYOUTS.md)
-PAGES = P
-''')
-print("created", d)
+    run(PAGES, UNIT_ZH, UNIT_EN, TITLE_ZH, TITLE_EN, NOTE_ZH, NOTE_EN, str(HERE / "draft.jbd.json"))
+'''
+    text = f'''from course_context import load_unit
+CONTEXT = load_unit(__file__)
+UNIT_ZH, UNIT_EN = {args.zh!r}, {args.en!r}
+TITLE_ZH = (CONTEXT["course_zh"] + " " if CONTEXT["course_zh"] else "") + {kp.upper()!r} + "：" + UNIT_ZH
+TITLE_EN = (CONTEXT["course_en"] + " " if CONTEXT["course_en"] else "") + {kp.upper()!r} + ": " + UNIT_EN
+NOTE_ZH = "教材程度：大學三年級。"
+NOTE_EN = "Level: undergraduate (year 3)."
+# Add approved page dictionaries here; one page has lab/title/bridge/notes pairs
+# and layout/spec, as described in SKILL.md. Empty scaffolds are not finished decks.
+PAGES = []
+'''
+    (directory / f"{kp}_deck.py").write_text(deck, encoding="utf-8")
+    (directory / f"{kp}_text.py").write_text(text, encoding="utf-8")
+    print("created", directory, "for", root.name, lecture)
+
+
+if __name__ == "__main__":
+    main()

@@ -41,6 +41,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-10-27 16:42 — 完成 view-from-text-v3 課程路徑整合：預設跟隨本課工具位置，支援 --repo／COURSE_REPO、明確章節與本課課名；保留 LEC／SKILLS_DIR 舊腳本相容性。發布自動判別中英同檔／分檔；中英同檔保留核准配圖，無須建立 lectures/en/。跨課同步與日誌須明確指定，dry-run 只讀。新增 12 項路徑、講義結構與預覽測試；PR 初版 10 項與 Shell 語法已通過（https://github.com/ndhuccc/pr-2026-fall/actions/runs/40474873911），本次最終版本待 Actions 查核。IDL 同時新增的第6週 KP04 教材及紀錄保留，僅修正其範例的機器固定路徑。Codex 雲端執行環境無法啟動，未在此執行 Python、瀏覽器或教材發布。
+
 - 2026-10-27 16:27 — 老師說「發佈 KP04」:第 6 週 KP04「離散卷積與互相關」講義(`lectures/lec06-kp04-discrete-conv-cross-correlation.md`,中英對照、大學部)、三張 Matplotlib 圖與產圖程式(`assets/figures/lec06-kp04-*`、`assets/figures/src/lec06-kp04-figures.py`)、以 view-from-text-v3 製作的中英文簡報各 14 頁(主線 12 頁、延伸 2 頁;`slides/lec06-kp04-discrete-conv-cross-correlation.jbd.json`、`-en.jbd.json`)一併提交。講義只加上簡報下載連結;`schedule.md` 第 6 週列加入 KP04 講義與簡報,`mkdocs.yml` 選單由 `sync_nav.py` 加入第 6 週。老師今天的決定:講義 `[補充]` 內容在簡報上以小標籤「補充/Added」標示;練習放在延伸頁、只給提示(頁面與講者備註都不放答案);沿用講義的 Matplotlib 圖;全章地圖 lec06-kp00 與 KP03 銜接句之後再做。IDL 的 view-from-text-v3 技能副本改為相對路徑、`lec06` 前綴、IDL 課名與大學部程度(另一次提交;pr 母版未動)。下一步:第 6 週 KP01–KP03、KP05–KP10(KP02、KP10 為自主學習)與全章地圖。
 - 2026-10-24 07:49 — 依老師指示,網站的簡報下載只提供 HTML:`scripts/build_docs.py` 不再把 `.jbd.json` 發佈到網站(來源檔仍在 Repo)、下載頁移除 JSON 欄與 JianBauDau 播放器連結,進度表與講義指向 `slides/…jbd.json` 的連結改指向同名 HTML;僅在某份簡報沒有網頁版(轉換失敗或缺少 Node.js)時才退回提供 JSON 與播放器連結。網站體積隨之縮小(idl 約 713→361 MB、pr 約 637→390 MB)。三個課程 Repo 相同。
 - 2026-10-24 — 投影片下載頁改為以 HTML 網頁版為主:新增專案技能 `.agents/skills/slides-to-html/`(JianBauDau JSON 轉單檔離線 HTML,公式用 KaTeX 預先排版、圖片音檔內嵌),`scripts/build_docs.py` 在建置時自動轉換 `slides/` 第一層的 `.jbd.json` 並把 HTML 列在下載頁(JSON 與播放器連結保留為選用);`deploy-site.yml` 新增 Node 20 與 `npm ci` 步驟、`.gitignore` 排除 `node_modules/`。HTML 不提交進 Git,只存在網站。三個課程 Repo 相同。
