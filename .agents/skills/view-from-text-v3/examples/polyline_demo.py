@@ -1,7 +1,7 @@
 """Demo: open polylines and curves in an HTML-designed page (converted to JianBauDau shapeKind "polyline"), next to a closed polygon.
     python3 polyline_demo.py <out_dir>      -> <out_dir>/polyline_demo_p1_{zh,en}.{html,png,json}"""
 import sys, os
-SK = "/home/user/pr-2026-fall/.agents/skills"
+SK = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))   # .agents/skills
 for p in ("view-from-text-v3/tools", "view-from-text-v2/tools", "view-from-text-v2/examples", "view-from-text/tools/deckkit", "view-from-text-v3/examples"): sys.path.insert(0, os.path.join(SK, p))
 from kp17_pages import card, svg, txt, TXT, build
 def page(lang):
