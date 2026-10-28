@@ -55,6 +55,9 @@ node .agents/skills/slides-to-html/scripts/jbd_to_html.mjs --out-dir <輸出資�
 | 巢狀畫布 | 框(frame)內顯示子畫布的即時預覽(最深 4 層)。 |
 | 圖片、語音 | 內嵌 `data:` 資料,各存一份(同一張圖出現多處不會讓檔案變大)。 |
 | 其他圖形 | 橢圓、三角形、菱形、五邊形、星形、箭頭用 SVG 畫。 |
+| 填色效果 | `fillOpacity`、線性/徑向/多色漸層(`gradientTo`、`gradientType`、`gradientAngle`、`gradientStops`)、陰影(`shadowColor` 等,沿輪廓的 drop-shadow)。 |
+| 多邊形、折線 | `polygon`、`polyline`(`polygonPoints`,含 `smooth` 平滑頂點的 Catmull-Rom 曲線),折線支援虛線與圓角線端。 |
+| 逐項揭示 | `initiallyHidden` 節點一開始隱藏;步驟的 `reveal.enter`(`fade`/`scale`/`none`、`delayMs`、`durationMs`、`timing`)往前一步時淡入或縮放進場,`exitNodeIds` 退場;往回或直接跳頁時,依「從第一步累計到該步」的結果直接顯示,所以同一個畫布上的多個步驟會顯示不同內容。 |
 
 **與原播放器的差異**(已知,可接受):
 

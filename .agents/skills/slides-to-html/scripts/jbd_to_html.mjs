@@ -211,6 +211,68 @@ function connectorSvg(n, byId, labels) {
   return svg;
 }
 
+
+// ---------- 填色效果(透明度、漸層)、陰影、多邊形/折線(對照 AI_AGENT_FILE_FORMAT_SPEC 的 fill-effects) ----------
+function rgba(c, a = 1) {
+  c = (c || 'transparent').trim();
+  if (c === 'transparent' || a === 1) return c;
+  let m = /^#([0-9a-fA-F]{6})$/.exec(c);
+  if (m) { const v = m[1]; return `rgba(${parseInt(v.slice(0, 2), 16)},${parseInt(v.slice(2, 4), 16)},${parseInt(v.slice(4, 6), 16)},${a})`; }
+  m = /^rgba?\(([^)]+)\)$/.exec(c);
+  if (m) { const p = m[1].split(',').map((x) => x.trim()); const al = p.length > 3 ? parseFloat(p[3]) : 1; return `rgba(${p[0]},${p[1]},${p[2]},${Math.round(al * a * 1e4) / 1e4})`; }
+  return c;
+}
+function gradStops(st) {
+  const fo = st.fillOpacity ?? 1;
+  const mid = [...(st.gradientStops || [])].sort((a, b) => a.offset - b.offset).map((g) => [rgba(g.color, fo), g.offset]);
+  return [[rgba(st.fill, fo), 0], ...mid, [rgba(st.gradientTo, fo), 1]];
+}
+function fillCss(st) {
+  const fo = st.fillOpacity ?? 1;
+  if (st.gradientTo) {
+    const cs = gradStops(st).map(([c, o]) => `${c} ${Math.round(o * 1000) / 10}%`).join(',');
+    return st.gradientType === 'radial' ? `radial-gradient(ellipse closest-side at 50% 50%,${cs})` : `linear-gradient(${st.gradientAngle ?? 180}deg,${cs})`;
+  }
+  return rgba(st.fill, fo);
+}
+function shadowCss(st) {
+  if (!st.shadowColor) return '';
+  return `filter:drop-shadow(${st.shadowOffsetX ?? 0}px ${st.shadowOffsetY ?? 4}px ${st.shadowBlur ?? 8}px ${rgba(st.shadowColor, st.shadowOpacity ?? 1)})`;
+}
+// SVG 內的填色:漸層用 <defs>,回傳 { defs, fill }
+let gradCounter = 0;
+function svgFill(st) {
+  const fo = st.fillOpacity ?? 1;
+  if (!st.gradientTo) return { defs: '', fill: st.fill && st.fill !== 'transparent' ? rgba(st.fill, fo) : 'none' };
+  const id = `gr${gradCounter++}`;
+  const stops = gradStops(st).map(([c, o]) => `<stop offset="${o}" stop-color="${c}"/>`).join('');
+  if (st.gradientType === 'radial') return { defs: `<defs><radialGradient id="${id}" cx="0.5" cy="0.5" r="0.5">${stops}</radialGradient></defs>`, fill: `url(#${id})` };
+  const a = ((st.gradientAngle ?? 180) * Math.PI) / 180, dx = Math.sin(a) / 2, dy = -Math.cos(a) / 2;
+  return { defs: `<defs><linearGradient id="${id}" x1="${num(0.5 - dx)}" y1="${num(0.5 - dy)}" x2="${num(0.5 + dx)}" y2="${num(0.5 + dy)}">${stops}</linearGradient></defs>`, fill: `url(#${id})` };
+}
+// 通過 smooth 頂點的 Catmull-Rom(三次 Hermite)曲線;pts = [[x, y, smooth], ...]
+function smoothOutline(pts, closed, n = 10) {
+  const m = pts.length, P = pts.map((p) => [p[0], p[1]]), S = pts.map((p) => !!p[2]), out = [];
+  const tan = closed
+    ? P.map((_, i) => (S[i] ? [(P[(i + 1) % m][0] - P[(i - 1 + m) % m][0]) / 2, (P[(i + 1) % m][1] - P[(i - 1 + m) % m][1]) / 2] : [0, 0]))
+    : P.map((_, i) => {
+      if (!S[i]) return [0, 0];
+      const a = P[Math.max(i - 1, 0)], b = P[Math.min(i + 1, m - 1)], d = i > 0 && i < m - 1 ? 2 : 1;
+      return [(b[0] - a[0]) / d, (b[1] - a[1]) / d];
+    });
+  for (let i = 0; i < (closed ? m : m - 1); i++) {
+    const j = (i + 1) % m, p0 = P[i], p1 = P[j], m0 = tan[i], m1 = tan[j];
+    out.push(p0);
+    if (S[i] || S[j]) for (let k = 1; k < n; k++) {
+      const t = k / n, h00 = 2 * t ** 3 - 3 * t ** 2 + 1, h10 = t ** 3 - 2 * t ** 2 + t, h01 = -2 * t ** 3 + 3 * t ** 2, h11 = t ** 3 - t ** 2;
+      out.push([h00 * p0[0] + h10 * m0[0] + h01 * p1[0] + h11 * m1[0], h00 * p0[1] + h10 * m0[1] + h01 * p1[1] + h11 * m1[1]]);
+    }
+  }
+  if (!closed) out.push(P[m - 1]);
+  return out;
+}
+const pointsAttr = (pts) => pts.map((q) => `${num(q[0])},${num(q[1])}`).join(' ');
+
 // ---------- 單一文件轉換 ----------
 function convert(file, outFile) {
   const d = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -254,31 +316,47 @@ function convert(file, outFile) {
     for (const n of byScene.get(sceneId) || []) if (n.type === 'connector') wires.push(connectorSvg(n, nodes, labels));
     for (const n of list) {
       const { css, st } = boxCss(n);
-      if (st.fill && st.fill !== 'transparent' && n.type !== 'frame') css.push(`background:${st.fill}`);
+      if (((st.fill && st.fill !== 'transparent') || st.gradientTo) && n.type !== 'frame') css.push(`background:${fillCss(st)}`);
+      const hc = n.initiallyHidden ? ' h' : '';
+      const shadow = shadowCss(st);
       const bwid = st.borderWidth ?? 1;
       if (st.stroke && st.stroke !== 'transparent' && (n.type !== 'text')) css.push(`border:${bwid}px ${st.borderStyle || 'solid'} ${st.stroke}`);
       if (st.radius) css.push(`border-radius:${st.radius}px`);
       if (n.type === 'text') {
-        parts.push(`<div class="n text" data-n="${escAttr(n.id)}" style="${css.join(';')}"><div class="copy" style="${escAttr(copyCss(n, false))}">${renderMarkdown(n.text || '')}</div></div>`);
+        if (shadow) css.push(shadow);
+        parts.push(`<div class="n text${hc}" data-n="${escAttr(n.id)}" style="${css.join(';')}"><div class="copy" style="${escAttr(copyCss(n, false))}">${renderMarkdown(n.text || '')}</div></div>`);
       } else if (n.type === 'shape') {
         const kind = n.shapeKind || 'rectangle';
         if (kind === 'rectangle') {
-          css.push('box-shadow:0 18px 30px rgba(106,64,46,.16)');
-          parts.push(`<div class="n shape" data-n="${escAttr(n.id)}" style="${css.join(';')}"><div class="copy shape-label" style="${escAttr(copyCss(n, true))}">${renderMarkdown(n.text || '')}</div></div>`);
+          css.push(shadow || 'box-shadow:0 18px 30px rgba(106,64,46,.16)');
+          parts.push(`<div class="n shape${hc}" data-n="${escAttr(n.id)}" style="${css.join(';')}"><div class="copy shape-label" style="${escAttr(copyCss(n, true))}">${renderMarkdown(n.text || '')}</div></div>`);
         } else {
           const bg = css.filter((c) => !/^(background|border|box-shadow)/.test(c));
+          if (shadow) bg.push(shadow);
           const stroke = st.stroke && st.stroke !== 'transparent' ? st.stroke : 'none';
           const sw = Math.max(1, st.borderWidth ?? 1);
-          const shapeSvg = kind === 'ellipse'
-            ? `<ellipse cx="50" cy="50" rx="47" ry="47" fill="${st.fill || 'none'}" stroke="${stroke}" stroke-width="${sw}" vector-effect="non-scaling-stroke"${DASH[st.borderStyle] ? ` stroke-dasharray="${DASH[st.borderStyle]}"` : ''}/>`
-            : SHAPES[kind] ? `<polygon points="${SHAPES[kind]}" fill="${st.fill || 'none'}" stroke="${stroke}" stroke-width="${sw}" vector-effect="non-scaling-stroke"${DASH[st.borderStyle] ? ` stroke-dasharray="${DASH[st.borderStyle]}"` : ''}/>` : '';
-          parts.push(`<div class="n shape" data-n="${escAttr(n.id)}" style="${bg.join(';')}"><svg class="shape-visual" viewBox="0 0 100 100" preserveAspectRatio="none">${shapeSvg}</svg><div class="copy shape-label" style="${escAttr(copyCss(n, true))}">${renderMarkdown(n.text || '')}</div></div>`);
+          const { defs, fill } = svgFill(st);
+          const dash = DASH[st.borderStyle] ? ` stroke-dasharray="${DASH[st.borderStyle]}"` : '';
+          let shapeSvg = '', extra = '';
+          if ((kind === 'polygon' || kind === 'polyline') && n.polygonPoints?.length) {
+            const raw = n.polygonPoints.map((p) => [p.x, p.y, !!p.smooth]);
+            const pts = raw.some((p) => p[2]) ? smoothOutline(raw, kind === 'polygon') : raw.map((p) => [p[0], p[1]]);
+            extra = ' poly'; bg.push('border:0');
+            shapeSvg = kind === 'polygon'
+              ? `<polygon points="${pointsAttr(pts)}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round" vector-effect="non-scaling-stroke"${dash}/>`
+              : `<polyline points="${pointsAttr(pts)}" fill="none" stroke="${stroke}" stroke-width="${Math.max(1, st.borderWidth ?? 3)}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"${dash}/>`;
+          } else if (kind === 'ellipse') {
+            shapeSvg = `<ellipse cx="50" cy="50" rx="47" ry="47" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" vector-effect="non-scaling-stroke"${dash}/>`;
+          } else if (SHAPES[kind]) {
+            shapeSvg = `<polygon points="${SHAPES[kind]}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" vector-effect="non-scaling-stroke"${dash}/>`;
+          } else warn.add(`略過不支援的圖形:${kind}`);
+          parts.push(`<div class="n shape${hc}" data-n="${escAttr(n.id)}" style="${bg.join(';')}"><svg class="shape-visual${extra}" viewBox="0 0 100 100" preserveAspectRatio="none">${defs}${shapeSvg}</svg>${n.text ? `<div class="copy shape-label" style="${escAttr(copyCss(n, true))}">${renderMarkdown(n.text)}</div>` : ''}</div>`);
         }
       } else if (n.type === 'image') {
         const src = n.image?.src || '';
         if (!/^(data:|https?:)/.test(src)) { warn.add('有圖片參照 asset: 或相對路徑,無法內嵌,已略過'); continue; }
         const inner = src.startsWith('data:') ? `<img data-i="${imgRef(src)}" alt="${escAttr(n.image.alt || '')}" style="object-fit:${n.image.fit || 'contain'}">` : `<img src="${escAttr(src)}" alt="${escAttr(n.image.alt || '')}" style="object-fit:${n.image.fit || 'contain'}">`;
-        parts.push(`<div class="n img" style="${css.join(';')}">${inner}</div>`);
+        parts.push(`<div class="n img${hc}" data-n="${escAttr(n.id)}" style="${css.join(';')}">${inner}</div>`);
       } else if (n.type === 'frame') {
         const f = n.frame || {};
         const pad = f.padding ?? 18;
@@ -291,7 +369,7 @@ function convert(file, outFile) {
           const inner = sceneInner(f.childSceneId, depth + 1, new Set([...seen, f.childSceneId]));
           prev = `<div class="fprev" style="left:${pad}px;top:${pad}px;width:${num(pw)}px;height:${num(ph)}px;${f.clip === false ? '' : 'overflow:hidden'}"><div class="world" style="transform:${cam(child.camera, pw, ph)}">${inner}</div></div>`;
         }
-        parts.push(`<div class="n frame" style="${fcss.join(';')}">${prev}<div class="flabel" style="color:${st.textColor || '#f2ede4'};font-size:${st.fontSize ?? 22}px">${esc(n.text || '').replace(/\n/g, '<br>')}</div></div>`);
+        parts.push(`<div class="n frame${hc}" data-n="${escAttr(n.id)}" style="${fcss.join(';')}">${prev}<div class="flabel" style="color:${st.textColor || '#f2ede4'};font-size:${st.fontSize ?? 22}px">${esc(n.text || '').replace(/\n/g, '<br>')}</div></div>`);
       } else {
         warn.add(`略過不支援的節點類型:${n.type}`);
       }
@@ -318,6 +396,7 @@ function convert(file, outFile) {
       x: p.x, y: p.y, z: s.target.zoom ?? sc?.camera?.zoom ?? 1, r: s.target.rotation ?? 0,
       vw: s.target.referenceViewport?.width || 1280, vh: s.target.referenceViewport?.height || 720,
       ms: s.durationMs ?? 900, ease: s.easing || 'smooth',
+      rv: s.reveal ? { tm: s.reveal.timing || 'after-camera', en: (s.reveal.enter || []).map((e) => [e.nodeId, e.effect || 'fade', e.delayMs || 0, e.durationMs ?? 400]), ex: s.reveal.exitNodeIds || [] } : null,
     };
   });
   if (!stepData.length) throw new Error('簡報沒有任何步驟');
@@ -344,6 +423,7 @@ html,body{margin:0;height:100%;background:#0f0f0d;color:#f2ede4;font-family:${DE
 .world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
 .wires{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;z-index:1}
 .n{position:absolute;display:flex;border:1px solid transparent}
+.n.h{opacity:0;pointer-events:none}.n.h.hs{scale:.85}
 .n.text{align-items:flex-start;justify-content:flex-start}
 .n.shape{align-items:center;justify-content:center}
 .n.img{overflow:hidden}.n.img img{width:100%;height:100%;display:block}
@@ -402,6 +482,27 @@ const cnt=document.getElementById('cnt'),lab=document.getElementById('lab');
 const layers=[...document.querySelectorAll('.layer')];
 document.querySelectorAll('img[data-i]').forEach(i=>{i.src=IMGS[i.dataset.i]});
 let cur=-1,audio=null,auto=false;
+const INIT=new Set([...document.querySelectorAll('[data-n].h')].map(e=>e.dataset.n));
+const nodeEls=id=>document.querySelectorAll('[data-n="'+(window.CSS&&CSS.escape?CSS.escape(id):id)+'"]');
+// 逐項揭示:從頭依序套用到第 i 步,算出此刻隱藏的節點;往前一步時,新揭示的節點依 effect 淡入或縮放進場
+function applyReveal(i,animate,moved){
+  const hidden=new Set(INIT);
+  for(let k=0;k<=i;k++){const r=STEPS[k].rv;if(!r)continue;r.en.forEach(e=>hidden.delete(e[0]));r.ex.forEach(id=>hidden.add(id))}
+  const r=animate?STEPS[i].rv:null,anim=new Map();
+  if(r)r.en.forEach(e=>anim.set(e[0],e));
+  const base=r&&r.tm==='after-camera'&&moved?STEPS[i].ms:0;
+  const ids=new Set([...INIT]);STEPS.forEach(s=>{if(s.rv){s.rv.en.forEach(e=>ids.add(e[0]));s.rv.ex.forEach(x=>ids.add(x))}});
+  ids.forEach(id=>{
+    const hide=hidden.has(id),a=anim.get(id);
+    nodeEls(id).forEach(el=>{
+      if(a&&!hide&&a[1]!=='none'){
+        el.style.transition='none';el.classList.add('h');if(a[1]==='scale')el.classList.add('hs');void el.offsetWidth;
+        el.style.transition='opacity '+a[3]+'ms ease '+(base+a[2])+'ms,scale '+a[3]+'ms ease '+(base+a[2])+'ms';
+        el.classList.remove('h','hs');
+      }else{el.style.transition='none';el.classList.toggle('h',hide);el.classList.remove('hs')}
+    });
+  });
+}
 function fit(){
   const s=Math.min(wrap.clientWidth/1280,wrap.clientHeight/720);
   stage.style.transform='scale('+s+')';
@@ -424,6 +525,8 @@ function go(i,instant){
   if(instant||!prev||prev.layer!==s.layer){w.style.transition='none';w.style.transform=t;void w.offsetWidth}
   else{w.style.transition='transform '+s.ms+'ms '+(EASE[s.ease]||EASE.smooth);w.style.transform=t}
   layers.forEach((l,j)=>l.classList.toggle('on',j===s.layer));
+  const moved=!prev||prev.layer!==s.layer||prev.x!==s.x||prev.y!==s.y||prev.z!==s.z||prev.r!==s.r;
+  applyReveal(i,!instant&&prev&&i===cur+1,moved);
   cur=i;stopAudio();
   cnt.textContent=(i+1)+' / '+STEPS.length;lab.textContent=s.label;
   notes.innerHTML=(s.notes?'<h4>講者備註</h4>'+esc(s.notes):'')+(s.tr?'<h4>語音逐字稿</h4>'+esc(s.tr):'');
