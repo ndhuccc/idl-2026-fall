@@ -41,6 +41,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-10-29 — 老師指出第4週後段簡報(KP09 之後)圖形元件遞減、多為文字卡片;依「示意圖為主軸」補強 KP05、KP07、KP09、KP10、KP11、KP12 並推送(中英各一份);技能新增品質門檻第 8 條。KP01–KP04、KP06、KP08 尚未依新標準逐頁檢查。技能修改尚未同步到 course-template、pr-2026-fall。
+
 - 2026-10-29 00:30 — 老師指示:以新做的 24 份第4週簡報(KP01–KP12 各中英一份)替換 GitHub 上供學生下載的簡報並轉出 HTML。已推送(ddfd62f、3d92570):中文覆蓋原檔、英文新增 `-en`;本機 `build_docs.py` 24 份都轉出 HTML,`check_slides.py` 無 FAIL。`schedule.md` 第 4 週列原本就連到這些中文檔名,英文版由建置腳本併入 English 欄,故未改進度表。已告知老師:舊簡報的旁白音檔與 KP02、KP10 先前新增的原生頁被取代(舊版在 git 歷史,可回復或重新加入),待老師決定是否補回。尚未檢視線上網站。
 
 - 2026-10-27 21:55 — 老師說「開始KP03……本次任務不須向我確認」(僅限 KP03;KP02 已由老師延後):第 6 週 KP03「卷積層三階段」講義(`lectures/lec06-kp03-conv-layer-three-stages.md`,中英對照、大學部,經三輪冷讀通過)、三張 Matplotlib 圖與產圖程式(`assets/figures/lec06-kp03-*`、`assets/figures/src/lec06-kp03-figures.py`)、以 view-from-text-v3 製作的中英文簡報各 13 頁(主線 11 頁、延伸 2 頁;`slides/lec06-kp03-conv-layer-three-stages.jbd.json`、`-en.jbd.json`)一併提交。講義只加上簡報下載連結;`schedule.md` 第 6 週列依 KP01、KP03、KP04 順序加入 KP03 講義與簡報,`mkdocs.yml` 選單由 `sync_nav.py` 加入 KP03。符號決定:中文頁面寫 $\mathrm{ReLU}$(數學式),中文講者備註與替代文字寫「線性整流函數」,中文不用 CNN 縮寫,一律寫「卷積神經網路」。沿用 KP01/KP04 的決定:`[補充]` 內容以「補充/Added」小標籤標示、練習放延伸頁且只給提示、頁面只放重算過的數值。待辦:KP04 練習 2 的核符號 $H$ 宜改為 $K_h$,與 KP03 一致。下一步:KP05。
