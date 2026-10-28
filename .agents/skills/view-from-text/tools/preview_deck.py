@@ -181,7 +181,7 @@ def main():
             import mimetypes
             def local_katex(route):
                 rel = route.request.url.split("/dist/", 1)[1].split("?")[0]
-                fp = os.path.join(kd, "dist", rel)
+                fp = os.path.join(kd, rel) if os.path.basename(os.path.normpath(kd)) == "dist" else os.path.join(kd, "dist", rel)   # KATEX_DIR = katex package root or its dist folder
                 if os.path.exists(fp):
                     route.fulfill(path=fp, content_type=mimetypes.guess_type(fp)[0] or "application/octet-stream")
                 else:
