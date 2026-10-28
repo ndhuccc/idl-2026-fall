@@ -42,6 +42,7 @@ def main():
         ref = st[a.after] if a.after >= 1 else (st[1] if len(st) > 1 else None)
         ns = copy.deepcopy(ref) if ref else {"durationMs": 900, "holdMs": 500, "easing": "smooth",
                                              "target": {"kind": "scene-point", "sceneId": sid, "point": {"x": 0, "y": 360.0}, "zoom": 1.0, "referenceViewport": {"width": 1280, "height": 720}}}
+        ns = {k: v for k, v in ns.items() if k in ("id", "order", "label", "durationMs", "holdMs", "easing", "target", "speakerNotes")}   # never copy narration audio etc. from the reference step
         ns["id"] = f"{sid}-step-new{len(st)}"; ns["label"] = a.label or f"Page {n}"; ns["target"]["point"]["x"] = x0 + 640
         ns["target"]["point"]["y"] = 360.0
         if a.notes is not None: ns["speakerNotes"] = a.notes
