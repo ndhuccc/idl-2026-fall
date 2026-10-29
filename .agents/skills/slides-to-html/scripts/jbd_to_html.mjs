@@ -369,7 +369,7 @@ function convert(file, outFile) {
           const inner = sceneInner(f.childSceneId, depth + 1, new Set([...seen, f.childSceneId]));
           prev = `<div class="fprev" style="left:${pad}px;top:${pad}px;width:${num(pw)}px;height:${num(ph)}px;${f.clip === false ? '' : 'overflow:hidden'}"><div class="world" style="transform:${cam(child.camera, pw, ph)}">${inner}</div></div>`;
         }
-        parts.push(`<div class="n frame${hc}" data-n="${escAttr(n.id)}" style="${fcss.join(';')}">${prev}<div class="flabel" style="color:${st.textColor || '#f2ede4'};font-size:${st.fontSize ?? 22}px">${esc(n.text || '').replace(/\n/g, '<br>')}</div></div>`);
+        parts.push(`<div class="n frame${hc}" data-n="${escAttr(n.id)}" style="${fcss.join(';')}">${prev}<div class="flabel${n.transform.y < 60 ? ' fin' : ''}" style="color:${st.textColor || '#f2ede4'};font-size:${st.fontSize ?? 22}px">${esc(n.text || '').replace(/\n/g, '<br>')}</div></div>`);
       } else {
         warn.add(`略過不支援的節點類型:${n.type}`);
       }
@@ -430,6 +430,8 @@ html,body{margin:0;height:100%;background:#0f0f0d;color:#f2ede4;font-family:${DE
 .n.frame{align-items:flex-start;justify-content:flex-end;overflow:visible}
 .fprev{position:absolute}
 .flabel{position:absolute;left:0;bottom:100%;margin-bottom:6px;white-space:nowrap;font-weight:600;opacity:.9}
+.flabel.fin{bottom:auto;top:50%;left:50%;transform:translate(-50%,-50%);margin:0;padding:8px 28px;border-radius:14px;background:rgba(20,24,40,.85);opacity:1;z-index:20;font-size:34px!important}
+.n.frame:has(.flabel.fin) .fprev{display:none}
 .shape-visual{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .copy{min-width:0;max-width:100%;overflow:hidden;overflow-wrap:anywhere}
 .n.text>.copy{display:block;width:100%}
