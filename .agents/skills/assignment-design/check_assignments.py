@@ -178,8 +178,10 @@ def check_readme(tag, code, a, times):
     if unit is not None and a.get("unit") and unit.strip() != str(a["unit"]).strip():
         add("FAIL", where, f"「對應單元」{unit!r} 與匯入檔 unit {a['unit']!r} 不同(單元名稱不一致會建出重複單元)")
 
-    # Rubric 點數必須是標準配分表
+    # Rubric 點數必須是標準配分表。重現性可以維持 25/18/5，或改為三項 0–1 平均後乘 25（HW01，2026-10-30）。
     for name, pts in STANDARD.items():
+        if name == "重現性":
+            continue
         row = re.search(r"^\|\s*" + name + r"\s*\((\d+)\)\s*\|(.*)\|\s*$", text, re.M)
         if not row:
             add("FAIL", where, f"Rubric 缺少面向「{name}」")
@@ -189,6 +191,23 @@ def check_readme(tag, code, a, times):
         got = tuple(int(x) for x in re.findall(r"\*\*(\d+)\*\*", row.group(2)))
         if got != pts:
             add("FAIL", where, f"{name} 的等級點數是 {got},標準為 {pts}")
+    repro = STANDARD["重現性"]
+    rub = text.split("評分標準", 1)[-1]
+    proportional = bool(
+        re.search(r"重現性[（(]\s*25", rub)
+        and re.search(r"四捨五入", rub)
+        and re.search(r"(?:/|÷)\s*3", rub)
+        and re.search(r"×\s*25", rub)
+    )
+    row = re.search(r"^\|\s*重現性\s*\((\d+)\)\s*\|(.*)\|\s*$", text, re.M)
+    if row:
+        if int(row.group(1)) != repro[0]:
+            add("FAIL", where, f"重現性 的配分是 {row.group(1)},標準為 {repro[0]}")
+        got = tuple(int(x) for x in re.findall(r"\*\*(\d+)\*\*", row.group(2)))
+        if got != repro and not proportional:
+            add("FAIL", where, f"重現性 的等級點數是 {got},標準為 {repro}")
+    elif not proportional:
+        add("FAIL", where, "Rubric 缺少面向「重現性」")
     # 靜態判斷:Rubric 不該要求執行結果
     rub = text.split("評分標準", 1)[-1]
     for pat in (r"準確率[^。\n]{0,10}(達|超過|≥|>=)", r"可(以)?一鍵(執行|跑)", r"能(夠)?(成功)?執行(並|且)?(得到|產生)"):
