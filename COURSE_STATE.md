@@ -222,3 +222,4 @@
 - 2026-10-30 — 導學版重做(每個 KP 做完就推送):KP01 已完成(41 頁;`check_coverage` 26/26 錨點、`check_style --style guided` 通過、`check_slides` 無 FAIL)。接著 KP03、KP04;之後第1–4週待老師決定。
 - 2026-10-30 — 導學版重做:KP03 已完成(43 頁;`check_coverage` 26/26、`check_style --style guided` 通過、`check_slides` 無 FAIL)。接著 KP04;之後第1–4週待老師決定。
 - 2026-10-30 — 導學版重做:KP04 已完成(45 頁;`check_coverage` 27/27、`check_style --style guided` 通過、`check_slides` 無 FAIL)。第 6 週 KP01、03、04、05、06、07 簡報皆已是新技能製作;KP02(延後)、KP08–KP10 與全章地圖待補。第1–4週共約 48 個 KP 待老師決定是否同樣重做。
+- 2026-10-30 22:00 — 老師說「把第6週的講義和簡報先完成」:KP08「偵測器與池化」講義(中英對照、大學部、兩張圖)與導學版簡報 46 頁(中英各一份)完成並推送;`audit_lecture.py` FAIL 0、`check_coverage` 26/26、`check_style --style guided` 通過、`check_slides` 無 FAIL。更正來源:右上塊中位數 5.5 應為 4.5。接著 KP09、KP10、KP02、全章地圖。
