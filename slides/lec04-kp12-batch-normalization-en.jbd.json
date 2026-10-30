@@ -876,14 +876,6 @@
         "scene-u01-pnew11-59",
         "scene-u01-pnew11-60",
         "scene-u01-pnew11-61",
-        "scene-u01-pnew11-62",
-        "scene-u01-pnew11-63",
-        "scene-u01-pnew11-64",
-        "scene-u01-pnew11-65",
-        "scene-u01-pnew11-66",
-        "scene-u01-pnew11-67",
-        "scene-u01-pnew11-68",
-        "scene-u01-pnew11-69",
         "scene-u01-pnew12-1",
         "scene-u01-pnew12-2",
         "scene-u01-pnew12-3",
@@ -30857,7 +30849,8 @@
         "shadowOpacity": 0.15
       },
       "text": "",
-      "shapeKind": "rectangle"
+      "shapeKind": "rectangle",
+      "initiallyHidden": true
     },
     "scene-u01-pnew11-28": {
       "id": "scene-u01-pnew11-28",
@@ -30887,7 +30880,8 @@
         "lineHeight": 1.22
       },
       "text": "data",
-      "shapeKind": "rectangle"
+      "shapeKind": "rectangle",
+      "initiallyHidden": true
     },
     "scene-u01-pnew11-29": {
       "id": "scene-u01-pnew11-29",
@@ -30920,7 +30914,8 @@
         "shadowOpacity": 0.15
       },
       "text": "",
-      "shapeKind": "rectangle"
+      "shapeKind": "rectangle",
+      "initiallyHidden": true
     },
     "scene-u01-pnew11-30": {
       "id": "scene-u01-pnew11-30",
@@ -30950,7 +30945,8 @@
         "lineHeight": 1.22
       },
       "text": "hidden layer $1$",
-      "shapeKind": "rectangle"
+      "shapeKind": "rectangle",
+      "initiallyHidden": true
     },
     "scene-u01-pnew11-31": {
       "id": "scene-u01-pnew11-31",
@@ -30983,7 +30979,8 @@
         "shadowOpacity": 0.15
       },
       "text": "",
-      "shapeKind": "rectangle"
+      "shapeKind": "rectangle",
+      "initiallyHidden": true
     },
     "scene-u01-pnew11-32": {
       "id": "scene-u01-pnew11-32",
@@ -31013,7 +31010,8 @@
         "lineHeight": 1.22
       },
       "text": "hidden layer $2$",
-      "shapeKind": "rectangle"
+      "shapeKind": "rectangle",
+      "initiallyHidden": true
     },
     "scene-u01-pnew11-33": {
       "id": "scene-u01-pnew11-33",
@@ -31046,7 +31044,8 @@
         "shadowOpacity": 0.15
       },
       "text": "",
-      "shapeKind": "rectangle"
+      "shapeKind": "rectangle",
+      "initiallyHidden": true
     },
     "scene-u01-pnew11-34": {
       "id": "scene-u01-pnew11-34",
@@ -31076,246 +31075,152 @@
         "lineHeight": 1.22
       },
       "text": "output & objective",
-      "shapeKind": "rectangle"
+      "shapeKind": "rectangle",
+      "initiallyHidden": true
     },
     "scene-u01-pnew11-35": {
       "id": "scene-u01-pnew11-35",
-      "type": "shape",
-      "name": "shape#35",
+      "type": "connector",
+      "name": "connector",
       "sceneId": "scene-u01",
       "transform": {
-        "x": 14690.0,
-        "y": 385.0,
+        "x": 14400,
+        "y": 0,
         "scaleX": 1,
         "scaleY": 1,
         "rotation": 0
       },
-      "width": 40.0,
-      "height": 1.0,
-      "zIndex": 4,
+      "width": 1,
+      "height": 1,
+      "zIndex": 20,
       "locked": false,
       "style": {
         "fill": "transparent",
         "stroke": "#1c2430",
-        "textColor": "#f2ede4",
+        "textColor": "#171918",
         "fontSize": 16,
         "radius": 0,
-        "borderWidth": 4.0
+        "borderWidth": 4
       },
       "text": "",
-      "shapeKind": "polyline",
-      "polygonPoints": [
-        {
-          "x": 0.0,
-          "y": 0.0
-        },
-        {
-          "x": 100.0,
-          "y": 0.0
-        }
-      ]
+      "connector": {
+        "sourceNodeId": "scene-u01-pnew11-27",
+        "sourceHook": 4,
+        "targetNodeId": "scene-u01-pnew11-29",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      },
+      "initiallyHidden": true
     },
     "scene-u01-pnew11-36": {
       "id": "scene-u01-pnew11-36",
-      "type": "shape",
-      "name": "shape#36",
+      "type": "connector",
+      "name": "connector",
       "sceneId": "scene-u01",
       "transform": {
-        "x": 14718.0,
-        "y": 379.0,
+        "x": 14400,
+        "y": 0,
         "scaleX": 1,
         "scaleY": 1,
         "rotation": 0
       },
-      "width": 12.0,
-      "height": 12.0,
-      "zIndex": 4,
-      "locked": false,
-      "style": {
-        "fill": "#1c2430",
-        "stroke": "transparent",
-        "textColor": "#f2ede4",
-        "fontSize": 16,
-        "radius": 0,
-        "borderWidth": 0.0
-      },
-      "text": "",
-      "shapeKind": "polygon",
-      "polygonPoints": [
-        {
-          "x": 100.0,
-          "y": 50.0
-        },
-        {
-          "x": 0.0,
-          "y": 100.0
-        },
-        {
-          "x": 0.0,
-          "y": 0.0
-        }
-      ]
-    },
-    "scene-u01-pnew11-37": {
-      "id": "scene-u01-pnew11-37",
-      "type": "shape",
-      "name": "shape#37",
-      "sceneId": "scene-u01",
-      "transform": {
-        "x": 14980.0,
-        "y": 385.0,
-        "scaleX": 1,
-        "scaleY": 1,
-        "rotation": 0
-      },
-      "width": 40.0,
-      "height": 1.0,
-      "zIndex": 4,
+      "width": 1,
+      "height": 1,
+      "zIndex": 20,
       "locked": false,
       "style": {
         "fill": "transparent",
         "stroke": "#1c2430",
-        "textColor": "#f2ede4",
+        "textColor": "#171918",
         "fontSize": 16,
         "radius": 0,
-        "borderWidth": 4.0
+        "borderWidth": 4
       },
       "text": "",
-      "shapeKind": "polyline",
-      "polygonPoints": [
-        {
-          "x": 0.0,
-          "y": 0.0
-        },
-        {
-          "x": 100.0,
-          "y": 0.0
-        }
-      ]
+      "connector": {
+        "sourceNodeId": "scene-u01-pnew11-29",
+        "sourceHook": 4,
+        "targetNodeId": "scene-u01-pnew11-31",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      },
+      "initiallyHidden": true
     },
-    "scene-u01-pnew11-38": {
-      "id": "scene-u01-pnew11-38",
-      "type": "shape",
-      "name": "shape#38",
+    "scene-u01-pnew11-37": {
+      "id": "scene-u01-pnew11-37",
+      "type": "connector",
+      "name": "connector",
       "sceneId": "scene-u01",
       "transform": {
-        "x": 15008.0,
-        "y": 379.0,
+        "x": 14400,
+        "y": 0,
         "scaleX": 1,
         "scaleY": 1,
         "rotation": 0
       },
-      "width": 12.0,
-      "height": 12.0,
-      "zIndex": 4,
+      "width": 1,
+      "height": 1,
+      "zIndex": 20,
       "locked": false,
       "style": {
-        "fill": "#1c2430",
-        "stroke": "transparent",
-        "textColor": "#f2ede4",
+        "fill": "transparent",
+        "stroke": "#1c2430",
+        "textColor": "#171918",
         "fontSize": 16,
         "radius": 0,
-        "borderWidth": 0.0
+        "borderWidth": 4
       },
       "text": "",
-      "shapeKind": "polygon",
-      "polygonPoints": [
-        {
-          "x": 100.0,
-          "y": 50.0
-        },
-        {
-          "x": 0.0,
-          "y": 100.0
-        },
-        {
-          "x": 0.0,
-          "y": 0.0
-        }
-      ]
+      "connector": {
+        "sourceNodeId": "scene-u01-pnew11-31",
+        "sourceHook": 4,
+        "targetNodeId": "scene-u01-pnew11-33",
+        "targetHook": 12,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      },
+      "initiallyHidden": true
+    },
+    "scene-u01-pnew11-38": {
+      "id": "scene-u01-pnew11-38",
+      "type": "text",
+      "name": "text#38",
+      "sceneId": "scene-u01",
+      "transform": {
+        "x": 14730.0,
+        "y": 434.48,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0
+      },
+      "width": 560.0,
+      "height": 45.04,
+      "zIndex": 9,
+      "locked": false,
+      "style": {
+        "fill": "transparent",
+        "stroke": "transparent",
+        "textColor": "#5a6578",
+        "fontSize": 16.0,
+        "radius": 0,
+        "borderWidth": 0,
+        "fontWeight": 700,
+        "textAlign": "center",
+        "lineHeight": 1.22
+      },
+      "text": "the training pipeline: data → hidden layers → output & objective",
+      "shapeKind": "rectangle",
+      "initiallyHidden": true
     },
     "scene-u01-pnew11-39": {
       "id": "scene-u01-pnew11-39",
       "type": "shape",
       "name": "shape#39",
-      "sceneId": "scene-u01",
-      "transform": {
-        "x": 15270.0,
-        "y": 385.0,
-        "scaleX": 1,
-        "scaleY": 1,
-        "rotation": 0
-      },
-      "width": 40.0,
-      "height": 1.0,
-      "zIndex": 4,
-      "locked": false,
-      "style": {
-        "fill": "transparent",
-        "stroke": "#1c2430",
-        "textColor": "#f2ede4",
-        "fontSize": 16,
-        "radius": 0,
-        "borderWidth": 4.0
-      },
-      "text": "",
-      "shapeKind": "polyline",
-      "polygonPoints": [
-        {
-          "x": 0.0,
-          "y": 0.0
-        },
-        {
-          "x": 100.0,
-          "y": 0.0
-        }
-      ]
-    },
-    "scene-u01-pnew11-40": {
-      "id": "scene-u01-pnew11-40",
-      "type": "shape",
-      "name": "shape#40",
-      "sceneId": "scene-u01",
-      "transform": {
-        "x": 15298.0,
-        "y": 379.0,
-        "scaleX": 1,
-        "scaleY": 1,
-        "rotation": 0
-      },
-      "width": 12.0,
-      "height": 12.0,
-      "zIndex": 4,
-      "locked": false,
-      "style": {
-        "fill": "#1c2430",
-        "stroke": "transparent",
-        "textColor": "#f2ede4",
-        "fontSize": 16,
-        "radius": 0,
-        "borderWidth": 0.0
-      },
-      "text": "",
-      "shapeKind": "polygon",
-      "polygonPoints": [
-        {
-          "x": 100.0,
-          "y": 50.0
-        },
-        {
-          "x": 0.0,
-          "y": 100.0
-        },
-        {
-          "x": 0.0,
-          "y": 0.0
-        }
-      ]
-    },
-    "scene-u01-pnew11-41": {
-      "id": "scene-u01-pnew11-41",
-      "type": "shape",
-      "name": "shape#41",
       "sceneId": "scene-u01",
       "transform": {
         "x": 14440.0,
@@ -31346,10 +31251,10 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-42": {
-      "id": "scene-u01-pnew11-42",
+    "scene-u01-pnew11-40": {
+      "id": "scene-u01-pnew11-40",
       "type": "text",
-      "name": "text#42",
+      "name": "text#40",
       "sceneId": "scene-u01",
       "transform": {
         "x": 14448.0,
@@ -31377,10 +31282,10 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-43": {
-      "id": "scene-u01-pnew11-43",
+    "scene-u01-pnew11-41": {
+      "id": "scene-u01-pnew11-41",
       "type": "text",
-      "name": "text#43",
+      "name": "text#41",
       "sceneId": "scene-u01",
       "transform": {
         "x": 14448.0,
@@ -31408,91 +31313,47 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-44": {
-      "id": "scene-u01-pnew11-44",
-      "type": "shape",
-      "name": "shape#44",
+    "scene-u01-pnew11-42": {
+      "id": "scene-u01-pnew11-42",
+      "type": "connector",
+      "name": "connector",
       "sceneId": "scene-u01",
       "transform": {
-        "x": 14565.0,
-        "y": 300.0,
+        "x": 14400,
+        "y": 0,
         "scaleX": 1,
         "scaleY": 1,
         "rotation": 0
       },
-      "width": 25.0,
-      "height": 30.0,
-      "zIndex": 4,
+      "width": 1,
+      "height": 1,
+      "zIndex": 20,
       "locked": false,
       "style": {
         "fill": "transparent",
         "stroke": "#2b6cb0",
-        "textColor": "#f2ede4",
+        "textColor": "#171918",
         "fontSize": 16,
         "radius": 0,
-        "borderWidth": 3.0,
+        "borderWidth": 3,
         "borderStyle": "dashed"
       },
       "text": "",
-      "shapeKind": "polyline",
-      "polygonPoints": [
-        {
-          "x": 100.0,
-          "y": 0.0
-        },
-        {
-          "x": 0.0,
-          "y": 100.0
-        }
-      ],
+      "connector": {
+        "sourceNodeId": "scene-u01-pnew11-39",
+        "sourceHook": 8,
+        "targetNodeId": "scene-u01-pnew11-27",
+        "targetHook": 0,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      },
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-45": {
-      "id": "scene-u01-pnew11-45",
+    "scene-u01-pnew11-43": {
+      "id": "scene-u01-pnew11-43",
       "type": "shape",
-      "name": "shape#45",
-      "sceneId": "scene-u01",
-      "transform": {
-        "x": 14565.0,
-        "y": 319.12,
-        "scaleX": 1,
-        "scaleY": 1,
-        "rotation": 0
-      },
-      "width": 10.24,
-      "height": 10.88,
-      "zIndex": 4,
-      "locked": false,
-      "style": {
-        "fill": "#2b6cb0",
-        "stroke": "transparent",
-        "textColor": "#f2ede4",
-        "fontSize": 16,
-        "radius": 0,
-        "borderWidth": 0.0
-      },
-      "text": "",
-      "shapeKind": "polygon",
-      "polygonPoints": [
-        {
-          "x": 0.0,
-          "y": 100.0
-        },
-        {
-          "x": 25.0,
-          "y": 0.0
-        },
-        {
-          "x": 100.0,
-          "y": 58.82
-        }
-      ],
-      "initiallyHidden": true
-    },
-    "scene-u01-pnew11-46": {
-      "id": "scene-u01-pnew11-46",
-      "type": "shape",
-      "name": "shape#46",
+      "name": "shape#43",
       "sceneId": "scene-u01",
       "transform": {
         "x": 15310.0,
@@ -31523,10 +31384,10 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-47": {
-      "id": "scene-u01-pnew11-47",
+    "scene-u01-pnew11-44": {
+      "id": "scene-u01-pnew11-44",
       "type": "text",
-      "name": "text#47",
+      "name": "text#44",
       "sceneId": "scene-u01",
       "transform": {
         "x": 15318.0,
@@ -31554,10 +31415,10 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-48": {
-      "id": "scene-u01-pnew11-48",
+    "scene-u01-pnew11-45": {
+      "id": "scene-u01-pnew11-45",
       "type": "text",
-      "name": "text#48",
+      "name": "text#45",
       "sceneId": "scene-u01",
       "transform": {
         "x": 15318.0,
@@ -31585,91 +31446,47 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-49": {
-      "id": "scene-u01-pnew11-49",
-      "type": "shape",
-      "name": "shape#49",
+    "scene-u01-pnew11-46": {
+      "id": "scene-u01-pnew11-46",
+      "type": "connector",
+      "name": "connector",
       "sceneId": "scene-u01",
       "transform": {
-        "x": 15435.0,
-        "y": 300.0,
+        "x": 14400,
+        "y": 0,
         "scaleX": 1,
         "scaleY": 1,
         "rotation": 0
       },
-      "width": 25.0,
-      "height": 30.0,
-      "zIndex": 4,
+      "width": 1,
+      "height": 1,
+      "zIndex": 20,
       "locked": false,
       "style": {
         "fill": "transparent",
         "stroke": "#2e7d4f",
-        "textColor": "#f2ede4",
+        "textColor": "#171918",
         "fontSize": 16,
         "radius": 0,
-        "borderWidth": 3.0,
+        "borderWidth": 3,
         "borderStyle": "dashed"
       },
       "text": "",
-      "shapeKind": "polyline",
-      "polygonPoints": [
-        {
-          "x": 100.0,
-          "y": 0.0
-        },
-        {
-          "x": 0.0,
-          "y": 100.0
-        }
-      ],
+      "connector": {
+        "sourceNodeId": "scene-u01-pnew11-43",
+        "sourceHook": 8,
+        "targetNodeId": "scene-u01-pnew11-33",
+        "targetHook": 0,
+        "curve": false,
+        "direction": "forward",
+        "arrowSize": "medium"
+      },
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-50": {
-      "id": "scene-u01-pnew11-50",
+    "scene-u01-pnew11-47": {
+      "id": "scene-u01-pnew11-47",
       "type": "shape",
-      "name": "shape#50",
-      "sceneId": "scene-u01",
-      "transform": {
-        "x": 15435.0,
-        "y": 319.12,
-        "scaleX": 1,
-        "scaleY": 1,
-        "rotation": 0
-      },
-      "width": 10.24,
-      "height": 10.88,
-      "zIndex": 4,
-      "locked": false,
-      "style": {
-        "fill": "#2e7d4f",
-        "stroke": "transparent",
-        "textColor": "#f2ede4",
-        "fontSize": 16,
-        "radius": 0,
-        "borderWidth": 0.0
-      },
-      "text": "",
-      "shapeKind": "polygon",
-      "polygonPoints": [
-        {
-          "x": 0.0,
-          "y": 100.0
-        },
-        {
-          "x": 25.0,
-          "y": 0.0
-        },
-        {
-          "x": 100.0,
-          "y": 58.82
-        }
-      ],
-      "initiallyHidden": true
-    },
-    "scene-u01-pnew11-51": {
-      "id": "scene-u01-pnew11-51",
-      "type": "shape",
-      "name": "shape#51",
+      "name": "shape#47",
       "sceneId": "scene-u01",
       "transform": {
         "x": 14755.0,
@@ -31700,10 +31517,10 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-52": {
-      "id": "scene-u01-pnew11-52",
+    "scene-u01-pnew11-48": {
+      "id": "scene-u01-pnew11-48",
       "type": "text",
-      "name": "text#52",
+      "name": "text#48",
       "sceneId": "scene-u01",
       "transform": {
         "x": 14763.0,
@@ -31731,10 +31548,10 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-53": {
-      "id": "scene-u01-pnew11-53",
+    "scene-u01-pnew11-49": {
+      "id": "scene-u01-pnew11-49",
       "type": "text",
-      "name": "text#53",
+      "name": "text#49",
       "sceneId": "scene-u01",
       "transform": {
         "x": 14763.0,
@@ -31762,172 +31579,84 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-54": {
-      "id": "scene-u01-pnew11-54",
-      "type": "shape",
-      "name": "shape#54",
+    "scene-u01-pnew11-50": {
+      "id": "scene-u01-pnew11-50",
+      "type": "connector",
+      "name": "connector",
       "sceneId": "scene-u01",
       "transform": {
-        "x": 14855.0,
-        "y": 300.0,
+        "x": 14400,
+        "y": 0,
         "scaleX": 1,
         "scaleY": 1,
         "rotation": 0
       },
-      "width": 15.0,
-      "height": 30.0,
-      "zIndex": 4,
+      "width": 1,
+      "height": 1,
+      "zIndex": 20,
       "locked": false,
       "style": {
         "fill": "transparent",
         "stroke": "#c9403a",
-        "textColor": "#f2ede4",
+        "textColor": "#171918",
         "fontSize": 16,
         "radius": 0,
-        "borderWidth": 3.0,
+        "borderWidth": 3,
         "borderStyle": "dashed"
       },
       "text": "",
-      "shapeKind": "polyline",
-      "polygonPoints": [
-        {
-          "x": 100.0,
-          "y": 0.0
-        },
-        {
-          "x": 0.0,
-          "y": 100.0
-        }
-      ],
+      "connector": {
+        "sourceNodeId": "scene-u01-pnew11-47",
+        "sourceHook": 8,
+        "targetNodeId": "scene-u01-pnew11-29",
+        "targetHook": 0,
+        "curve": true,
+        "direction": "forward",
+        "arrowSize": "medium"
+      },
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-55": {
-      "id": "scene-u01-pnew11-55",
-      "type": "shape",
-      "name": "shape#55",
+    "scene-u01-pnew11-51": {
+      "id": "scene-u01-pnew11-51",
+      "type": "connector",
+      "name": "connector",
       "sceneId": "scene-u01",
       "transform": {
-        "x": 14855.0,
-        "y": 318.82,
+        "x": 14400,
+        "y": 0,
         "scaleX": 1,
         "scaleY": 1,
         "rotation": 0
       },
-      "width": 8.94,
-      "height": 11.18,
-      "zIndex": 4,
-      "locked": false,
-      "style": {
-        "fill": "#c9403a",
-        "stroke": "transparent",
-        "textColor": "#f2ede4",
-        "fontSize": 16,
-        "radius": 0,
-        "borderWidth": 0.0
-      },
-      "text": "",
-      "shapeKind": "polygon",
-      "polygonPoints": [
-        {
-          "x": 0.0,
-          "y": 100.0
-        },
-        {
-          "x": 0.0,
-          "y": 0.0
-        },
-        {
-          "x": 100.0,
-          "y": 40.0
-        }
-      ],
-      "initiallyHidden": true
-    },
-    "scene-u01-pnew11-56": {
-      "id": "scene-u01-pnew11-56",
-      "type": "shape",
-      "name": "shape#56",
-      "sceneId": "scene-u01",
-      "transform": {
-        "x": 15145.0,
-        "y": 300.0,
-        "scaleX": 1,
-        "scaleY": 1,
-        "rotation": 0
-      },
-      "width": 5.0,
-      "height": 30.0,
-      "zIndex": 4,
+      "width": 1,
+      "height": 1,
+      "zIndex": 20,
       "locked": false,
       "style": {
         "fill": "transparent",
         "stroke": "#c9403a",
-        "textColor": "#f2ede4",
+        "textColor": "#171918",
         "fontSize": 16,
         "radius": 0,
-        "borderWidth": 3.0,
+        "borderWidth": 3,
         "borderStyle": "dashed"
       },
       "text": "",
-      "shapeKind": "polyline",
-      "polygonPoints": [
-        {
-          "x": 100.0,
-          "y": 0.0
-        },
-        {
-          "x": 0.0,
-          "y": 100.0
-        }
-      ],
+      "connector": {
+        "sourceNodeId": "scene-u01-pnew11-47",
+        "sourceHook": 8,
+        "targetNodeId": "scene-u01-pnew11-31",
+        "targetHook": 0,
+        "curve": true,
+        "direction": "forward",
+        "arrowSize": "medium"
+      },
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-57": {
-      "id": "scene-u01-pnew11-57",
+    "scene-u01-pnew11-52": {
+      "id": "scene-u01-pnew11-52",
       "type": "shape",
-      "name": "shape#57",
-      "sceneId": "scene-u01",
-      "transform": {
-        "x": 15141.71,
-        "y": 319.31,
-        "scaleX": 1,
-        "scaleY": 1,
-        "rotation": 0
-      },
-      "width": 9.86,
-      "height": 10.69,
-      "zIndex": 4,
-      "locked": false,
-      "style": {
-        "fill": "#c9403a",
-        "stroke": "transparent",
-        "textColor": "#f2ede4",
-        "fontSize": 16,
-        "radius": 0,
-        "borderWidth": 0.0
-      },
-      "text": "",
-      "shapeKind": "polygon",
-      "polygonPoints": [
-        {
-          "x": 33.33,
-          "y": 100.0
-        },
-        {
-          "x": 0.0,
-          "y": 0.0
-        },
-        {
-          "x": 100.0,
-          "y": 15.38
-        }
-      ],
-      "initiallyHidden": true
-    },
-    "scene-u01-pnew11-58": {
-      "id": "scene-u01-pnew11-58",
-      "type": "shape",
-      "name": "shape#58",
+      "name": "shape#52",
       "sceneId": "scene-u01",
       "transform": {
         "x": 14440.0,
@@ -31958,10 +31687,10 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-59": {
-      "id": "scene-u01-pnew11-59",
+    "scene-u01-pnew11-53": {
+      "id": "scene-u01-pnew11-53",
       "type": "text",
-      "name": "text#59",
+      "name": "text#53",
       "sceneId": "scene-u01",
       "transform": {
         "x": 14448.0,
@@ -31989,10 +31718,10 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-60": {
-      "id": "scene-u01-pnew11-60",
+    "scene-u01-pnew11-54": {
+      "id": "scene-u01-pnew11-54",
       "type": "text",
-      "name": "text#60",
+      "name": "text#54",
       "sceneId": "scene-u01",
       "transform": {
         "x": 14448.0,
@@ -32020,49 +31749,47 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-61": {
-      "id": "scene-u01-pnew11-61",
-      "type": "shape",
-      "name": "shape#61",
+    "scene-u01-pnew11-55": {
+      "id": "scene-u01-pnew11-55",
+      "type": "connector",
+      "name": "connector",
       "sceneId": "scene-u01",
       "transform": {
-        "x": 14560.0,
-        "y": 445.0,
+        "x": 14400,
+        "y": 0,
         "scaleX": 1,
         "scaleY": 1,
         "rotation": 0
       },
-      "width": 1.0,
-      "height": 25.0,
-      "zIndex": 4,
+      "width": 1,
+      "height": 1,
+      "zIndex": 20,
       "locked": false,
       "style": {
         "fill": "transparent",
         "stroke": "#2e7d4f",
-        "textColor": "#f2ede4",
+        "textColor": "#171918",
         "fontSize": 16,
         "radius": 0,
-        "borderWidth": 3.0,
+        "borderWidth": 3,
         "borderStyle": "dashed"
       },
       "text": "",
-      "shapeKind": "polyline",
-      "polygonPoints": [
-        {
-          "x": 0.0,
-          "y": 100.0
-        },
-        {
-          "x": 0.0,
-          "y": 0.0
-        }
-      ],
+      "connector": {
+        "sourceNodeId": "scene-u01-pnew11-52",
+        "sourceHook": 0,
+        "targetNodeId": "scene-u01-pnew11-27",
+        "targetHook": 8,
+        "curve": true,
+        "direction": "forward",
+        "arrowSize": "medium"
+      },
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-62": {
-      "id": "scene-u01-pnew11-62",
+    "scene-u01-pnew11-56": {
+      "id": "scene-u01-pnew11-56",
       "type": "shape",
-      "name": "shape#62",
+      "name": "shape#56",
       "sceneId": "scene-u01",
       "transform": {
         "x": 15070.0,
@@ -32093,10 +31820,10 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-63": {
-      "id": "scene-u01-pnew11-63",
+    "scene-u01-pnew11-57": {
+      "id": "scene-u01-pnew11-57",
       "type": "text",
-      "name": "text#63",
+      "name": "text#57",
       "sceneId": "scene-u01",
       "transform": {
         "x": 15078.0,
@@ -32124,10 +31851,10 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-64": {
-      "id": "scene-u01-pnew11-64",
+    "scene-u01-pnew11-58": {
+      "id": "scene-u01-pnew11-58",
       "type": "text",
-      "name": "text#64",
+      "name": "text#58",
       "sceneId": "scene-u01",
       "transform": {
         "x": 15078.0,
@@ -32155,100 +31882,47 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-65": {
-      "id": "scene-u01-pnew11-65",
-      "type": "shape",
-      "name": "shape#65",
+    "scene-u01-pnew11-59": {
+      "id": "scene-u01-pnew11-59",
+      "type": "connector",
+      "name": "connector",
       "sceneId": "scene-u01",
       "transform": {
-        "x": 14698.0,
-        "y": 372.0,
+        "x": 14400,
+        "y": 0,
         "scaleX": 1,
         "scaleY": 1,
         "rotation": 0
       },
-      "width": 24.0,
-      "height": 24.0,
-      "zIndex": 6,
+      "width": 1,
+      "height": 1,
+      "zIndex": 20,
       "locked": false,
       "style": {
-        "fill": "#c9d3e8",
-        "stroke": "transparent",
-        "textColor": "#f2ede4",
+        "fill": "transparent",
+        "stroke": "#1e3053",
+        "textColor": "#171918",
         "fontSize": 16,
         "radius": 0,
-        "borderWidth": 0.0,
-        "gradientTo": "#1e3053",
-        "gradientType": "radial"
+        "borderWidth": 3,
+        "borderStyle": "dashed"
       },
       "text": "",
-      "shapeKind": "diamond",
+      "connector": {
+        "sourceNodeId": "scene-u01-pnew11-56",
+        "sourceHook": 0,
+        "targetNodeId": "scene-u01-pnew11-31",
+        "targetHook": 8,
+        "curve": true,
+        "direction": "forward",
+        "arrowSize": "medium"
+      },
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-66": {
-      "id": "scene-u01-pnew11-66",
+    "scene-u01-pnew11-60": {
+      "id": "scene-u01-pnew11-60",
       "type": "shape",
-      "name": "shape#66",
-      "sceneId": "scene-u01",
-      "transform": {
-        "x": 14988.0,
-        "y": 372.0,
-        "scaleX": 1,
-        "scaleY": 1,
-        "rotation": 0
-      },
-      "width": 24.0,
-      "height": 24.0,
-      "zIndex": 6,
-      "locked": false,
-      "style": {
-        "fill": "#c9d3e8",
-        "stroke": "transparent",
-        "textColor": "#f2ede4",
-        "fontSize": 16,
-        "radius": 0,
-        "borderWidth": 0.0,
-        "gradientTo": "#1e3053",
-        "gradientType": "radial"
-      },
-      "text": "",
-      "shapeKind": "diamond",
-      "initiallyHidden": true
-    },
-    "scene-u01-pnew11-67": {
-      "id": "scene-u01-pnew11-67",
-      "type": "shape",
-      "name": "shape#67",
-      "sceneId": "scene-u01",
-      "transform": {
-        "x": 15278.0,
-        "y": 372.0,
-        "scaleX": 1,
-        "scaleY": 1,
-        "rotation": 0
-      },
-      "width": 24.0,
-      "height": 24.0,
-      "zIndex": 6,
-      "locked": false,
-      "style": {
-        "fill": "#c9d3e8",
-        "stroke": "transparent",
-        "textColor": "#f2ede4",
-        "fontSize": 16,
-        "radius": 0,
-        "borderWidth": 0.0,
-        "gradientTo": "#1e3053",
-        "gradientType": "radial"
-      },
-      "text": "",
-      "shapeKind": "diamond",
-      "initiallyHidden": true
-    },
-    "scene-u01-pnew11-68": {
-      "id": "scene-u01-pnew11-68",
-      "type": "shape",
-      "name": "shape#68",
+      "name": "shape#60",
       "sceneId": "scene-u01",
       "transform": {
         "x": 14428.0,
@@ -32281,10 +31955,10 @@
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
-    "scene-u01-pnew11-69": {
-      "id": "scene-u01-pnew11-69",
+    "scene-u01-pnew11-61": {
+      "id": "scene-u01-pnew11-61",
       "type": "text",
-      "name": "text#69",
+      "name": "text#61",
       "sceneId": "scene-u01",
       "transform": {
         "x": 14448.0,
@@ -38142,7 +37816,7 @@
       "id": "scene-u01-step-new11",
       "label": "KP12 · 11/12",
       "order": 41,
-      "speakerNotes": "(Figure: a pipeline from data through two hidden layers to output and objective, each method placed where it acts; the diamonds between layers mark where batch normalization sits.) Batch normalization is the last method of the chapter. The whole chapter revolves around one problem: doing well on training data does not mean doing well on new data. The table puts each method in one frame: what it controls and where it acts. (Taken from the lecture's table; added.)"
+      "speakerNotes": "The pipeline on top: data enters the hidden layers, then the output and objective. Batch normalization is the last method of the chapter."
     },
     {
       "durationMs": 900,
@@ -38164,68 +37838,128 @@
       "id": "scene-u01-p11b1",
       "label": "KP12 · 11/12 (1)",
       "order": 42,
-      "speakerNotes": "(Figure: a pipeline from data through two hidden layers to output and objective, each method placed where it acts; the diamonds between layers mark where batch normalization sits.) Batch normalization is the last method of the chapter. The whole chapter revolves around one problem: doing well on training data does not mean doing well on new data. The table puts each method in one frame: what it controls and where it acts. (Taken from the lecture's table; added.)",
+      "speakerNotes": "The pipeline on top: data enters the hidden layers, then the output and objective. Batch normalization is the last method of the chapter.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
           {
-            "nodeId": "scene-u01-pnew11-41",
+            "nodeId": "scene-u01-pnew11-27",
             "effect": "fade",
             "delayMs": 0,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-42",
+            "nodeId": "scene-u01-pnew11-28",
             "effect": "fade",
             "delayMs": 10,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-43",
+            "nodeId": "scene-u01-pnew11-29",
             "effect": "fade",
             "delayMs": 20,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-44",
+            "nodeId": "scene-u01-pnew11-30",
             "effect": "fade",
             "delayMs": 30,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-45",
+            "nodeId": "scene-u01-pnew11-31",
             "effect": "fade",
             "delayMs": 40,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-46",
+            "nodeId": "scene-u01-pnew11-32",
             "effect": "fade",
             "delayMs": 50,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-47",
+            "nodeId": "scene-u01-pnew11-33",
             "effect": "fade",
             "delayMs": 60,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-48",
+            "nodeId": "scene-u01-pnew11-34",
             "effect": "fade",
             "delayMs": 70,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-49",
+            "nodeId": "scene-u01-pnew11-35",
             "effect": "fade",
             "delayMs": 80,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-50",
+            "nodeId": "scene-u01-pnew11-36",
             "effect": "fade",
             "delayMs": 90,
+            "durationMs": 450
+          },
+          {
+            "nodeId": "scene-u01-pnew11-37",
+            "effect": "fade",
+            "delayMs": 100,
+            "durationMs": 450
+          },
+          {
+            "nodeId": "scene-u01-pnew11-38",
+            "effect": "fade",
+            "delayMs": 110,
+            "durationMs": 450
+          },
+          {
+            "nodeId": "scene-u01-pnew11-39",
+            "effect": "fade",
+            "delayMs": 120,
+            "durationMs": 450
+          },
+          {
+            "nodeId": "scene-u01-pnew11-40",
+            "effect": "fade",
+            "delayMs": 130,
+            "durationMs": 450
+          },
+          {
+            "nodeId": "scene-u01-pnew11-41",
+            "effect": "fade",
+            "delayMs": 140,
+            "durationMs": 450
+          },
+          {
+            "nodeId": "scene-u01-pnew11-42",
+            "effect": "fade",
+            "delayMs": 150,
+            "durationMs": 450
+          },
+          {
+            "nodeId": "scene-u01-pnew11-43",
+            "effect": "fade",
+            "delayMs": 160,
+            "durationMs": 450
+          },
+          {
+            "nodeId": "scene-u01-pnew11-44",
+            "effect": "fade",
+            "delayMs": 170,
+            "durationMs": 450
+          },
+          {
+            "nodeId": "scene-u01-pnew11-45",
+            "effect": "fade",
+            "delayMs": 180,
+            "durationMs": 450
+          },
+          {
+            "nodeId": "scene-u01-pnew11-46",
+            "effect": "fade",
+            "delayMs": 190,
             "durationMs": 450
           }
         ],
@@ -38241,9 +37975,9 @@
         "sceneId": "scene-u01",
         "point": {
           "x": 15040,
-          "y": 360.0
+          "y": 300.0
         },
-        "zoom": 1.0,
+        "zoom": 1.25,
         "referenceViewport": {
           "width": 1280,
           "height": 720
@@ -38252,54 +37986,44 @@
       "id": "scene-u01-p11b2",
       "label": "KP12 · 11/12 (2)",
       "order": 43,
-      "speakerNotes": "Data splits and cross-validation (KP01, KP06) evaluate honestly without changing the model; ℓ2 and weight decay (KP07, KP08) shrink weights and ℓ1 (KP09) creates sparsity, both lower effective complexity and act on the objective; early stopping (KP10) trains less, roughly ℓ2, acting on the training process.",
+      "speakerNotes": "Data splits and cross-validation (KP01, KP06) evaluate honestly without changing the model; ℓ2 / weight decay and ℓ1 (KP07–KP09) change the objective and lower effective complexity; dropout (KP11) acts on hidden layers and lowers variance. (The camera zooms to the top.)",
       "reveal": {
         "timing": "after-camera",
         "enter": [
           {
-            "nodeId": "scene-u01-pnew11-51",
+            "nodeId": "scene-u01-pnew11-47",
             "effect": "scale",
             "delayMs": 0,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-52",
+            "nodeId": "scene-u01-pnew11-48",
             "effect": "scale",
             "delayMs": 10,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-53",
+            "nodeId": "scene-u01-pnew11-49",
             "effect": "scale",
             "delayMs": 20,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-54",
+            "nodeId": "scene-u01-pnew11-50",
             "effect": "scale",
             "delayMs": 30,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-55",
+            "nodeId": "scene-u01-pnew11-51",
             "effect": "scale",
             "delayMs": 40,
             "durationMs": 450
-          },
-          {
-            "nodeId": "scene-u01-pnew11-56",
-            "effect": "scale",
-            "delayMs": 50,
-            "durationMs": 450
-          },
-          {
-            "nodeId": "scene-u01-pnew11-57",
-            "effect": "scale",
-            "delayMs": 60,
-            "durationMs": 450
           }
         ],
-        "exitNodeIds": []
+        "exitNodeIds": [
+          "scene-u01-pnew11-38"
+        ]
       }
     },
     {
@@ -38322,80 +38046,68 @@
       "id": "scene-u01-p11b3",
       "label": "KP12 · 11/12 (3)",
       "order": 44,
-      "speakerNotes": "Dropout (KP11) lowers variance, approximating the sub-network average, acting on hidden layers; batch normalization (KP12) steadies and smooths optimization with a mild regularization, acting between layers. The chapter's one-line thread: true error ≈ training error + complexity, so either lower the effective complexity or lower the variance.",
+      "speakerNotes": "Early stopping (KP10) acts on the training process, training less is roughly ℓ2; batch normalization (KP12) acts between layers, steadying and smoothing optimization with a mild regularization. The chapter's thread: true error ≈ training error + complexity, so lower the effective complexity or the variance.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
           {
-            "nodeId": "scene-u01-pnew11-58",
+            "nodeId": "scene-u01-pnew11-52",
             "effect": "fade",
             "delayMs": 0,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-59",
+            "nodeId": "scene-u01-pnew11-53",
             "effect": "fade",
             "delayMs": 10,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-60",
+            "nodeId": "scene-u01-pnew11-54",
             "effect": "fade",
             "delayMs": 20,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-61",
+            "nodeId": "scene-u01-pnew11-55",
             "effect": "fade",
             "delayMs": 30,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-62",
+            "nodeId": "scene-u01-pnew11-56",
             "effect": "fade",
             "delayMs": 40,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-63",
+            "nodeId": "scene-u01-pnew11-57",
             "effect": "fade",
             "delayMs": 50,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-64",
+            "nodeId": "scene-u01-pnew11-58",
             "effect": "fade",
             "delayMs": 60,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-65",
+            "nodeId": "scene-u01-pnew11-59",
             "effect": "fade",
             "delayMs": 70,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-66",
+            "nodeId": "scene-u01-pnew11-60",
             "effect": "fade",
             "delayMs": 80,
             "durationMs": 450
           },
           {
-            "nodeId": "scene-u01-pnew11-67",
+            "nodeId": "scene-u01-pnew11-61",
             "effect": "fade",
             "delayMs": 90,
-            "durationMs": 450
-          },
-          {
-            "nodeId": "scene-u01-pnew11-68",
-            "effect": "fade",
-            "delayMs": 100,
-            "durationMs": 450
-          },
-          {
-            "nodeId": "scene-u01-pnew11-69",
-            "effect": "fade",
-            "delayMs": 110,
             "durationMs": 450
           }
         ],

@@ -36,10 +36,19 @@ def main():
     first = (steps[0].get("label") or "").strip() if steps else ""
     if not first or first.lower().startswith("page"): print("FAIL  opening step label is empty or 'Page':", repr(first)); bad += 1
     else: print("ok    opening step label:", first)
+    # pages = columns of nodes around each scene-point step target (pages are laid side by side in one scene)
+    centers = collections.defaultdict(set)
+    for s_ in steps:
+        t_ = s_["target"]
+        if t_.get("point") and t_["sceneId"] != d["rootSceneId"]: centers[t_["sceneId"]].add(round(t_["point"]["x"]))
+    cl = {sc: sorted(v) for sc, v in centers.items()}
+    def page_of(sc, x):
+        c = cl.get(sc)
+        return min(range(len(c)), key=lambda i: abs(c[i] - x)) if c else int(x // a.page_width)
     pages = collections.defaultdict(list)
     for n in d["nodes"].values():
         if n["sceneId"] == d["rootSceneId"] or n["type"] == "connector": continue
-        pages[(n["sceneId"], int(n["transform"]["x"] // a.page_width))].append(n)
+        pages[(n["sceneId"], page_of(n["sceneId"], n["transform"]["x"] + n["width"] / 2))].append(n)
     z_bad = []
     for key, ns in pages.items():
         fills = [n for n in ns if n["type"] == "shape" and alpha(n["style"].get("fill")) >= 0.9 and n.get("shapeKind") != "polyline"]
@@ -94,7 +103,7 @@ def main():
             if i not in d["nodes"] or d["nodes"][i]["sceneId"] != s_["target"]["sceneId"]: rv_bad.append(("bad exit node", i))
         if ids:
             n0 = d["nodes"].get(ids[0]); 
-            if n0: beats[(n0["sceneId"], int(n0["transform"]["x"] // a.page_width))] += 1
+            if n0: beats[(n0["sceneId"], page_of(n0["sceneId"], n0["transform"]["x"] + n0["width"] / 2))] += 1
             if not (s_.get("speakerNotes") or "").strip(): no_notes += 1
     never = sorted(hidden - set(seen)); twice = [i for i, c in seen.items() if c > 1]
     if never: rv_bad.append(("hidden but never revealed", len(never)))
@@ -110,7 +119,7 @@ def main():
     cam = 0
     for p_, c_ in zip(steps, steps[1:]):
         t1, t2 = p_["target"], c_["target"]
-        if t1["sceneId"] == t2["sceneId"] and t1.get("point") and t2.get("point") and abs(t2["point"]["x"] - t1["point"]["x"]) < a.page_width and (t1["point"] != t2["point"] or t1.get("zoom", 1) != t2.get("zoom", 1)): cam += 1
+        if t1["sceneId"] == t2["sceneId"] and t1.get("point") and t2.get("point") and abs(t2["point"]["x"] - t1["point"]["x"]) < 700 and (t1["point"] != t2["point"] or t1.get("zoom", 1) != t2.get("zoom", 1)): cam += 1
     cam += sum(1 for s_ in steps if s_["target"]["kind"] == "focus-node")
     feats = {
         "basic shapes (rect/ellipse/triangle/diamond/pentagon/star/arrow)": len({n.get("shapeKind") for n in N if n["type"] == "shape"} & {"triangle", "diamond", "pentagon", "star", "arrow"}) >= 3,

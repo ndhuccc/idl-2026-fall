@@ -206,9 +206,9 @@ function connectorSvg(n, byId, labels) {
       const sgn = c.label.offset === 'above' ? -1 : 1;
       p = { x: p.x + (-tan.y / l) * LABEL_OFFSET * sgn, y: p.y + (tan.x / l) * LABEL_OFFSET * sgn };
     }
-    labels.push(`<div class="clabel" style="left:${num(p.x)}px;top:${num(p.y)}px">${renderMarkdown(c.label.text, { inline: true })}</div>`);
+    labels.push(`<div class="clabel${n.initiallyHidden ? ' h' : ''}" data-n="${escAttr(n.id)}" style="left:${num(p.x)}px;top:${num(p.y)}px">${renderMarkdown(c.label.text, { inline: true })}</div>`);
   }
-  return svg;
+  return `<g class="cn${n.initiallyHidden ? ' h' : ''}" data-n="${escAttr(n.id)}">${svg}</g>`;
 }
 
 
@@ -423,7 +423,7 @@ html,body{margin:0;height:100%;background:#0f0f0d;color:#f2ede4;font-family:${DE
 .world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
 .wires{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;z-index:1}
 .n{position:absolute;display:flex;border:1px solid transparent}
-.n.h{opacity:0;pointer-events:none}.n.h.hs{scale:.85}
+.n.h,.cn.h,.clabel.h{opacity:0;pointer-events:none}.cn,.clabel{transition:opacity .45s}.n.h.hs{scale:.85}
 .n.text{align-items:flex-start;justify-content:flex-start}
 .n.shape{align-items:center;justify-content:center}
 .n.img{overflow:hidden}.n.img img{width:100%;height:100%;display:block}
