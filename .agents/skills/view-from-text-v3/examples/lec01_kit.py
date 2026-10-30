@@ -94,12 +94,15 @@ def build_deck(pages, title, label0, lang, out):
                                "connector": {"sourceNodeId": f"k1p{i+1}-{a_+1}", "sourceHook": ha, "targetNodeId": f"k1p{i+1}-{b2+1}", "targetHook": hb, "curve": False, "direction": "forward", "arrowSize": "medium"}}
             if bt > 0: d["nodes"][cid]["initiallyHidden"] = True
             sc["nodeIds"].append(cid); ids.setdefault(bt, []).append(cid)
+        texts_by_beat = {}
+        for n_, b_ in zip(pg.P.nodes, pg.tags):
+            if n_["type"] == "text" and n_["text"].strip(): texts_by_beat.setdefault(b_, []).append(n_["text"].strip())
         cam = {"kind": "scene-point", "sceneId": "scene-u01", "point": {"x": ox + 640, "y": 360.0}, "zoom": 1.0, "referenceViewport": {"width": 1280, "height": 720}}
         d["steps"].append({"id": f"scene-u01-step-p{i+1}", "order": order, "label": f"{lab} · {i+1}/{N}", "durationMs": 900, "holdMs": 500, "easing": "smooth", "target": cam, "speakerNotes": notes.get(0, "")}); order += 1
         for b in sorted(k for k in ids if k > 0):
             d["steps"].append({"id": f"scene-u01-p{i+1}b{b}", "order": order, "label": f"{lab} · {i+1}/{N} ({b})", "durationMs": 900, "holdMs": 500, "easing": "smooth", "target": cam,
                                "reveal": {"timing": "after-camera", "enter": [{"nodeId": nid, "effect": "fade", "delayMs": 0, "durationMs": 450} for nid in ids[b]], "exitNodeIds": []},
-                               "speakerNotes": notes.get(b, "")}); order += 1
+                               "speakerNotes": notes.get(b, "") or " ".join(t.replace("$", "").replace("\n", " ") for t in texts_by_beat.get(b, []))}); order += 1
     json.dump(d, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     return d
 
