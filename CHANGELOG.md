@@ -4,6 +4,8 @@
 
 ## 2026 秋季
 
+- 2026-10-30 — [更新] 技能 prompt-to-jbd-page 新增「JianBauDau 視覺元件與效果清單」`references/feature-catalog.md`(15 類功能與適用情境)與稽核第 11 項「功能涵蓋」(連接線、多色漸層、行內文字格式、reveal 退場、鏡頭移動等);`tools/check_deck_quality.py` 新增功能涵蓋統計。現有簡報未修改;第4週 KP11 以新稽核跑過約 6/12 類,連接線、鏡頭移動、退場、行內格式、多色漸層尚未使用。
+
 - 2026-10-30 — [更新] 技能 prompt-to-jbd-page 新增兩項稽核:第 9 項「活潑元素」(每頁至少 3 種效果、全份至少一個旋轉貼紙或印章)與第 10 項「reveal 逐步出現」(隱藏節點都被揭示一次、節點與場景一致、每頁至少 2 個 beat、reveal 步驟都有講者備註);`tools/check_deck_quality.py` 同步實作。第4週 KP01–KP12 以新稽核跑過,結構無 FAIL,另有少數頁面的警告(圖形元件或 beat 不足)。
 
 - 2026-10-30 — [更新] 第1週 KP01 簡報依新版流程重做(9 頁示意圖、每頁逐步出現,中文與英文各一份):`slides/lec01-kp01-model-selection-framework.jbd.json` 取代舊版,新增 `-en.jbd.json`;建頁腳本與圖解提示詞存於 `.agents/skills/view-from-text-v3/examples/lec01_*`。

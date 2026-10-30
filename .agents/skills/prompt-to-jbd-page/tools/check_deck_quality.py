@@ -13,6 +13,9 @@ Checks (see SKILL.md, quality gates 6 and 8, and "課堂簡報製作流程"):
      initiallyHidden and belongs to the step's scene; no node is revealed twice; per page at least --min-beats reveal steps;
      every reveal step has speaker notes.
 Usage:  python3 check_deck_quality.py deck.jbd.json [--min-figures 4] [--page-width 1280]
+  6. feature coverage (see references/feature-catalog.md): the deck should use native connectors, in-page camera moves, inline
+     text formatting, reveal exit, multi-stop gradients, fill opacity, and other JianBauDau features; reports which of the
+     catalog's feature groups are used / missing and warns below --min-features groups.
 Exit code 1 if check 1, 2 or 5 (reveal structure) fails; checks 3 and 4 only warn (exit 0) unless --strict.
 """
 import argparse, collections, json, re, sys
@@ -27,7 +30,7 @@ def alpha(c):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("deck"); ap.add_argument("--min-figures", type=int, default=4)
-    ap.add_argument("--page-width", type=int, default=1280); ap.add_argument("--min-lively", type=int, default=3); ap.add_argument("--min-beats", type=int, default=2); ap.add_argument("--strict", action="store_true")
+    ap.add_argument("--page-width", type=int, default=1280); ap.add_argument("--min-lively", type=int, default=3); ap.add_argument("--min-beats", type=int, default=2); ap.add_argument("--min-features", type=int, default=9); ap.add_argument("--strict", action="store_true")
     a = ap.parse_args(); d = json.load(open(a.deck, encoding="utf-8")); bad = 0
     steps = sorted(d["steps"], key=lambda s: s["order"])
     first = (steps[0].get("label") or "").strip() if steps else ""
@@ -102,5 +105,32 @@ def main():
     few = [(key[1] + 1, beats.get(key, 0)) for key in sorted(pages) if len(pages[key]) >= 8 and beats.get(key, 0) < a.min_beats]
     print(("WARN  pages with fewer than %d reveal beats (page, beats): %s" % (a.min_beats, few)) if few else "ok    every page has enough reveal beats")
     if few and a.strict: bad += 1
+    # ---- 6. feature coverage
+    N = [n for n in d["nodes"].values() if n["sceneId"] != d["rootSceneId"]]
+    cam = 0
+    for p_, c_ in zip(steps, steps[1:]):
+        t1, t2 = p_["target"], c_["target"]
+        if t1["sceneId"] == t2["sceneId"] and t1.get("point") and t2.get("point") and abs(t2["point"]["x"] - t1["point"]["x"]) < a.page_width and (t1["point"] != t2["point"] or t1.get("zoom", 1) != t2.get("zoom", 1)): cam += 1
+    cam += sum(1 for s_ in steps if s_["target"]["kind"] == "focus-node")
+    feats = {
+        "basic shapes (rect/ellipse/triangle/diamond/pentagon/star/arrow)": len({n.get("shapeKind") for n in N if n["type"] == "shape"} & {"triangle", "diamond", "pentagon", "star", "arrow"}) >= 3,
+        "polygon / polyline (smooth curves)": any(n.get("shapeKind") in ("polygon", "polyline") and any(p.get("smooth") for p in n.get("polygonPoints", [])) for n in N),
+        "native connectors": any(n["type"] == "connector" for n in d["nodes"].values()),
+        "fill opacity (fillOpacity or rgba fill)": any(n.get("style", {}).get("fillOpacity") not in (None, 1) or 0 < alpha(n.get("style", {}).get("fill")) < 0.95 for n in N),
+        "gradient (linear/radial)": any(n.get("style", {}).get("gradientTo") for n in N),
+        "multi-stop gradient": any(n.get("style", {}).get("gradientStops") for n in N),
+        "shadow / glow": any(n.get("style", {}).get("shadowColor") for n in N),
+        "line styles (dashed/dotted/double)": any(n.get("style", {}).get("borderStyle") in ("dashed", "dotted", "double") for n in N),
+        "rotation / sticker": any(n["transform"].get("rotation") for n in N),
+        "inline text formatting ({color=}/{size=})": any(re.search(r"\{(color|size|font)=", n.get("text") or "") for n in N),
+        "reveal exit": any(s_.get("reveal", {}).get("exitNodeIds") for s_ in steps),
+        "in-page camera moves / focus": cam > 0,
+    }
+    used = [k for k, v in feats.items() if v]; miss = [k for k, v in feats.items() if not v]
+    print("info  feature groups used %d/%d" % (len(used), len(feats)))
+    print(("WARN  missing: " + "; ".join(miss)) if miss else "ok    all feature groups used")
+    if len(used) < a.min_features:
+        print("WARN  fewer than %d feature groups used (see references/feature-catalog.md)" % a.min_features)
+        if a.strict: bad += 1
     sys.exit(1 if bad else 0)
 main()
