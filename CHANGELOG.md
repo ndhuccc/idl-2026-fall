@@ -4,6 +4,8 @@
 
 ## 2026 秋季
 
+- 2026-10-30 — [更新] 技能 prompt-to-jbd-page 新增兩項稽核:第 9 項「活潑元素」(每頁至少 3 種效果、全份至少一個旋轉貼紙或印章)與第 10 項「reveal 逐步出現」(隱藏節點都被揭示一次、節點與場景一致、每頁至少 2 個 beat、reveal 步驟都有講者備註);`tools/check_deck_quality.py` 同步實作。第4週 KP01–KP12 以新稽核跑過,結構無 FAIL,另有少數頁面的警告(圖形元件或 beat 不足)。
+
 - 2026-10-30 — [更新] 技能整理:把「課堂簡報製作流程與版面經驗」與檢查工具 `check_deck_quality.py` 從 page-to-teaching-diagram 搬到 prompt-to-jbd-page(原生簡報頁的細節歸原生簡報技能);page-to-teaching-diagram 只留圖解本身的規則,並留一行指向 prompt-to-jbd-page。
 
 - 2026-10-30 — [更新] 技能 page-to-teaching-diagram 新增「課堂簡報製作流程與版面經驗」(一次一個 KP、標題頁用 KP 短標題、逐步出現與講者備註、比喻畫成圖、數字出處、公式框與吉祥物的版面注意、中英檔名規則、送出前檢查),並新增檢查工具 `tools/check_deck_quality.py`(標題、圖層遮蓋、每頁圖形主元件數)。
