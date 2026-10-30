@@ -221,3 +221,4 @@
 - 2026-10-30 — 老師要求用導學版重做其他未用新技能製作的 KP 簡報,選「第6週剩下 4 個 KP」、每個 KP 做完就推送:KP07 已完成(43 頁,中英各一份;`check_coverage` 全覆蓋、`check_style --style guided` 通過、`check_slides` 無 FAIL)。接著 KP01、KP03、KP04;之後第1–4週待老師決定。
 - 2026-10-30 — 導學版重做(每個 KP 做完就推送):KP01 已完成(41 頁;`check_coverage` 26/26 錨點、`check_style --style guided` 通過、`check_slides` 無 FAIL)。接著 KP03、KP04;之後第1–4週待老師決定。
 - 2026-10-30 — 導學版重做:KP03 已完成(43 頁;`check_coverage` 26/26、`check_style --style guided` 通過、`check_slides` 無 FAIL)。接著 KP04;之後第1–4週待老師決定。
+- 2026-10-30 — 導學版重做:KP04 已完成(45 頁;`check_coverage` 27/27、`check_style --style guided` 通過、`check_slides` 無 FAIL)。第 6 週 KP01、03、04、05、06、07 簡報皆已是新技能製作;KP02(延後)、KP08–KP10 與全章地圖待補。第1–4週共約 48 個 KP 待老師決定是否同樣重做。
