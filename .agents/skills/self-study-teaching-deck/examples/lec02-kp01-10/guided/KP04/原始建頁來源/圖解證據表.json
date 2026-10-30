@@ -1,0 +1,191 @@
+[
+  {
+    "page": 1,
+    "kind": "cover",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "單元主張",
+    "claim": "分得開，與分得好，是兩道關卡。",
+    "visual": "兩條分路：左方XOR四點與直尺，右方訓練全對到新點問號；並排表示力與泛化兩種限制。",
+    "extension": false
+  },
+  {
+    "page": 2,
+    "kind": "xor",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "§1",
+    "claim": "兩個輸入不同，正解才是一。",
+    "visual": "精確單位方形四點(0,0),(1,1)為0圓；(0,1),(1,0)為1三角，附完整座標與標籤，類別固定藍圓綠三角。",
+    "extension": false
+  },
+  {
+    "page": 3,
+    "kind": "lines",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "§1圖說釐清",
+    "claim": "這兩條嘗試都不全對；普遍結論另有證明。",
+    "visual": "等比例並排：直線x1+x2=0.5預測上方為1，錯1點；直線x1+x2=1.5同方向預測，錯3點。完整標示線式與紅圈錯分，不沿用來源圖說的2錯。",
+    "extension": false
+  },
+  {
+    "page": 4,
+    "kind": "updates",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "§1實跑",
+    "claim": "這次實跑：前兩輪三次，之後每輪四次。",
+    "visual": "從全零起點、eta=1、s>=0輸出1；順序00,01,10,11。原生長條圖實算10輪3,3,4,4,4,4,4,4,4,4；縱軸0到4，橫軸輪次1到10。",
+    "extension": false
+  },
+  {
+    "page": 5,
+    "kind": "cycle",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "§1、數值重現",
+    "claim": "回到原處，並不表示這一輪沒有更新。",
+    "visual": "第四輪起點(-1,0,0)，四點依序更新到(-1,0,-1)、(-1,1,0)、(0,1,1)、(-1,0,0)。四節點以原生connector連成回圈，每節點標訪問點與新權重；圖註w_aug=(w1,w2,w0)。",
+    "extension": false
+  },
+  {
+    "page": 6,
+    "kind": "proof",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "選讀、引第1章KP08",
+    "claim": "非可分的結論來自證明，不只來自十輪實跑。",
+    "visual": "單位方形同類兩線段都通過(0.5,0.5)，半透明凸包線段加中心星形；完整兩個中點式((0,0)+(1,1))/2=((0,1)+(1,0))/2=(0.5,0.5)。幾何直觀解釋線性半平面保留中點，第1章不等式證明引用備註。",
+    "extension": false
+  },
+  {
+    "page": 7,
+    "kind": "grid",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "§1格點搜尋",
+    "claim": "343 組整數權重是驗算，不能代替證明。",
+    "visual": "7乘7格點面板，標w1,w2,w0屬{-3,...,3}，總數7^3=343；四個樣本圖示中最多三個勾一個紅圈；max correct=3/4。不得把有限搜尋冒充所有實數權重。",
+    "extension": false
+  },
+  {
+    "page": 8,
+    "kind": "boundaries",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "§2",
+    "claim": "全對只決定能停止，沒有選出唯一邊界。",
+    "visual": "依source rng3重現兩類各12點；訓練seed100與102，改起點與順序；等尺度兩圖以未四捨五入權重繪A/B邊界，各標24/24，保持完全相同資料點與尺度。",
+    "extension": false
+  },
+  {
+    "page": 9,
+    "kind": "newpoint",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "§2",
+    "claim": "兩條訓練全對的線，對新點仍會分歧。",
+    "visual": "同批24點與A/B兩線等尺度；新點(2.5,2.4)用紫星，A分數2.464386...輸出1，B分數-0.414848...輸出0。此頁只放圖解與輸出；數值分數與完整算式在下頁。",
+    "extension": false
+  },
+  {
+    "page": 10,
+    "kind": "scores",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "§2計算",
+    "claim": "中間值不取整，最後才標近似值。",
+    "visual": "輸入x=(2.5,2.4)，兩行完整sA=wA1(2.5)+wA2(2.4)+bA≈2.464>0,oA=1；sB同式≈-0.415<0,oB=0。用三段有號長條對應乘積與偏置，權重顯示8位小數且用approx，不把截短係數當精確。",
+    "extension": false
+  },
+  {
+    "page": 11,
+    "kind": "unseen",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "§2、補充釐清",
+    "claim": "訓練全對，不是對未見資料的保證。",
+    "visual": "兩張訓練全對考卷到同一紫星問號的原生connector；候選選擇用未見標記資料比較，使用獨立驗證選擇，最終評估另用測試；此頁只用訓練／未見資料並列概念圖，不捏造新點標籤或誤差率。",
+    "extension": false
+  },
+  {
+    "page": 12,
+    "kind": "remedies",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "§3",
+    "claim": "多層加非線性處理 XOR；連續損失仍要驗證泛化。",
+    "visual": "上下分流：無直線可分→多層+非線性→KP05；可分但邊界不唯一→連續損失／LMS→KP08。所有因果流用native connector，明示ADALINE不保證更佳泛化，連續損失本身仍是線性模型不能解XOR。",
+    "extension": false
+  },
+  {
+    "page": 13,
+    "kind": "history",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "§3歷史",
+    "claim": "XOR 的限制可驗算，寒冬成因不能歸給一本書。",
+    "visual": "原生時間軸1958 Rosenblatt Perceptron、1960 Widrow&Hoff ADALINE/LMS、1969 Minsky&Papert單層限制，以connector銜接但標年代順序而非因果；後續多層+非線性。不聲稱第一個神經元或單一書造成寒冬。",
+    "extension": false
+  },
+  {
+    "page": 14,
+    "kind": "next",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "留給KP05問題",
+    "claim": "下一個 KP：多層感知器與非線性。",
+    "visual": "左邊四個XOR資料點經原生connector進入兩個隱藏神經元、再到輸出問號；標「概念示意」與「非線性？」提示，不提供KP05具體權重或完整解法。",
+    "extension": false
+  },
+  {
+    "page": 15,
+    "kind": "practice1",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "練習1",
+    "claim": "提示：將同類條件相加，再比較是否矛盾。",
+    "visual": "XNOR四點圖00、11為1三角，01、10為0圓；右側條件空白問號，不抄講義解題示範；保留提示，不放答案。",
+    "extension": true
+  },
+  {
+    "page": 16,
+    "kind": "practice2",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "練習2",
+    "claim": "提示：畫出兩題的正類點，再試一條直線。",
+    "visual": "AND與XOR並排單位方形與正確標籤，不畫答案分界線；各自一把直尺概念圖，不新增證明答案。",
+    "extension": true
+  },
+  {
+    "page": 17,
+    "kind": "practice3",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "練習3",
+    "claim": "提示：想想怎麼取得及使用沒看過的資料。",
+    "visual": "兩個候選模型與各24/24訓練成績卡；未見題目為問號卷，原生connector連向評估，未見資料正解不提供。",
+    "extension": true
+  },
+  {
+    "page": 18,
+    "kind": "quiz1",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "自我檢核1釐清",
+    "claim": "提示：回想 XOR 的表示力限制。",
+    "visual": "原題限定適用措辭改為「收斂保證」，選項保留任意多類別、二元線性可分、任意迴歸、需非線性邊界；四個語意圖示不提供答案。",
+    "extension": true
+  },
+  {
+    "page": 19,
+    "kind": "quiz2",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "自我檢核2",
+    "claim": "提示：同類點分居正方形對角線。",
+    "visual": "保留AND、OR、XOR、NOT四選項，各用相同圓角標籤與問號，不以顏色或角色暗示答案，不展開歷史更細主張。",
+    "extension": true
+  },
+  {
+    "page": 20,
+    "kind": "quiz3",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "自我檢核3",
+    "claim": "提示：想想同一批資料上的兩條邊界。",
+    "visual": "保留選項A收斂慢、B起點影響邊界可能貼近某類、C連續損失、D需要非線性；選項長則每項獨立2行四區比較，角色不揭答案。",
+    "extension": true
+  },
+  {
+    "page": 21,
+    "kind": "quiz4",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/75f6a2f8fcfdcd82f974c36a91885046a02307b4/lectures/lec02-kp04-perceptron-limits-and-generalization.md",
+    "section": "自我檢核4釐清",
+    "claim": "提示：連續損失是 KP08 的主題。",
+    "visual": "原題「改善泛化靠的是」改問採何種目標，避免保證；保留A非線性活化、B LMS連續損失、C更多層、D曲線邊界，不附答案。",
+    "extension": true
+  }
+]

@@ -1,0 +1,13 @@
+interface:
+  display_name: image-to-jbd-page
+  short_description: 把圖片精準重畫成可編輯的簡報島原生頁，支援量測、插頁與視覺比對
+  default_prompt: 使用 $image-to-jbd-page 將這張圖片重畫成可編輯的 JianBauDau 原生簡報頁。
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true

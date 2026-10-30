@@ -1,0 +1,262 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP03 正負標籤與更新推導",
+  "source_section": "單元主張",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "coding",
+  "title": "換成正負一，也要換成符號輸出",
+  "source_section": "符號表、§1",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "four",
+  "title": "同號差零，異號只會差正負二",
+  "source_section": "§1",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "algebra",
+  "title": "猜錯時，誤差剛好等於標籤的兩倍",
+  "source_section": "§1",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "rule",
+  "title": "把二併進學習率，寫法就一致了",
+  "source_section": "§1",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "normal",
+  "title": "權重向量，垂直於決策邊界",
+  "source_section": "§2",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "distance",
+  "title": "把分數除以權重長度，才得到距離",
+  "source_section": "§2",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "labeldistance",
+  "title": "再乘正確標籤，正負才表示是否在對的一側",
+  "source_section": "§2",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "tie",
+  "title": "邊界上的負類點，距離零仍然猜錯",
+  "source_section": "§2邊界釐清",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "distancesA",
+  "title": "原點在對的一側，左上點卻在錯的一側",
+  "source_section": "§3距離",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "distancesB",
+  "title": "右下點猜錯，右上點已經猜對",
+  "source_section": "§3距離",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "loss",
+  "title": "只把錯分點的負分數，加進損失",
+  "source_section": "§2、來源更正",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "gradient",
+  "title": "錯分損失的下降方向，是加上標籤乘輸入",
+  "source_section": "§2",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "descent",
+  "title": "減掉負梯度，便得到和代數相同的規則",
+  "source_section": "§2",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "numeric_update",
+  "title": "修正錯點，兩個權重與偏置分別怎麼改",
+  "source_section": "§3一次更新",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "numeric_score",
+  "title": "更新後，這一點從負分跨到正分",
+  "source_section": "§3一次更新",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "trace",
+  "title": "學習率取一半，逐筆軌跡就和 KP02 相同",
+  "source_section": "§3軌跡",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "gate",
+  "title": "猜錯才打開更新開關，猜對必須不動",
+  "source_section": "重點整理、迷思",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 19,
+  "kind": "next",
+  "title": "兩條路得到同一規則，但一條線能分開所有資料嗎",
+  "source_section": "留給下一知識點問題",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 20,
+  "kind": "practice1",
+  "title": "延伸：換成另一個錯點，更新後分數是多少",
+  "source_section": "小練習1",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 21,
+  "kind": "practice2",
+  "title": "延伸：原點離這條邊界多遠",
+  "source_section": "小練習2",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 22,
+  "kind": "practice3",
+  "title": "延伸：誤差為什麼不會是正負一",
+  "source_section": "小練習3",
+  "first_step": 64,
+  "final_step": 66,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 23,
+  "kind": "quiz1",
+  "title": "自我檢核：符號輸出可以取哪些值",
+  "source_section": "自我檢核1",
+  "first_step": 67,
+  "final_step": 69,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 24,
+  "kind": "quiz2",
+  "title": "自我檢核：反號時，更新項能化簡成什麼",
+  "source_section": "自我檢核2",
+  "first_step": 70,
+  "final_step": 72,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 25,
+  "kind": "quiz3",
+  "title": "自我檢核：為什麼不用絕對值當這個分數",
+  "source_section": "自我檢核3〔原題釐清〕",
+  "first_step": 73,
+  "final_step": 75,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 26,
+  "kind": "quiz4",
+  "title": "自我檢核：兩條推導如何得到相同更新",
+  "source_section": "自我檢核4〔原題釐清〕",
+  "first_step": 76,
+  "final_step": 78,
+  "beats": 3,
+  "extension": true
+ }
+]

@@ -1,0 +1,102 @@
+from pathlib import Path
+from datetime import datetime
+from zoneinfo import ZoneInfo
+import json,shutil,zipfile,hashlib
+from PIL import Image,ImageDraw
+R=Path(__file__).parent;O=R/'output';now=datetime.now(ZoneInfo('Asia/Taipei')).strftime('%Y-%m-%d %H:%M')
+# Validate the lecture snapshot without silently changing content.
+p=R/'source-lecture.md';raw=p.read_bytes();expected='43c850198011b83356c82045ddeea5ee974be246'
+for b in [raw,raw[:-1],raw+b'\n']:
+ if hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()==expected:p.write_bytes(b);break
+else:raise AssertionError('source lecture blob differs')
+m=json.loads((R/'skills-source-manifest.json').read_text());m['sources']=[dict(path='lectures/lec02-kp07-loss-functions.md',sha=expected),dict(path='assets/figures/src/lec02-kp0507-figures.py',sha='a4102512bc3bfa1bdae68db7796a78c5cb277d9f')];(R/'skills-source-manifest.json').write_text(json.dumps(m,ensure_ascii=False,indent=2))
+report=f'''# IDL 第二章 KP07：損失函數審閱稿
+
+查核時間：{now}（Asia/Taipei）。本機審閱草稿，尚未推送或發布；原講義與 KP01–KP06 均未修改。
+
+## 審閱與播放
+
+中英文各29頁、每頁3拍、88步（含根預覽步驟）、1647個原生節點、27條原生連接線；沒有圖片節點。22頁主線（第19頁為選讀推導），3頁練習、4頁自我檢核。兩語幾何、步驟與鏡頭相同。
+
+- 中文：lec02-kp07-loss-functions.html；英文：lec02-kp07-loss-functions-en.html。
+- 同名 .jbd.json 為可編輯來源。完整工具、提示詞、原始講義、精算與建頁程式收在「建頁來源」。手改JSON後若重建會被覆蓋，請同步修改建頁程式。
+- 方向鍵／空白鍵逐拍前進、左鍵回看、N 顯示備註、F 全螢幕。根步驟是全份縮圖，下一步開始第1頁。
+- 漸進出場示例.gif 為第14頁實際鍵盤播放三拍：先看三個KL項，再揭示總和與角色，最後結論；問題提示在第二拍退場，鏡頭略推近後回全景。
+
+這是保留公式與算例的展開圖解版，主線約25分鐘，練習另計。若課堂維持講義建議15分鐘，可把第7、14–15、18–19頁留作課後閱讀，並略過練習檢核；完整內容仍保留在檔案內。
+
+## 技能與來源
+
+課程 ndhuccc/idl-2026-fall，當次最新 main：`7499096e777930c7463ed5088feb4024023035bd`。完整遞迴樹未截斷，發現14項技能。沿用教授在本對話選定的 page-to-teaching-diagram → prompt-to-jbd-page，使用 image-to-jbd-page 原生庫與 slides-to-html；相關四項技能28資源及課程check_slides共29個Git blob SHA逐一核對，與KP06的技能內容一致。未反向修改課程技能。
+
+講義：lectures/lec02-kp07-loss-functions.md，blob `{expected}`。圖程式：assets/figures/src/lec02-kp0507-figures.py，blob `a4102512bc3bfa1bdae68db7796a78c5cb277d9f`。來源清單與快照隨包提供。GitHub已有另一批第二章簡報更新，本稿作獨立審閱草稿，沒有覆蓋既有檔案。
+
+## 小節與頁次
+
+| 來源 | 頁次 | 圖解 |
+|---|---|---|
+| 前言、符號表 | 1–2 | 預測與目標流向損失，四筆殘差尺 |
+| §1 回歸三種損失 | 3–6 | 依面積畫平方、依長度畫絕對值、Huber分段與完整代入 |
+| §1 加總／平均、離群占比、曲線 | 7–9 | 除批次大小、真實比例堆疊、六百點精算曲線 |
+| §2 交叉熵 | 10–12 | 負對數、正解類別切換、二元完整兩項 |
+| §2 KL | 13–15 | 目標／預測配對、正負項相加、交叉熵分解 |
+| §3 Hinge | 16–18 | 0–1對照、三個完整代入、分數與幾何距離釐清 |
+| 選讀、重點、迷思、銜接 | 19–22 | Huber雙接點、任務分流、資料與尺、ADALINE |
+| 三題練習 | 23–25 | 保留原題與提示，不提供答案 |
+| 四題檢核 | 26–29 | 同樣式選項與提示，第29頁明示修正原題 |
+
+每頁延續藍頭、紫身、橙觸角的小機器人，依情境持直尺、方尺、旋鈕、籃子、警示牌或互補標籤。平方紅、絕對值藍、Huber綠；目標紫、預測藍。幾何與曲線是程式精算，角色、靶心及考卷是教學比喻。
+
+## 數值與講義釐清
+
+1. 講義把平方／絕對誤差的批次「總和」稱MSE／MAE。本稿保留103、13與11，但明寫總和；第7頁另外算平均25.75、3.25、2.75。相同批次下最小化位置相同，梯度尺度仍不同；離群占比不受共同除四影響。
+2. 四筆殘差(1,1,1,10)依完整數值重算。三種損失最後一筆的占比分別100/103、10/13、9.5/11，約97.09%、76.92%、86.36%。這個次序只描述此例，不泛化成任意資料或任意Huber門檻的保證。
+3. Huber要求門檻正。第6頁同時保留h(1)與h(10)的代入式，再加四筆總和。第19頁核對正負接點的值與一次導數，說明它是一次導數連續，不宣稱處處二次可微。來源「Huber比MAE低」只適用本圖門檻一，不作任意門檻下的結論。
+4. 原圖回歸橫軸負三到三、六百點，但縱軸六裁掉拋物線兩端的九。本稿沿用公式、範圍與樣本數，改縱軸9.5完整顯示。Hinge沿用負二到三、六百點；0–1不連續處分段畫，不插出假斜坡。零分數時的端點約定已在備註說明。
+5. 交叉熵採自然對數。完整Softmax(2,1,0)給負對數0.4076059644、1.4076059644、2.4076059644，最後顯示0.408、1.408、2.408。若真的把顯示的0.245當精確輸入，會得到1.406497，不能混用。本稿保留完整中間值。
+6. 軟目標(0.7,0.2,0.1)對完整Softmax的KL是0.005787411901；若用三位機率(0.665,0.245,0.090)，結果是0.005853188838。第14頁使用前者並明列完整分母，三項可以有負值，但總KL非負。KL有方向與支撐條件，零目標項採極限零的約定。
+7. 第15頁補充完整關係CE=目標熵+KL；固定目標時只差常數，one-hot熵零才數值相同。長條依實算比例，KL區段很細是本例的真實大小，另用原生連接線指向標籤。
+8. 交叉熵不必只能顯式接Softmax或Sigmoid，常見API可接logits並在內部做穩定轉換。互斥多類別的機率向量和為一；二元用一個機率及其補數。第12、29頁修正原題把單一Sigmoid也要求和一的錯誤；第29頁不附選項答案。
+9. Hinge作用在分數，標籤為負一／正一；零損失條件是標籤乘分數達到門檻，不是絕對值夠大。保留1.5、0.3、負0.5對應損失0、0.7、1.5。第18頁補充線性分數除權重範數才是帶符號幾何距離，沒有把分數門檻冒充真實距離。
+10. 損失可以量在訓練、驗證、測試資料，不限訓練集。低訓練損失不保證泛化；不同損失不是同一把尺。銜接ADALINE時不沿用「所有Perceptron只對0–1計數學習」的概括，也不把連續與可微混為一談。
+
+上述修正只用於審閱稿與講者稿；沒有改原講義。來源原已標示補充的離群算例仍有標記；新增BCE釐清、CE與KL關係、分數距離說明皆標為補充。沒有把公式改成「問AI」泡泡；練習及檢核的頁面與備註都只給提示。原講義快照包含其原有解題示範，保留作來源，不插入練習頁。
+
+## 驗證與限制
+
+- 三輪實際渲染與目視：第一輪發現加總轉平均標籤擠到算式、KL負項數值壓到長條；第二輪修正標示並辨識很細的KL段；第三輪補座標名稱、為分式與總和保留足夠文字框，重看兩語所有索引。第三輪58頁零溢出候選、零頁面錯誤。最後補齊第6頁小殘差的Huber代入式，兩語重渲染、目視確認，並補MSE／MAE可微性講稿。
+- 兩語均通過check_deck_quality --strict與課程check_slides。功能群12/12，每頁圖形數與活潑效果達標；1501個隱藏節點均揭示一次，無高圖層蓋字、空泡泡或空文字。字級至少16，雙語幾何及鏡頭一致。
+- 中英×1280×720／1920×1080，共352步驗證進退場、連線、公式與離線載入，沒有KaTeX／JS錯誤與外部HTTP請求。第6頁最後的公式補充另在四組視窗驗證三拍，見最終算式播放驗證.json。
+- 字型檢查804個文字／有字形狀節點，零問題、零縮字；使用課程原檢查邏輯，僅適配本機Chromium與setContent載入，未改上游工具。數值assert與Huber兩端接點核對通過。
+- 保留檢查器兩類提醒：87個教學講者稿會隨下載提供，已檢視不含練習或小測驗答案；15條折線因靠近小三角形，被啟發式標成手畫箭頭，實為角色籃子三角道具／汗滴附近的手臂、脈搏等線條。所有流程與對應均使用27條原生connector，未呼叫手畫箭頭函式。
+- 未操作實際JianBauDau App匯入與播放，請在App確認最終顯示；未製作PDF，未執行完整課程doctor或網站建置。本目錄是審閱工作副本，非完整課程checkout。
+'''
+(O/'審閱說明.md').write_text(report)
+# Preserve final, self-contained page text beside the pre-design prompts.
+p=R/'圖解提示詞.md';s=p.read_text();d=json.loads((O/'lec02-kp07-loss-functions.jbd.json').read_text());pages=json.loads((O/'zh-pages.json').read_text());s+='\n# 三輪修訂後的精確逐頁文案\n\n以下是最終原生頁文字，與上方事前設計規格一起提供。曲線定義與比例由kp07_nums.py及build_kp07.py指定。\n'
+for pg in pages:
+ pre=f'zh-p{pg["page"]:02d}-';s+=f'\n## 第{pg["page"]}頁\n\n'+'\n\n'.join(n['text'] for n in d['nodes'].values() if n['id'].startswith(pre) and n.get('text'))+'\n'
+p.write_text(s)
+for name in ['數值驗算.json','圖解證據表.json','skills-source-manifest.json','圖解提示詞.md']:shutil.copy2(R/name,O/name)
+shutil.copy2(R/'round3/browser-audit.json',O/'逐頁排版檢查.json');shutil.copy2(R/'final-formula/browser-audit.json',O/'最終算式排版檢查.json')
+shots=O/'預覽截圖';shots.mkdir(exist_ok=True)
+for p in (R/'round3').glob('*.png'):shutil.copy2(p,shots/p.name)
+for lang in ['zh','en']:
+ shutil.copy2(R/f'final-formula/{lang}-06.png',shots/f'{lang}-06.png')
+ fs=[shots/f'{lang}-{i:02d}.png' for i in range(6,11)];sheet=Image.new('RGB',(1280,2000),'#d7e0e7');draw=ImageDraw.Draw(sheet)
+ for row,p in enumerate(fs):
+  im=Image.open(p);im.thumbnail((1216,362));sheet.paste(im,((1280-im.width)//2,row*400+28));draw.text((18,row*400+6),p.stem,fill='#17324d')
+ sheet.save(shots/f'{lang}-sheet-2.png')
+(R/'COURSE_STATE更新草稿.md').write_text(f'# COURSE_STATE 更新草稿（未同步）\n\n{now}（Asia/Taipei）：依教授「繼續KP07」完成第二章損失函數雙語圖解審閱稿，各29頁、88步、1647原生節點、27原生連接線。核對最新7499096版本四項技能及檢查器共29資源SHA，三輪58頁目視與352步播放驗證通過；功能12/12。加總平均、完整精度CE／KL、BCE與Hinge分數距離釐清詳見審閱說明。工作主機Codex workspace，完整路徑/workspace/scratch/idl-lec02-kp07-review/output/。待教授審閱，未推送、未發布、未修改原講義或前KP。\n')
+(R/'執行紀錄.md').write_text(f'# IDL KP07 執行紀錄\n\n- 執行者：Codex。任務：繼續KP07。\n- 狀態：本機審閱稿完成；完成時間{now}（Asia/Taipei）。起始時間未另記錄，不估算時長。\n- 來源：lectures/lec02-kp07-loss-functions.md；完整版本見skills-source-manifest.json。\n- 執行：讀取最新規範、29資源SHA核對、事前逐頁提示詞、精算與原生建頁、三輪渲染修改、播放及字型驗證、打包。\n- 問題與處理：加總／平均混稱、顯示精度混用、機率條件與分數距離概括已在審閱稿釐清；文字與長條的碰撞均移開。\n- 輸出主機：Codex workspace。完整路徑：/workspace/scratch/idl-lec02-kp07-review/output/。\n- 下一步：教授審閱；尚未授權發布，不同步GitHub。\n')
+for name in ['COURSE_STATE更新草稿.md','執行紀錄.md']:shutil.copy2(R/name,O/name)
+b=O/'建頁來源';b.mkdir(exist_ok=True)
+for name in ['build_kp07.py','kp07_nums.py','pagekit.py','mascot.py','specs.py','prepare_specs.py','render_review.py','verify_browser.py','validate_native.py','verify_final_formula.py','check_html_local.mjs','source-lecture.md','source-figures.py','package_review.py','AGENTS.md','COURSE_STATE.md']:shutil.copy2(R/name,b/name)
+for p in (R/'toolchain').rglob('*'):
+ if p.is_file() and 'node_modules' not in p.parts and '__pycache__' not in p.parts:
+  q=b/'toolchain'/p.relative_to(R/'toolchain');q.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,q)
+z=O/'IDL第二章KP07-審閱包.zip'
+with zipfile.ZipFile(z,'w',zipfile.ZIP_DEFLATED) as f:
+ for p in sorted(O.rglob('*')):
+  if p.is_file() and p!=z:f.write(p,p.relative_to(O))
+with zipfile.ZipFile(z) as f:assert f.testzip() is None;print('ZIP integrity PASS;',len(f.namelist()),'files;',z.stat().st_size,'bytes')

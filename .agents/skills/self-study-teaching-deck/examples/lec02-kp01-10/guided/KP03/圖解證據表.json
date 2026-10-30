@@ -1,0 +1,1556 @@
+[
+  {
+    "kind": "base",
+    "title": "代數與幾何兩條路，得到同一更新。",
+    "title_en": "Algebra and geometry lead to the same update.",
+    "takeaway": "代數與幾何兩條路，得到同一更新。",
+    "takeaway_en": "Algebra and geometry lead to the same update.",
+    "source_anchors": [
+      "學習目標",
+      "符號表"
+    ],
+    "bridge": "承接前置知識：先看本單元要回答什麼。",
+    "bridge_en": "From prerequisites: identify this unit’s central question.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "+1",
+      "-1",
+      "\\mathbf{w}^{\\prime}=\\mathbf{w}+2\\eta y\\mathbf{x}"
+    ],
+    "notes": [
+      "先看圖中的條件與對象。代數與幾何兩條路，得到同一更新。\n\n講義補讀：\n讀完之後，你能列出 $y,o\\in\\{\\pm1\\}$ 的四種組合並化簡出 $2\\eta y_i\\mathbf{x}_i$；能說明 $\\mathbf{w}$ 是決策邊界的法向量、$d=y(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$ 的正負代表對錯；能由「只看錯分點」的損失做梯度下降得到同一條規則；能驗算 $\\eta=\\tfrac12$ 時軌跡與 KP02 相同。\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。\n\n符號速查：\n$y_i,\\ o_i\\in\\{+1,-1\\}$: 正確標籤與符號函數的輸出\n$\\operatorname{sign}(s)$: $s\\ge0$ 取 $+1$，否則 $-1$\n$\\mathbf{w}$: 權重向量（幾何段不含 $w_0$）\n$d$: 帶符號距離 $y(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$\n$M$: 被猜錯的點的集合\n$E$: 只看錯分點的誤差 $-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$",
+      "Identify the conditions and objects in the figure. Algebra and geometry lead to the same update.\n\nSource context:\nAfter reading, you can list the four combinations of $y,o\\in\\{\\pm1\\}$ and reduce to $2\\eta y_i\\mathbf{x}_i$; explain that $\\mathbf{w}$ is the normal vector of the decision boundary and that the sign of $d=y(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$ says right or wrong; get the same rule by gradient descent on a loss over the wrongly classified points; and check that with $\\eta=\\tfrac12$ the trace equals that of KP02.\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition.\n\nSymbols:\n$y_i,\\ o_i\\in\\{+1,-1\\}$: correct label and output of the sign function\n$\\operatorname{sign}(s)$: $+1$ when $s\\ge0$, otherwise $-1$\n$\\mathbf{w}$: weight vector (excluding $w_0$ in the geometric part)\n$d$: signed distance $y(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$\n$M$: the set of wrongly classified points\n$E$: the error over wrong points only"
+    ],
+    "new_terms": [
+      {
+        "symbol": "$y_i,\\ o_i\\in\\{+1,-1\\}$",
+        "meaning_zh": "正確標籤與符號函數的輸出",
+        "meaning_en": "correct label and output of the sign function"
+      },
+      {
+        "symbol": "$\\operatorname{sign}(s)$",
+        "meaning_zh": "$s\\ge0$ 取 $+1$，否則 $-1$",
+        "meaning_en": "$+1$ when $s\\ge0$, otherwise $-1$"
+      },
+      {
+        "symbol": "$\\mathbf{w}$",
+        "meaning_zh": "權重向量（幾何段不含 $w_0$）",
+        "meaning_en": "weight vector (excluding $w_0$ in the geometric part)"
+      },
+      {
+        "symbol": "$d$",
+        "meaning_zh": "帶符號距離 $y(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$",
+        "meaning_en": "signed distance $y(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$"
+      },
+      {
+        "symbol": "$M$",
+        "meaning_zh": "被猜錯的點的集合",
+        "meaning_en": "the set of wrongly classified points"
+      },
+      {
+        "symbol": "$E$",
+        "meaning_zh": "只看錯分點的誤差 $-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$",
+        "meaning_en": "the error over wrong points only"
+      }
+    ],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "這次要解決\n哪一個問題？",
+      "bubble_en": "What problem\nare we solving?"
+    },
+    "base_page": 1,
+    "base_kind": "cover",
+    "page": 1,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "換成正負一，也要換成符號輸出",
+    "title_en": "Signed labels require a signed output",
+    "takeaway": "約定：總和等於零時，輸出正一。",
+    "takeaway_en": "Convention: a zero score outputs plus one.",
+    "source_anchors": [
+      "1. 代數推導：四種組合，猜錯的兩種化簡成同一式",
+      "符號表"
+    ],
+    "bridge": "上一頁：代數與幾何兩條路，得到同一更新。",
+    "bridge_en": "Previously: Algebra and geometry lead to the same update.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "0",
+      "-1",
+      "1",
+      "+1",
+      "-1",
+      "+1",
+      "s",
+      "o=\\operatorname{sign}(s),\\quad\\operatorname{sign}(0)=+1",
+      "-1",
+      "+1"
+    ],
+    "notes": [
+      "先看圖中的條件與對象。約定：總和等於零時，輸出正一。\n\n講義補讀：\n激活換成符號函數、標籤也寫成 $\\pm1$，更新式仍是 $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y-o)\\mathbf{x}$，但 $y,o$ 只有四種組合：\n\n兩個「猜錯」的列都等於 $2\\eta y\\mathbf{x}$，所以\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Identify the conditions and objects in the figure. Convention: a zero score outputs plus one.\n\nSource context:\nWith a sign activation and labels written as $\\pm1$, the update is still $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y-o)\\mathbf{x}$, but $y,o$ have only four combinations:\n\nBoth \"wrong\" rows equal $2\\eta y\\mathbf{x}$, so\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "tags",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 2,
+    "base_kind": "coding",
+    "page": 2,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "同號差零，異號只會差正負二",
+    "title_en": "Equal signs give zero; opposite signs give plus or minus two",
+    "takeaway": "四種組合，已經決定全部更新情況。",
+    "takeaway_en": "Four combinations determine every update case.",
+    "source_anchors": [
+      "1. 代數推導：四種組合，猜錯的兩種化簡成同一式"
+    ],
+    "bridge": "上一頁：約定：總和等於零時，輸出正一。",
+    "bridge_en": "Previously: Convention: a zero score outputs plus one.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "1",
+      "1",
+      "1-(1)=0",
+      "1",
+      "-1",
+      "1-(-1)=2",
+      "-1",
+      "1",
+      "-1-(1)=-2",
+      "-1",
+      "-1",
+      "-1-(-1)=0",
+      "-1",
+      "+1"
+    ],
+    "notes": [
+      "先看圖中的條件與對象。四種組合，已經決定全部更新情況。\n\n講義補讀：\n激活換成符號函數、標籤也寫成 $\\pm1$，更新式仍是 $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y-o)\\mathbf{x}$，但 $y,o$ 只有四種組合：\n\n係數 2 沒有什麼神祕，只是 $y-o$ 在兩者反號時必然是 $\\pm2$。偏置已併入 $\\mathbf{w}$，所以 $w_0\\leftarrow w_0+2\\eta y_i$ 同時發生。第1章 KP08 寫的 $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta y\\mathbf{x}$ 就是把這個 2 併進學習率。\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Identify the conditions and objects in the figure. Four combinations determine every update case.\n\nSource context:\nWith a sign activation and labels written as $\\pm1$, the update is still $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y-o)\\mathbf{x}$, but $y,o$ have only four combinations:\n\nBoth \"wrong\" rows equal $2\\eta y\\mathbf{x}$, so\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "tags",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 3,
+    "base_kind": "four",
+    "page": 3,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "猜錯時，誤差剛好等於標籤的兩倍",
+    "title_en": "On a mistake, the error is twice the label",
+    "takeaway": "係數二來自反號標籤的差。",
+    "takeaway_en": "The factor two comes from subtracting opposite signs.",
+    "source_anchors": [
+      "1. 代數推導：四種組合，猜錯的兩種化簡成同一式"
+    ],
+    "bridge": "上一頁：四種組合，已經決定全部更新情況。",
+    "bridge_en": "Previously: Four combinations determine every update case.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "y",
+      "-y",
+      "o=-y",
+      "y-o=y-(-y)=2y",
+      "\\Delta\\mathbf{w}=\\eta(y-o)\\mathbf{x}=2\\eta y\\mathbf{x}",
+      "-1",
+      "+1"
+    ],
+    "notes": [
+      "先看圖中的條件與對象。係數二來自反號標籤的差。\n\n講義補讀：\n兩個「猜錯」的列都等於 $2\\eta y\\mathbf{x}$，所以\n\n係數 2 沒有什麼神祕，只是 $y-o$ 在兩者反號時必然是 $\\pm2$。偏置已併入 $\\mathbf{w}$，所以 $w_0\\leftarrow w_0+2\\eta y_i$ 同時發生。第1章 KP08 寫的 $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta y\\mathbf{x}$ 就是把這個 2 併進學習率。\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Identify the conditions and objects in the figure. The factor two comes from subtracting opposite signs.\n\nSource context:\nWith a sign activation and labels written as $\\pm1$, the update is still $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y-o)\\mathbf{x}$, but $y,o$ have only four combinations:\n\nThe factor 2 is no magic; it is simply what $y-o$ equals when $\\pm1$ values disagree. The bias is already inside $\\mathbf{w}$, so $w_0\\leftarrow w_0+2\\eta y_i$ happens at the same time. The $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta y\\mathbf{x}$ of Chapter 1 KP08 is this rule with the 2 absorbed into the learning rate.\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "tags",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 4,
+    "base_kind": "algebra",
+    "page": 4,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "把二併進學習率，寫法就一致了",
+    "title_en": "Absorb the factor two into the learning rate",
+    "takeaway": "偏置也一起改；只更新猜錯的點。",
+    "takeaway_en": "Update the bias too, and only on a mistake.",
+    "source_anchors": [
+      "1. 代數推導：四種組合，猜錯的兩種化簡成同一式"
+    ],
+    "bridge": "上一頁：係數二來自反號標籤的差。",
+    "bridge_en": "Previously: The factor two comes from subtracting opposite signs.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf{x}=(x_1,x_2,1),\\quad\\mathbf{w}=(w_1,w_2,w_0)",
+      "\\mathbf{w}",
+      "\\mathbf{w}",
+      "\\eta^{\\prime}=2\\eta",
+      "\\mathbf{w}^{\\prime}=\\mathbf{w}+2\\eta y\\mathbf{x}",
+      "\\mathbf{w}^{\\prime}=\\mathbf{w}+\\eta^{\\prime}y\\mathbf{x}",
+      "w_0^{\\prime}=w_0+2\\eta y\\quad(o\\ne y)"
+    ],
+    "notes": [
+      "先看圖中的條件與對象。偏置也一起改；只更新猜錯的點。\n\n講義補讀：\n激活換成符號函數、標籤也寫成 $\\pm1$，更新式仍是 $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y-o)\\mathbf{x}$，但 $y,o$ 只有四種組合：\n\n係數 2 沒有什麼神祕，只是 $y-o$ 在兩者反號時必然是 $\\pm2$。偏置已併入 $\\mathbf{w}$，所以 $w_0\\leftarrow w_0+2\\eta y_i$ 同時發生。第1章 KP08 寫的 $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta y\\mathbf{x}$ 就是把這個 2 併進學習率。\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Identify the conditions and objects in the figure. Update the bias too, and only on a mistake.\n\nSource context:\nWith a sign activation and labels written as $\\pm1$, the update is still $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y-o)\\mathbf{x}$, but $y,o$ have only four combinations:\n\nThe factor 2 is no magic; it is simply what $y-o$ equals when $\\pm1$ values disagree. The bias is already inside $\\mathbf{w}$, so $w_0\\leftarrow w_0+2\\eta y_i$ happens at the same time. The $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta y\\mathbf{x}$ of Chapter 1 KP08 is this rule with the 2 absorbed into the learning rate.\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 5,
+    "base_kind": "rule",
+    "page": 5,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "權重向量，垂直於決策邊界",
+    "title_en": "The weight vector is perpendicular to the boundary",
+    "takeaway": "法向量，就是與邊界垂直的向量。",
+    "takeaway_en": "A normal vector is perpendicular to the boundary.",
+    "source_anchors": [
+      "2. 幾何推導：法向量、距離、只看錯分點的誤差"
+    ],
+    "bridge": "上一頁：偏置也一起改；只更新猜錯的點。",
+    "bridge_en": "Previously: Update the bias too, and only on a mistake.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "\\mathbf{w}",
+      "A",
+      "B",
+      "\\mathbf{w}^{\\top}\\mathbf{x}_A+w_0=0",
+      "\\mathbf{w}^{\\top}\\mathbf{x}_B+w_0=0",
+      "\\mathbf{w}^{\\top}(\\mathbf{x}_A-\\mathbf{x}_B)=0"
+    ],
+    "notes": [
+      "先看圖中的條件與對象。法向量，就是與邊界垂直的向量。\n\n講義補讀：\n決策邊界是 $\\mathbf{w}^\\top\\mathbf{x}+w_0=0$。邊界上兩點 $\\mathbf{x}_1,\\mathbf{x}_2$ 都滿足它，相減得 $\\mathbf{w}^\\top(\\mathbf{x}_1-\\mathbf{x}_2)=0$；$\\mathbf{x}_1-\\mathbf{x}_2$ 沿著邊界，所以 $\\mathbf{w}$ 與邊界垂直，是**法向量**。任一點到邊界的帶符號距離是 $(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$，乘上標籤 $y$ 得 $d$：猜對時 $d\\ge0$，猜錯時 $d<0$。用 $y$ 乘上去，就不必用不可微的絕對值。\n\n**圖說 `lec02-kp03-signum-geometry`**：先看斜線 $x_1+x_2=1.5$；再看從線上伸出的箭頭，它垂直於線（直角符號），方向是 $\\mathbf{w}=(1,1)$；最後看四個點旁的 $d$，兩個紅圈的點 $d=-0.35$，在錯的一側。 / **Caption `lec02-kp03-signum-geometry`:** Look first at the line $x_1+x_2=1.5$; then at the arrow leaving the line, perpendicular to it (right-angle mark) and pointing along $\\mathbf{w}=(1,1)$; finally at the $d$ beside the four points, where the two red-ringed points have $d=-0.35$ and lie on the wrong side.\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Identify the conditions and objects in the figure. A normal vector is perpendicular to the boundary.\n\nSource context:\nThe decision boundary is $\\mathbf{w}^\\top\\mathbf{x}+w_0=0$. Two points $\\mathbf{x}_1,\\mathbf{x}_2$ on it both satisfy this, and subtracting gives $\\mathbf{w}^\\top(\\mathbf{x}_1-\\mathbf{x}_2)=0$; the vector $\\mathbf{x}_1-\\mathbf{x}_2$ runs along the boundary, so $\\mathbf{w}$ is perpendicular to it: it is the **normal vector**. The signed distance of any point is $(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$, and multiplying by the label $y$ gives $d$: $d\\ge0$ when right and $d<0$ when wrong. Multiplying by $y$ avoids the non-differentiable absolute value.\n\nTo turn wrong points right is to push their $d$ up. Take the set $M$ of wrongly classified points and define $E=-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$, positive when anything is wrong and best when small. The gradient is $\\partial E/\\partial\\mathbf{w}=-\\sum_{i\\in M}y_i\\mathbf{x}_i$, and gradient descent gives\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 6,
+    "base_kind": "normal",
+    "page": 6,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "把分數除以權重長度，才得到距離",
+    "title_en": "Divide the score by the weight norm to obtain distance",
+    "takeaway": "幾何距離用的權重，不含偏置。",
+    "takeaway_en": "The geometric weight vector excludes the bias.",
+    "source_anchors": [
+      "2. 幾何推導：法向量、距離、只看錯分點的誤差"
+    ],
+    "bridge": "上一頁：法向量，就是與邊界垂直的向量。",
+    "bridge_en": "Previously: A normal vector is perpendicular to the boundary.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "\\mathbf{w}",
+      "s=\\mathbf{w}^{\\top}\\mathbf{x}+w_0",
+      "r=\\frac{s}{\\|\\mathbf{w}\\|}",
+      "\\|\\mathbf{w}\\|>0"
+    ],
+    "notes": [
+      "分數是加權和加偏置。把分數除以空間權重的長度，才是沿法向量的有方向距離。幾何權重不含偏置，長度不能是零；不要把更新時的擴增向量範數拿來當這個分母。\n\n講義補讀：\n決策邊界是 $\\mathbf{w}^\\top\\mathbf{x}+w_0=0$。邊界上兩點 $\\mathbf{x}_1,\\mathbf{x}_2$ 都滿足它，相減得 $\\mathbf{w}^\\top(\\mathbf{x}_1-\\mathbf{x}_2)=0$；$\\mathbf{x}_1-\\mathbf{x}_2$ 沿著邊界，所以 $\\mathbf{w}$ 與邊界垂直，是**法向量**。任一點到邊界的帶符號距離是 $(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$，乘上標籤 $y$ 得 $d$：猜對時 $d\\ge0$，猜錯時 $d<0$。用 $y$ 乘上去，就不必用不可微的絕對值。\n\n要讓錯分點變對，就是把它們的 $d$ 變大。取被猜錯的點集合 $M$，定義誤差 $E=-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$，有錯時它為正、越小越好。梯度是 $\\partial E/\\partial\\mathbf{w}=-\\sum_{i\\in M}y_i\\mathbf{x}_i$，梯度下降得\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "The score is the weighted sum plus bias. Divide by the norm of the spatial weights to obtain oriented distance along the normal. Exclude the bias from this norm, and require it to be nonzero. The augmented update norm is not this denominator.\n\nSource context:\nThe decision boundary is $\\mathbf{w}^\\top\\mathbf{x}+w_0=0$. Two points $\\mathbf{x}_1,\\mathbf{x}_2$ on it both satisfy this, and subtracting gives $\\mathbf{w}^\\top(\\mathbf{x}_1-\\mathbf{x}_2)=0$; the vector $\\mathbf{x}_1-\\mathbf{x}_2$ runs along the boundary, so $\\mathbf{w}$ is perpendicular to it: it is the **normal vector**. The signed distance of any point is $(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$, and multiplying by the label $y$ gives $d$: $d\\ge0$ when right and $d<0$ when wrong. Multiplying by $y$ avoids the non-differentiable absolute value.\n\nTo turn wrong points right is to push their $d$ up. Take the set $M$ of wrongly classified points and define $E=-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$, positive when anything is wrong and best when small. The gradient is $\\partial E/\\partial\\mathbf{w}=-\\sum_{i\\in M}y_i\\mathbf{x}_i$, and gradient descent gives\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 7,
+    "base_kind": "distance",
+    "page": 7,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "再乘正確標籤，正負才表示是否在對的一側",
+    "title_en": "Multiply by the label to test the correct side",
+    "takeaway": "離開邊界時，正距離對，負距離錯。",
+    "takeaway_en": "Away from the boundary: positive is right, negative is wrong.",
+    "source_anchors": [
+      "2. 幾何推導：法向量、距離、只看錯分點的誤差"
+    ],
+    "bridge": "上一頁：幾何距離用的權重，不含偏置。",
+    "bridge_en": "Previously: The geometric weight vector excludes the bias.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "\\mathbf{w}",
+      "d=yr=\\frac{ys}{\\|\\mathbf{w}\\|}",
+      "s\\ne0,\\quad d>0",
+      "d<0",
+      "-1",
+      "+1"
+    ],
+    "notes": [
+      "先看圖中的條件與對象。離開邊界時，正距離對，負距離錯。\n\n講義補讀：\n決策邊界是 $\\mathbf{w}^\\top\\mathbf{x}+w_0=0$。邊界上兩點 $\\mathbf{x}_1,\\mathbf{x}_2$ 都滿足它，相減得 $\\mathbf{w}^\\top(\\mathbf{x}_1-\\mathbf{x}_2)=0$；$\\mathbf{x}_1-\\mathbf{x}_2$ 沿著邊界，所以 $\\mathbf{w}$ 與邊界垂直，是**法向量**。任一點到邊界的帶符號距離是 $(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$，乘上標籤 $y$ 得 $d$：猜對時 $d\\ge0$，猜錯時 $d<0$。用 $y$ 乘上去，就不必用不可微的絕對值。\n\n**圖說 `lec02-kp03-signum-geometry`**：先看斜線 $x_1+x_2=1.5$；再看從線上伸出的箭頭，它垂直於線（直角符號），方向是 $\\mathbf{w}=(1,1)$；最後看四個點旁的 $d$，兩個紅圈的點 $d=-0.35$，在錯的一側。 / **Caption `lec02-kp03-signum-geometry`:** Look first at the line $x_1+x_2=1.5$; then at the arrow leaving the line, perpendicular to it (right-angle mark) and pointing along $\\mathbf{w}=(1,1)$; finally at the $d$ beside the four points, where the two red-ringed points have $d=-0.35$ and lie on the wrong side.\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Identify the conditions and objects in the figure. Away from the boundary: positive is right, negative is wrong.\n\nSource context:\nThe decision boundary is $\\mathbf{w}^\\top\\mathbf{x}+w_0=0$. Two points $\\mathbf{x}_1,\\mathbf{x}_2$ on it both satisfy this, and subtracting gives $\\mathbf{w}^\\top(\\mathbf{x}_1-\\mathbf{x}_2)=0$; the vector $\\mathbf{x}_1-\\mathbf{x}_2$ runs along the boundary, so $\\mathbf{w}$ is perpendicular to it: it is the **normal vector**. The signed distance of any point is $(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$, and multiplying by the label $y$ gives $d$: $d\\ge0$ when right and $d<0$ when wrong. Multiplying by $y$ avoids the non-differentiable absolute value.\n\nTo turn wrong points right is to push their $d$ up. Take the set $M$ of wrongly classified points and define $E=-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$, positive when anything is wrong and best when small. The gradient is $\\partial E/\\partial\\mathbf{w}=-\\sum_{i\\in M}y_i\\mathbf{x}_i$, and gradient descent gives\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 8,
+    "base_kind": "labeldistance",
+    "page": 8,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "邊界上的負類點，距離零仍然猜錯",
+    "title_en": "A negative point on the boundary is wrong even at zero distance",
+    "takeaway": "補充釐清：零距離不能直接判定猜對。",
+    "takeaway_en": "Clarification: zero distance alone does not establish correctness.",
+    "source_anchors": [
+      "2. 幾何推導：法向量、距離、只看錯分點的誤差"
+    ],
+    "bridge": "上一頁：離開邊界時，正距離對，負距離錯。",
+    "bridge_en": "Previously: Away from the boundary: positive is right, negative is wrong.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "\\mathbf{w}=(1,1),\\quad w_0=0",
+      "\\mathbf{x}=(0,0),\\quad y=-1",
+      "s=0,\\quad o=+1\\ne y",
+      "d=0"
+    ],
+    "notes": [
+      "這裡特別檢查邊界：負類原點的分數是零，而符號函數在零點輸出正一，所以猜錯。帶標籤的距離仍是零。因此「猜錯一定負距離」必須加上不在邊界的前提。\n\n講義補讀：\n決策邊界是 $\\mathbf{w}^\\top\\mathbf{x}+w_0=0$。邊界上兩點 $\\mathbf{x}_1,\\mathbf{x}_2$ 都滿足它，相減得 $\\mathbf{w}^\\top(\\mathbf{x}_1-\\mathbf{x}_2)=0$；$\\mathbf{x}_1-\\mathbf{x}_2$ 沿著邊界，所以 $\\mathbf{w}$ 與邊界垂直，是**法向量**。任一點到邊界的帶符號距離是 $(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$，乘上標籤 $y$ 得 $d$：猜對時 $d\\ge0$，猜錯時 $d<0$。用 $y$ 乘上去，就不必用不可微的絕對值。\n\n要讓錯分點變對，就是把它們的 $d$ 變大。取被猜錯的點集合 $M$，定義誤差 $E=-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$，有錯時它為正、越小越好。梯度是 $\\partial E/\\partial\\mathbf{w}=-\\sum_{i\\in M}y_i\\mathbf{x}_i$，梯度下降得\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Check the boundary carefully. This negative origin has score zero, but the sign function outputs plus one at zero, so it is wrong. Its label-weighted distance is still zero. A strictly negative distance characterizes a mistake only away from the boundary.\n\nSource context:\nThe decision boundary is $\\mathbf{w}^\\top\\mathbf{x}+w_0=0$. Two points $\\mathbf{x}_1,\\mathbf{x}_2$ on it both satisfy this, and subtracting gives $\\mathbf{w}^\\top(\\mathbf{x}_1-\\mathbf{x}_2)=0$; the vector $\\mathbf{x}_1-\\mathbf{x}_2$ runs along the boundary, so $\\mathbf{w}$ is perpendicular to it: it is the **normal vector**. The signed distance of any point is $(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$, and multiplying by the label $y$ gives $d$: $d\\ge0$ when right and $d<0$ when wrong. Multiplying by $y$ avoids the non-differentiable absolute value.\n\nLooking at one wrong point at a time gives $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta'y_i\\mathbf{x}_i$, which differs from the algebraic result only by a constant ($\\eta'=2\\eta$) absorbed into the learning rate. The two routes arrive at the same place.\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 9,
+    "base_kind": "tie",
+    "page": 9,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "原點在對的一側，左上點卻在錯的一側",
+    "title_en": "The origin is correct, but the upper-left point is not",
+    "takeaway": "用精確根號計算，最後才取兩位小數。",
+    "takeaway_en": "Use the exact square root; round only the final result.",
+    "source_anchors": [
+      "3. 數字驗算"
+    ],
+    "bridge": "上一頁：補充釐清：零距離不能直接判定猜對。",
+    "bridge_en": "Previously: Clarification: zero distance alone does not establish correctness.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "s=0+0-1.5=-1.5",
+      "d=\\frac{(-1)(-1.5)}{\\sqrt{2}}\\approx 1.06",
+      "s=0+1-1.5=-0.5",
+      "d=\\frac{(1)(-0.5)}{\\sqrt{2}}\\approx -0.35",
+      "\\|\\mathbf{w}\\|=\\sqrt{2}"
+    ],
+    "notes": [
+      "先看圖中的條件與對象。用精確根號計算，最後才取兩位小數。\n\n講義補讀：\n**一次更新。** 拿錯點 $(0,1)$（$y=+1$），$\\eta=\\tfrac12$，更新得 $\\mathbf{w}=(1,2)$、$w_0=-0.5$，新的 $s=0\\cdot1+1\\cdot2-0.5=1.5>0$，這一點對了。$s$ 增加 $1.5-(-0.5)=2$，正好等於 $2\\eta(\\|\\mathbf{x}\\|^2+1)=2\\cdot\\tfrac12\\cdot(1+1)$。\n\n**軌跡與 KP02 相同。** 用 $\\eta=\\tfrac12$（$2\\eta=1$，更新就是 $\\mathbf{w}\\leftarrow\\mathbf{w}+y\\mathbf{x}$）、從全 0 學 OR，5 次更新依序得 $(0,0,-1)$、$(0,1,0)$、$(0,1,-1)$、$(1,1,0)$、$(1,1,-1)$，第 4 輪全對〔程式計算〕。與 KP02 的二元版**逐項相同**，證明兩種寫法只是記號不同。\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Identify the conditions and objects in the figure. Use the exact square root; round only the final result.\n\nSource context:\n**One update.** Take the wrong point $(0,1)$ ($y=+1$) with $\\eta=\\tfrac12$; the update gives $\\mathbf{w}=(1,2)$ and $w_0=-0.5$, and the new $s=0\\cdot1+1\\cdot2-0.5=1.5>0$, so this point is right. The sum rose by $1.5-(-0.5)=2$, exactly $2\\eta(\\|\\mathbf{x}\\|^2+1)=2\\cdot\\tfrac12\\cdot(1+1)$.\n\n**The trace equals KP02.** With $\\eta=\\tfrac12$ ($2\\eta=1$, so the update is $\\mathbf{w}\\leftarrow\\mathbf{w}+y\\mathbf{x}$) and learning OR from all zeros, the 5 updates give $(0,0,-1)$, $(0,1,0)$, $(0,1,-1)$, $(1,1,0)$ and $(1,1,-1)$ in turn, and pass 4 is all right (computed by program). They are **identical term by term** to the binary version of KP02, showing that the two forms differ only in notation.\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 10,
+    "base_kind": "distancesA",
+    "page": 10,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "右下點猜錯，右上點已經猜對",
+    "title_en": "The lower-right point is wrong; the upper-right is correct",
+    "takeaway": "對錯取決於帶標籤的距離正負。",
+    "takeaway_en": "Correctness depends on the label-weighted distance sign.",
+    "source_anchors": [
+      "3. 數字驗算"
+    ],
+    "bridge": "上一頁：用精確根號計算，最後才取兩位小數。",
+    "bridge_en": "Previously: Use the exact square root; round only the final result.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "s=1+0-1.5=-0.5",
+      "d=\\frac{(1)(-0.5)}{\\sqrt{2}}\\approx -0.35",
+      "s=1+1-1.5=0.5",
+      "d=\\frac{(1)(0.5)}{\\sqrt{2}}\\approx 0.35",
+      "\\|\\mathbf{w}\\|=\\sqrt{2}"
+    ],
+    "notes": [
+      "先看圖中的條件與對象。對錯取決於帶標籤的距離正負。\n\n講義補讀：\n**距離。** 取 $\\mathbf{w}=(1,1)$、$w_0=-1.5$，$\\|\\mathbf{w}\\|=\\sqrt2\\approx1.414$，OR 的標籤 $(0,0)\\to-1$、其餘 $+1$。$(0,0)$：$s=-1.5$，$d=(-1)(-1.5)/1.414=1.06$；$(0,1)$：$s=-0.5$，$d=-0.5/1.414=-0.35$，錯；$(1,0)$ 同樣 $-0.35$，錯；$(1,1)$：$s=0.5$，$d=0.35$，對。\n\n**一次更新。** 拿錯點 $(0,1)$（$y=+1$），$\\eta=\\tfrac12$，更新得 $\\mathbf{w}=(1,2)$、$w_0=-0.5$，新的 $s=0\\cdot1+1\\cdot2-0.5=1.5>0$，這一點對了。$s$ 增加 $1.5-(-0.5)=2$，正好等於 $2\\eta(\\|\\mathbf{x}\\|^2+1)=2\\cdot\\tfrac12\\cdot(1+1)$。\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Identify the conditions and objects in the figure. Correctness depends on the label-weighted distance sign.\n\nSource context:\n**Distances.** Take $\\mathbf{w}=(1,1)$ and $w_0=-1.5$, so $\\|\\mathbf{w}\\|=\\sqrt2\\approx1.414$, with OR labels $(0,0)\\to-1$ and $+1$ otherwise. $(0,0)$: $s=-1.5$ and $d=(-1)(-1.5)/1.414=1.06$; $(0,1)$: $s=-0.5$ and $d=-0.5/1.414=-0.35$, wrong; $(1,0)$ the same $-0.35$, wrong; $(1,1)$: $s=0.5$ and $d=0.35$, right.\n\n**One update.** Take the wrong point $(0,1)$ ($y=+1$) with $\\eta=\\tfrac12$; the update gives $\\mathbf{w}=(1,2)$ and $w_0=-0.5$, and the new $s=0\\cdot1+1\\cdot2-0.5=1.5>0$, so this point is right. The sum rose by $1.5-(-0.5)=2$, exactly $2\\eta(\\|\\mathbf{x}\\|^2+1)=2\\cdot\\tfrac12\\cdot(1+1)$.\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 11,
+    "base_kind": "distancesB",
+    "page": 11,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "只把錯分點的負分數，加進損失",
+    "title_en": "The loss sums the negative scores of misclassified points",
+    "takeaway": "這是分數損失，不是距離的總和。",
+    "takeaway_en": "This is a score-based loss, not a sum of distances.",
+    "source_anchors": [
+      "2. 幾何推導：法向量、距離、只看錯分點的誤差",
+      "來源更正與取捨"
+    ],
+    "bridge": "上一頁：對錯取決於帶標籤的距離正負。",
+    "bridge_en": "Previously: Correctness depends on the label-weighted distance sign.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "(0,1)",
+      "(1,0)",
+      "\\sum",
+      "E=-\\sum_{i\\in M}y_i s_i",
+      "E=-1(-0.5)-1(-0.5)=1"
+    ],
+    "notes": [
+      "兩個錯分的正類點各有負零點五的分數，乘上負標籤後各貢獻零點五，總損失是一。這是未正規化分數的損失，不是帶有權重長度分母的幾何距離。負類邊界點雖然猜錯，這一項仍可能為零，不能只靠損失為零停止。\n\n講義補讀：\n決策邊界是 $\\mathbf{w}^\\top\\mathbf{x}+w_0=0$。邊界上兩點 $\\mathbf{x}_1,\\mathbf{x}_2$ 都滿足它，相減得 $\\mathbf{w}^\\top(\\mathbf{x}_1-\\mathbf{x}_2)=0$；$\\mathbf{x}_1-\\mathbf{x}_2$ 沿著邊界，所以 $\\mathbf{w}$ 與邊界垂直，是**法向量**。任一點到邊界的帶符號距離是 $(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$，乘上標籤 $y$ 得 $d$：猜對時 $d\\ge0$，猜錯時 $d<0$。用 $y$ 乘上去，就不必用不可微的絕對值。\n\n要讓錯分點變對，就是把它們的 $d$ 變大。取被猜錯的點集合 $M$，定義誤差 $E=-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$，有錯時它為正、越小越好。梯度是 $\\partial E/\\partial\\mathbf{w}=-\\sum_{i\\in M}y_i\\mathbf{x}_i$，梯度下降得\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "The two misclassified positive points each have score minus one half and contribute one half to the loss, totaling one. This uses unnormalized scores, not geometric distances with a weight-norm denominator. A negative boundary mistake can contribute zero, so zero loss alone is not the stopping test.\n\nSource context:\nThe decision boundary is $\\mathbf{w}^\\top\\mathbf{x}+w_0=0$. Two points $\\mathbf{x}_1,\\mathbf{x}_2$ on it both satisfy this, and subtracting gives $\\mathbf{w}^\\top(\\mathbf{x}_1-\\mathbf{x}_2)=0$; the vector $\\mathbf{x}_1-\\mathbf{x}_2$ runs along the boundary, so $\\mathbf{w}$ is perpendicular to it: it is the **normal vector**. The signed distance of any point is $(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$, and multiplying by the label $y$ gives $d$: $d\\ge0$ when right and $d<0$ when wrong. Multiplying by $y$ avoids the non-differentiable absolute value.\n\nTo turn wrong points right is to push their $d$ up. Take the set $M$ of wrongly classified points and define $E=-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$, positive when anything is wrong and best when small. The gradient is $\\partial E/\\partial\\mathbf{w}=-\\sum_{i\\in M}y_i\\mathbf{x}_i$, and gradient descent gives\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 12,
+    "base_kind": "loss",
+    "page": 12,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "錯分損失的下降方向，是加上標籤乘輸入",
+    "title_en": "Descending the loss adds label times input",
+    "takeaway": "在非邊界處，先把錯分集合固定來求導。",
+    "takeaway_en": "Away from the boundary, differentiate with a fixed mistake set.",
+    "source_anchors": [
+      "2. 幾何推導：法向量、距離、只看錯分點的誤差"
+    ],
+    "bridge": "上一頁：這是分數損失，不是距離的總和。",
+    "bridge_en": "Previously: This is a score-based loss, not a sum of distances.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "y\\mathbf{x}=(0,1)",
+      "\\nabla_{\\mathbf{w}} E=-\\sum_{i\\in M}y_i\\mathbf{x}_i",
+      "\\frac{\\partial E}{\\partial w_0}=-\\sum_{i\\in M}y_i"
+    ],
+    "notes": [
+      "在不落於決策邊界的局部區域，錯分集合固定，直接對線性分數求導。到了零分邊界，損失有折角，梯度不一定唯一；標準感知器按符號輸出約定選擇一個有效次梯度。不要宣稱整個損失處處可微。\n\n講義補讀：\n決策邊界是 $\\mathbf{w}^\\top\\mathbf{x}+w_0=0$。邊界上兩點 $\\mathbf{x}_1,\\mathbf{x}_2$ 都滿足它，相減得 $\\mathbf{w}^\\top(\\mathbf{x}_1-\\mathbf{x}_2)=0$；$\\mathbf{x}_1-\\mathbf{x}_2$ 沿著邊界，所以 $\\mathbf{w}$ 與邊界垂直，是**法向量**。任一點到邊界的帶符號距離是 $(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$，乘上標籤 $y$ 得 $d$：猜對時 $d\\ge0$，猜錯時 $d<0$。用 $y$ 乘上去，就不必用不可微的絕對值。\n\n要讓錯分點變對，就是把它們的 $d$ 變大。取被猜錯的點集合 $M$，定義誤差 $E=-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$，有錯時它為正、越小越好。梯度是 $\\partial E/\\partial\\mathbf{w}=-\\sum_{i\\in M}y_i\\mathbf{x}_i$，梯度下降得\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Away from decision boundaries, the mistake set is locally fixed and we differentiate the linear scores. At a zero-score boundary the loss has a corner and may lack a unique gradient. The Perceptron convention selects a valid subgradient; the full loss is not differentiable everywhere.\n\nSource context:\nThe decision boundary is $\\mathbf{w}^\\top\\mathbf{x}+w_0=0$. Two points $\\mathbf{x}_1,\\mathbf{x}_2$ on it both satisfy this, and subtracting gives $\\mathbf{w}^\\top(\\mathbf{x}_1-\\mathbf{x}_2)=0$; the vector $\\mathbf{x}_1-\\mathbf{x}_2$ runs along the boundary, so $\\mathbf{w}$ is perpendicular to it: it is the **normal vector**. The signed distance of any point is $(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$, and multiplying by the label $y$ gives $d$: $d\\ge0$ when right and $d<0$ when wrong. Multiplying by $y$ avoids the non-differentiable absolute value.\n\nTo turn wrong points right is to push their $d$ up. Take the set $M$ of wrongly classified points and define $E=-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$, positive when anything is wrong and best when small. The gradient is $\\partial E/\\partial\\mathbf{w}=-\\sum_{i\\in M}y_i\\mathbf{x}_i$, and gradient descent gives\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 13,
+    "base_kind": "gradient",
+    "page": 13,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "減掉負梯度，便得到和代數相同的規則",
+    "title_en": "Subtracting the negative gradient gives the algebraic rule",
+    "takeaway": "兩條路相同，學習率名稱要對齊。",
+    "takeaway_en": "The rules agree after matching the learning-rate names.",
+    "source_anchors": [
+      "2. 幾何推導：法向量、距離、只看錯分點的誤差"
+    ],
+    "bridge": "上一頁：在非邊界處，先把錯分集合固定來求導。",
+    "bridge_en": "Previously: Away from the boundary, differentiate with a fixed mistake set.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf{w}^{\\prime}=\\mathbf{w}-\\eta^{\\prime}\\nabla E",
+      "=\\mathbf{w}+\\eta^{\\prime}\\sum_{i\\in M}y_i\\mathbf{x}_i",
+      "\\mathbf{w}^{\\prime}=\\mathbf{w}+2\\eta y_i\\mathbf{x}_i",
+      "\\eta^{\\prime}=2\\eta,\\quad o_i\\ne y_i"
+    ],
+    "notes": [
+      "先看圖中的條件與對象。兩條路相同，學習率名稱要對齊。\n\n講義補讀：\n決策邊界是 $\\mathbf{w}^\\top\\mathbf{x}+w_0=0$。邊界上兩點 $\\mathbf{x}_1,\\mathbf{x}_2$ 都滿足它，相減得 $\\mathbf{w}^\\top(\\mathbf{x}_1-\\mathbf{x}_2)=0$；$\\mathbf{x}_1-\\mathbf{x}_2$ 沿著邊界，所以 $\\mathbf{w}$ 與邊界垂直，是**法向量**。任一點到邊界的帶符號距離是 $(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$，乘上標籤 $y$ 得 $d$：猜對時 $d\\ge0$，猜錯時 $d<0$。用 $y$ 乘上去，就不必用不可微的絕對值。\n\n一次只看一個錯點，就是 $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta'y_i\\mathbf{x}_i$，與代數結果只差一個係數（$\\eta'=2\\eta$），併進學習率即可。兩條路殊途同歸。\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Identify the conditions and objects in the figure. The rules agree after matching the learning-rate names.\n\nSource context:\nTo turn wrong points right is to push their $d$ up. Take the set $M$ of wrongly classified points and define $E=-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$, positive when anything is wrong and best when small. The gradient is $\\partial E/\\partial\\mathbf{w}=-\\sum_{i\\in M}y_i\\mathbf{x}_i$, and gradient descent gives\n\nLooking at one wrong point at a time gives $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta'y_i\\mathbf{x}_i$, which differs from the algebraic result only by a constant ($\\eta'=2\\eta$) absorbed into the learning rate. The two routes arrive at the same place.\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 14,
+    "base_kind": "descent",
+    "page": 14,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "修正錯點，兩個權重與偏置分別怎麼改",
+    "title_en": "How one mistake changes the weights and bias",
+    "takeaway": "本例只把第二路權重與偏置往上調。",
+    "takeaway_en": "Here only the second input weight and bias increase.",
+    "source_anchors": [
+      "3. 數字驗算"
+    ],
+    "bridge": "上一頁：兩條路相同，學習率名稱要對齊。",
+    "bridge_en": "Previously: The rules agree after matching the learning-rate names.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf{x}_{\\rm aug}=(0,1,1),\\quad\\mathbf{w}_{\\rm aug}=(1,1,-1.5)",
+      "w_1",
+      "1",
+      "w_2",
+      "1",
+      "w_0",
+      "-1.5",
+      "1+2(0.5)(+1)(0)=1",
+      "1+2(0.5)(+1)(1)=2",
+      "-1.5+2(0.5)(+1)(1)=-0.5",
+      "\\mathbf{w}_{\\rm aug}^{\\prime}=(1,1,-1.5)+2(0.5)(+1)(0,1,1)=(1,2,-0.5)"
+    ],
+    "notes": [
+      "這一筆是零、一，擴增後最後再補一。舊完整權重是一、一、負一點五，正確標籤正一，學習率零點五。第一路輸入零所以不改；第二路和偏置都增加一。\n\n講義補讀：\n**一次更新。** 拿錯點 $(0,1)$（$y=+1$），$\\eta=\\tfrac12$，更新得 $\\mathbf{w}=(1,2)$、$w_0=-0.5$，新的 $s=0\\cdot1+1\\cdot2-0.5=1.5>0$，這一點對了。$s$ 增加 $1.5-(-0.5)=2$，正好等於 $2\\eta(\\|\\mathbf{x}\\|^2+1)=2\\cdot\\tfrac12\\cdot(1+1)$。\n\n**軌跡與 KP02 相同。** 用 $\\eta=\\tfrac12$（$2\\eta=1$，更新就是 $\\mathbf{w}\\leftarrow\\mathbf{w}+y\\mathbf{x}$）、從全 0 學 OR，5 次更新依序得 $(0,0,-1)$、$(0,1,0)$、$(0,1,-1)$、$(1,1,0)$、$(1,1,-1)$，第 4 輪全對〔程式計算〕。與 KP02 的二元版**逐項相同**，證明兩種寫法只是記號不同。\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "The input is zero, one, augmented with a final one. The old complete weights are one, one, minus 1.5, the label is plus one, and the rate is 0.5. The first input is zero, so that weight stays; the second weight and bias each increase by one.\n\nSource context:\n**Distances.** Take $\\mathbf{w}=(1,1)$ and $w_0=-1.5$, so $\\|\\mathbf{w}\\|=\\sqrt2\\approx1.414$, with OR labels $(0,0)\\to-1$ and $+1$ otherwise. $(0,0)$: $s=-1.5$ and $d=(-1)(-1.5)/1.414=1.06$; $(0,1)$: $s=-0.5$ and $d=-0.5/1.414=-0.35$, wrong; $(1,0)$ the same $-0.35$, wrong; $(1,1)$: $s=0.5$ and $d=0.35$, right.\n\n**The trace equals KP02.** With $\\eta=\\tfrac12$ ($2\\eta=1$, so the update is $\\mathbf{w}\\leftarrow\\mathbf{w}+y\\mathbf{x}$) and learning OR from all zeros, the 5 updates give $(0,0,-1)$, $(0,1,0)$, $(0,1,-1)$, $(1,1,0)$ and $(1,1,-1)$ in turn, and pass 4 is all right (computed by program). They are **identical term by term** to the binary version of KP02, showing that the two forms differ only in notation.\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 15,
+    "base_kind": "numeric_update",
+    "page": 15,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "更新後，這一點從負分跨到正分",
+    "title_en": "The update moves this point from a negative to a positive score",
+    "takeaway": "這次跨過了零，但一般不保證一次就改對。",
+    "takeaway_en": "This update crosses zero; one-step correction is not guaranteed in general.",
+    "source_anchors": [
+      "3. 數字驗算"
+    ],
+    "bridge": "上一頁：本例只把第二路權重與偏置往上調。",
+    "bridge_en": "Previously: Here only the second input weight and bias increase.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "x_1+x_2=1.5",
+      "x_1+2x_2=0.5",
+      "s=1(0)+1(1)-1.5=-0.5",
+      "s=1(0)+2(1)-0.5=1.5",
+      "1.5-(-0.5)=2=2(0.5)(1+1)",
+      "0"
+    ],
+    "notes": [
+      "先看圖中的條件與對象。這次跨過了零，但一般不保證一次就改對。\n\n講義補讀：\n**一次更新。** 拿錯點 $(0,1)$（$y=+1$），$\\eta=\\tfrac12$，更新得 $\\mathbf{w}=(1,2)$、$w_0=-0.5$，新的 $s=0\\cdot1+1\\cdot2-0.5=1.5>0$，這一點對了。$s$ 增加 $1.5-(-0.5)=2$，正好等於 $2\\eta(\\|\\mathbf{x}\\|^2+1)=2\\cdot\\tfrac12\\cdot(1+1)$。\n\n**軌跡與 KP02 相同。** 用 $\\eta=\\tfrac12$（$2\\eta=1$，更新就是 $\\mathbf{w}\\leftarrow\\mathbf{w}+y\\mathbf{x}$）、從全 0 學 OR，5 次更新依序得 $(0,0,-1)$、$(0,1,0)$、$(0,1,-1)$、$(1,1,0)$、$(1,1,-1)$，第 4 輪全對〔程式計算〕。與 KP02 的二元版**逐項相同**，證明兩種寫法只是記號不同。\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Identify the conditions and objects in the figure. This update crosses zero; one-step correction is not guaranteed in general.\n\nSource context:\n**One update.** Take the wrong point $(0,1)$ ($y=+1$) with $\\eta=\\tfrac12$; the update gives $\\mathbf{w}=(1,2)$ and $w_0=-0.5$, and the new $s=0\\cdot1+1\\cdot2-0.5=1.5>0$, so this point is right. The sum rose by $1.5-(-0.5)=2$, exactly $2\\eta(\\|\\mathbf{x}\\|^2+1)=2\\cdot\\tfrac12\\cdot(1+1)$.\n\n**The trace equals KP02.** With $\\eta=\\tfrac12$ ($2\\eta=1$, so the update is $\\mathbf{w}\\leftarrow\\mathbf{w}+y\\mathbf{x}$) and learning OR from all zeros, the 5 updates give $(0,0,-1)$, $(0,1,0)$, $(0,1,-1)$, $(1,1,0)$ and $(1,1,-1)$ in turn, and pass 4 is all right (computed by program). They are **identical term by term** to the binary version of KP02, showing that the two forms differ only in notation.\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 16,
+    "base_kind": "numeric_score",
+    "page": 16,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "學習率取一半，逐筆軌跡就和 KP02 相同",
+    "title_en": "Half the rate reproduces every KP02 weight update",
+    "takeaway": "五次更新、第四輪停止，權重逐筆相同。",
+    "takeaway_en": "Five updates, stopping on pass four, with identical weight vectors.",
+    "source_anchors": [
+      "3. 數字驗算"
+    ],
+    "bridge": "上一頁：這次跨過了零，但一般不保證一次就改對。",
+    "bridge_en": "Previously: This update crosses zero; one-step correction is not guaranteed in general.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\eta=0.5,\\quad 2\\eta=1,\\quad\\mathbf{w}^{\\prime}=\\mathbf{w}+y\\mathbf{x}",
+      "(0,0,-1)",
+      "(0,1,0)",
+      "(0,1,-1)",
+      "(1,1,0)",
+      "(1,1,-1)"
+    ],
+    "notes": [
+      "用固定順序從全零開始，符號版的二倍學習率等於一，剛好和上一單元的零一版每次修正一致。程式逐一比對全部十六次訪問的新權重，不只比對最後結果。五次更新之後，第四輪完整檢查沒有錯誤才停止。\n\n講義補讀：\n**一次更新。** 拿錯點 $(0,1)$（$y=+1$），$\\eta=\\tfrac12$，更新得 $\\mathbf{w}=(1,2)$、$w_0=-0.5$，新的 $s=0\\cdot1+1\\cdot2-0.5=1.5>0$，這一點對了。$s$ 增加 $1.5-(-0.5)=2$，正好等於 $2\\eta(\\|\\mathbf{x}\\|^2+1)=2\\cdot\\tfrac12\\cdot(1+1)$。\n\n**軌跡與 KP02 相同。** 用 $\\eta=\\tfrac12$（$2\\eta=1$，更新就是 $\\mathbf{w}\\leftarrow\\mathbf{w}+y\\mathbf{x}$）、從全 0 學 OR，5 次更新依序得 $(0,0,-1)$、$(0,1,0)$、$(0,1,-1)$、$(1,1,0)$、$(1,1,-1)$，第 4 輪全對〔程式計算〕。與 KP02 的二元版**逐項相同**，證明兩種寫法只是記號不同。\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "With fixed order and zero initialization, twice the signed-label rate equals one, matching every binary-label correction from KP02. The program compares the new weights at all sixteen visits, not just the final result. Five updates are followed by a fourth pass confirming no mistakes.\n\nSource context:\n**One update.** Take the wrong point $(0,1)$ ($y=+1$) with $\\eta=\\tfrac12$; the update gives $\\mathbf{w}=(1,2)$ and $w_0=-0.5$, and the new $s=0\\cdot1+1\\cdot2-0.5=1.5>0$, so this point is right. The sum rose by $1.5-(-0.5)=2$, exactly $2\\eta(\\|\\mathbf{x}\\|^2+1)=2\\cdot\\tfrac12\\cdot(1+1)$.\n\n**The trace equals KP02.** With $\\eta=\\tfrac12$ ($2\\eta=1$, so the update is $\\mathbf{w}\\leftarrow\\mathbf{w}+y\\mathbf{x}$) and learning OR from all zeros, the 5 updates give $(0,0,-1)$, $(0,1,0)$, $(0,1,-1)$, $(1,1,0)$ and $(1,1,-1)$ in turn, and pass 4 is all right (computed by program). They are **identical term by term** to the binary version of KP02, showing that the two forms differ only in notation.\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 17,
+    "base_kind": "trace",
+    "page": 17,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "猜錯才打開更新開關，猜對必須不動",
+    "title_en": "Open the update gate only for a mistake",
+    "takeaway": "更新條件不能從公式旁邊省掉。",
+    "takeaway_en": "The mistake condition is an essential part of the rule.",
+    "source_anchors": [
+      "本單元重點整理"
+    ],
+    "bridge": "上一頁：五次更新、第四輪停止，權重逐筆相同。",
+    "bridge_en": "Previously: Five updates, stopping on pass four, with identical weight vectors.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "y,o",
+      "o\\ne y",
+      "\\Delta\\mathbf{w}=2\\eta y\\mathbf{x}",
+      "\\Delta\\mathbf{w}=\\mathbf0"
+    ],
+    "notes": [
+      "先看圖中的條件與對象。更新條件不能從公式旁邊省掉。\n\n講義補讀：\n- 「更新時把所有點的 $y\\mathbf{x}$ 都加進去」——不對，只有猜錯的點才加；猜對的點也加，權重會一直長大，還可能把分對的點推錯。\n- 「$\\operatorname{sign}(0)$ 取什麼都一樣」——不一樣：剛好落在邊界上的點會被分到另一邊，軌跡也會不同。本講義取 $+1$，與 KP01 的 $s\\ge0$ 放電一致。\n\n1. $\\mathbf{w}=(1,1)$、$w_0=-1.5$，點 $(1,0)$ 的標籤 $y=+1$，$\\eta=\\tfrac12$ 更新一次後，新的 $s$ 是多少？（提示：先算新權重，再代回 $(1,0)$。）\n2. 邊界 $\\mathbf{w}=(3,4)$、$w_0=-5$，點 $(0,0)$ 到邊界的距離是多少？（提示：$|w_0|/\\|\\mathbf{w}\\|$，先算 $\\|\\mathbf{w}\\|$。）\n3. 為什麼用 $\\pm1$ 標籤時，誤差只可能是 $0$ 或 $\\pm2$，不會是 $\\pm1$？（提示：列出四種 $(y,o)$ 組合。）\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Identify the conditions and objects in the figure. The mistake condition is an essential part of the rule.\n\nSource context:\n- \"At each update add $y\\mathbf{x}$ for every point.\" No: only wrongly classified points are added; if right points were added too, the weights would keep growing and could push already-correct points to the wrong side.\n- \"It does not matter what $\\operatorname{sign}(0)$ is.\" It does: a point exactly on the boundary goes to the other side and the trace changes. This note takes $+1$, matching KP01's \"fire when $s\\ge0$\".\n\n**Going deeper** (optional): The source states the geometric route as both \"maximize the distance of correct points\" and \"minimize the distance of wrong points\". Strictly, only the $E$ over wrong points is the Perceptron's loss, which is exactly 0 when every point is right. ADALINE (KP08) will replace this loss by a squared error that is continuous and differentiable everywhere.\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "gate",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 18,
+    "base_kind": "gate",
+    "page": 18,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "concept",
+    "title": "再深一層：把條件與主張接起來",
+    "title_en": "Go deeper: connect assumptions and claims",
+    "takeaway": "選讀內容也要分清來源敘述與適用條件。",
+    "takeaway_en": "Separate the optional claim from its assumptions.",
+    "source_anchors": [
+      "想深入"
+    ],
+    "bridge": "主線走完後，再看講義的選讀內容。",
+    "bridge_en": "After the main route, revisit the optional material.",
+    "visual": "原生流程連接條件、方法、結論，完整推理在導讀",
+    "math": [
+      "E"
+    ],
+    "notes": [
+      "來源把幾何路徑寫成「最大化正確點的距離」與「最小化錯誤點的距離」兩種說法。嚴格來說，只看錯分點的 $E$ 才是 Perceptron 的損失，它在所有點都對時恰為 0。這個分段線性、在接點可能不可微的準則之後會被 ADALINE（KP08）換成連續、處處可微的平方誤差。\n\n本稿釐清：幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "The source states the geometric route as both \"maximize the distance of correct points\" and \"minimize the distance of wrong points\". Strictly, only the $E$ over wrong points is the Perceptron's loss, which is exactly 0 when every point is right. ADALINE (KP08) will replace this loss by a squared error that is continuous and differentiable everywhere.\n\nClarification: True distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "answer_text": [
+      "來源把幾何路徑寫成「最大化正確點的距離」與「最小化錯誤點的距離」兩種說法。嚴格來說，只看錯分點的 $E$ 才是 Perceptron 的損失，它在所有點都對時恰為 0。這個分段線性、在接點可能不可微的準則之後會被 ADALINE（KP08）換成連續、處處可微的平方誤差。",
+      "The source states the geometric route as both \"maximize the distance of correct points\" and \"minimize the distance of wrong points\". Strictly, only the $E$ over wrong points is the Perceptron's loss, which is exactly 0 when every point is right. ADALINE (KP08) will replace this loss by a squared error that is continuous and differentiable everywhere."
+    ],
+    "page": 19,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "迷思1：這個說法成立嗎？",
+    "title_en": "Misconception 1: does the claim hold?",
+    "takeaway": "先寫下你的判斷與條件，再翻頁核對。",
+    "takeaway_en": "Write your judgment and conditions before checking.",
+    "source_anchors": [
+      "常見迷思#1"
+    ],
+    "bridge": "主線有了，試著辨認一個容易混淆的說法。",
+    "bridge_en": "Use the main ideas to examine a tempting claim.",
+    "visual": "中立問題與兩個待核對分支",
+    "math": [],
+    "notes": [
+      "「更新時把所有點的 $y\\mathbf{x}$ 都加進去」",
+      "At each update add $y\\mathbf{x}$ for every point."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "「更新時把所有點的 $y\\mathbf{x}$ 都加進去」",
+      "At each update add $y\\mathbf{x}$ for every point."
+    ],
+    "self_check": true,
+    "page": 20,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "explain",
+    "title": "迷思1解析：條件不能省略",
+    "title_en": "Misconception 1: keep the conditions",
+    "takeaway": "先把適用範圍說清楚，才判斷結論。",
+    "takeaway_en": "State the scope before accepting the conclusion.",
+    "source_anchors": [
+      "常見迷思#1"
+    ],
+    "bridge": "核對上一頁：先問是哪個模型、哪個條件。",
+    "bridge_en": "Check the previous page: which model and which assumptions?",
+    "visual": "條件到推理到正確結論，角色提醒例外",
+    "math": [],
+    "notes": [
+      "不對，只有猜錯的點才加；猜對的點也加，權重會一直長大，還可能把分對的點推錯。\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "No: only wrongly classified points are added; if right points were added too, the weights would keep growing and could push already-correct points to the wrong side.\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "不對，只有猜錯的點才加；猜對的點也加，權重會一直長大，還可能把分對的點推錯。",
+      "No: only wrongly classified points are added; if right points were added too, the weights would keep growing and could push already-correct points to the wrong side."
+    ],
+    "self_check": true,
+    "page": 21,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "迷思2：這個說法成立嗎？",
+    "title_en": "Misconception 2: does the claim hold?",
+    "takeaway": "先寫下你的判斷與條件，再翻頁核對。",
+    "takeaway_en": "Write your judgment and conditions before checking.",
+    "source_anchors": [
+      "常見迷思#2"
+    ],
+    "bridge": "主線有了，試著辨認一個容易混淆的說法。",
+    "bridge_en": "Use the main ideas to examine a tempting claim.",
+    "visual": "中立問題與兩個待核對分支",
+    "math": [],
+    "notes": [
+      "「$\\operatorname{sign}(0)$ 取什麼都一樣」",
+      "It does not matter what $\\operatorname{sign}(0)$ is."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "「$\\operatorname{sign}(0)$ 取什麼都一樣」",
+      "It does not matter what $\\operatorname{sign}(0)$ is."
+    ],
+    "self_check": true,
+    "page": 22,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "explain",
+    "title": "迷思2解析：條件不能省略",
+    "title_en": "Misconception 2: keep the conditions",
+    "takeaway": "先把適用範圍說清楚，才判斷結論。",
+    "takeaway_en": "State the scope before accepting the conclusion.",
+    "source_anchors": [
+      "常見迷思#2"
+    ],
+    "bridge": "核對上一頁：先問是哪個模型、哪個條件。",
+    "bridge_en": "Check the previous page: which model and which assumptions?",
+    "visual": "條件到推理到正確結論，角色提醒例外",
+    "math": [],
+    "notes": [
+      "不一樣：剛好落在邊界上的點會被分到另一邊，軌跡也會不同。本講義取 $+1$，與 KP01 的 $s\\ge0$ 放電一致。\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "It does: a point exactly on the boundary goes to the other side and the trace changes. This note takes $+1$, matching KP01's \"fire when $s\\ge0$\".\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "不一樣：剛好落在邊界上的點會被分到另一邊，軌跡也會不同。本講義取 $+1$，與 KP01 的 $s\\ge0$ 放電一致。",
+      "It does: a point exactly on the boundary goes to the other side and the trace changes. This note takes $+1$, matching KP01's \"fire when $s\\ge0$\"."
+    ],
+    "self_check": true,
+    "page": 23,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習1：先獨立完成，再翻頁",
+    "title_en": "Practice 1: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#1"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "$\\mathbf{w}=(1,1)$、$w_0=-1.5$，點 $(1,0)$ 的標籤 $y=+1$，$\\eta=\\tfrac12$ 更新一次後，新的 $s$ 是多少？（提示：先算新權重，再代回 $(1,0)$。）",
+      "With $\\mathbf{w}=(1,1)$ and $w_0=-1.5$, the point $(1,0)$ has label $y=+1$. After one update with $\\eta=\\tfrac12$, what is the new $s$? (Hint: compute the new weights, then substitute $(1,0)$.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "$\\mathbf{w}=(1,1)$、$w_0=-1.5$，點 $(1,0)$ 的標籤 $y=+1$，$\\eta=\\tfrac12$ 更新一次後，新的 $s$ 是多少？（提示：先算新權重，再代回 $(1,0)$。）",
+      "With $\\mathbf{w}=(1,1)$ and $w_0=-1.5$, the point $(1,0)$ has label $y=+1$. After one update with $\\eta=\\tfrac12$, what is the new $s$? (Hint: compute the new weights, then substitute $(1,0)$.)"
+    ],
+    "self_check": true,
+    "page": 24,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "偏置也更新後，新分數是一點五",
+    "title_en": "Updating the bias too gives a new score of 1.5",
+    "takeaway": "分數增加二，包含偏置輸入一的貢獻。",
+    "takeaway_en": "The score increases by two, including the constant bias input.",
+    "source_anchors": [
+      "小練習#1",
+      "解題示範"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "s=1\\cdot1+1\\cdot0-1.5=-0.5,\\quad o=-1",
+      "2\\eta=1:\\quad\\mathbf w^+=(2,1),\\quad w_0^+=-0.5",
+      "s^+=2\\cdot1+1\\cdot0-0.5=1.5"
+    ],
+    "notes": [
+      "這筆正類原先分錯。用2eta等於一，把y乘輸入加到權重，也把一加到偏置。新分數1.5。增量2eta*(||x||平方+1)=2，不能漏掉偏置項。",
+      "The positive point is misclassified. With 2 eta=1, add y times the input and also update the bias. The new score is 1.5; its increase of two includes the augmented constant input."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 25,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習2：先獨立完成，再翻頁",
+    "title_en": "Practice 2: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "邊界 $\\mathbf{w}=(3,4)$、$w_0=-5$，點 $(0,0)$ 到邊界的距離是多少？（提示：$|w_0|/\\|\\mathbf{w}\\|$，先算 $\\|\\mathbf{w}\\|$。）",
+      "For the boundary $\\mathbf{w}=(3,4)$, $w_0=-5$, what is the distance from $(0,0)$ to the boundary? (Hint: $|w_0|/\\|\\mathbf{w}\\|$; compute $\\|\\mathbf{w}\\|$ first.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "邊界 $\\mathbf{w}=(3,4)$、$w_0=-5$，點 $(0,0)$ 到邊界的距離是多少？（提示：$|w_0|/\\|\\mathbf{w}\\|$，先算 $\\|\\mathbf{w}\\|$。）",
+      "For the boundary $\\mathbf{w}=(3,4)$, $w_0=-5$, what is the distance from $(0,0)$ to the boundary? (Hint: $|w_0|/\\|\\mathbf{w}\\|$; compute $\\|\\mathbf{w}\\|$ first.)"
+    ],
+    "self_check": true,
+    "page": 26,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "法向量長五，距離就是一",
+    "title_en": "The normal has length five, giving distance one",
+    "takeaway": "真實幾何距離必須除以空間權重範數。",
+    "takeaway_en": "True geometric distance divides by the spatial weight norm.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "\\|\\mathbf w\\|_2=\\sqrt{3^2+4^2}=5",
+      "s(0,0)=-5",
+      "d=\\frac{|s|}{\\|\\mathbf w\\|_2}=\\frac55=1"
+    ],
+    "notes": [
+      "原分數是負五，不代表距離負五或五；距離非負，要取絕對值再除以法向量長度五。範數只取空間權重3、4，不把偏置負五併進平面法向量長度。",
+      "The score is -5, not the geometric distance. Take its absolute value and divide by the spatial normal length, five. Do not include the bias in that spatial norm."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 27,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習3：先獨立完成，再翻頁",
+    "title_en": "Practice 3: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#3"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "為什麼用 $\\pm1$ 標籤時，誤差只可能是 $0$ 或 $\\pm2$，不會是 $\\pm1$？（提示：列出四種 $(y,o)$ 組合。）",
+      "Why can the error be only $0$ or $\\pm2$ and never $\\pm1$ with $\\pm1$ labels? (Hint: list the four $(y,o)$ combinations.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "為什麼用 $\\pm1$ 標籤時，誤差只可能是 $0$ 或 $\\pm2$，不會是 $\\pm1$？（提示：列出四種 $(y,o)$ 組合。）",
+      "Why can the error be only $0$ or $\\pm2$ and never $\\pm1$ with $\\pm1$ labels? (Hint: list the four $(y,o)$ combinations.)"
+    ],
+    "self_check": true,
+    "page": 28,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "兩種正負一相減，只能得到零或正負二",
+    "title_en": "Subtracting two signed labels gives zero or plus/minus two",
+    "takeaway": "二倍因子來自編碼；只在錯分時使用。",
+    "takeaway_en": "The factor two comes from coding and applies on mistakes.",
+    "source_anchors": [
+      "小練習#3"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "1-1=0,\\quad(-1)-(-1)=0",
+      "1-(-1)=2,\\quad(-1)-1=-2",
+      "o\\ne y\\Rightarrow y-o=2y"
+    ],
+    "notes": [
+      "四種配對列完就能看出沒有正負一。猜對差零，猜錯時兩者反號，差為兩倍標籤。把所有點都套2eta yx會錯，正確點仍應不更新。",
+      "Equal labels and outputs subtract to zero. Opposite signs give plus or minus two, or twice the target. The mistaken-sample condition must remain in the rule."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 29,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核1：選出最符合條件的一項",
+    "title_en": "Check 1: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "1. Signum 激活的 Perceptron，輸出 $o_i$ 取值？",
+      "Which values can $o_i$ take?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "1. Signum 激活的 Perceptron，輸出 $o_i$ 取值？",
+      "Which values can $o_i$ take?"
+    ],
+    "options": [
+      [
+        "只有 0",
+        "Only zero"
+      ],
+      [
+        "只有 $+1$",
+        "Only plus one"
+      ],
+      [
+        "$+1$ 或 $-1$",
+        "Plus one or minus one"
+      ],
+      [
+        "任何實數",
+        "Any real number"
+      ]
+    ],
+    "quiz_index": 1,
+    "self_check": true,
+    "page": 30,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核1解析：對照條件逐項判斷",
+    "title_en": "Check 1: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "Signum輸出正一或負一，本課零分數取正一。",
+      "Signum outputs plus or minus one; this course assigns plus one to a zero score."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "Signum輸出正一或負一，本課零分數取正一。",
+      "Signum outputs plus or minus one; this course assigns plus one to a zero score."
+    ],
+    "answer": 2,
+    "self_check": true,
+    "page": 31,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核2：選出最符合條件的一項",
+    "title_en": "Check 2: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "2. $y_i,o_i\\in\\{-1,1\\}$ 且 $o_i\\ne y_i$ 時，$\\eta(y_i-o_i)\\mathbf{x}_i$ 化簡為？",
+      "What does it reduce to?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "2. $y_i,o_i\\in\\{-1,1\\}$ 且 $o_i\\ne y_i$ 時，$\\eta(y_i-o_i)\\mathbf{x}_i$ 化簡為？",
+      "What does it reduce to?"
+    ],
+    "options": [
+      [
+        "$\\eta y_i\\mathbf{x}_i$",
+        "$\\eta y_i\\mathbf x_i$"
+      ],
+      [
+        "$2\\eta y_i\\mathbf{x}_i$",
+        "$2\\eta y_i\\mathbf x_i$"
+      ],
+      [
+        "$-2\\eta\\mathbf{x}_i$",
+        "$-2\\eta\\mathbf x_i$"
+      ],
+      [
+        "0",
+        "Zero"
+      ]
+    ],
+    "quiz_index": 2,
+    "self_check": true,
+    "page": 32,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核2解析：對照條件逐項判斷",
+    "title_en": "Check 2: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "只在錯分時o=-y，所以y-o=2y。",
+      "On mistakes o=-y, hence y-o=2y."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "只在錯分時o=-y，所以y-o=2y。",
+      "On mistakes o=-y, hence y-o=2y."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 33,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核3：選出最符合條件的一項",
+    "title_en": "Check 3: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "3. 為何把 $d=\\lvert\\mathbf{w}^\\top\\mathbf{x}+w_0\\rvert$ 改寫成 $y(\\mathbf{w}^\\top\\mathbf{x}+w_0)$？",
+      "Why rewrite the distance?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "3. 為何把 $d=\\lvert\\mathbf{w}^\\top\\mathbf{x}+w_0\\rvert$ 改寫成 $y(\\mathbf{w}^\\top\\mathbf{x}+w_0)$？",
+      "Why rewrite the distance?"
+    ],
+    "options": [
+      [
+        "讓距離變大",
+        "Make the distance larger"
+      ],
+      [
+        "絕對值不可微，改寫後可微",
+        "Remove an absolute-value branch for differentiation"
+      ],
+      [
+        "讓 $\\mathbf{w}$ 變單位向量",
+        "Make the normal a unit vector"
+      ],
+      [
+        "讓誤差變小",
+        "Reduce the error automatically"
+      ]
+    ],
+    "quiz_index": 3,
+    "self_check": true,
+    "page": 34,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核3解析：對照條件逐項判斷",
+    "title_en": "Check 3: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "原題前提需要更正：真距離是|s|除以空間權重範數；錯分且ys<0時|s|=-ys，不是ys。固定錯分集合下可去絕對值分支求梯度，但不等於把正距離直接改成ys。",
+      "The premise needs correction: true distance is |s| divided by the spatial norm, and when ys<0, |s|=-ys, not ys. Fixing a mistaken set permits a branch derivative, not replacing positive distance by ys."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "原題前提需要更正：真距離是|s|除以空間權重範數；錯分且ys<0時|s|=-ys，不是ys。固定錯分集合下可去絕對值分支求梯度，但不等於把正距離直接改成ys。",
+      "The premise needs correction: true distance is |s| divided by the spatial norm, and when ys<0, |s|=-ys, not ys. Fixing a mistaken set permits a branch derivative, not replacing positive distance by ys."
+    ],
+    "answer": null,
+    "self_check": true,
+    "page": 35,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核4：選出最符合條件的一項",
+    "title_en": "Check 4: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "4. 最小化「錯分距離」與最大化「正確距離」最後得到的更新規則？",
+      "What do the two routes give?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "4. 最小化「錯分距離」與最大化「正確距離」最後得到的更新規則？",
+      "What do the two routes give?"
+    ],
+    "options": [
+      [
+        "完全相同",
+        "Corresponding directions under the stated score criterion"
+      ],
+      [
+        "方向相反",
+        "Opposite directions"
+      ],
+      [
+        "差一個負號",
+        "They differ by a minus sign"
+      ],
+      [
+        "無法比較",
+        "They cannot be compared"
+      ]
+    ],
+    "quiz_index": 4,
+    "self_check": true,
+    "page": 36,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核4解析：對照條件逐項判斷",
+    "title_en": "Check 4: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "在固定錯分集合、未正規化分數準則與對齊學習率下，兩種方向可對應；不是一般正規化幾何距離的梯度都相同。",
+      "The directions correspond for a fixed mistaken set and unnormalized score criterion with matched rates, not for arbitrary normalized geometric-distance gradients."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "在固定錯分集合、未正規化分數準則與對齊學習率下，兩種方向可對應；不是一般正規化幾何距離的梯度都相同。",
+      "The directions correspond for a fixed mistaken set and unnormalized score criterion with matched rates, not for arbitrary normalized geometric-distance gradients."
+    ],
+    "answer": 0,
+    "self_check": true,
+    "page": 37,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "review",
+    "title": "重點回顧：把輸入、運算與限制連起來",
+    "title_en": "Review: connect inputs, operations and limitations",
+    "takeaway": "用自己的話重述方法，再檢查例外。",
+    "takeaway_en": "Restate the method, then check exceptions.",
+    "source_anchors": [
+      "重點:一句話重點",
+      "重點:白話說明",
+      "重點:正式定義",
+      "重點:例子",
+      "重點:圖",
+      "本單元重點整理"
+    ],
+    "bridge": "練習與檢核完成後，回到整個單元。",
+    "bridge_en": "After exercises and checks, reconnect the whole unit.",
+    "visual": "條件、核心方法、算例、限制的知識流程",
+    "math": [],
+    "notes": [
+      "用 $\\pm1$ 標籤，代數（四種組合）與幾何（法向量與距離的梯度下降）兩條路都得到「只在猜錯時 $\\mathbf{w}\\leftarrow\\mathbf{w}+2\\eta y_i\\mathbf{x}_i$」。\n\n猜對與猜錯變成「同號或異號」。猜錯的點被往它該在的那一側拉：標籤是 $+1$ 就把 $\\mathbf{x}$ 加進權重，是 $-1$ 就減掉。\n\n$\\mathbf{w}\\leftarrow\\mathbf{w}+2\\eta y_i\\mathbf{x}_i$（只在 $o_i\\ne y_i$）；$d=y(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$；$E=-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$，$\\partial E/\\partial\\mathbf{w}=-\\sum_{i\\in M}y_i\\mathbf{x}_i$。\n\n$\\mathbf{w}=(1,1)$、$w_0=-1.5$：$d=(1.06,-0.35,-0.35,0.35)$；對錯點 $(0,1)$ 以 $\\eta=\\tfrac12$ 更新後 $s$ 由 $-0.5$ 升到 $1.5$。\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "With $\\pm1$ labels, both the algebraic route (four combinations) and the geometric route (gradient descent on normal vector and distance) give \"only when wrong, $\\mathbf{w}\\leftarrow\\mathbf{w}+2\\eta y_i\\mathbf{x}_i$\".\n\nRight and wrong become \"same sign or opposite sign\". A wrong point is pulled toward the side it belongs to: add $\\mathbf{x}$ to the weights if the label is $+1$ and subtract it if $-1$.\n\n$\\mathbf{w}\\leftarrow\\mathbf{w}+2\\eta y_i\\mathbf{x}_i$ (only when $o_i\\ne y_i$); $d=y(\\mathbf{w}^\\top\\mathbf{x}+w_0)/\\|\\mathbf{w}\\|$; $E=-\\sum_{i\\in M}y_i(\\mathbf{w}^\\top\\mathbf{x}_i+w_0)$ and $\\partial E/\\partial\\mathbf{w}=-\\sum_{i\\in M}y_i\\mathbf{x}_i$.\n\nWith $\\mathbf{w}=(1,1)$ and $w_0=-1.5$: $d=(1.06,-0.35,-0.35,0.35)$; after updating the wrong point $(0,1)$ with $\\eta=\\tfrac12$, $s$ rises from $-0.5$ to $1.5$.\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "page": 38,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "scope",
+    "title": "來源與限制：別把特例當成保證",
+    "title_en": "Source and scope: do not turn an example into a guarantee",
+    "takeaway": "原始數字可重現，適用條件也必須保留。",
+    "takeaway_en": "Reproduce the values and preserve their scope.",
+    "source_anchors": [
+      "來源更正與取捨"
+    ],
+    "bridge": "最後核對：哪些是講義例子，哪些是一般結論？",
+    "bridge_en": "Finally: which statements are examples, and which are general claims?",
+    "visual": "來源到重算到條件三個關卡，提醒科學圖與角色比喻不同",
+    "math": [],
+    "notes": [
+      "幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "True distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "page": 39,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "兩條路得到同一規則，但一條線能分開所有資料嗎",
+    "title_en": "Two routes give one rule, but can one line separate every dataset?",
+    "takeaway": "下一個 KP：感知器的能力邊界。",
+    "takeaway_en": "Next: the limits of the Perceptron.",
+    "source_anchors": [
+      "重點:留給下一個知識點的問題"
+    ],
+    "bridge": "上一頁：更新條件不能從公式旁邊省掉。",
+    "bridge_en": "Previously: The mistake condition is an essential part of the rule.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf{w}^{\\prime}=\\mathbf{w}+2\\eta y\\mathbf{x}"
+    ],
+    "notes": [
+      "先看圖中的條件與對象。下一個 KP：感知器的能力邊界。\n\n講義補讀：\n**圖**：本單元一張圖，`lec02-kp03-signum-geometry`（法向量與帶符號距離，功能 2、3），以 `assets/figures/src/lec02-kp0204-figures.py` 繪製。「兩條路得到同一規則」在簡報中用原生節點與連線表示。\n\n**留給下一個知識點的問題**：Perceptron 這麼會學，是不是什麼分類問題都學得會？如果兩類資料沒辦法用一條直線分開，會發生什麼事？\n\n幾何真距離是|s|除以空間權重範數。錯分時ys為負且|s|=-ys。未正規化Perceptron準則是分段線性而非處處可微；損失零在邊界仍可能有錯分，更新條件要另判。",
+      "Identify the conditions and objects in the figure. Next: the limits of the Perceptron.\n\nSource context:\n**Figure**: One figure in this unit, `lec02-kp03-signum-geometry` (normal vector and signed distance; functions 2, 3), drawn by `assets/figures/src/lec02-kp0204-figures.py`. \"Two routes, one rule\" is shown with native nodes and connectors in the slides.\n\n**Question for the next knowledge point**: The Perceptron learns well, but can it learn any classification problem? What happens if the two classes cannot be separated by one line?\n\nTrue distance is |s| divided by the spatial norm; for strict misclassification |s|=-ys. The unnormalized criterion is piecewise linear, not everywhere differentiable. Zero criterion at a boundary can coexist with a mistake; keep the update condition."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "bridge",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 19,
+    "base_kind": "next",
+    "page": 40,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  }
+]

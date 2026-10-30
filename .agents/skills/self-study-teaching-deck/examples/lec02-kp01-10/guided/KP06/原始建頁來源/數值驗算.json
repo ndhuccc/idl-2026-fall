@@ -1,0 +1,62 @@
+{
+  "exp": [
+    7.38905609893065,
+    2.718281828459045,
+    1.0
+  ],
+  "total": 11.107337927389695,
+  "probabilities": [
+    0.6652409557748219,
+    0.24472847105479764,
+    0.09003057317038046
+  ],
+  "comparison": {
+    "relu": {
+      "-2": {
+        "value": 0,
+        "derivative": 0
+      },
+      "2": {
+        "value": 2,
+        "derivative": 1
+      }
+    },
+    "leaky": {
+      "-2": {
+        "value": -0.02,
+        "derivative": 0.01
+      },
+      "2": {
+        "value": 2,
+        "derivative": 1
+      }
+    },
+    "elu": {
+      "-2": {
+        "value": -0.8646647167633873,
+        "derivative": 0.1353352832366127
+      },
+      "2": {
+        "value": 2,
+        "derivative": 1
+      }
+    },
+    "softplus": {
+      "-2": {
+        "value": 0.1269280110429725,
+        "derivative": 0.11920292202211755
+      },
+      "2": {
+        "value": 2.1269280110429727,
+        "derivative": 0.8807970779778823
+      }
+    }
+  },
+  "activation_product": 0.0009765625,
+  "curve_domain": [
+    -3,
+    3
+  ],
+  "source_samples": 600,
+  "derivative_finite_difference": "passed for 9 functions at 4 non-kink points each"
+}

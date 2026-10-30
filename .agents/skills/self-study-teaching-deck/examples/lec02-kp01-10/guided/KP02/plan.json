@@ -1,0 +1,1616 @@
+[
+  {
+    "kind": "base",
+    "title": "先算、再比，猜錯才改。",
+    "title_en": "Predict, compare, and update only on a mistake.",
+    "takeaway": "先算、再比，猜錯才改。",
+    "takeaway_en": "Predict, compare, and update only on a mistake.",
+    "source_anchors": [
+      "學習目標",
+      "符號表"
+    ],
+    "bridge": "承接前置知識：先看本單元要回答什麼。",
+    "bridge_en": "From prerequisites: identify this unit’s central question.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf{w}",
+      "1",
+      "y-o"
+    ],
+    "notes": [
+      "先算、再比，猜錯才改。\n\n講義補讀：\nKP01 的神經元每個權重都要人手算。Rosenblatt 在 1958 年的想法是加一個回饋：每看一筆資料，先算和 $s$、過階梯得到 $o_i$，再和正確標籤 $y_i$ 比；猜對就什麼都不做，猜錯才把權重往正確的方向推一步。這是**監督式**規則，由標籤與錯誤驅動，和古典 Hebbian 學習（一起活躍、連結變強）本質不同。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。\n\n符號速查：\n$\\mathbf{x}_i$: 第 $i$ 筆輸入，已補上 $x_{i0}=1$（偏置併入 $\\mathbf{w}$）\n$y_i\\in\\{0,1\\}$: 第 $i$ 筆的正確標籤\n$o_i=f(\\mathbf{w}^\\top\\mathbf{x}_i)$: 目前權重的輸出，$f$ 是 KP01 的階梯\n$\\eta>0$: 學習率：每次修正的步長\n$y_i-o_i$: 誤差，只可能是 $0,+1,-1$",
+      "Predict, compare, and update only on a mistake.\n\nSource context:\nEvery weight of the KP01 neuron had to be worked out by hand. Rosenblatt's idea of 1958 adds feedback: for each sample, compute the sum $s$, pass it through the step to get $o_i$, and compare with the correct label $y_i$; if right, do nothing; if wrong, push the weights one step in the right direction. This is a **supervised** rule, driven by labels and mistakes, essentially different from classical Hebbian learning (neurons that fire together strengthen their link).\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ.\n\nSymbols:\n$\\mathbf{x}_i$: the $i$-th input, with $x_{i0}=1$ added (bias folded into $\\mathbf{w}$)\n$y_i\\in\\{0,1\\}$: correct label of the $i$-th sample\n$o_i=f(\\mathbf{w}^\\top\\mathbf{x}_i)$: output under the current weights, with $f$ the step of KP01\n$\\eta>0$: learning rate: the size of one correction\n$y_i-o_i$: error, which can only be $0$, $+1$ or $-1$"
+    ],
+    "new_terms": [
+      {
+        "symbol": "$\\mathbf{x}_i$",
+        "meaning_zh": "第 $i$ 筆輸入，已補上 $x_{i0}=1$（偏置併入 $\\mathbf{w}$）",
+        "meaning_en": "the $i$-th input, with $x_{i0}=1$ added (bias folded into $\\mathbf{w}$)"
+      },
+      {
+        "symbol": "$y_i\\in\\{0,1\\}$",
+        "meaning_zh": "第 $i$ 筆的正確標籤",
+        "meaning_en": "correct label of the $i$-th sample"
+      },
+      {
+        "symbol": "$o_i=f(\\mathbf{w}^\\top\\mathbf{x}_i)$",
+        "meaning_zh": "目前權重的輸出，$f$ 是 KP01 的階梯",
+        "meaning_en": "output under the current weights, with $f$ the step of KP01"
+      },
+      {
+        "symbol": "$\\eta>0$",
+        "meaning_zh": "學習率：每次修正的步長",
+        "meaning_en": "learning rate: the size of one correction"
+      },
+      {
+        "symbol": "$y_i-o_i$",
+        "meaning_zh": "誤差，只可能是 $0,+1,-1$",
+        "meaning_en": "error, which can only be $0$, $+1$ or $-1$"
+      }
+    ],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "這次要解決\n哪一個問題？",
+      "bubble_en": "What problem\nare we solving?"
+    },
+    "base_page": 1,
+    "base_kind": "cover",
+    "page": 1,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "正確答案提供回饋，感知器才知道怎麼改",
+    "title_en": "Labels tell the Perceptron how to change",
+    "takeaway": "監督式學習：修正由標籤與錯誤驅動。",
+    "takeaway_en": "Supervised learning uses labels and mistakes.",
+    "source_anchors": [
+      "1. 回饋迴圈：算、比、猜錯才改"
+    ],
+    "bridge": "上一頁：先算、再比，猜錯才改。",
+    "bridge_en": "Previously: Predict, compare, and update only on a mistake.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf{w}",
+      "1",
+      "o",
+      "0",
+      "y"
+    ],
+    "notes": [
+      "Rosenblatt 在一九五八年的感知器加入由標籤驅動的回饋。正確標籤是一個外部提供的答案，模型先猜，再比較。這和古典Hebbian一起活躍就增強連結的規則不同。\n\n講義補讀：\nKP01 的神經元每個權重都要人手算。Rosenblatt 在 1958 年的想法是加一個回饋：每看一筆資料，先算和 $s$、過階梯得到 $o_i$，再和正確標籤 $y_i$ 比；猜對就什麼都不做，猜錯才把權重往正確的方向推一步。這是**監督式**規則，由標籤與錯誤驅動，和古典 Hebbian 學習（一起活躍、連結變強）本質不同。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "Rosenblatt’s 1958 Perceptron uses feedback driven by a supplied label. Predict first, then compare with the answer. This differs from classical Hebbian co-activation strengthening.\n\nSource context:\nEvery weight of the KP01 neuron had to be worked out by hand. Rosenblatt's idea of 1958 adds feedback: for each sample, compute the sum $s$, pass it through the step to get $o_i$, and compare with the correct label $y_i$; if right, do nothing; if wrong, push the weights one step in the right direction. This is a **supervised** rule, driven by labels and mistakes, essentially different from classical Hebbian learning (neurons that fire together strengthen their link).\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "tags",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 2,
+    "base_kind": "supervised",
+    "page": 2,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "補上一個固定輸入，偏置也能一起學",
+    "title_en": "Add a constant input to learn the bias too",
+    "takeaway": "把偏置當成第三個權重，一起更新。",
+    "takeaway_en": "Treat the bias as a third weight and update it too.",
+    "source_anchors": [
+      "本單元重點整理",
+      "符號表"
+    ],
+    "bridge": "上一頁：監督式學習：修正由標籤與錯誤驅動。",
+    "bridge_en": "Previously: Supervised learning uses labels and mistakes.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "w_1",
+      "x_2",
+      "w_2",
+      "x_0=1",
+      "w_0",
+      "\\sum",
+      "s",
+      "\\mathbf{x}=(x_1,x_2,1),\\quad\\mathbf{w}=(w_1,w_2,w_0)",
+      "s=w_1x_1+w_2x_2+w_0"
+    ],
+    "notes": [
+      "向量最後補上一個固定的一，對應的權重就是偏置。因此加總與偏置能用同一個內積表達，也能用同一條學習規則修正。這裡把偏置放在向量最後，整份都維持相同順序。\n\n講義補讀：\n- 「Perceptron 每看一筆就把那一筆改對，而且不會再錯」——不一定。上表第 1 輪 $(0,0)$ 被修好，卻被 $(0,1)$ 的更新打壞，第 2 輪再錯。一次更新只保證**這一筆**的 $s$ 往對的方向走。\n- 「學習率越大學得越快」——從 0 開始時 $\\eta$ 不影響預測；一般情形步長過大會來回跳。\n\n1. 權重 $(w_1,w_2,w_0)=(1,1,-1)$，輸入 $(1,0)$，標籤 $y=0$，$\\eta=1$。輸出是多少？要更新嗎？更新後的權重是多少？（提示：先算 $s$，再看 $y-o$。）\n2. OR 資料的順序改成 $(1,1)$、$(1,0)$、$(0,1)$、$(0,0)$，從全 0 開始，第一次更新發生在哪一筆？（提示：全 0 時每筆的 $s$ 都是 0，$o$ 都是 1。）\n3. 為什麼權重從 0 開始時，$\\eta=2$ 與 $\\eta=1$ 的預測完全相同？（提示：算算兩組權重是不是剛好差 2 倍。）\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "Append a constant one to the input; its weight is the bias. One inner product and one update rule can now handle both ordinary weights and the bias. We consistently place the bias last.\n\nSource context:\n**Plain explanation**: Like adjusting a bank of knobs: leave them alone if it sounds right, turn the relevant ones up if too quiet and down if too loud. A path whose input is 0 gets no change at all.\n\n- \"A Perceptron fixes each sample as soon as it sees it and never gets it wrong again.\" Not necessarily. In the table, $(0,0)$ is fixed in pass 1 but spoiled by the update for $(0,1)$ and wrong again in pass 2. One update only guarantees that **this** sample's $s$ moves the right way.\n- \"A larger learning rate learns faster.\" From a zero start $\\eta$ does not change the predictions; in general a step that is too large makes the weights jump back and forth.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 3,
+    "base_kind": "bias",
+    "page": 3,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "每看一筆資料，都先算再比對",
+    "title_en": "For each sample, predict before comparing",
+    "takeaway": "猜對就前進，猜錯才繞回修正。",
+    "takeaway_en": "Correct predictions move on; mistakes trigger an update.",
+    "source_anchors": [
+      "1. 回饋迴圈：算、比、猜錯才改"
+    ],
+    "bridge": "上一頁：把偏置當成第三個權重，一起更新。",
+    "bridge_en": "Previously: Treat the bias as a third weight and update it too.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf{x}_i",
+      "s",
+      "o_i",
+      "y_i-o_i",
+      "y_i",
+      "s=\\mathbf{w}^{\\top}\\mathbf{x}_i",
+      "o_i=f(s)"
+    ],
+    "notes": [
+      "猜對就前進，猜錯才繞回修正。\n\n講義補讀：\nKP01 的神經元每個權重都要人手算。Rosenblatt 在 1958 年的想法是加一個回饋：每看一筆資料，先算和 $s$、過階梯得到 $o_i$，再和正確標籤 $y_i$ 比；猜對就什麼都不做，猜錯才把權重往正確的方向推一步。這是**監督式**規則，由標籤與錯誤驅動，和古典 Hebbian 學習（一起活躍、連結變強）本質不同。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "Correct predictions move on; mistakes trigger an update.\n\nSource context:\nEvery weight of the KP01 neuron had to be worked out by hand. Rosenblatt's idea of 1958 adds feedback: for each sample, compute the sum $s$, pass it through the step to get $o_i$, and compare with the correct label $y_i$; if right, do nothing; if wrong, push the weights one step in the right direction. This is a **supervised** rule, driven by labels and mistakes, essentially different from classical Hebbian learning (neurons that fire together strengthen their link).\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 4,
+    "base_kind": "loop",
+    "page": 4,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "三種誤差，決定三種動作",
+    "title_en": "Three errors select three actions",
+    "takeaway": "猜對不動；少放電就加，多放電就減。",
+    "takeaway_en": "Keep correct weights; add when too low and subtract when too high.",
+    "source_anchors": [
+      "2. 更新規則：三種誤差，三種動作"
+    ],
+    "bridge": "上一頁：猜對就前進，猜錯才繞回修正。",
+    "bridge_en": "Previously: Correct predictions move on; mistakes trigger an update.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "e=y-o=0",
+      "\\mathbf{w}^{\\prime}=\\mathbf{w}",
+      "e=1-0=+1",
+      "\\mathbf{w}^{\\prime}=\\mathbf{w}+\\eta\\mathbf{x}",
+      "e=0-1=-1",
+      "\\mathbf{w}^{\\prime}=\\mathbf{w}-\\eta\\mathbf{x}"
+    ],
+    "notes": [
+      "猜對不動；少放電就加，多放電就減。\n\n講義補讀：\n| 誤差 $y_i-o_i$ | 情形 | 對 $\\mathbf{w}$ 的動作 | 加權和 $s$ |\n|---|---|---|---|\n| $0$ | 猜對 | 不動 | 不變 |\n| $+1$ | 該放電卻沒放 | $\\mathbf{w}+\\eta\\mathbf{x}_i$ | 上升 |\n| $-1$ | 不該放電卻放了 | $\\mathbf{w}-\\eta\\mathbf{x}_i$ | 下降 |\n\n方向一定對：更新後 $s'=\\mathbf{w}'^\\top\\mathbf{x}_i=s+\\eta(y_i-o_i)\\|\\mathbf{x}_i\\|^2$，而 $x_{i0}=1$ 使 $\\|\\mathbf{x}_i\\|^2\\ge1$。所以誤差為 $+1$ 時 $s$ 一定上升，為 $-1$ 時一定下降。也可以一次看一批 $b$ 筆再更新：$\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\sum_{i=1}^{b}(y_i-o_i)\\mathbf{x}_i$；$b=1$ 就是逐筆版。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "Keep correct weights; add when too low and subtract when too high.\n\nSource context:\n$$\n\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\,(y_i-o_i)\\,\\mathbf{x}_i\n$$\n\nThe direction is always right: after the update $s'=\\mathbf{w}'^\\top\\mathbf{x}_i=s+\\eta(y_i-o_i)\\|\\mathbf{x}_i\\|^2$, and $x_{i0}=1$ makes $\\|\\mathbf{x}_i\\|^2\\ge1$. So $s$ rises when the error is $+1$ and falls when it is $-1$. You can also look at a batch of $b$ samples before updating: $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\sum_{i=1}^{b}(y_i-o_i)\\mathbf{x}_i$; $b=1$ is the one-at-a-time version.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "tags",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 5,
+    "base_kind": "errors",
+    "page": 5,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "誤差乘上輸入，就是每路的修正方向",
+    "title_en": "Error times input gives each weight correction",
+    "takeaway": "輸入為零的那一路，權重不動。",
+    "takeaway_en": "An input of zero leaves its weight unchanged.",
+    "source_anchors": [
+      "2. 更新規則：三種誤差，三種動作"
+    ],
+    "bridge": "上一頁：猜對不動；少放電就加，多放電就減。",
+    "bridge_en": "Previously: Keep correct weights; add when too low and subtract when too high.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "w_1",
+      "x_2",
+      "w_2",
+      "x_0=1",
+      "w_0",
+      "\\Delta w_j=\\eta e x_j,\\quad e=y-o,\\quad\\eta>0",
+      "\\mathbf{w}^{\\prime}=\\mathbf{w}+\\eta e\\mathbf{x}"
+    ],
+    "notes": [
+      "輸入為零的那一路，權重不動。\n\n講義補讀：\n| 誤差 $y_i-o_i$ | 情形 | 對 $\\mathbf{w}$ 的動作 | 加權和 $s$ |\n|---|---|---|---|\n| $0$ | 猜對 | 不動 | 不變 |\n| $+1$ | 該放電卻沒放 | $\\mathbf{w}+\\eta\\mathbf{x}_i$ | 上升 |\n| $-1$ | 不該放電卻放了 | $\\mathbf{w}-\\eta\\mathbf{x}_i$ | 下降 |\n\n方向一定對：更新後 $s'=\\mathbf{w}'^\\top\\mathbf{x}_i=s+\\eta(y_i-o_i)\\|\\mathbf{x}_i\\|^2$，而 $x_{i0}=1$ 使 $\\|\\mathbf{x}_i\\|^2\\ge1$。所以誤差為 $+1$ 時 $s$ 一定上升，為 $-1$ 時一定下降。也可以一次看一批 $b$ 筆再更新：$\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\sum_{i=1}^{b}(y_i-o_i)\\mathbf{x}_i$；$b=1$ 就是逐筆版。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "An input of zero leaves its weight unchanged.\n\nSource context:\n$$\n\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\,(y_i-o_i)\\,\\mathbf{x}_i\n$$\n\nThe direction is always right: after the update $s'=\\mathbf{w}'^\\top\\mathbf{x}_i=s+\\eta(y_i-o_i)\\|\\mathbf{x}_i\\|^2$, and $x_{i0}=1$ makes $\\|\\mathbf{x}_i\\|^2\\ge1$. So $s$ rises when the error is $+1$ and falls when it is $-1$. You can also look at a batch of $b$ samples before updating: $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\sum_{i=1}^{b}(y_i-o_i)\\mathbf{x}_i$; $b=1$ is the one-at-a-time version.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 6,
+    "base_kind": "rule",
+    "page": 6,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "一次修正，會把這一筆往正確方向推",
+    "title_en": "One update moves this sample in the right direction",
+    "takeaway": "只保證方向正確，不保證別筆也變好。",
+    "takeaway_en": "The direction improves for this sample, not necessarily for others.",
+    "source_anchors": [
+      "2. 更新規則：三種誤差，三種動作"
+    ],
+    "bridge": "上一頁：輸入為零的那一路，權重不動。",
+    "bridge_en": "Previously: An input of zero leaves its weight unchanged.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "s^{\\prime}=\\mathbf{w}^{\\prime\\top}\\mathbf{x}",
+      "=(\\mathbf{w}+\\eta e\\mathbf{x})^{\\top}\\mathbf{x}",
+      "=s+\\eta e\\|\\mathbf{x}\\|^2",
+      "x_0=1\\Rightarrow \\|\\mathbf{x}\\|^2\\ge1",
+      "e=+1",
+      "e=-1"
+    ],
+    "notes": [
+      "把更新規則代入新權重的內積，最後多出學習率、誤差與輸入長度平方的乘積。學習率是正的，而偏置輸入確保長度平方至少一，所以誤差決定總和移動的方向；這不保證一次跨過零，也不保證其他資料改善。\n\n講義補讀：\n| 誤差 $y_i-o_i$ | 情形 | 對 $\\mathbf{w}$ 的動作 | 加權和 $s$ |\n|---|---|---|---|\n| $0$ | 猜對 | 不動 | 不變 |\n| $+1$ | 該放電卻沒放 | $\\mathbf{w}+\\eta\\mathbf{x}_i$ | 上升 |\n| $-1$ | 不該放電卻放了 | $\\mathbf{w}-\\eta\\mathbf{x}_i$ | 下降 |\n\n方向一定對：更新後 $s'=\\mathbf{w}'^\\top\\mathbf{x}_i=s+\\eta(y_i-o_i)\\|\\mathbf{x}_i\\|^2$，而 $x_{i0}=1$ 使 $\\|\\mathbf{x}_i\\|^2\\ge1$。所以誤差為 $+1$ 時 $s$ 一定上升，為 $-1$ 時一定下降。也可以一次看一批 $b$ 筆再更新：$\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\sum_{i=1}^{b}(y_i-o_i)\\mathbf{x}_i$；$b=1$ 就是逐筆版。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "Substitute the weight update into the new inner product. The added term is learning rate times error times squared input norm. The rate is positive and the constant input makes the squared norm at least one. The error therefore determines direction, not immediate correction or improvement on other samples.\n\nSource context:\n$$\n\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\,(y_i-o_i)\\,\\mathbf{x}_i\n$$\n\nThe direction is always right: after the update $s'=\\mathbf{w}'^\\top\\mathbf{x}_i=s+\\eta(y_i-o_i)\\|\\mathbf{x}_i\\|^2$, and $x_{i0}=1$ makes $\\|\\mathbf{x}_i\\|^2\\ge1$. So $s$ rises when the error is $+1$ and falls when it is $-1$. You can also look at a batch of $b$ samples before updating: $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\sum_{i=1}^{b}(y_i-o_i)\\mathbf{x}_i$; $b=1$ is the one-at-a-time version.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 7,
+    "base_kind": "direction",
+    "page": 7,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "用固定順序，從全零開始學 OR",
+    "title_en": "Learn OR from zeros in a fixed order",
+    "takeaway": "示例：權重全零，學習率是一。",
+    "takeaway_en": "Example: start with zero weights and learning rate one.",
+    "source_anchors": [
+      "3. 手算：從全 0 學 OR"
+    ],
+    "bridge": "上一頁：只保證方向正確，不保證別筆也變好。",
+    "bridge_en": "Previously: The direction improves for this sample, not necessarily for others.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "(0,0)\\to y=0",
+      "(0,1)\\to y=1",
+      "(1,0)\\to y=1",
+      "(1,1)\\to y=1",
+      "\\mathbf{w}=(0,0,0),\\quad \\eta=1,\\quad o=1\\;(s\\ge0)"
+    ],
+    "notes": [
+      "示例：權重全零，學習率是一。\n\n講義補讀：\n資料依序是 $(0,0)\\to0$、$(0,1)\\to1$、$(1,0)\\to1$、$(1,1)\\to1$。從 $(w_1,w_2,w_0)=(0,0,0)$ 開始，$\\eta=1$，$f(s)=1$ 當 $s\\ge0$。第一筆：$s=0$，$o=f(0)=1$，但 $y=0$，誤差 $-1$；$w_1,w_2$ 加上 $-1\\cdot0=0$ 不變，$w_0$ 加上 $-1\\cdot1=-1$，變成 $-1$。逐筆算下去，全部 5 次更新〔程式計算，每一步可手算驗證〕：\n\n第 1 輪的 $(1,0)$、$(1,1)$ 與第 2、3 輪的其餘點都已猜對，不更新；第 4 輪四筆全對，停止。最後的權重 $(1,1,-1)$ 正是 KP01 手算的 OR 閘（$\\theta=1$）。差別是：這次是機器自己找到的。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "Example: start with zero weights and learning rate one.\n\nSource context:\nThe data come in the order $(0,0)\\to0$, $(0,1)\\to1$, $(1,0)\\to1$, $(1,1)\\to1$. Start from $(w_1,w_2,w_0)=(0,0,0)$ with $\\eta=1$ and $f(s)=1$ when $s\\ge0$. First sample: $s=0$ and $o=f(0)=1$, but $y=0$, so the error is $-1$; $w_1,w_2$ get $-1\\cdot0=0$ added and stay, and $w_0$ gets $-1\\cdot1=-1$ added and becomes $-1$. Continuing, all 5 updates (computed by program; every step can be verified by hand):\n\nIn pass 1 the points $(1,0)$ and $(1,1)$, and the remaining points of passes 2 and 3, were already right and did not update; pass 4 is all right and learning stops. The final weights $(1,1,-1)$ are exactly the OR gate we worked out by hand in KP01 ($\\theta=1$). The difference: this time the machine found them itself.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "tags",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 8,
+    "base_kind": "dataset",
+    "page": 8,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "第1次更新：先壓低偏置，修正不該放電的原點",
+    "title_en": "Update 1: Lower the bias to silence the origin",
+    "takeaway": "把這一筆的誤差，分配到有輸入的路徑。",
+    "takeaway_en": "Apply this sample’s error to the active input paths.",
+    "source_anchors": [
+      "3. 手算：從全 0 學 OR"
+    ],
+    "bridge": "上一頁：示例：權重全零，學習率是一。",
+    "bridge_en": "Previously: Example: start with zero weights and learning rate one.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf{x}=(0,0,1),\\quad y=0,\\quad\\eta=1",
+      "s=0\\cdot 0+0\\cdot 0+(0)=0,\\quad o=1,\\quad e=0-1=-1",
+      "o=1\\;(s\\ge0),\\quad o=0\\;(s<0)",
+      "w_1",
+      "0",
+      "w_2",
+      "0",
+      "w_0",
+      "0",
+      "0+1\\cdot(-1)\\cdot 0=0",
+      "0+1\\cdot(-1)\\cdot 0=0",
+      "0+1\\cdot(-1)\\cdot 1=-1",
+      "\\mathbf{w}^{\\prime}=(0,0,0)+1\\cdot(-1)\\cdot(0,0,1)=(0,0,-1)"
+    ],
+    "notes": [
+      "用學習率一乘誤差，再逐路乘上輸入，修正量為(0, 0, -1)。加回舊權重後，得到(0, 0, -1)。輸入為零的分量不改，固定輸入一讓偏置也一起改。\n\n講義補讀：\n第 1 輪的 $(1,0)$、$(1,1)$ 與第 2、3 輪的其餘點都已猜對，不更新；第 4 輪四筆全對，停止。最後的權重 $(1,1,-1)$ 正是 KP01 手算的 OR 閘（$\\theta=1$）。差別是：這次是機器自己找到的。\n\n**圖說 `lec02-kp02-or-training`**：先看左圖，第 1 輪結束線是水平的，$(0,0)$ 還被劃進放電區（紅圈）；再看中圖，線轉成斜線但仍穿過 $(0,0)$；最後看右圖，線移到 $x_1+x_2=1$，四個點全對。每次更新都把線推向猜錯的點。 / **Caption `lec02-kp02-or-training`:** Look first at the left panel: after pass 1 the line is horizontal and $(0,0)$ is still in the firing zone (red ring); the middle panel shows the line diagonal but still through $(0,0)$; the right panel shows the line at $x_1+x_2=1$ with all four points right. Each update pushes the line toward a point it got wrong.\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "The correction is (0, 0, -1): multiply rate one by the error and each augmented input component. Adding it gives (0, 0, -1). Zero inputs do not change their weights; the constant input updates the bias.\n\nSource context:\nThe data come in the order $(0,0)\\to0$, $(0,1)\\to1$, $(1,0)\\to1$, $(1,1)\\to1$. Start from $(w_1,w_2,w_0)=(0,0,0)$ with $\\eta=1$ and $f(s)=1$ when $s\\ge0$. First sample: $s=0$ and $o=f(0)=1$, but $y=0$, so the error is $-1$; $w_1,w_2$ get $-1\\cdot0=0$ added and stay, and $w_0$ gets $-1\\cdot1=-1$ added and becomes $-1$. Continuing, all 5 updates (computed by program; every step can be verified by hand):\n\nIn pass 1 the points $(1,0)$ and $(1,1)$, and the remaining points of passes 2 and 3, were already right and did not update; pass 4 is all right and learning stops. The final weights $(1,1,-1)$ are exactly the OR gate we worked out by hand in KP01 ($\\theta=1$). The difference: this time the machine found them itself.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 9,
+    "base_kind": "update1",
+    "page": 9,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "第2次更新：第二路與偏置一起增加，修正漏掉的放電",
+    "title_en": "Update 2: Raise the second weight and the bias",
+    "takeaway": "把這一筆的誤差，分配到有輸入的路徑。",
+    "takeaway_en": "Apply this sample’s error to the active input paths.",
+    "source_anchors": [
+      "3. 手算：從全 0 學 OR"
+    ],
+    "bridge": "上一頁：把這一筆的誤差，分配到有輸入的路徑。",
+    "bridge_en": "Previously: Apply this sample’s error to the active input paths.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf{x}=(0,1,1),\\quad y=1,\\quad\\eta=1",
+      "s=0\\cdot 0+0\\cdot 1+(-1)=-1,\\quad o=0,\\quad e=1-0=1",
+      "o=1\\;(s\\ge0),\\quad o=0\\;(s<0)",
+      "w_1",
+      "0",
+      "w_2",
+      "0",
+      "w_0",
+      "-1",
+      "0+1\\cdot(1)\\cdot 0=0",
+      "0+1\\cdot(1)\\cdot 1=1",
+      "-1+1\\cdot(1)\\cdot 1=0",
+      "\\mathbf{w}^{\\prime}=(0,0,-1)+1\\cdot(1)\\cdot(0,1,1)=(0,1,0)"
+    ],
+    "notes": [
+      "用學習率一乘誤差，再逐路乘上輸入，修正量為(0, 1, 1)。加回舊權重後，得到(0, 1, 0)。輸入為零的分量不改，固定輸入一讓偏置也一起改。\n\n講義補讀：\n資料依序是 $(0,0)\\to0$、$(0,1)\\to1$、$(1,0)\\to1$、$(1,1)\\to1$。從 $(w_1,w_2,w_0)=(0,0,0)$ 開始，$\\eta=1$，$f(s)=1$ 當 $s\\ge0$。第一筆：$s=0$，$o=f(0)=1$，但 $y=0$，誤差 $-1$；$w_1,w_2$ 加上 $-1\\cdot0=0$ 不變，$w_0$ 加上 $-1\\cdot1=-1$，變成 $-1$。逐筆算下去，全部 5 次更新〔程式計算，每一步可手算驗證〕：\n\n第 1 輪的 $(1,0)$、$(1,1)$ 與第 2、3 輪的其餘點都已猜對，不更新；第 4 輪四筆全對，停止。最後的權重 $(1,1,-1)$ 正是 KP01 手算的 OR 閘（$\\theta=1$）。差別是：這次是機器自己找到的。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "The correction is (0, 1, 1): multiply rate one by the error and each augmented input component. Adding it gives (0, 1, 0). Zero inputs do not change their weights; the constant input updates the bias.\n\nSource context:\nThe data come in the order $(0,0)\\to0$, $(0,1)\\to1$, $(1,0)\\to1$, $(1,1)\\to1$. Start from $(w_1,w_2,w_0)=(0,0,0)$ with $\\eta=1$ and $f(s)=1$ when $s\\ge0$. First sample: $s=0$ and $o=f(0)=1$, but $y=0$, so the error is $-1$; $w_1,w_2$ get $-1\\cdot0=0$ added and stay, and $w_0$ gets $-1\\cdot1=-1$ added and becomes $-1$. Continuing, all 5 updates (computed by program; every step can be verified by hand):\n\nIn pass 1 the points $(1,0)$ and $(1,1)$, and the remaining points of passes 2 and 3, were already right and did not update; pass 4 is all right and learning stops. The final weights $(1,1,-1)$ are exactly the OR gate we worked out by hand in KP01 ($\\theta=1$). The difference: this time the machine found them itself.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 10,
+    "base_kind": "update2",
+    "page": 10,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "第3次更新：原點又猜錯，偏置再往下降",
+    "title_en": "Update 3: The origin is wrong again: lower the bias",
+    "takeaway": "把這一筆的誤差，分配到有輸入的路徑。",
+    "takeaway_en": "Apply this sample’s error to the active input paths.",
+    "source_anchors": [
+      "3. 手算：從全 0 學 OR"
+    ],
+    "bridge": "上一頁：把這一筆的誤差，分配到有輸入的路徑。",
+    "bridge_en": "Previously: Apply this sample’s error to the active input paths.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf{x}=(0,0,1),\\quad y=0,\\quad\\eta=1",
+      "s=0\\cdot 0+1\\cdot 0+(0)=0,\\quad o=1,\\quad e=0-1=-1",
+      "o=1\\;(s\\ge0),\\quad o=0\\;(s<0)",
+      "w_1",
+      "0",
+      "w_2",
+      "1",
+      "w_0",
+      "0",
+      "0+1\\cdot(-1)\\cdot 0=0",
+      "1+1\\cdot(-1)\\cdot 0=1",
+      "0+1\\cdot(-1)\\cdot 1=-1",
+      "\\mathbf{w}^{\\prime}=(0,1,0)+1\\cdot(-1)\\cdot(0,0,1)=(0,1,-1)"
+    ],
+    "notes": [
+      "用學習率一乘誤差，再逐路乘上輸入，修正量為(0, 0, -1)。加回舊權重後，得到(0, 1, -1)。輸入為零的分量不改，固定輸入一讓偏置也一起改。\n\n講義補讀：\n第 1 輪的 $(1,0)$、$(1,1)$ 與第 2、3 輪的其餘點都已猜對，不更新；第 4 輪四筆全對，停止。最後的權重 $(1,1,-1)$ 正是 KP01 手算的 OR 閘（$\\theta=1$）。差別是：這次是機器自己找到的。\n\n**圖說 `lec02-kp02-or-training`**：先看左圖，第 1 輪結束線是水平的，$(0,0)$ 還被劃進放電區（紅圈）；再看中圖，線轉成斜線但仍穿過 $(0,0)$；最後看右圖，線移到 $x_1+x_2=1$，四個點全對。每次更新都把線推向猜錯的點。 / **Caption `lec02-kp02-or-training`:** Look first at the left panel: after pass 1 the line is horizontal and $(0,0)$ is still in the firing zone (red ring); the middle panel shows the line diagonal but still through $(0,0)$; the right panel shows the line at $x_1+x_2=1$ with all four points right. Each update pushes the line toward a point it got wrong.\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "The correction is (0, 0, -1): multiply rate one by the error and each augmented input component. Adding it gives (0, 1, -1). Zero inputs do not change their weights; the constant input updates the bias.\n\nSource context:\nThe data come in the order $(0,0)\\to0$, $(0,1)\\to1$, $(1,0)\\to1$, $(1,1)\\to1$. Start from $(w_1,w_2,w_0)=(0,0,0)$ with $\\eta=1$ and $f(s)=1$ when $s\\ge0$. First sample: $s=0$ and $o=f(0)=1$, but $y=0$, so the error is $-1$; $w_1,w_2$ get $-1\\cdot0=0$ added and stay, and $w_0$ gets $-1\\cdot1=-1$ added and becomes $-1$. Continuing, all 5 updates (computed by program; every step can be verified by hand):\n\nIn pass 1 the points $(1,0)$ and $(1,1)$, and the remaining points of passes 2 and 3, were already right and did not update; pass 4 is all right and learning stops. The final weights $(1,1,-1)$ are exactly the OR gate we worked out by hand in KP01 ($\\theta=1$). The difference: this time the machine found them itself.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 11,
+    "base_kind": "update3",
+    "page": 11,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "第4次更新：第一路與偏置一起增加，修正另一筆",
+    "title_en": "Update 4: Raise the first weight and the bias",
+    "takeaway": "把這一筆的誤差，分配到有輸入的路徑。",
+    "takeaway_en": "Apply this sample’s error to the active input paths.",
+    "source_anchors": [
+      "3. 手算：從全 0 學 OR"
+    ],
+    "bridge": "上一頁：把這一筆的誤差，分配到有輸入的路徑。",
+    "bridge_en": "Previously: Apply this sample’s error to the active input paths.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf{x}=(1,0,1),\\quad y=1,\\quad\\eta=1",
+      "s=0\\cdot 1+1\\cdot 0+(-1)=-1,\\quad o=0,\\quad e=1-0=1",
+      "o=1\\;(s\\ge0),\\quad o=0\\;(s<0)",
+      "w_1",
+      "0",
+      "w_2",
+      "1",
+      "w_0",
+      "-1",
+      "0+1\\cdot(1)\\cdot 1=1",
+      "1+1\\cdot(1)\\cdot 0=1",
+      "-1+1\\cdot(1)\\cdot 1=0",
+      "\\mathbf{w}^{\\prime}=(0,1,-1)+1\\cdot(1)\\cdot(1,0,1)=(1,1,0)"
+    ],
+    "notes": [
+      "用學習率一乘誤差，再逐路乘上輸入，修正量為(1, 0, 1)。加回舊權重後，得到(1, 1, 0)。輸入為零的分量不改，固定輸入一讓偏置也一起改。\n\n講義補讀：\n資料依序是 $(0,0)\\to0$、$(0,1)\\to1$、$(1,0)\\to1$、$(1,1)\\to1$。從 $(w_1,w_2,w_0)=(0,0,0)$ 開始，$\\eta=1$，$f(s)=1$ 當 $s\\ge0$。第一筆：$s=0$，$o=f(0)=1$，但 $y=0$，誤差 $-1$；$w_1,w_2$ 加上 $-1\\cdot0=0$ 不變，$w_0$ 加上 $-1\\cdot1=-1$，變成 $-1$。逐筆算下去，全部 5 次更新〔程式計算，每一步可手算驗證〕：\n\n第 1 輪的 $(1,0)$、$(1,1)$ 與第 2、3 輪的其餘點都已猜對，不更新；第 4 輪四筆全對，停止。最後的權重 $(1,1,-1)$ 正是 KP01 手算的 OR 閘（$\\theta=1$）。差別是：這次是機器自己找到的。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "The correction is (1, 0, 1): multiply rate one by the error and each augmented input component. Adding it gives (1, 1, 0). Zero inputs do not change their weights; the constant input updates the bias.\n\nSource context:\nThe data come in the order $(0,0)\\to0$, $(0,1)\\to1$, $(1,0)\\to1$, $(1,1)\\to1$. Start from $(w_1,w_2,w_0)=(0,0,0)$ with $\\eta=1$ and $f(s)=1$ when $s\\ge0$. First sample: $s=0$ and $o=f(0)=1$, but $y=0$, so the error is $-1$; $w_1,w_2$ get $-1\\cdot0=0$ added and stay, and $w_0$ gets $-1\\cdot1=-1$ added and becomes $-1$. Continuing, all 5 updates (computed by program; every step can be verified by hand):\n\nIn pass 1 the points $(1,0)$ and $(1,1)$, and the remaining points of passes 2 and 3, were already right and did not update; pass 4 is all right and learning stops. The final weights $(1,1,-1)$ are exactly the OR gate we worked out by hand in KP01 ($\\theta=1$). The difference: this time the machine found them itself.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 12,
+    "base_kind": "update4",
+    "page": 12,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "第5次更新：最後壓低偏置，四種輸入終於分開",
+    "title_en": "Update 5: Lower the bias once more to separate all four",
+    "takeaway": "把這一筆的誤差，分配到有輸入的路徑。",
+    "takeaway_en": "Apply this sample’s error to the active input paths.",
+    "source_anchors": [
+      "3. 手算：從全 0 學 OR"
+    ],
+    "bridge": "上一頁：把這一筆的誤差，分配到有輸入的路徑。",
+    "bridge_en": "Previously: Apply this sample’s error to the active input paths.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf{x}=(0,0,1),\\quad y=0,\\quad\\eta=1",
+      "s=1\\cdot 0+1\\cdot 0+(0)=0,\\quad o=1,\\quad e=0-1=-1",
+      "o=1\\;(s\\ge0),\\quad o=0\\;(s<0)",
+      "w_1",
+      "1",
+      "w_2",
+      "1",
+      "w_0",
+      "0",
+      "1+1\\cdot(-1)\\cdot 0=1",
+      "1+1\\cdot(-1)\\cdot 0=1",
+      "0+1\\cdot(-1)\\cdot 1=-1",
+      "\\mathbf{w}^{\\prime}=(1,1,0)+1\\cdot(-1)\\cdot(0,0,1)=(1,1,-1)"
+    ],
+    "notes": [
+      "用學習率一乘誤差，再逐路乘上輸入，修正量為(0, 0, -1)。加回舊權重後，得到(1, 1, -1)。輸入為零的分量不改，固定輸入一讓偏置也一起改。\n\n講義補讀：\n第 1 輪的 $(1,0)$、$(1,1)$ 與第 2、3 輪的其餘點都已猜對，不更新；第 4 輪四筆全對，停止。最後的權重 $(1,1,-1)$ 正是 KP01 手算的 OR 閘（$\\theta=1$）。差別是：這次是機器自己找到的。\n\n**圖說 `lec02-kp02-or-training`**：先看左圖，第 1 輪結束線是水平的，$(0,0)$ 還被劃進放電區（紅圈）；再看中圖，線轉成斜線但仍穿過 $(0,0)$；最後看右圖，線移到 $x_1+x_2=1$，四個點全對。每次更新都把線推向猜錯的點。 / **Caption `lec02-kp02-or-training`:** Look first at the left panel: after pass 1 the line is horizontal and $(0,0)$ is still in the firing zone (red ring); the middle panel shows the line diagonal but still through $(0,0)$; the right panel shows the line at $x_1+x_2=1$ with all four points right. Each update pushes the line toward a point it got wrong.\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "The correction is (0, 0, -1): multiply rate one by the error and each augmented input component. Adding it gives (1, 1, -1). Zero inputs do not change their weights; the constant input updates the bias.\n\nSource context:\nThe data come in the order $(0,0)\\to0$, $(0,1)\\to1$, $(1,0)\\to1$, $(1,1)\\to1$. Start from $(w_1,w_2,w_0)=(0,0,0)$ with $\\eta=1$ and $f(s)=1$ when $s\\ge0$. First sample: $s=0$ and $o=f(0)=1$, but $y=0$, so the error is $-1$; $w_1,w_2$ get $-1\\cdot0=0$ added and stay, and $w_0$ gets $-1\\cdot1=-1$ added and becomes $-1$. Continuing, all 5 updates (computed by program; every step can be verified by hand):\n\nIn pass 1 the points $(1,0)$ and $(1,1)$, and the remaining points of passes 2 and 3, were already right and did not update; pass 4 is all right and learning stops. The final weights $(1,1,-1)$ are exactly the OR gate we worked out by hand in KP01 ($\\theta=1$). The difference: this time the machine found them itself.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 13,
+    "base_kind": "update5",
+    "page": 13,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "三輪後，分隔線才把四個點分對",
+    "title_en": "After three passes, the line separates all four",
+    "takeaway": "每輪結束的權重不同，邊界也跟著移。",
+    "takeaway_en": "Each pass ends with different weights and a different boundary.",
+    "source_anchors": [
+      "3. 手算：從全 0 學 OR"
+    ],
+    "bridge": "上一頁：把這一筆的誤差，分配到有輸入的路徑。",
+    "bridge_en": "Previously: Apply this sample’s error to the active input paths.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "x_2=0",
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "x_1+x_2=0",
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "x_1+x_2=1"
+    ],
+    "notes": [
+      "每輪結束的權重不同，邊界也跟著移。\n\n講義補讀：\n第 1 輪的 $(1,0)$、$(1,1)$ 與第 2、3 輪的其餘點都已猜對，不更新；第 4 輪四筆全對，停止。最後的權重 $(1,1,-1)$ 正是 KP01 手算的 OR 閘（$\\theta=1$）。差別是：這次是機器自己找到的。\n\n**圖說 `lec02-kp02-or-training`**：先看左圖，第 1 輪結束線是水平的，$(0,0)$ 還被劃進放電區（紅圈）；再看中圖，線轉成斜線但仍穿過 $(0,0)$；最後看右圖，線移到 $x_1+x_2=1$，四個點全對。每次更新都把線推向猜錯的點。 / **Caption `lec02-kp02-or-training`:** Look first at the left panel: after pass 1 the line is horizontal and $(0,0)$ is still in the firing zone (red ring); the middle panel shows the line diagonal but still through $(0,0)$; the right panel shows the line at $x_1+x_2=1$ with all four points right. Each update pushes the line toward a point it got wrong.\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "Each pass ends with different weights and a different boundary.\n\nSource context:\nThe data come in the order $(0,0)\\to0$, $(0,1)\\to1$, $(1,0)\\to1$, $(1,1)\\to1$. Start from $(w_1,w_2,w_0)=(0,0,0)$ with $\\eta=1$ and $f(s)=1$ when $s\\ge0$. First sample: $s=0$ and $o=f(0)=1$, but $y=0$, so the error is $-1$; $w_1,w_2$ get $-1\\cdot0=0$ added and stay, and $w_0$ gets $-1\\cdot1=-1$ added and becomes $-1$. Continuing, all 5 updates (computed by program; every step can be verified by hand):\n\nIn pass 1 the points $(1,0)$ and $(1,1)$, and the remaining points of passes 2 and 3, were already right and did not update; pass 4 is all right and learning stops. The final weights $(1,1,-1)$ are exactly the OR gate we worked out by hand in KP01 ($\\theta=1$). The difference: this time the machine found them itself.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 14,
+    "base_kind": "boundaries",
+    "page": 14,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "整輪沒有猜錯，才確認可以停下來",
+    "title_en": "Stop only after a complete pass without mistakes",
+    "takeaway": "前三輪改了五次，第四輪零更新才停止。",
+    "takeaway_en": "Five updates occur in three passes; pass four confirms zero updates.",
+    "source_anchors": [
+      "3. 手算：從全 0 學 OR",
+      "4. 什麼時候停、什麼時候不停"
+    ],
+    "bridge": "上一頁：每輪結束的權重不同，邊界也跟著移。",
+    "bridge_en": "Previously: Each pass ends with different weights and a different boundary.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "2+2+1=5,\\qquad\\mathbf{w}=(1,1,-1)"
+    ],
+    "notes": [
+      "前三輪改了五次，第四輪零更新才停止。\n\n講義補讀：\n第 1 輪的 $(1,0)$、$(1,1)$ 與第 2、3 輪的其餘點都已猜對，不更新；第 4 輪四筆全對，停止。最後的權重 $(1,1,-1)$ 正是 KP01 手算的 OR 閘（$\\theta=1$）。差別是：這次是機器自己找到的。\n\n**圖說 `lec02-kp02-or-training`**：先看左圖，第 1 輪結束線是水平的，$(0,0)$ 還被劃進放電區（紅圈）；再看中圖，線轉成斜線但仍穿過 $(0,0)$；最後看右圖，線移到 $x_1+x_2=1$，四個點全對。每次更新都把線推向猜錯的點。 / **Caption `lec02-kp02-or-training`:** Look first at the left panel: after pass 1 the line is horizontal and $(0,0)$ is still in the firing zone (red ring); the middle panel shows the line diagonal but still through $(0,0)$; the right panel shows the line at $x_1+x_2=1$ with all four points right. Each update pushes the line toward a point it got wrong.\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "Five updates occur in three passes; pass four confirms zero updates.\n\nSource context:\nThe data come in the order $(0,0)\\to0$, $(0,1)\\to1$, $(1,0)\\to1$, $(1,1)\\to1$. Start from $(w_1,w_2,w_0)=(0,0,0)$ with $\\eta=1$ and $f(s)=1$ when $s\\ge0$. First sample: $s=0$ and $o=f(0)=1$, but $y=0$, so the error is $-1$; $w_1,w_2$ get $-1\\cdot0=0$ added and stay, and $w_0$ gets $-1\\cdot1=-1$ added and becomes $-1$. Continuing, all 5 updates (computed by program; every step can be verified by hand):\n\nIn pass 1 the points $(1,0)$ and $(1,1)$, and the remaining points of passes 2 and 3, were already right and did not update; pass 4 is all right and learning stops. The final weights $(1,1,-1)$ are exactly the OR gate we worked out by hand in KP01 ($\\theta=1$). The difference: this time the machine found them itself.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 15,
+    "base_kind": "stop",
+    "page": 15,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "修好原點，另一筆更新又能把它改壞",
+    "title_en": "Another sample can spoil a corrected point",
+    "takeaway": "一次修正，只保證目前這一筆往對方向走。",
+    "takeaway_en": "An update improves the current sample’s score direction only.",
+    "source_anchors": [
+      "本單元重點整理"
+    ],
+    "bridge": "上一頁：前三輪改了五次，第四輪零更新才停止。",
+    "bridge_en": "Previously: Five updates occur in three passes; pass four confirms zero updates.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "1",
+      "\\mathbf{w}=(0,0,0)",
+      "s=w_0=0",
+      "0",
+      "\\mathbf{w}=(0,0,-1)",
+      "s=w_0=-1",
+      "1",
+      "\\mathbf{w}=(0,1,0)",
+      "s=w_0=0"
+    ],
+    "notes": [
+      "一次修正，只保證目前這一筆往對方向走。\n\n講義補讀：\n**一句話重點**：Perceptron 每看一筆資料，猜對就不動，猜錯就把權重往正確方向推一步：$\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y_i-o_i)\\mathbf{x}_i$；線性可分時有限步後停下。\n\n- 「Perceptron 每看一筆就把那一筆改對，而且不會再錯」——不一定。上表第 1 輪 $(0,0)$ 被修好，卻被 $(0,1)$ 的更新打壞，第 2 輪再錯。一次更新只保證**這一筆**的 $s$ 往對的方向走。\n- 「學習率越大學得越快」——從 0 開始時 $\\eta$ 不影響預測；一般情形步長過大會來回跳。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "An update improves the current sample’s score direction only.\n\nSource context:\n- \"A Perceptron fixes each sample as soon as it sees it and never gets it wrong again.\" Not necessarily. In the table, $(0,0)$ is fixed in pass 1 but spoiled by the update for $(0,1)$ and wrong again in pass 2. One update only guarantees that **this** sample's $s$ moves the right way.\n- \"A larger learning rate learns faster.\" From a zero start $\\eta$ does not change the predictions; in general a step that is too large makes the weights jump back and forth.\n\n**Question for the next knowledge point**: With labels 0 and 1 the error has three cases. If we use $+1$ and $-1$ as labels, can the update rule be written more briefly and reveal its geometric meaning?\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 16,
+    "base_kind": "interference",
+    "page": 16,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "能用一條線分開，才有有限次停止的保證",
+    "title_en": "Finite convergence needs linearly separable data",
+    "takeaway": "補充：資料不可分時，不能期待零錯誤停止。",
+    "takeaway_en": "Added: nonseparable data cannot reach a zero-error pass.",
+    "source_anchors": [
+      "4. 什麼時候停、什麼時候不停"
+    ],
+    "bridge": "上一頁：一次修正，只保證目前這一筆往對方向走。",
+    "bridge_en": "Previously: An update improves the current sample’s score direction only.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)"
+    ],
+    "notes": [
+      "線性可分是存在一條直線把這些二維資料的兩類完全分開。標準逐筆感知器對可分資料有有限更新的收斂保證。不可分時，若持續循環且只以整輪零錯誤為停止條件，就不能達成停止；實務上仍可另設迭代上限。\n\n講義補讀：\n這條規則假設標籤只有兩類、輸入是數值向量，而且資料**線性可分**。[補充] 線性可分時，Perceptron 一定在有限次更新後停下（感知器收斂定理，本講義不證明）；不可分時永遠停不下來，KP04 的 XOR 就是這種情形。實作是雙層迴圈：外層是輪，內層逐筆，整輪沒有更新就停止。[補充] 若權重從 0 開始，$\\eta$ 取任何正數只是把 $\\mathbf{w}$ 整個放大或縮小，每個 $s$ 的正負不變，預測完全相同。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "Linear separability means a line can perfectly separate these two-dimensional classes. The standard single-sample Perceptron converges after finitely many updates on separable data. Repeated passes on nonseparable data cannot meet a zero-error stopping rule; an implementation may still impose a pass limit.\n\nSource context:\nThe rule assumes two classes, numeric input vectors and data that are **linearly separable**. [Added] On separable data the Perceptron always stops after finitely many updates (the perceptron convergence theorem, not proved in this note); on non-separable data it never stops, and the XOR of KP04 is such a case. In code it is a double loop, passes outside and samples inside, stopping after a pass with no update. [Added] If the weights start at 0, any positive $\\eta$ only scales $\\mathbf{w}$ up or down, the sign of every $s$ is unchanged, and the predictions are exactly the same.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 17,
+    "base_kind": "separable",
+    "page": 17,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "從全零開始，正的學習率只會縮放權重",
+    "title_en": "From zero, a positive learning rate only scales the weights",
+    "takeaway": "補充：順序固定、起點為零，預測不變。",
+    "takeaway_en": "Added: fixed order and zero start give the same predictions.",
+    "source_anchors": [
+      "4. 什麼時候停、什麼時候不停"
+    ],
+    "bridge": "上一頁：補充：資料不可分時，不能期待零錯誤停止。",
+    "bridge_en": "Previously: Added: nonseparable data cannot reach a zero-error pass.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "\\eta=1,\\quad\\mathbf{w}=(1,1,-1)",
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "\\eta=2,\\quad\\mathbf{w}=(2,2,-2)",
+      "\\mathbf{w}^{(2)}=2\\mathbf{w}^{(1)},\\quad s^{(2)}=2s^{(1)}"
+    ],
+    "notes": [
+      "這個比例結論限定零初始化、固定正學習率、相同資料順序與同樣的零點約定。程式逐一核對十六次樣本訪問：學習率二的每組權重都是學習率一的兩倍，每次預測也相同。不能把這個結論推廣成所有模型都不受學習率影響。\n\n講義補讀：\n這條規則假設標籤只有兩類、輸入是數值向量，而且資料**線性可分**。[補充] 線性可分時，Perceptron 一定在有限次更新後停下（感知器收斂定理，本講義不證明）；不可分時永遠停不下來，KP04 的 XOR 就是這種情形。實作是雙層迴圈：外層是輪，內層逐筆，整輪沒有更新就停止。[補充] 若權重從 0 開始，$\\eta$ 取任何正數只是把 $\\mathbf{w}$ 整個放大或縮小，每個 $s$ 的正負不變，預測完全相同。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "This scaling result requires zero initialization, a constant positive rate, identical sample order, and the same convention at zero. All sixteen visits were checked: rate two gives twice the weights and identical predictions. This is not a claim about learning rates in all models.\n\nSource context:\nThe rule assumes two classes, numeric input vectors and data that are **linearly separable**. [Added] On separable data the Perceptron always stops after finitely many updates (the perceptron convergence theorem, not proved in this note); on non-separable data it never stops, and the XOR of KP04 is such a case. In code it is a double loop, passes outside and samples inside, stopping after a pass with no update. [Added] If the weights start at 0, any positive $\\eta$ only scales $\\mathbf{w}$ up or down, the sign of every $s$ is unchanged, and the predictions are exactly the same.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 18,
+    "base_kind": "rate",
+    "page": 18,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "批次先把修正量加起來，再更新一次",
+    "title_en": "A batch sums the corrections before one update",
+    "takeaway": "單筆就是批次大小等於一的情況。",
+    "takeaway_en": "A batch of size one gives the single-sample rule.",
+    "source_anchors": [
+      "2. 更新規則：三種誤差，三種動作"
+    ],
+    "bridge": "上一頁：補充：順序固定、起點為零，預測不變。",
+    "bridge_en": "Previously: Added: fixed order and zero start give the same predictions.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "(y_1-o_1)\\mathbf{x}_1",
+      "(y_2-o_2)\\mathbf{x}_2",
+      "(y_3-o_3)\\mathbf{x}_3",
+      "\\sum",
+      "\\mathbf{w}",
+      "\\mathbf{w}^{\\prime}=\\mathbf{w}+\\eta\\sum_{i=1}^{b}(y_i-o_i)\\mathbf{x}_i",
+      "b"
+    ],
+    "notes": [
+      "批次版先用相同的舊權重，算出每一筆的輸出與誤差，把修正項加起來後更新一次。逐筆版每看完一筆就可能改權重，因此多筆批次一般不等於逐筆連做；批次只有一筆時才直接退化成單筆版。\n\n講義補讀：\n| 誤差 $y_i-o_i$ | 情形 | 對 $\\mathbf{w}$ 的動作 | 加權和 $s$ |\n|---|---|---|---|\n| $0$ | 猜對 | 不動 | 不變 |\n| $+1$ | 該放電卻沒放 | $\\mathbf{w}+\\eta\\mathbf{x}_i$ | 上升 |\n| $-1$ | 不該放電卻放了 | $\\mathbf{w}-\\eta\\mathbf{x}_i$ | 下降 |\n\n方向一定對：更新後 $s'=\\mathbf{w}'^\\top\\mathbf{x}_i=s+\\eta(y_i-o_i)\\|\\mathbf{x}_i\\|^2$，而 $x_{i0}=1$ 使 $\\|\\mathbf{x}_i\\|^2\\ge1$。所以誤差為 $+1$ 時 $s$ 一定上升，為 $-1$ 時一定下降。也可以一次看一批 $b$ 筆再更新：$\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\sum_{i=1}^{b}(y_i-o_i)\\mathbf{x}_i$；$b=1$ 就是逐筆版。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "A batch evaluates all outputs and errors under the same old weights, sums the correction terms, and updates once. Sequential processing can change weights between samples, so a multi-sample batch generally differs from sequential updates. A batch of one reduces directly to the single-sample rule.\n\nSource context:\n$$\n\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\,(y_i-o_i)\\,\\mathbf{x}_i\n$$\n\nThe direction is always right: after the update $s'=\\mathbf{w}'^\\top\\mathbf{x}_i=s+\\eta(y_i-o_i)\\|\\mathbf{x}_i\\|^2$, and $x_{i0}=1$ makes $\\|\\mathbf{x}_i\\|^2\\ge1$. So $s$ rises when the error is $+1$ and falls when it is $-1$. You can also look at a batch of $b$ samples before updating: $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\sum_{i=1}^{b}(y_i-o_i)\\mathbf{x}_i$; $b=1$ is the one-at-a-time version.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 19,
+    "base_kind": "batch",
+    "page": 19,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "concept",
+    "title": "再深一層：把條件與主張接起來",
+    "title_en": "Go deeper: connect assumptions and claims",
+    "takeaway": "選讀內容也要分清來源敘述與適用條件。",
+    "takeaway_en": "Separate the optional claim from its assumptions.",
+    "source_anchors": [
+      "想深入"
+    ],
+    "bridge": "主線走完後，再看講義的選讀內容。",
+    "bridge_en": "After the main route, revisit the optional material.",
+    "visual": "原生流程連接條件、方法、結論，完整推理在導讀",
+    "math": [],
+    "notes": [
+      "來源指出 Rosenblatt 最初靈感來自 Hebbian 學習，並強調輸入與輸出神經元之間的隨機連接；最後採用的規則是由標籤與錯誤驅動的監督式規則。\n\n本稿釐清：更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "The source notes that Rosenblatt's first inspiration was Hebbian learning, with random connections between input and output neurons; the rule finally adopted is a supervised rule driven by labels and mistakes.\n\nClarification: An update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "answer_text": [
+      "來源指出 Rosenblatt 最初靈感來自 Hebbian 學習，並強調輸入與輸出神經元之間的隨機連接；最後採用的規則是由標籤與錯誤驅動的監督式規則。",
+      "The source notes that Rosenblatt's first inspiration was Hebbian learning, with random connections between input and output neurons; the rule finally adopted is a supervised rule driven by labels and mistakes."
+    ],
+    "page": 20,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "迷思1：這個說法成立嗎？",
+    "title_en": "Misconception 1: does the claim hold?",
+    "takeaway": "先寫下你的判斷與條件，再翻頁核對。",
+    "takeaway_en": "Write your judgment and conditions before checking.",
+    "source_anchors": [
+      "常見迷思#1"
+    ],
+    "bridge": "主線有了，試著辨認一個容易混淆的說法。",
+    "bridge_en": "Use the main ideas to examine a tempting claim.",
+    "visual": "中立問題與兩個待核對分支",
+    "math": [],
+    "notes": [
+      "「Perceptron 每看一筆就把那一筆改對，而且不會再錯」",
+      "A Perceptron fixes each sample as soon as it sees it and never gets it wrong again."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "「Perceptron 每看一筆就把那一筆改對，而且不會再錯」",
+      "A Perceptron fixes each sample as soon as it sees it and never gets it wrong again."
+    ],
+    "self_check": true,
+    "page": 21,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "explain",
+    "title": "迷思1解析：條件不能省略",
+    "title_en": "Misconception 1: keep the conditions",
+    "takeaway": "先把適用範圍說清楚，才判斷結論。",
+    "takeaway_en": "State the scope before accepting the conclusion.",
+    "source_anchors": [
+      "常見迷思#1"
+    ],
+    "bridge": "核對上一頁：先問是哪個模型、哪個條件。",
+    "bridge_en": "Check the previous page: which model and which assumptions?",
+    "visual": "條件到推理到正確結論，角色提醒例外",
+    "math": [],
+    "notes": [
+      "不一定。上表第 1 輪 $(0,0)$ 被修好，卻被 $(0,1)$ 的更新打壞，第 2 輪再錯。一次更新只保證**這一筆**的 $s$ 往對的方向走。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "Not necessarily. In the table, $(0,0)$ is fixed in pass 1 but spoiled by the update for $(0,1)$ and wrong again in pass 2. One update only guarantees that **this** sample's $s$ moves the right way.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "不一定。上表第 1 輪 $(0,0)$ 被修好，卻被 $(0,1)$ 的更新打壞，第 2 輪再錯。一次更新只保證**這一筆**的 $s$ 往對的方向走。",
+      "Not necessarily. In the table, $(0,0)$ is fixed in pass 1 but spoiled by the update for $(0,1)$ and wrong again in pass 2. One update only guarantees that **this** sample's $s$ moves the right way."
+    ],
+    "self_check": true,
+    "page": 22,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "迷思2：這個說法成立嗎？",
+    "title_en": "Misconception 2: does the claim hold?",
+    "takeaway": "先寫下你的判斷與條件，再翻頁核對。",
+    "takeaway_en": "Write your judgment and conditions before checking.",
+    "source_anchors": [
+      "常見迷思#2"
+    ],
+    "bridge": "主線有了，試著辨認一個容易混淆的說法。",
+    "bridge_en": "Use the main ideas to examine a tempting claim.",
+    "visual": "中立問題與兩個待核對分支",
+    "math": [],
+    "notes": [
+      "「學習率越大學得越快」",
+      "A larger learning rate learns faster."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "「學習率越大學得越快」",
+      "A larger learning rate learns faster."
+    ],
+    "self_check": true,
+    "page": 23,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "explain",
+    "title": "迷思2解析：條件不能省略",
+    "title_en": "Misconception 2: keep the conditions",
+    "takeaway": "先把適用範圍說清楚，才判斷結論。",
+    "takeaway_en": "State the scope before accepting the conclusion.",
+    "source_anchors": [
+      "常見迷思#2"
+    ],
+    "bridge": "核對上一頁：先問是哪個模型、哪個條件。",
+    "bridge_en": "Check the previous page: which model and which assumptions?",
+    "visual": "條件到推理到正確結論，角色提醒例外",
+    "math": [],
+    "notes": [
+      "從 0 開始時 $\\eta$ 不影響預測；一般情形步長過大會來回跳。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "From a zero start $\\eta$ does not change the predictions; in general a step that is too large makes the weights jump back and forth.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "從 0 開始時 $\\eta$ 不影響預測；一般情形步長過大會來回跳。",
+      "From a zero start $\\eta$ does not change the predictions; in general a step that is too large makes the weights jump back and forth."
+    ],
+    "self_check": true,
+    "page": 24,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習1：先獨立完成，再翻頁",
+    "title_en": "Practice 1: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#1"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "權重 $(w_1,w_2,w_0)=(1,1,-1)$，輸入 $(1,0)$，標籤 $y=0$，$\\eta=1$。輸出是多少？要更新嗎？更新後的權重是多少？（提示：先算 $s$，再看 $y-o$。）",
+      "With weights $(w_1,w_2,w_0)=(1,1,-1)$, input $(1,0)$, label $y=0$ and $\\eta=1$: what is the output, is an update needed, and what are the weights afterwards? (Hint: compute $s$, then look at $y-o$.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "權重 $(w_1,w_2,w_0)=(1,1,-1)$，輸入 $(1,0)$，標籤 $y=0$，$\\eta=1$。輸出是多少？要更新嗎？更新後的權重是多少？（提示：先算 $s$，再看 $y-o$。）",
+      "With weights $(w_1,w_2,w_0)=(1,1,-1)$, input $(1,0)$, label $y=0$ and $\\eta=1$: what is the output, is an update needed, and what are the weights afterwards? (Hint: compute $s$, then look at $y-o$.)"
+    ],
+    "self_check": true,
+    "page": 25,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "這筆猜成一，更新後改判零",
+    "title_en": "This sample is predicted as one; the update makes it zero",
+    "takeaway": "增廣輸入最後一項是一，偏置也必須更新。",
+    "takeaway_en": "The augmented input ends in one, so the bias updates too.",
+    "source_anchors": [
+      "小練習#1",
+      "解題示範"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "s=1\\cdot1+1\\cdot0-1=0,\\quad o=1",
+      "e=0-1=-1,\\quad\\mathbf w^+=(1,1,-1)-(1,0,1)=(0,1,-2)",
+      "s^+=0\\cdot1+1\\cdot0-2=-2,\\quad o^+=0"
+    ],
+    "notes": [
+      "原分數零依約定判一，但標籤是零，因此誤差負一。把增廣向量(1,0,1)減掉，第二條權重因輸入零保持不動，偏置也減一。新分數負二，判對這一筆。",
+      "The zero score predicts one, but the target is zero. Subtract the augmented vector (1,0,1). The second weight stays fixed because its input is zero, while the bias decreases. The new score is -2."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 26,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習2：先獨立完成，再翻頁",
+    "title_en": "Practice 2: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "OR 資料的順序改成 $(1,1)$、$(1,0)$、$(0,1)$、$(0,0)$，從全 0 開始，第一次更新發生在哪一筆？（提示：全 0 時每筆的 $s$ 都是 0，$o$ 都是 1。）",
+      "Change the OR data order to $(1,1)$, $(1,0)$, $(0,1)$, $(0,0)$ and start from all zeros. At which sample does the first update happen? (Hint: with all-zero weights every $s$ is 0 and every $o$ is 1.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "OR 資料的順序改成 $(1,1)$、$(1,0)$、$(0,1)$、$(0,0)$，從全 0 開始，第一次更新發生在哪一筆？（提示：全 0 時每筆的 $s$ 都是 0，$o$ 都是 1。）",
+      "Change the OR data order to $(1,1)$, $(1,0)$, $(0,1)$, $(0,0)$ and start from all zeros. At which sample does the first update happen? (Hint: with all-zero weights every $s$ is 0 and every $o$ is 1.)"
+    ],
+    "self_check": true,
+    "page": 27,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "倒序訪問時，第一個錯誤在第四筆",
+    "title_en": "With reverse ordering, the first mistake is sample four",
+    "takeaway": "前三筆標籤都是一，所以仍維持零權重。",
+    "takeaway_en": "The first three targets are one, so the zero weights persist.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "\\mathbf w=\\mathbf0\\Rightarrow s=0,\\quad o=1",
+      "y=(1,1,1,0),\\quad e=(0,0,0,-1)",
+      "(0,0)\\text{ is the first update}"
+    ],
+    "notes": [
+      "依序訪問11、10、01、00。前三筆的標籤與零分數的輸出一相同，不更新。第四筆00標籤零才第一次猜錯。順序會影響軌跡。",
+      "Visit 11,10,01,00. The first three targets match the initial prediction of one. The first update occurs on 00, the fourth visit. Ordering affects the trajectory."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 28,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習3：先獨立完成，再翻頁",
+    "title_en": "Practice 3: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#3"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "為什麼權重從 0 開始時，$\\eta=2$ 與 $\\eta=1$ 的預測完全相同？（提示：算算兩組權重是不是剛好差 2 倍。）",
+      "Why do $\\eta=2$ and $\\eta=1$ give exactly the same predictions when the weights start at 0? (Hint: check whether the two sets of weights differ by exactly a factor of 2.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "為什麼權重從 0 開始時，$\\eta=2$ 與 $\\eta=1$ 的預測完全相同？（提示：算算兩組權重是不是剛好差 2 倍。）",
+      "Why do $\\eta=2$ and $\\eta=1$ give exactly the same predictions when the weights start at 0? (Hint: check whether the two sets of weights differ by exactly a factor of 2.)"
+    ],
+    "self_check": true,
+    "page": 29,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "零初值下，正倍數學習率只縮放軌跡",
+    "title_en": "From zero, a positive rate scaling rescales the trajectory",
+    "takeaway": "同順序、同平手約定與零初值，是這個結論的條件。",
+    "takeaway_en": "Same order, tie rule and zero initialization are essential here.",
+    "source_anchors": [
+      "小練習#3"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "\\mathbf w^{(2)}_0=2\\mathbf w^{(1)}_0=\\mathbf0",
+      "\\mathbf w^{(2)+}=2\\mathbf w^{(1)}+2e\\mathbf x=2\\mathbf w^{(1)+}",
+      "\\operatorname{sign}(2s)=\\operatorname{sign}(s)"
+    ],
+    "notes": [
+      "用歸納法：兩組權重若相差正二倍，分數同號，誤差相同；更新率也相差二倍，下一組權重仍相差二倍。非零初值若沒有同倍縮放，就不能直接套這個結論。",
+      "Inductively, twice-scaled weights have the same predictions and errors. Twice the learning rate preserves the weight scaling after every update. Arbitrary unscaled nonzero initializations need not behave this way."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 30,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核1：選出最符合條件的一項",
+    "title_en": "Check 1: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "1. Perceptron 於 1958 年由誰提出？",
+      "Who proposed the Perceptron in 1958?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "1. Perceptron 於 1958 年由誰提出？",
+      "Who proposed the Perceptron in 1958?"
+    ],
+    "options": [
+      [
+        "Widrow 與 Hoff",
+        "Widrow and Hoff"
+      ],
+      [
+        "Rosenblatt（Cornell Aeronautical Laboratory）",
+        "Rosenblatt (Cornell Aeronautical Laboratory)"
+      ],
+      [
+        "McCulloch 與 Pitts",
+        "McCulloch and Pitts"
+      ],
+      [
+        "Minsky 與 Papert",
+        "Minsky and Papert"
+      ]
+    ],
+    "quiz_index": 1,
+    "self_check": true,
+    "page": 31,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核1解析：對照條件逐項判斷",
+    "title_en": "Check 1: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "本課沿用Rosenblatt，1958，當時位於Cornell Aeronautical Laboratory。",
+      "The handout credits Rosenblatt, 1958, at Cornell Aeronautical Laboratory."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "本課沿用Rosenblatt，1958，當時位於Cornell Aeronautical Laboratory。",
+      "The handout credits Rosenblatt, 1958, at Cornell Aeronautical Laboratory."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 32,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核2：選出最符合條件的一項",
+    "title_en": "Check 2: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "2. Perceptron 的學習規則與 Hebbian learning 的關係？",
+      "How does its rule relate to Hebbian learning?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "2. Perceptron 的學習規則與 Hebbian learning 的關係？",
+      "How does its rule relate to Hebbian learning?"
+    ],
+    "options": [
+      [
+        "完全相同",
+        "Identical to classical Hebbian learning"
+      ],
+      [
+        "監督式，本質與古典 Hebbian 不同",
+        "Supervised; different from the classical Hebbian rule"
+      ],
+      [
+        "完全不學習",
+        "No learning takes place"
+      ],
+      [
+        "Hebbian 是後繼",
+        "Hebbian learning came later"
+      ]
+    ],
+    "quiz_index": 2,
+    "self_check": true,
+    "page": 33,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核2解析：對照條件逐項判斷",
+    "title_en": "Check 2: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "學習規則使用正確標籤與預測誤差，是監督式；不能等同古典無監督Hebbian規則。",
+      "Labels and prediction errors make this supervised, unlike a classical unsupervised Hebbian rule."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "學習規則使用正確標籤與預測誤差，是監督式；不能等同古典無監督Hebbian規則。",
+      "Labels and prediction errors make this supervised, unlike a classical unsupervised Hebbian rule."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 34,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核3：選出最符合條件的一項",
+    "title_en": "Check 3: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "3. 當 $o_i=y_i$ 時，式 $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y_i-o_i)\\mathbf{x}_i$ 會發生什麼？",
+      "What happens when $o_i=y_i$?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "3. 當 $o_i=y_i$ 時，式 $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y_i-o_i)\\mathbf{x}_i$ 會發生什麼？",
+      "What happens when $o_i=y_i$?"
+    ],
+    "options": [
+      [
+        "權重放大 $\\eta$ 倍",
+        "Weights are scaled by the learning rate"
+      ],
+      [
+        "更新量為 $\\mathbf{0}$，不更新",
+        "Zero correction; weights stay unchanged"
+      ],
+      [
+        "權重反轉",
+        "Weights are flipped"
+      ],
+      [
+        "學習率歸零",
+        "The learning rate becomes zero"
+      ]
+    ],
+    "quiz_index": 3,
+    "self_check": true,
+    "page": 35,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核3解析：對照條件逐項判斷",
+    "title_en": "Check 3: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "y-o為零，整個修正量為零，不是把學習率改成零。",
+      "When y-o=0 the correction vanishes; the learning rate itself is not set to zero."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "y-o為零，整個修正量為零，不是把學習率改成零。",
+      "When y-o=0 the correction vanishes; the learning rate itself is not set to zero."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 36,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核4：選出最符合條件的一項",
+    "title_en": "Check 4: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "4. 批次版與單樣本版的關係？",
+      "How do the batch and one-sample versions relate?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "4. 批次版與單樣本版的關係？",
+      "How do the batch and one-sample versions relate?"
+    ],
+    "options": [
+      [
+        "互相矛盾",
+        "They contradict each other"
+      ],
+      [
+        "批次版對各樣本誤差項求和，單樣本版去掉求和",
+        "Batch sums sample corrections; one-sample removes the sum"
+      ],
+      [
+        "批次版不收斂",
+        "Batch never converges"
+      ],
+      [
+        "只在分類時等價",
+        "Equivalent only during classification"
+      ]
+    ],
+    "quiz_index": 4,
+    "self_check": true,
+    "page": 37,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核4解析：對照條件逐項判斷",
+    "title_en": "Check 4: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "同一個形式在b=1時去掉求和；但大批次同步更新不保證與逐筆軌跡相同。",
+      "For b=1 the sum disappears; a simultaneous batch need not match the sequential trajectory."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "同一個形式在b=1時去掉求和；但大批次同步更新不保證與逐筆軌跡相同。",
+      "For b=1 the sum disappears; a simultaneous batch need not match the sequential trajectory."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 38,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "review",
+    "title": "重點回顧：把輸入、運算與限制連起來",
+    "title_en": "Review: connect inputs, operations and limitations",
+    "takeaway": "用自己的話重述方法，再檢查例外。",
+    "takeaway_en": "Restate the method, then check exceptions.",
+    "source_anchors": [
+      "重點:一句話重點",
+      "重點:白話說明",
+      "重點:正式定義",
+      "重點:例子",
+      "重點:圖",
+      "本單元重點整理"
+    ],
+    "bridge": "練習與檢核完成後，回到整個單元。",
+    "bridge_en": "After exercises and checks, reconnect the whole unit.",
+    "visual": "條件、核心方法、算例、限制的知識流程",
+    "math": [],
+    "notes": [
+      "Perceptron 每看一筆資料，猜對就不動，猜錯就把權重往正確方向推一步：$\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y_i-o_i)\\mathbf{x}_i$；線性可分時有限步後停下。\n\n像調一組旋鈕：試聽對了不碰，太小聲就把相關的旋鈕轉大，太大聲就轉小。輸入為 0 的那一路，權重完全不動。\n\n$o_i=f(\\mathbf{w}^\\top\\mathbf{x}_i)$，$\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y_i-o_i)\\mathbf{x}_i$；批次版 $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\sum_{i=1}^{b}(y_i-o_i)\\mathbf{x}_i$。\n\nOR 資料、從 $(0,0,0)$、$\\eta=1$：5 次更新後得 $(1,1,-1)$，第 4 輪全對。\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "For each sample the Perceptron leaves its weights alone when right and pushes them one step in the right direction when wrong: $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y_i-o_i)\\mathbf{x}_i$; on linearly separable data it stops after finitely many steps.\n\nLike adjusting a bank of knobs: leave them alone if it sounds right, turn the relevant ones up if too quiet and down if too loud. A path whose input is 0 gets no change at all.\n\n$o_i=f(\\mathbf{w}^\\top\\mathbf{x}_i)$ and $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y_i-o_i)\\mathbf{x}_i$; the batch version is $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta\\sum_{i=1}^{b}(y_i-o_i)\\mathbf{x}_i$.\n\nOR data from $(0,0,0)$ with $\\eta=1$: after 5 updates the weights are $(1,1,-1)$ and pass 4 is all right.\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "page": 39,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "scope",
+    "title": "來源與限制：別把特例當成保證",
+    "title_en": "Source and scope: do not turn an example into a guarantee",
+    "takeaway": "原始數字可重現，適用條件也必須保留。",
+    "takeaway_en": "Reproduce the values and preserve their scope.",
+    "source_anchors": [
+      "來源更正與取捨"
+    ],
+    "bridge": "最後核對：哪些是講義例子，哪些是一般結論？",
+    "bridge_en": "Finally: which statements are examples, and which are general claims?",
+    "visual": "來源到重算到條件三個關卡，提醒科學圖與角色比喻不同",
+    "math": [],
+    "notes": [
+      "更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "An update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "page": 40,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "把標籤換成正負一，下一步看幾何",
+    "title_en": "Next, signed labels will reveal the geometry",
+    "takeaway": "本節用零與一，KP03 改用正負一。",
+    "takeaway_en": "This unit uses zero and one; KP03 uses signed labels.",
+    "source_anchors": [
+      "重點:留給下一個知識點的問題"
+    ],
+    "bridge": "上一頁：單筆就是批次大小等於一的情況。",
+    "bridge_en": "Previously: A batch of size one gives the single-sample rule.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "0",
+      "1",
+      "-1",
+      "+1",
+      "\\mathbf{w}^{\\prime}=\\mathbf{w}+\\eta(y-o)\\mathbf{x}"
+    ],
+    "notes": [
+      "本節用零與一，KP03 改用正負一。\n\n講義補讀：\n1. 權重 $(w_1,w_2,w_0)=(1,1,-1)$，輸入 $(1,0)$，標籤 $y=0$，$\\eta=1$。輸出是多少？要更新嗎？更新後的權重是多少？（提示：先算 $s$，再看 $y-o$。）\n2. OR 資料的順序改成 $(1,1)$、$(1,0)$、$(0,1)$、$(0,0)$，從全 0 開始，第一次更新發生在哪一筆？（提示：全 0 時每筆的 $s$ 都是 0，$o$ 都是 1。）\n3. 為什麼權重從 0 開始時，$\\eta=2$ 與 $\\eta=1$ 的預測完全相同？（提示：算算兩組權重是不是剛好差 2 倍。）\n\n**留給下一個知識點的問題**：標籤用 0 和 1 時，誤差有三種情形。如果改用 $+1$ 和 $-1$ 當標籤，更新規則能不能寫得更短，而且看得出幾何意義？\n\n更新只保證當筆分數往正確方向，不能保證所有點立即變好。零初值縮放學習率的等價需要相同順序與平手規則；批次與逐筆通常不是同一條軌跡。",
+      "This unit uses zero and one; KP03 uses signed labels.\n\nSource context:\n**One-sentence summary**: For each sample the Perceptron leaves its weights alone when right and pushes them one step in the right direction when wrong: $\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y_i-o_i)\\mathbf{x}_i$; on linearly separable data it stops after finitely many steps.\n\n**Question for the next knowledge point**: With labels 0 and 1 the error has three cases. If we use $+1$ and $-1$ as labels, can the update rule be written more briefly and reveal its geometric meaning?\n\nAn update improves this sample’s score direction, not every sample. Rate-scaling equivalence needs zero starts and consistent order/ties; batch and sequential trajectories can differ."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "bridge",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 20,
+    "base_kind": "next",
+    "page": 41,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  }
+]

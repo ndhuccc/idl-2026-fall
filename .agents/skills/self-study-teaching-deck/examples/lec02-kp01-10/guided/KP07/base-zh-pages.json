@@ -1,0 +1,292 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP07 損失函數",
+  "source_section": "前言",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "residual",
+  "title": "先把預測減掉目標，得到殘差",
+  "source_section": "符號表、§1",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "squared",
+  "title": "平方會放大那一筆大殘差",
+  "source_section": "§1",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "absolute",
+  "title": "絕對值只按殘差大小線性計罰",
+  "source_section": "§1",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "huber",
+  "title": "Huber 在近處平方、遠處改走直線",
+  "source_section": "§1",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "huberexample",
+  "title": "同一筆殘差十，Huber 計為九點五",
+  "source_section": "§1",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "summean",
+  "title": "加總與平均，差一個批次大小",
+  "source_section": "§1 表格釐清",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "outlier",
+  "title": "看占比，才知道大殘差支配了多少",
+  "source_section": "§1",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "curves",
+  "title": "三把尺，對大誤差的反應不同",
+  "source_section": "§1 圖",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "crossentropy",
+  "title": "交叉熵會重罰給正解很小的機率",
+  "source_section": "§2",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "cecalc",
+  "title": "同一個預測，正解換了損失也會換",
+  "source_section": "§2 例",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "binary",
+  "title": "二元交叉熵要把兩種結果都寫進來",
+  "source_section": "§2、選讀、檢核4釐清",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "kl",
+  "title": "KL 衡量目標分布與預測分布的差異",
+  "source_section": "§2",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "klcalc",
+  "title": "兩個很接近的分布，KL 仍要逐項相加",
+  "source_section": "§2 算例",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "relation",
+  "title": "固定目標時，交叉熵與 KL 只差常數",
+  "source_section": "§2、來源更正",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "hinge",
+  "title": "Hinge 不只求分對，還要留出分數餘裕",
+  "source_section": "§3 圖",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "hingecalc",
+  "title": "三個分數：安全、太近、分錯",
+  "source_section": "§3 例",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "margin",
+  "title": "分數餘裕不是幾何距離",
+  "source_section": "§3、來源更正補充",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 19,
+  "kind": "join",
+  "title": "Huber 在兩個接點都接得上斜率",
+  "source_section": "選讀推導",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 20,
+  "kind": "choose",
+  "title": "先認清任務，再挑對損失",
+  "source_section": "重點整理",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 21,
+  "kind": "myths",
+  "title": "小損失的意義，要連資料與尺一起看",
+  "source_section": "常見迷思",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 22,
+  "kind": "next",
+  "title": "下一步：用平方誤差學出一個線性單元",
+  "source_section": "銜接KP08",
+  "first_step": 64,
+  "final_step": 66,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 23,
+  "kind": "practice1",
+  "title": "練習一：換一批殘差，再用三把尺",
+  "source_section": "練習1",
+  "first_step": 67,
+  "final_step": 69,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 24,
+  "kind": "practice2",
+  "title": "練習二：三個分數相同，交叉熵是多少",
+  "source_section": "練習2",
+  "first_step": 70,
+  "final_step": 72,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 25,
+  "kind": "practice3",
+  "title": "練習三：負標籤遇到正分數",
+  "source_section": "練習3",
+  "first_step": 73,
+  "final_step": 75,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 26,
+  "kind": "quiz1",
+  "title": "自我檢核一：平方誤差的主要弱點",
+  "source_section": "小測驗1",
+  "first_step": 76,
+  "final_step": 78,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 27,
+  "kind": "quiz2",
+  "title": "自我檢核二：Huber 的門檻控制什麼",
+  "source_section": "小測驗2",
+  "first_step": 79,
+  "final_step": 81,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 28,
+  "kind": "quiz3",
+  "title": "自我檢核三：軟標籤適合哪種分布損失",
+  "source_section": "小測驗3",
+  "first_step": 82,
+  "final_step": 84,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 29,
+  "kind": "quiz4",
+  "title": "自我檢核四：交叉熵的機率條件",
+  "source_section": "小測驗4 原題釐清",
+  "first_step": 85,
+  "final_step": 87,
+  "beats": 3,
+  "extension": true
+ }
+]

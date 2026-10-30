@@ -1,0 +1,242 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP05 多層感知器與非線性",
+  "source_section": "單元主張",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "roles",
+  "title": "輸入接資料，隱藏層轉換，輸出給結果",
+  "source_section": "§1釐清",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "dense",
+  "title": "全連接是層間全接，前饋是方向不回頭",
+  "source_section": "§1",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "neuron",
+  "title": "一顆神經元先加權，再做活化",
+  "source_section": "§1符號",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "layer",
+  "title": "矩陣一次算一層，方向與維度要一致",
+  "source_section": "§1矩陣約定釐清",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "gates",
+  "title": "OR 與 NAND 先判斷，再交給 AND",
+  "source_section": "§2補充手工權重",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "case00",
+  "title": "輸入全零時，OR 擋住最後的 AND",
+  "source_section": "§2表格第1列",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "case01",
+  "title": "只有第二路為一時，兩顆隱藏神經元都亮",
+  "source_section": "§2表格第2列",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "case10",
+  "title": "只開第一路，仍然走到相同的 XOR 輸出",
+  "source_section": "§2表格第3列",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "case11",
+  "title": "兩路全開時，NAND 擋住最後輸出",
+  "source_section": "§2表格第4列",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "features",
+  "title": "隱藏層改座標，把 XOR 變成可切開的點",
+  "source_section": "§2座標轉換",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "constant",
+  "title": "拿掉階梯，同一組權重卻互相抵消",
+  "source_section": "§3特例",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "affine",
+  "title": "兩層仿射映射，仍可合成一層",
+  "source_section": "§3一般含偏置",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "depth",
+  "title": "全線性加再多層，仍只是一個線性映射",
+  "source_section": "§3一般多層",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "experiment",
+  "title": "同一組權重，只換活化就改變等值線",
+  "source_section": "§3圖程式實驗",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "learning",
+  "title": "能表示 XOR，與自動學出權重，是兩件事",
+  "source_section": "迷思、選讀",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "next",
+  "title": "階梯會做判斷，卻不適合直接靠梯度學",
+  "source_section": "留給KP06問題",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "practice1",
+  "title": "延伸：自己重算第一路為一的完整傳遞",
+  "source_section": "練習1",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 19,
+  "kind": "practice2",
+  "title": "延伸：兩個矩陣可以合成哪一個矩陣",
+  "source_section": "練習2",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 20,
+  "kind": "practice3",
+  "title": "延伸：十層恆等活化，為何不增加表示力",
+  "source_section": "練習3",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 21,
+  "kind": "quiz1",
+  "title": "自我檢核：前饋指的是哪一種資訊方向",
+  "source_section": "自我檢核1",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 22,
+  "kind": "quiz2",
+  "title": "自我檢核：讀層數時，應先確認哪個約定",
+  "source_section": "自我檢核2原題釐清",
+  "first_step": 64,
+  "final_step": 66,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 23,
+  "kind": "quiz3",
+  "title": "自我檢核：無偏置且全線性時，網路等於什麼",
+  "source_section": "自我檢核3條件釐清",
+  "first_step": 67,
+  "final_step": 69,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 24,
+  "kind": "quiz4",
+  "title": "自我檢核：XOR 的表示力為何需要非線性",
+  "source_section": "自我檢核4",
+  "first_step": 70,
+  "final_step": 72,
+  "beats": 3,
+  "extension": true
+ }
+]

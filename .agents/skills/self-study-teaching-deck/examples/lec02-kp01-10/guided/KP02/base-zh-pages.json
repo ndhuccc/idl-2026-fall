@@ -1,0 +1,272 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP02 猜錯才改權重",
+  "source_section": "§1",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "supervised",
+  "title": "正確答案提供回饋，感知器才知道怎麼改",
+  "source_section": "§1",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "bias",
+  "title": "補上一個固定輸入，偏置也能一起學",
+  "source_section": "符號表",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "loop",
+  "title": "每看一筆資料，都先算再比對",
+  "source_section": "§1",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "errors",
+  "title": "三種誤差，決定三種動作",
+  "source_section": "§2",
+  "first_step": 13,
+  "final_step": 14,
+  "beats": 2,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "rule",
+  "title": "誤差乘上輸入，就是每路的修正方向",
+  "source_section": "§2、重點整理",
+  "first_step": 15,
+  "final_step": 17,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "direction",
+  "title": "一次修正，會把這一筆往正確方向推",
+  "source_section": "§2",
+  "first_step": 18,
+  "final_step": 20,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "dataset",
+  "title": "用固定順序，從全零開始學 OR",
+  "source_section": "§3〔補充〕",
+  "first_step": 21,
+  "final_step": 23,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "update1",
+  "title": "第1次更新：先壓低偏置，修正不該放電的原點",
+  "source_section": "§3〔補充〕",
+  "first_step": 24,
+  "final_step": 26,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "update2",
+  "title": "第2次更新：第二路與偏置一起增加，修正漏掉的放電",
+  "source_section": "§3〔補充〕",
+  "first_step": 27,
+  "final_step": 29,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "update3",
+  "title": "第3次更新：原點又猜錯，偏置再往下降",
+  "source_section": "§3〔補充〕",
+  "first_step": 30,
+  "final_step": 32,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "update4",
+  "title": "第4次更新：第一路與偏置一起增加，修正另一筆",
+  "source_section": "§3〔補充〕",
+  "first_step": 33,
+  "final_step": 35,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "update5",
+  "title": "第5次更新：最後壓低偏置，四種輸入終於分開",
+  "source_section": "§3〔補充〕",
+  "first_step": 36,
+  "final_step": 38,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "boundaries",
+  "title": "三輪後，分隔線才把四個點分對",
+  "source_section": "§3、lec02-kp02-or-training",
+  "first_step": 39,
+  "final_step": 40,
+  "beats": 2,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "stop",
+  "title": "整輪沒有猜錯，才確認可以停下來",
+  "source_section": "§3、§4",
+  "first_step": 41,
+  "final_step": 43,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "interference",
+  "title": "修好原點，另一筆更新又能把它改壞",
+  "source_section": "重點整理、迷思",
+  "first_step": 44,
+  "final_step": 45,
+  "beats": 2,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "separable",
+  "title": "能用一條線分開，才有有限次停止的保證",
+  "source_section": "§4〔補充〕",
+  "first_step": 46,
+  "final_step": 47,
+  "beats": 2,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "rate",
+  "title": "從全零開始，正的學習率只會縮放權重",
+  "source_section": "§4〔補充〕",
+  "first_step": 48,
+  "final_step": 50,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 19,
+  "kind": "batch",
+  "title": "批次先把修正量加起來，再更新一次",
+  "source_section": "§2",
+  "first_step": 51,
+  "final_step": 53,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 20,
+  "kind": "next",
+  "title": "把標籤換成正負一，下一步看幾何",
+  "source_section": "留給下一知識點問題",
+  "first_step": 54,
+  "final_step": 55,
+  "beats": 2,
+  "extension": false
+ },
+ {
+  "page": 21,
+  "kind": "practice1",
+  "title": "延伸：這一筆要不要更新",
+  "source_section": "小練習1",
+  "first_step": 56,
+  "final_step": 57,
+  "beats": 2,
+  "extension": true
+ },
+ {
+  "page": 22,
+  "kind": "practice2",
+  "title": "延伸：換了資料順序，哪一筆先更新",
+  "source_section": "小練習2",
+  "first_step": 58,
+  "final_step": 59,
+  "beats": 2,
+  "extension": true
+ },
+ {
+  "page": 23,
+  "kind": "practice3",
+  "title": "延伸：學習率變兩倍，預測為什麼不變",
+  "source_section": "小練習3",
+  "first_step": 60,
+  "final_step": 61,
+  "beats": 2,
+  "extension": true
+ },
+ {
+  "page": 24,
+  "kind": "quiz1",
+  "title": "自我檢核：誰在一九五八年提出感知器",
+  "source_section": "自我檢核1",
+  "first_step": 62,
+  "final_step": 63,
+  "beats": 2,
+  "extension": true
+ },
+ {
+  "page": 25,
+  "kind": "quiz2",
+  "title": "自我檢核：這和 Hebbian 規則有何不同",
+  "source_section": "自我檢核2",
+  "first_step": 64,
+  "final_step": 65,
+  "beats": 2,
+  "extension": true
+ },
+ {
+  "page": 26,
+  "kind": "quiz3",
+  "title": "自我檢核：猜對時，權重會怎麼變",
+  "source_section": "自我檢核3",
+  "first_step": 66,
+  "final_step": 67,
+  "beats": 2,
+  "extension": true
+ },
+ {
+  "page": 27,
+  "kind": "quiz4",
+  "title": "自我檢核：批次版怎麼回到單筆版",
+  "source_section": "自我檢核4",
+  "first_step": 68,
+  "final_step": 69,
+  "beats": 2,
+  "extension": true
+ }
+]

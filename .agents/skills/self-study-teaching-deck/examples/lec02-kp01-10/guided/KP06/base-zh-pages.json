@@ -1,0 +1,312 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP06 活化函數",
+  "source_section": "前言、學習目標",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "map",
+  "title": "13 種函數，先找到各自的家族",
+  "source_section": "§1",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "linear",
+  "title": "Linear 原樣通過輸入",
+  "source_section": "§1",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "step",
+  "title": "階梯與 Sign：跳得動，梯度卻傳不動",
+  "source_section": "§1、§4",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "softmax",
+  "title": "Softmax 把整組分數變成一份分配",
+  "source_section": "§2",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "softmaxcalc",
+  "title": "先取指數，再除以同一個總和",
+  "source_section": "§2 手算",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "softmaxjac",
+  "title": "改一個分數，整份分配都跟著改",
+  "source_section": "§1、§2",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "sigmoid",
+  "title": "Sigmoid 把輸入擠進零與一之間",
+  "source_section": "§1、§2",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "tanh",
+  "title": "tanh 以零為中心，兩端仍會飽和",
+  "source_section": "§1、§2",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "gaussian",
+  "title": "Gaussian 是鐘形，不是 S 形",
+  "source_section": "§1",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "gradient",
+  "title": "五個小斜率連乘，訊號迅速縮小",
+  "source_section": "§2",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "relu",
+  "title": "ReLU 的正側斜率一直是一",
+  "source_section": "§1、§3、§4",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "dying",
+  "title": "所有相關輸入都落在負側，ReLU 會卡住",
+  "source_section": "§3",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "leaky",
+  "title": "Leaky ReLU 留一條很小的負側斜坡",
+  "source_section": "§1、§3",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "prelu",
+  "title": "PReLU 把負側斜率交給訓練",
+  "source_section": "§1、§3",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "elu",
+  "title": "ELU 在負側彎向一個下限",
+  "source_section": "§1、§3",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "softplus",
+  "title": "Softplus 把 ReLU 的折角磨圓",
+  "source_section": "§1、§3",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "minus",
+  "title": "負二輸入：四個函數走出不同路線",
+  "source_section": "§3 圖、例子",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 19,
+  "kind": "plus",
+  "title": "正二輸入：Softplus 還沒等同 ReLU",
+  "source_section": "§3 圖、例子",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 20,
+  "kind": "maxout",
+  "title": "Maxout 讓多條仿射分支競爭",
+  "source_section": "§1、§4",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 21,
+  "kind": "hidden",
+  "title": "隱藏層先試 ReLU 家族，再觀察問題",
+  "source_section": "§4",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 22,
+  "kind": "output",
+  "title": "輸出活化由預測任務決定",
+  "source_section": "§4",
+  "first_step": 64,
+  "final_step": 66,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 23,
+  "kind": "derive",
+  "title": "Sigmoid 與 Softplus 的導數接得起來",
+  "source_section": "補充推導",
+  "first_step": 67,
+  "final_step": 69,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 24,
+  "kind": "next",
+  "title": "有了輸出，下一步要衡量錯多少",
+  "source_section": "銜接KP07",
+  "first_step": 70,
+  "final_step": 72,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 25,
+  "kind": "practice1",
+  "title": "練習一：算出 Sigmoid 的值與斜率",
+  "source_section": "延伸練習1",
+  "first_step": 73,
+  "final_step": 75,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 26,
+  "kind": "practice2",
+  "title": "練習二：三個分數都相同會怎樣",
+  "source_section": "延伸練習2",
+  "first_step": 76,
+  "final_step": 78,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 27,
+  "kind": "practice3",
+  "title": "練習三：全負輸入時，兩條路有何差別",
+  "source_section": "延伸練習3",
+  "first_step": 79,
+  "final_step": 81,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 28,
+  "kind": "quiz1",
+  "title": "自我檢核一：ReLU 的常見優勢是什麼",
+  "source_section": "小測驗1",
+  "first_step": 82,
+  "final_step": 84,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 29,
+  "kind": "quiz2",
+  "title": "自我檢核二：哪一種會把整組正規化",
+  "source_section": "小測驗2",
+  "first_step": 85,
+  "final_step": 87,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 30,
+  "kind": "quiz3",
+  "title": "自我檢核三：什麼情況叫 dying ReLU",
+  "source_section": "小測驗3",
+  "first_step": 88,
+  "final_step": 90,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 31,
+  "kind": "quiz4",
+  "title": "自我檢核四：PReLU 與 Leaky 差在哪裡",
+  "source_section": "小測驗4",
+  "first_step": 91,
+  "final_step": 93,
+  "beats": 3,
+  "extension": true
+ }
+]

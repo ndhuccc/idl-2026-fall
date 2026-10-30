@@ -1,0 +1,1287 @@
+[
+  {
+    "kind": "intro",
+    "title": "一層隱藏層能逼近，但不保證學得會",
+    "title_en": "One hidden layer can approximate; learning is another question",
+    "takeaway": "先分清「有參數能做到」與「訓練能找到」。",
+    "takeaway_en": "Separate the existence of a fit from finding it by training.",
+    "source_anchors": [
+      "學習目標",
+      "重點:一句話重點",
+      "重點:白話說明"
+    ],
+    "bridge": "承接 KP09：換過座標後，一層隱藏層能表示多少？",
+    "bridge_en": "From KP09: how much can a transformed feature space represent?",
+    "visual": "目標曲線到單隱藏層再到逼近曲線，另分學習問號",
+    "math": [],
+    "notes": [
+      "KP09用手選的局部基函數解XOR。現在問更一般的問題：任意連續目標，是否有一個足夠寬的單隱藏層網路能逼近？萬有逼近定理回答存在性。像積木足夠能拼出形狀，是表示能力的比喻；它沒有交代要幾塊或如何拼。本單元依序看條件、親手構造、證明骨架與學習限制。",
+      "KP09 solved XOR using hand-picked local features. We now ask whether a sufficiently wide single hidden layer can approximate any continuous target. Universal approximation answers an existence question. Enough building blocks can represent a shape, but that analogy supplies neither a block count nor assembly instructions. We will study conditions, a construction, a proof outline and limitations."
+    ],
+    "self_check": false,
+    "new_terms": [],
+    "numbers": [],
+    "page": 1,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "network",
+    "title": "輸出是多個隱藏單元的加權和",
+    "title_en": "The output is a weighted sum of hidden units",
+    "takeaway": "輸入權重、偏置與輸出權重各有不同角色。",
+    "takeaway_en": "Input weights, biases and output weights have different roles.",
+    "source_anchors": [
+      "符號表",
+      "1. 定理說了什麼"
+    ],
+    "bridge": "先看定理談的是哪一種網路。",
+    "bridge_en": "First identify the network used by the theorem.",
+    "visual": "三輸入到三個示意隱藏單元再匯出線性和，完整公式",
+    "math": [
+      "F(\\mathbf x)=\\sum_{i=1}^{N}\\alpha_i\\sigma(\\mathbf w_i^\\top\\mathbf x+\\theta_i)",
+      "z_i=\\mathbf w_i^\\top\\mathbf x+\\theta_i"
+    ],
+    "notes": [
+      "輸入向量x有n個座標；第i個隱藏單元先用wi做加權和，加偏置theta_i，再套同一個活化函數sigma。最後用alpha_i把N個反應線性加總，輸出為實數。圖只畫三顆代表任意N，不是把N固定為三。注意定理允許輸出權重正也可以負，輸出層不必再經sigmoid。 圖中的z_i就是第i顆活化之前的加權和加偏置；最後一顆用索引N，表示圖只示意三個位置。",
+      "The vector x has n coordinates. Hidden unit i forms a weighted sum with w_i, adds theta_i and applies the common activation sigma. The output combines N responses using real coefficients alpha_i. Three drawn units represent an arbitrary N. Output weights may be positive or negative, and the output need not pass through another sigmoid. The symbol z_i denotes the pre-activation weighted sum plus bias; the last drawn index N indicates a schematic selection of units."
+    ],
+    "self_check": false,
+    "new_terms": [
+      "輸入向量：一筆資料的多個座標",
+      "輸入權重與偏置：決定單元何時反應",
+      "活化函數：把加權和轉成非線性反應",
+      "輸出權重：各個反應在總和中的係數",
+      "隱藏單元數與輸入維度：兩個不同的數量"
+    ],
+    "numbers": [],
+    "page": 2,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "conditions",
+    "title": "先核對活化、目標與定義域的條件",
+    "title_en": "Check the activation, target and domain assumptions",
+    "takeaway": "本版要求活化連續、有界、非常數，目標連續且域緊緻。",
+    "takeaway_en": "This version uses a continuous bounded nonconstant activation and a continuous target on a compact domain.",
+    "source_anchors": [
+      "1. 定理說了什麼",
+      "來源更正與取捨"
+    ],
+    "bridge": "有了網路結構，哪些函數適用這個版本？",
+    "bridge_en": "With the network defined, which functions meet this version’s assumptions?",
+    "visual": "sigmoid曲線三條條件標記、目標曲線與有界方塊域",
+    "math": [
+      "\\sigma:\\mathbb R\\to\\mathbb R,\\quad f:[0,1]^n\\to\\mathbb R",
+      "\\sigma(s)=\\frac1{1+e^{-s}}"
+    ],
+    "notes": [
+      "連續是沒有跳躍；有界是輸出不會無限大；非常數是至少能對不同輸入有不同反應。標準sigmoid符合這些條件。定義域是閉立方體[0,1]^n，它既封閉又有界，屬於緊緻域；不能把有界但未封閉的任意域直接稱為緊緻。目標f也要連續。這頁只講講義的有界版本，ReLU稍後另談。",
+      "Continuous means no jumps; bounded means outputs stay within finite bounds; nonconstant means some inputs produce different responses. The standard sigmoid satisfies all three. The closed cube [0,1]^n is compact because it is closed and bounded. A merely bounded set need not be compact. The target must be continuous. We will discuss the separate ReLU extension later."
+    ],
+    "self_check": false,
+    "new_terms": [
+      "緊緻域：此處是封閉且有界的立方體"
+    ],
+    "numbers": [],
+    "page": 3,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "quantifiers",
+    "title": "先給目標與容許誤差，才選網路大小",
+    "title_en": "Choose the target and tolerance before the network size",
+    "takeaway": "不是一組固定參數，同時解決所有目標與精度。",
+    "takeaway_en": "One fixed parameter set is not promised to solve every target and tolerance.",
+    "source_anchors": [
+      "1. 定理說了什麼",
+      "重點:正式定義"
+    ],
+    "bridge": "條件成立後，讀清楚「任意」和「存在」的順序。",
+    "bridge_en": "Once the assumptions hold, read the order of “every” and “there exists”.",
+    "visual": "任意f到任意epsilon到存在N及參數再到誤差小於epsilon的四步原生流程",
+    "math": [
+      "\\forall f\\in C([0,1]^n),\\quad\\forall\\varepsilon>0",
+      "\\exists N,\\alpha_i,\\mathbf w_i,\\theta_i:\\quad\\|f-F\\|_\\infty<\\varepsilon"
+    ],
+    "notes": [
+      "先挑一個連續目標f，再要求一個正的容許誤差epsilon。定理說你可以為這對目標與誤差選擇網路寬度及參數。epsilon越小時，所需的N與參數可以改變；不是固定N就能同時達到所有精度，也不是有一組通用權重可以表示所有函數。這個量詞順序正是存在定理的重點。",
+      "First choose a continuous target f and a positive tolerance epsilon. The theorem then permits choosing a width and parameters for that pair. A tighter tolerance may require different parameters and a different width. It does not assert that one fixed width achieves every precision or that a universal weight set represents every function. This quantifier order is central."
+    ],
+    "self_check": false,
+    "new_terms": [
+      "容許誤差：可以接受的最大偏差",
+      "任意與存在：先給目標與精度，再選參數"
+    ],
+    "numbers": [],
+    "page": 4,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "sup",
+    "title": "一致逼近要控制整個定義域的最大誤差",
+    "title_en": "Uniform approximation controls error over the whole domain",
+    "takeaway": "少數取樣點貼近，不等於已控制所有位置。",
+    "takeaway_en": "Closeness at sampled points does not certify every location.",
+    "source_anchors": [
+      "1. 定理說了什麼",
+      "符號表",
+      "來源更正與取捨"
+    ],
+    "bridge": "容許誤差如何量？看整段最大的垂直差距。",
+    "bridge_en": "How do we measure tolerance? Find the largest vertical gap over the domain.",
+    "visual": "完整目標與偏移曲線及epsilon帶，一段域上最大差距",
+    "math": [
+      "\\|f-F\\|_\\infty=\\sup_{\\mathbf x\\in[0,1]^n}|f(\\mathbf x)-F(\\mathbf x)|",
+      "\\max_{x\\in G}|f(x)-F(x)|\\le\\|f-F\\|_\\infty"
+    ],
+    "notes": [
+      "sup稱上確界，是所有誤差的最小上界。本定理的f和有限網路F連續，域緊緻，所以最大值確實能取到。圖是新增示意：目標加一個小偏移形成另一條曲線，垂直距離表示誤差。若只在有限網格G量最大值，所得數字不超過真正的一致誤差；還需要分析或驗證才能把它當成上界。",
+      "Supremum is the least upper bound of all errors. Here f and the finite network F are continuous on a compact domain, so a maximum is attained. The added schematic uses a small offset to visualize vertical error. A maximum measured only on a finite grid G cannot exceed the true uniform error. Extra analysis is needed to turn sampled evidence into a certified upper bound."
+    ],
+    "self_check": false,
+    "new_terms": [
+      "上確界：所有誤差的最小上界；本設定可取最大值"
+    ],
+    "numbers": [],
+    "page": 5,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "basis",
+    "title": "不同函數族，都能拿來做加權組合",
+    "title_en": "Different function families can form weighted approximations",
+    "takeaway": "這裡的「基底」是生成函數族，不宣稱線性獨立。",
+    "takeaway_en": "Here “basis” means a generating family, not necessarily a linearly independent basis.",
+    "source_anchors": [
+      "1. 定理說了什麼",
+      "自我檢核#4"
+    ],
+    "bridge": "表示定理為何常和 Fourier 級數相比？",
+    "bridge_en": "Why compare a representation theorem with Fourier series?",
+    "visual": "上排正弦基函數加權到目標，下排sigmoid基函數加權到目標",
+    "math": [
+      "\\sum_j c_j\\sin(jx),\\qquad\\sum_i\\alpha_i\\sigma(\\mathbf w_i^\\top\\mathbf x+\\theta_i)"
+    ],
+    "notes": [
+      "Fourier用三角函數的加權和描述訊號，神經網路改用可平移、縮放及轉向的活化單元做加權和。這是表示方法的類比，不是說兩個定理的所有條件相同。講義稱神經元是一組基底，這裡較精確稱生成函數族，因為不保證單元彼此線性獨立或有唯一分解。",
+      "Fourier methods combine trigonometric functions, while neural networks combine shifted, scaled and oriented activation units. This is an analogy between representation methods, not an assertion that all theorem assumptions coincide. The handout’s word “basis” is used informally: the units form a generating family without a guarantee of linear independence or unique coefficients."
+    ],
+    "self_check": false,
+    "new_terms": [],
+    "numbers": [],
+    "page": 6,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "cells",
+    "title": "先把一維定義域切成等寬的小格",
+    "title_en": "Partition the one-dimensional domain into equal cells",
+    "takeaway": "切格數先記為 N；每格寬度是一除以 N。",
+    "takeaway_en": "Let N count cells; each cell has width one over N.",
+    "source_anchors": [
+      "2. 親手建一個逼近：階梯法"
+    ],
+    "bridge": "現在為正弦目標親手設計一組參數。",
+    "bridge_en": "Now construct parameters by hand for a sine target.",
+    "visual": "完整正弦曲線與N5垂直分格及中點",
+    "math": [
+      "f(x)=\\sin(2\\pi x),\\quad x\\in[0,1]",
+      "t_i=\\frac{i}{N},\\quad\\Delta x=\\frac1N,\\quad m_i=\\frac{t_{i-1}+t_i}{2}"
+    ],
+    "notes": [
+      "先做一維構造，目標是[0,1]上的sin(2pi x)。把整段均分成N格，分界點t_i=i/N，中點m_i是左右端點的平均。圖用N=5示範，垂直虛線是分界，不是資料抽樣或訓練結果。本頁的N指格子數，稍後再對應實際的隱藏單元數。",
+      "Use a one-dimensional construction for sin(2 pi x) on [0,1]. Divide the interval into N cells, with boundaries t_i=i/N and midpoint m_i equal to the average of adjacent boundaries. The plot illustrates N=5. Vertical dashed lines are partitions, not data samples or a learned result. Here N counts cells; hidden-unit counting comes later."
+    ],
+    "self_check": false,
+    "new_terms": [
+      "分界點：格子左右邊界",
+      "中點：相鄰邊界的平均"
+    ],
+    "numbers": [],
+    "page": 7,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "heights",
+    "title": "用每格中點的函數值，決定階梯高度",
+    "title_en": "Use midpoint function values as staircase heights",
+    "takeaway": "高度來自目標函數，不是訓練估出的權重。",
+    "takeaway_en": "These heights come from the target function, not training.",
+    "source_anchors": [
+      "2. 親手建一個逼近：階梯法"
+    ],
+    "bridge": "格子有了，每一格該放多高？",
+    "bridge_en": "With cells defined, how high should each one be?",
+    "visual": "N5精算中點星標與五段理想階梯，對應vi公式",
+    "math": [
+      "v_i=f(m_i)=\\sin\\!\\left(2\\pi\\frac{i-1/2}{N}\\right)",
+      "S_N(x)=v_i\\quad(t_{i-1}\\le x<t_i)"
+    ],
+    "notes": [
+      "在每格中點取f的值作為v_i，先得到理想硬階梯S_N。它在每格內是常數，在格界可以跳躍；最後一格包含右端點一。圖中的星形表示中點樣值，水平線的高度就是對應v_i。這個構造用得到目標函數的完整知識，不能因此說一般資料訓練已經解決。",
+      "Take f at each midpoint to obtain v_i and define an ideal hard staircase S_N. It is constant inside each cell and can jump at boundaries; include x=1 in the last cell. Stars denote midpoint values and horizontal segments use those exact heights. This construction assumes access to the target function, so it does not solve learning from arbitrary finite data."
+    ],
+    "self_check": false,
+    "new_terms": [
+      "理想階梯：每格內固定高度的函數"
+    ],
+    "numbers": [],
+    "page": 8,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "steep",
+    "title": "很陡的 sigmoid 近似跳躍，但仍然平滑",
+    "title_en": "A steep sigmoid approximates a jump but remains smooth",
+    "takeaway": "有限陡度不會變成每格精確常數。",
+    "takeaway_en": "Finite steepness does not make an exactly constant staircase.",
+    "source_anchors": [
+      "2. 親手建一個逼近：階梯法",
+      "來源更正與取捨"
+    ],
+    "bridge": "如何用連續的神經元接近階梯的跳躍？",
+    "bridge_en": "How can a continuous neuron approximate a staircase jump?",
+    "visual": "同一分界上的硬階梯與k20、2000三條精算曲線",
+    "math": [
+      "\\sigma(k(x-t))=\\frac1{1+e^{-k(x-t)}}",
+      "\\sigma(0)=\\frac12,\\quad k>0"
+    ],
+    "notes": [
+      "平移t設定跳躍位置，正的k控制陡度。有限k的sigmoid在左右只是接近零與一，並不真的切成硬階梯；在x=t永遠等於二分之一。硬階梯有跳躍，連續函數也不能在跳點附近以任意小的一致誤差逼近它本身。我們最終要逼近的是連續f，不能把這個直觀構造當成對所有不連續函數的定理。",
+      "The shift t locates the transition and positive k controls steepness. At finite k, values approach zero and one without becoming a hard step; the value at x=t is always one half. Continuous functions cannot uniformly approximate a discontinuous step arbitrarily closely across its jump. Our final target is continuous f, so this intuition is not a theorem about arbitrary discontinuous functions."
+    ],
+    "self_check": false,
+    "new_terms": [],
+    "numbers": [],
+    "page": 9,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "jumps",
+    "title": "每次只加相鄰高度差，總和便會接起來",
+    "title_en": "Adding adjacent height differences builds the staircase",
+    "takeaway": "各次跳躍的累加會消去中間項。",
+    "takeaway_en": "Successive jumps telescope: intermediate terms cancel.",
+    "source_anchors": [
+      "2. 親手建一個逼近：階梯法"
+    ],
+    "bridge": "知道單次跳躍後，怎麼把多格接成一條階梯？",
+    "bridge_en": "Once one transition is understood, how do we join all cells?",
+    "visual": "N5第一高度和四跳躍幅度的瀑布圖加telescoping公式",
+    "math": [
+      "\\alpha_i=v_{i+1}-v_i",
+      "v_1+\\sum_{i=1}^{j-1}(v_{i+1}-v_i)=v_j",
+      "F_{N,k}(x)=v_1+\\sum_{i=1}^{N-1}\\alpha_i\\sigma(k(x-t_i))"
+    ],
+    "notes": [
+      "先放第一高度v1，再在每個格界加下一格減上一格的差alpha_i。向下走時alpha可以是負的。若跳躍單元是理想零一開關，在第j格，前j減一次跳躍已開啟，所以和會望遠鏡式消去，只剩v_j。換成有限k的sigmoid後，最後公式是平滑近似，不再精確等於v_j。",
+      "Start at v1, then add each adjacent difference alpha_i=v_(i+1)-v_i at its boundary. Downward jumps require negative coefficients. With ideal zero–one switches, the first j-1 transitions are active in cell j and the sum telescopes to v_j. Replacing switches by finite-k sigmoids produces the smooth approximation shown by the final formula, not exact cellwise equality."
+    ],
+    "self_check": false,
+    "new_terms": [
+      "跳躍幅度：下一個高度減目前高度"
+    ],
+    "numbers": [],
+    "page": 10,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "parameters",
+    "title": "格界、陡度與高度差，各對應一種參數",
+    "title_en": "Boundaries, steepness and jumps map to network parameters",
+    "takeaway": "$N$ 格使用 $N-1$ 個跳躍單元，再加常數項。",
+    "takeaway_en": "$N$ cells use $N-1$ transition units plus a constant.",
+    "source_anchors": [
+      "2. 親手建一個逼近：階梯法",
+      "符號表",
+      "來源更正與取捨"
+    ],
+    "bridge": "這條階梯公式真的是一層隱藏層網路嗎？",
+    "bridge_en": "Is the staircase formula really a one-hidden-layer network?",
+    "visual": "三個格界單元到輸出與額外常數通道，參數對應",
+    "math": [
+      "w_i=k,\\quad\\theta_i=-kt_i,\\quad\\alpha_i=v_{i+1}-v_i",
+      "v_1=2v_1\\sigma(0\\cdot x+0)"
+    ],
+    "notes": [
+      "代入w_i=k和theta_i=-kt_i，每個隱藏單元就在t_i附近切換；輸出權重是高度差。公式另有常數v1，可以當輸出偏置。若一定要符合沒有顯式輸出偏置的定理形式，標準sigmoid零輸入是二分之一，用一顆w=0、theta=0、輸出權重2v1的固定單元即可表示常數。因此N格有N減一個轉換單元；把常數也算一顆才是N顆。",
+      "With w_i=k and theta_i=-k t_i, each unit switches near t_i and its output coefficient is the height difference. The constant v1 can be an output bias. To match the theorem’s form without an explicit output bias, use one constant sigmoid unit: w=0, theta=0 and output weight 2v1. Thus N cells require N-1 transition units, or N hidden units if the constant is counted."
+    ],
+    "self_check": false,
+    "new_terms": [],
+    "numbers": [],
+    "page": 11,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "curve5",
+    "title": "同一構造：5 格的平滑階梯貼近目標",
+    "title_en": "The same construction with 5 cells follows the target",
+    "takeaway": "圖中參數由公式指定，沒有執行訓練。",
+    "takeaway_en": "All plotted parameters are constructed; no training is performed.",
+    "source_anchors": [
+      "2. 親手建一個逼近：階梯法",
+      "重點:圖"
+    ],
+    "bridge": "把剛才的公式代入原程式，看看整段函數。",
+    "bridge_en": "Substitute the construction into the original source calculation.",
+    "visual": "4001點完整目標和有限k近似曲線，精算網格最大誤差標記",
+    "math": [
+      "F_{N,2000}(x)=v_1+\\sum_{i=1}^{N-1}(v_{i+1}-v_i)\\sigma(2000(x-t_i))",
+      "N=5,\\quad G=\\{j/4000:j=0,\\ldots,4000\\}"
+    ],
+    "notes": [
+      "本頁重現來源程式的N=5，k=2000，用4001個等距網格點。紫線是目標sin(2pi x)，藍線是完整sigmoid和，不用手畫階梯替代。從端點與格內偏差觀察逼近誤差。這個結果展示一個特定目標與手工構造，不證明一般誤差隨寬度一定單調，也不是訓練曲線。",
+      "This page reproduces N=5, k=2000 on the source’s 4001 equally spaced points. Purple is sin(2 pi x); blue is the actual sigmoid sum, not an invented hard staircase. Inspect endpoint and within-cell deviations. This is one target and a hand construction, not a learning curve or a proof that all errors decrease monotonically with width."
+    ],
+    "self_check": false,
+    "new_terms": [],
+    "numbers": [
+      "source_grid_points",
+      "sigmoid_k",
+      "sampled_max_errors",
+      "N320_sampled_error"
+    ],
+    "page": 12,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "curve20",
+    "title": "同一構造：20 格的平滑階梯貼近目標",
+    "title_en": "The same construction with 20 cells follows the target",
+    "takeaway": "圖中參數由公式指定，沒有執行訓練。",
+    "takeaway_en": "All plotted parameters are constructed; no training is performed.",
+    "source_anchors": [
+      "2. 親手建一個逼近：階梯法",
+      "重點:圖"
+    ],
+    "bridge": "增加切格數，沿用相同構造與陡度。",
+    "bridge_en": "Increase the cell count while retaining the construction and steepness.",
+    "visual": "4001點完整目標和有限k近似曲線，精算網格最大誤差標記",
+    "math": [
+      "F_{N,2000}(x)=v_1+\\sum_{i=1}^{N-1}(v_{i+1}-v_i)\\sigma(2000(x-t_i))",
+      "N=20,\\quad G=\\{j/4000:j=0,\\ldots,4000\\}"
+    ],
+    "notes": [
+      "本頁重現來源程式的N=20，k=2000，用4001個等距網格點。紫線是目標sin(2pi x)，藍線是完整sigmoid和，不用手畫階梯替代。從端點與格內偏差觀察逼近誤差。這個結果展示一個特定目標與手工構造，不證明一般誤差隨寬度一定單調，也不是訓練曲線。",
+      "This page reproduces N=20, k=2000 on the source’s 4001 equally spaced points. Purple is sin(2 pi x); blue is the actual sigmoid sum, not an invented hard staircase. Inspect endpoint and within-cell deviations. This is one target and a hand construction, not a learning curve or a proof that all errors decrease monotonically with width."
+    ],
+    "self_check": false,
+    "new_terms": [],
+    "numbers": [
+      "source_grid_points",
+      "sigmoid_k",
+      "sampled_max_errors",
+      "N320_sampled_error"
+    ],
+    "page": 13,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "errors",
+    "title": "格數加倍，這組誤差大約減半",
+    "title_en": "Doubling cells roughly halves these measured errors",
+    "takeaway": "這六個點是固定網格上的最大值，不是普遍定律。",
+    "takeaway_en": "These six points are grid maxima, not a universal law.",
+    "source_anchors": [
+      "2. 親手建一個逼近：階梯法",
+      "重點:例子",
+      "重點:圖",
+      "來源更正與取捨"
+    ],
+    "bridge": "把不同格數放到同一張誤差圖上比較。",
+    "bridge_en": "Compare several cell counts on one error plot.",
+    "visual": "真實六點loglog圖及完整六值表，同頁定義網格誤差",
+    "math": [
+      "e_G(N)=\\max_{x\\in G}|\\sin(2\\pi x)-F_{N,2000}(x)|",
+      "G=\\{j/4000:j=0,\\ldots,4000\\}"
+    ],
+    "notes": [
+      "來源使用N為3、5、10、20、40、80，實算誤差約0.866、0.588、0.309、0.156、0.0785、0.0393。雙對數圖接近斜率負一，表示這個一維構造大約有反比趨勢。每個點都重算自原始4001點網格，不能把取樣最大值的符號直接寫成已證明的sup。下一頁解釋理想中點階梯為何有pi/N的界。",
+      "The source uses N=3,5,10,20,40,80, yielding about 0.866,0.588,0.309,0.156,0.0785,0.0393. A near minus-one slope on log-log axes indicates an inverse trend for this construction. Every point is recomputed on the original 4001-point grid. These sampled maxima are not certified suprema. Next we derive the pi/N bound for the ideal midpoint staircase."
+    ],
+    "self_check": false,
+    "new_terms": [],
+    "numbers": [
+      "source_grid_points",
+      "sigmoid_k",
+      "sampled_max_errors",
+      "N320_sampled_error"
+    ],
+    "page": 14,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "bound",
+    "title": "理想中點階梯的誤差，不超過斜率乘半格寬",
+    "title_en": "Ideal midpoint error is bounded by slope times half a cell",
+    "takeaway": "$\\pi/N$ 是理想階梯的界，有限 sigmoid 另有平滑誤差。",
+    "takeaway_en": "The $\\pi/N$ bound is for the ideal staircase; finite sigmoids add smoothing error.",
+    "source_anchors": [
+      "2. 親手建一個逼近：階梯法",
+      "來源更正與取捨"
+    ],
+    "bridge": "近似反比的趨勢，能從一格的幾何看出來嗎？",
+    "bridge_en": "Can a single cell explain the inverse trend?",
+    "visual": "單格放大中點至端點半格寬與斜率三角形；完整誤差分解",
+    "math": [
+      "|f\\prime(x)|=|2\\pi\\cos(2\\pi x)|\\le2\\pi",
+      "\\|f-S_N\\|_\\infty\\le 2\\pi\\frac1{2N}=\\frac\\pi N",
+      "\\|f-F_{N,k}\\|_\\infty\\le\\|f-S_N\\|_\\infty+\\|S_N-F_{N,k}\\|_\\infty"
+    ],
+    "notes": [
+      "對正弦目標，最大斜率不超過2pi。在任一格，距中點最多半格1/(2N)，利用平均值定理，f相對中點值的偏差不超過pi/N。這是理想硬階梯S_N的界。有限sigmoid和F還有平滑差距，三角不等式把兩項分開。不能把k有限時的總誤差直接等同pi/N；圖是新增的單格幾何解釋。",
+      "The sine target has slope magnitude at most 2 pi. Every point in a cell is at most 1/(2N) from its midpoint, so the mean value theorem bounds midpoint-value error by pi/N. This concerns the ideal hard staircase S_N. A finite sigmoid sum F has additional smoothing error, separated by the triangle inequality. Its total error is not automatically pi/N. The cell geometry is an added explanation."
+    ],
+    "self_check": false,
+    "new_terms": [],
+    "numbers": [],
+    "page": 15,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "budget",
+    "title": "小誤差可能需要很多單元",
+    "title_en": "A small tolerance may need many units",
+    "takeaway": "這是一維構造的估算，不是定理給的通用寬度。",
+    "takeaway_en": "This is a one-dimensional construction estimate, not a universal width from the theorem.",
+    "source_anchors": [
+      "2. 親手建一個逼近：階梯法",
+      "4. 定理保證什麼、不保證什麼",
+      "重點:例子"
+    ],
+    "bridge": "如果理想誤差要小於零點零一，得切多細？",
+    "bridge_en": "How fine should the ideal partition be for error below 0.01?",
+    "visual": "誤差門檻到N條件到320格的原生流程，另示實算網格誤差",
+    "math": [
+      "\\frac\\pi N<0.01\\quad\\Longrightarrow\\quad N>100\\pi\\approx314.159",
+      "N=320:\\quad\\frac\\pi{320}\\approx0.009817",
+      "e_G(320)=\\max_{x\\in G}|\\sin(2\\pi x)-F_{320,2000}(x)|\\approx0.009855"
+    ],
+    "notes": [
+      "由理想界pi/N小於0.01得到N大於100pi，整數315即可滿足這個理想界；講義以約320表達規模。用來源k=2000再算N=320，網格最大誤差約0.009855，比理想界pi/320約0.009817略大，清楚展示兩者不同。網格數值小於0.01仍不等於嚴格證明整段誤差小於0.01，更不是所有函數只需要320顆。",
+      "The ideal bound pi/N<0.01 requires N>100 pi; integer 315 satisfies that ideal bound, while the handout rounds the scale to about 320. At N=320 and k=2000, the sampled maximum is about 0.009855, slightly above pi/320≈0.009817. This distinguishes ideal and finite-sigmoid errors. A sampled value below 0.01 is not a uniform certificate or a claim that every function needs only 320 units."
+    ],
+    "self_check": false,
+    "new_terms": [],
+    "numbers": [
+      "source_grid_points",
+      "sigmoid_k",
+      "sampled_max_errors",
+      "N320_sampled_error"
+    ],
+    "page": 16,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "dense",
+    "title": "證明目標是：生成空間在連續函數中稠密",
+    "title_en": "The proof aims for density in continuous functions",
+    "takeaway": "稠密表示每個目標附近，都找得到任意精度的近似。",
+    "takeaway_en": "Density means every target has approximations at every tolerance.",
+    "source_anchors": [
+      "3. 四步證明的骨架"
+    ],
+    "bridge": "一維例子提供直觀；一般維度改看證明骨架。",
+    "bridge_en": "The one-dimensional example gives intuition; general dimensions need a proof outline.",
+    "visual": "函數空間大區域內近似族及目標誤差球的示意",
+    "math": [
+      "\\mathcal H_\\sigma=\\operatorname{span}\\{\\sigma(\\mathbf w^\\top\\mathbf x+\\theta)\\}",
+      "\\overline{\\mathcal H_\\sigma}=C([0,1]^n)"
+    ],
+    "notes": [
+      "span表示所有有限線性組合，正是允許任意有限寬度的網路。C([0,1]^n)是所有連續目標的空間，距離採最大誤差。閉包等於整個空間稱為稠密：任意目標附近再小的誤差球，都有網路近似。圖中平面與小點只是函數空間的比喻，不代表函數只有兩維或真的以平面座標編碼。",
+      "Span means all finite linear combinations, corresponding to arbitrary finite network widths. C([0,1]^n) is the space of continuous functions, measured by the uniform norm. Density means its closure is the whole space: every arbitrarily small error ball around every target contains an approximation. The plane and dots are a metaphor for function space, not a two-dimensional encoding of functions."
+    ],
+    "self_check": false,
+    "new_terms": [
+      "張成：有限個單元的所有線性組合",
+      "稠密：每個目標附近都有任意精度的近似",
+      "閉包：連同可任意逼近的極限一起考慮"
+    ],
+    "numbers": [],
+    "page": 17,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "hb",
+    "title": "若不稠密，就存在把整個近似族判為零的非零泛函",
+    "title_en": "If density fails, a nonzero functional annihilates the family",
+    "takeaway": "Hahn–Banach 把「近似不到」轉成一個分離工具。",
+    "takeaway_en": "Hahn–Banach turns failure of approximation into a separating functional.",
+    "source_anchors": [
+      "3. 四步證明的骨架",
+      "自我檢核#2"
+    ],
+    "bridge": "反過來假設：真的有某些連續函數逼近不到。",
+    "bridge_en": "Suppose instead that some continuous functions cannot be approximated.",
+    "visual": "近似子空間與外部目標被分離，原生流程連到非零L",
+    "math": [
+      "\\overline{\\mathcal H_\\sigma}\\ne C([0,1]^n)",
+      "\\exists L\\ne0:\\quad L(h)=0\\quad\\forall h\\in\\mathcal H_\\sigma"
+    ],
+    "notes": [
+      "對閉包不是整個連續函數空間的線性子空間，Hahn–Banach分離定理給一個非零連續線性泛函L，在整個近似族上都取零。泛函是輸入一個函數、輸出一個數的工具；線性表示對加法與數乘保留線性。L非零不是說它對每個函數都非零，而是至少能分辨某個外部函數。",
+      "If the closure is a proper linear subspace, Hahn–Banach provides a nonzero continuous linear functional L that vanishes on the whole approximation family. A functional takes a function and returns a number; linearity respects addition and scalar multiplication. Nonzero does not mean L is nonzero on every function, only that it detects at least one function outside the annihilated subspace."
+    ],
+    "self_check": false,
+    "new_terms": [
+      "泛函：把函數變成數的工具",
+      "連續線性：保留加法、數乘且對小變動穩定"
+    ],
+    "numbers": [],
+    "page": 18,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "riesz",
+    "title": "把抽象泛函，改寫成帶符號測度的積分",
+    "title_en": "Represent the functional by a signed measure integral",
+    "takeaway": "Riesz 表示讓每個神經元都變成一條積分限制。",
+    "takeaway_en": "Riesz representation turns every neuron into an integral constraint.",
+    "source_anchors": [
+      "3. 四步證明的骨架"
+    ],
+    "bridge": "有了泛函 L，如何把它連回活化單元？",
+    "bridge_en": "How does the functional L connect back to activation units?",
+    "visual": "函數進入L輸出數，對應到正負測度加權積分，兩表示用connector",
+    "math": [
+      "L(f)=\\int_{[0,1]^n}f\\,d\\mu",
+      "\\int\\sigma(\\mathbf w^\\top\\mathbf x+\\theta)\\,d\\mu=0\\quad\\forall\\mathbf w,\\theta"
+    ],
+    "notes": [
+      "Riesz表示定理把緊緻域連續函數空間上的連續線性泛函寫成有限帶符號測度的積分。測度可以想成對區域分配的權重，但不是必須非負的機率分布。因為L對所有單元都為零，所以每一種權重與偏置都對應一條積分為零的限制。這一步只是改寫，不是已經推出測度等於零。",
+      "Riesz representation expresses a continuous linear functional on continuous functions over a compact domain as an integral against a finite signed measure. Think of a measure as distributed weighting, but it need not be a nonnegative probability distribution. Since L vanishes on every unit, every weight and bias imposes a zero-integral constraint. Representation alone does not yet imply that the measure is zero."
+    ],
+    "self_check": false,
+    "new_terms": [
+      "帶符號測度：可以有正負的分布權重"
+    ],
+    "numbers": [],
+    "page": 19,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "contradiction",
+    "title": "最後必須證明：所有限制迫使測度為零",
+    "title_en": "The final step must force the measure to be zero",
+    "takeaway": "這是證明最難的步驟；本稿只交代邏輯骨架。",
+    "takeaway_en": "This is the hard step; we present the logical outline, not a full proof.",
+    "source_anchors": [
+      "3. 四步證明的骨架",
+      "來源更正與取捨"
+    ],
+    "bridge": "把每個神經元都積成零，會留下非零測度嗎？",
+    "bridge_en": "Can a nonzero measure integrate every activation unit to zero?",
+    "visual": "所有投影測試進入判別性關卡到mu0與L非0衝突",
+    "math": [
+      "\\int\\sigma(\\mathbf w^\\top\\mathbf x+\\theta)\\,d\\mu=0\\ (\\forall\\mathbf w,\\theta)",
+      "\\Longrightarrow\\ \\mu=0\\ \\Longrightarrow\\ L=0\\quad\\text{but}\\quad L\\ne0"
+    ],
+    "notes": [
+      "關鍵的判別性結果說，足夠豐富的單元能區分測度，若每個單元的積分都為零，只能留下零測度。這與前一步的非零L矛盾，排除不稠密的假設。這一步需要額外的分析論證，不能只喊三個條件就當成證明完成；講義也只保留骨架。Cybenko的sigmoid論證與後來更一般的活化結果應分別看待。",
+      "The key discriminatory result says the units are rich enough to distinguish measures: if every such integral vanishes, the measure must be zero. Then L=0 contradicts the previously obtained nonzero L, ruling out failure of density. This requires substantial analysis, not merely repeating three activation conditions. As in the handout, we give only a skeleton and distinguish Cybenko’s sigmoidal argument from later general results."
+    ],
+    "self_check": false,
+    "new_terms": [
+      "判別性：這族單元的積分足以區分測度"
+    ],
+    "numbers": [],
+    "page": 20,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "limits",
+    "title": "存在性不提供訓練與泛化的保證",
+    "title_en": "Existence does not guarantee training or generalization",
+    "takeaway": "寬度、找法、未見資料與全域收斂，需要另外分析。",
+    "takeaway_en": "Width, parameter search, unseen data and global convergence require separate analysis.",
+    "source_anchors": [
+      "4. 定理保證什麼、不保證什麼"
+    ],
+    "bridge": "證明得到稠密性後，還有哪些問題沒回答？",
+    "bridge_en": "After establishing density, which questions remain open?",
+    "visual": "存在一組參數中央節點，分流到四個待解問題",
+    "math": [],
+    "notes": [
+      "UAT保證對每個目標和容許誤差，有某個足夠寬網路的參數能達標。它的這個存在性敘述沒有給一般的寬度公式、可行的搜尋法、有限資料泛化界或訓練全域收斂保證。不能因我們的一維例有手算公式，就推廣成任何目標的參數都會自動學出來。高維與深度的效率也需要更具體的目標假設。",
+      "UAT guarantees parameters meeting each target and tolerance at some sufficient width. This existence statement supplies no general width formula, practical search procedure, finite-data generalization bound or global training convergence guarantee. A hand construction for one dimension does not mean parameters for arbitrary targets are automatically learned. Efficiency in higher dimensions and with depth requires additional target assumptions."
+    ],
+    "self_check": false,
+    "new_terms": [],
+    "numbers": [],
+    "page": 21,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "myth1q",
+    "title": "學得會任何函數，是定理的承諾嗎？",
+    "title_en": "Does the theorem promise successful learning?",
+    "takeaway": "只知參數存在，還能推論哪些事情？",
+    "takeaway_en": "What follows from parameter existence alone?",
+    "source_anchors": [
+      "常見迷思#1"
+    ],
+    "bridge": "常見迷思：先做判斷，再翻頁核對。",
+    "bridge_en": "Misconception check: decide first, then turn the page.",
+    "visual": "中立問題菱形到兩個未知判斷分支，不標正解",
+    "math": [],
+    "notes": [
+      "只想定理的量詞，先不要看下一頁解析。",
+      "Think about the theorem’s quantifiers before turning to the explanation."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "page": 22,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "myth1a",
+    "title": "存在好參數，不代表訓練一定找到",
+    "title_en": "Good parameters may exist without training finding them",
+    "takeaway": "找參數與未見資料表現，都需要另外的依據。",
+    "takeaway_en": "Parameter search and unseen-data performance need separate evidence.",
+    "source_anchors": [
+      "常見迷思#1",
+      "4. 定理保證什麼、不保證什麼"
+    ],
+    "bridge": "上一頁的判斷，需要把條件和結論分開。",
+    "bridge_en": "The previous question requires separating assumptions and conclusions.",
+    "visual": "兩個不同概念的原生流程對照；ReLU頁用真實曲線",
+    "math": [],
+    "notes": [
+      "定理是存在性，不是每種訓練法都成功的演算法定理。即使訓練資料上找到小誤差，也沒有因此控制未見資料。這三個問題應分開：有沒有、找不找得到、找到了泛化好不好。",
+      "The theorem concerns existence, not success of every training algorithm. A small error on training samples does not automatically control unseen data. Separate existence, optimization and generalization."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "page": 23,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "myth2q",
+    "title": "ReLU 無界，就完全沒有逼近能力嗎？",
+    "title_en": "Does unbounded ReLU lack approximation power?",
+    "takeaway": "分清「不符合本版條件」與「任何版本都不成立」。",
+    "takeaway_en": "Distinguish failure of this version’s assumptions from failure of all versions.",
+    "source_anchors": [
+      "常見迷思#2"
+    ],
+    "bridge": "常見迷思：先做判斷，再翻頁核對。",
+    "bridge_en": "Misconception check: decide first, then turn the page.",
+    "visual": "中立問題菱形到兩個未知判斷分支，不標正解",
+    "math": [],
+    "notes": [
+      "回想本頁問的是定理適用範圍，不是背誦活化名稱。",
+      "Consider theorem scope, not just an activation name."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "page": 24,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "myth2a",
+    "title": "ReLU 需要用另一個非多項式版本",
+    "title_en": "ReLU is covered by a different nonpolynomial version",
+    "takeaway": "連續且非多項式的活化，有更一般的逼近結果。",
+    "takeaway_en": "A broader result covers continuous nonpolynomial activations.",
+    "source_anchors": [
+      "常見迷思#2",
+      "來源更正與取捨"
+    ],
+    "bridge": "上一頁的判斷，需要把條件和結論分開。",
+    "bridge_en": "The previous question requires separating assumptions and conclusions.",
+    "visual": "兩個不同概念的原生流程對照；ReLU頁用真實曲線",
+    "math": [
+      "\\operatorname{ReLU}(x)=\\max(0,x)"
+    ],
+    "notes": [
+      "ReLU連續但無界，所以不能直接套本課的有界版本。講義引用Leshno等人1993的擴展：在連續活化的設定，非多項式條件可得到稠密性；ReLU不是一個全域多項式。這是文獻性補充，不在此重證。固定次數的多項式活化有限線性組合仍只有固定次數，無法任意逼近所有連續函數。",
+      "ReLU is continuous but unbounded, so this bounded version does not directly apply. The handout cites the Leshno et al. 1993 extension: in the continuous setting, nonpolynomial activations yield density. ReLU is not a single global polynomial. This is a cited extension, not reproved here. Fixed-degree polynomial activations generate only bounded-degree polynomial sums."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "page": 25,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "myth3q",
+    "title": "一層已足夠，深度就沒有價值嗎？",
+    "title_en": "If one layer suffices, is depth useless?",
+    "takeaway": "能表示與能有效率地表示，是同一個問題嗎？",
+    "takeaway_en": "Are representation and efficient representation the same question?",
+    "source_anchors": [
+      "常見迷思#3"
+    ],
+    "bridge": "常見迷思：先做判斷，再翻頁核對。",
+    "bridge_en": "Misconception check: decide first, then turn the page.",
+    "visual": "中立問題菱形到兩個未知判斷分支，不標正解",
+    "math": [],
+    "notes": [
+      "先想「存在某個很寬網路」是否等同「容易計算」。",
+      "Ask whether existence of a very wide network means efficient computation."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "page": 26,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "myth3a",
+    "title": "一層足夠是能力結論，不是效率結論",
+    "title_en": "One-layer sufficiency is not an efficiency guarantee",
+    "takeaway": "深度對某些函數能節省資源，不是一律更省。",
+    "takeaway_en": "Depth can save resources for some functions, not necessarily all.",
+    "source_anchors": [
+      "常見迷思#3",
+      "4. 定理保證什麼、不保證什麼"
+    ],
+    "bridge": "上一頁的判斷，需要把條件和結論分開。",
+    "bridge_en": "The previous question requires separating assumptions and conclusions.",
+    "visual": "兩個不同概念的原生流程對照；ReLU頁用真實曲線",
+    "math": [],
+    "notes": [
+      "單隱藏層的稠密性沒有估算代價。某些具有組合結構的函數可由深網路更有效率表示；這要靠額外的分離或效率結果，不是UAT直接給的結論。不能宣稱每個目標加深都會更小、更易訓練或泛化更好。",
+      "Density of a single hidden layer does not estimate cost. Some compositional functions admit more efficient deep representations, which requires additional separation or efficiency results. UAT alone does not say every target becomes smaller, easier to train or better at generalizing with more depth."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "page": 27,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "timeline",
+    "title": "六個模型要按機制與歷史脈絡回顧",
+    "title_en": "Review six models by mechanism and historical context",
+    "takeaway": "MLP 的一九八六年，指反向傳播的普及。",
+    "takeaway_en": "For MLP, 1986 marks the popularization of backpropagation.",
+    "source_anchors": [
+      "想深入",
+      "來源更正與取捨"
+    ],
+    "bridge": "走過存在性與限制後，回頭整理本章模型。",
+    "bridge_en": "After the theorem and limitations, revisit the chapter’s models.",
+    "visual": "六節點時間線1943到1988；每模型短語標示是否學習與機制",
+    "math": [],
+    "notes": [
+      "沿用講義時間線：M-P1943、Perceptron1958、ADALINE1960、SOM1982、MLP1986、RBF1988。MLP的1986不是多層想法第一次出現，而是反向傳播普及的重要節點。共同的神經元靈感不代表相同訓練機制：M-P是固定邏輯單元，ADALINE訓練用線性輸出，SOM沒有標籤；UAT也不是對六種模型一概都給相同的保證。",
+      "The handout’s sequence is M-P 1943, Perceptron 1958, ADALINE 1960, SOM 1982, MLP 1986 and RBF 1988. For MLP, 1986 marks backpropagation’s popularization rather than the first multilayer idea. Shared neuron inspiration does not mean identical mechanisms: M-P is fixed logic, ADALINE trains linear outputs and SOM has no labels. UAT is not a blanket guarantee for all six models."
+    ],
+    "self_check": false,
+    "new_terms": [],
+    "numbers": [],
+    "page": 28,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "practice1q",
+    "title": "練習一：四格中點與三次跳躍是多少？",
+    "title_en": "Practice 1: find four midpoint heights and three jumps",
+    "takeaway": "先算中點值，再算相鄰差；下一頁核對。",
+    "takeaway_en": "Compute midpoint values and then adjacent differences; check next page.",
+    "source_anchors": [
+      "小練習#1"
+    ],
+    "bridge": "把剛學的階梯構造，換成最簡單的直線。",
+    "bridge_en": "Apply the staircase construction to a simple straight line.",
+    "visual": "直線x與四格空白高度，未知v與alpha符號",
+    "math": [
+      "f(x)=x,\\quad x\\in[0,1],\\quad N=4",
+      "v_i=f((t_{i-1}+t_i)/2),\\quad\\alpha_i=v_{i+1}-v_i"
+    ],
+    "notes": [
+      "先暫停，不看下一頁。把[0,1]分為四個等寬格，依序寫四個中點，再把f(x)=x代入得到高度。最後算三個相鄰高度差。題目要的是理想中點階梯參數；暫時不必決定sigmoid陡度。注意格子有四個，但內部格界只有三個。",
+      "Pause before turning the page. Split [0,1] into four equal cells, find their midpoints and evaluate f(x)=x there. Then compute the three consecutive height differences. This asks for ideal midpoint-staircase parameters; no sigmoid steepness is needed yet. Four cells have only three internal boundaries."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [
+      "practice1"
+    ],
+    "page": 29,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "practice1a",
+    "title": "四個高度等距增加，三次跳躍都相同",
+    "title_en": "Four heights increase evenly; all three jumps are equal",
+    "takeaway": "四格只需三個跳躍，另加起始高度。",
+    "takeaway_en": "Four cells need three transitions plus the initial height.",
+    "source_anchors": [
+      "小練習#1",
+      "解題示範"
+    ],
+    "bridge": "先核對四個中點，再把它們接成階梯。",
+    "bridge_en": "Check the midpoints, then connect their values into a staircase.",
+    "visual": "理想x函數四段階梯與中點，四高度表及三跳躍算式",
+    "math": [
+      "m_i=(i-1/2)/4,\\quad v=(0.125,0.375,0.625,0.875)",
+      "\\alpha=(0.375-0.125,0.625-0.375,0.875-0.625)=(0.25,0.25,0.25)",
+      "(t_1,t_2,t_3)=(0.25,0.5,0.75)"
+    ],
+    "notes": [
+      "第i個中點是(i-1/2)/4，所以高度為0.125、0.375、0.625、0.875。三次相鄰差皆0.25，格界是0.25、0.5、0.75。若你的答案列出四個跳躍，應檢查是否把起始常數也當成內部格界。下一頁把這些數字代回完整網路式，並檢查一個位置和誤差。",
+      "The midpoint (i-1/2)/4 gives heights 0.125,0.375,0.625,0.875. All three adjacent differences are 0.25, at boundaries 0.25,0.5,0.75. If you found four transitions, check whether you counted the initial constant as an internal boundary. Next substitute these values into the full network and verify a point and the error."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [
+      "practice1"
+    ],
+    "page": 30,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "practice1check",
+    "title": "代回公式時，要分清理想值與平滑近似",
+    "title_en": "Distinguish ideal values from smooth approximations when substituting",
+    "takeaway": "理想階梯在第三格取零點六二五；有限陡度只是接近。",
+    "takeaway_en": "The ideal third-cell value is 0.625; finite steepness only approaches it.",
+    "source_anchors": [
+      "小練習#1",
+      "解題示範",
+      "來源更正與取捨"
+    ],
+    "bridge": "高度和跳躍都有了，代回原式檢查。",
+    "bridge_en": "With heights and jumps found, substitute them back.",
+    "visual": "理想階梯與有限k20對比，x.6標點；完整三項sigmoid式",
+    "math": [
+      "F_{4,k}(x)=0.125+0.25[\\sigma(k(x-0.25))+\\sigma(k(x-0.5))+\\sigma(k(x-0.75))]",
+      "S_4(0.6)=0.125+0.25(1+1+0)=0.625",
+      "\\|x-S_4\\|_\\infty=\\frac1{2\\cdot4}=0.125"
+    ],
+    "notes": [
+      "把三個格界和三個相同跳躍代入，得到頁上完整sigmoid和。理想開關在x=0.6時為1、1、0，所以S4取0.625；有限k時三個sigmoid都不是精確零一，F只是接近。圖用新增k=20讓平滑差距看得見。理想階梯對直線的最大誤差為半格0.125；這個精確值不可無條件挪給任意有限k。",
+      "Substitution gives the full three-sigmoid sum. At x=0.6, ideal switches are 1,1,0, so S4=0.625. Finite-k sigmoid outputs are not exactly zero or one, so F is only close. An added k=20 plot makes smoothing visible. The ideal staircase’s exact maximum error for the line is half a cell, 0.125; that value is not automatically exact for arbitrary finite k."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [
+      "practice1"
+    ],
+    "page": 31,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "practice2q",
+    "title": "練習二：理想誤差小於零點零五要幾格？",
+    "title_en": "Practice 2: how many cells make the ideal bound below 0.05?",
+    "takeaway": "請用理想中點階梯的界，注意嚴格不等號。",
+    "takeaway_en": "Use the ideal midpoint bound and respect the strict inequality.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "換個容許誤差，試著自己解出格數。",
+    "bridge_en": "Change the tolerance and solve for the cell count yourself.",
+    "visual": "誤差門檻到N未知流程，無答案",
+    "math": [
+      "\\|\\sin(2\\pi x)-S_N\\|_\\infty\\le\\pi/N",
+      "\\pi/N<0.05\\quad\\Longrightarrow\\quad N=?"
+    ],
+    "notes": [
+      "這題依講義提示，用pi/N做理想階梯的保守估計。先解實數不等式，再找滿足嚴格條件的最小整數。最後說明你算的是格子數，和N減一個跳躍單元加常數的對應。不要把這題答案當成所有有限k網路的最小寬度。",
+      "Follow the handout’s hint and use pi/N as a conservative bound for the ideal staircase. Solve the real inequality and then choose the smallest integer meeting the strict condition. State how cell count maps to transition units plus a constant. Do not interpret the answer as the minimum width of every finite-k network."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "page": 32,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "practice2a",
+    "title": "六十三格滿足這個理想誤差界",
+    "title_en": "Sixty-three cells satisfy this ideal error bound",
+    "takeaway": "這是充分條件，不是所有近似法的最小單元數。",
+    "takeaway_en": "This is sufficient, not a minimum unit count across all approximators.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "把上一頁的不等式解完，並檢查取整。",
+    "bridge_en": "Complete the inequality and check integer rounding.",
+    "visual": "N62與63的pi/N精算數值尺，63越過門檻",
+    "math": [
+      "N>\\pi/0.05=20\\pi\\approx62.831853",
+      "N_{\\min}=63,\\quad\\pi/63\\approx0.049867<0.05"
+    ],
+    "notes": [
+      "理想界小於0.05要求N大於20pi，約62.831853，所以最小整數63。這代表62個跳躍單元加常數；若常數也用單元表示，共63顆。它是利用一個上界得到的充分條件，不表示62格實際一定失敗，更不是其他構造的最低複雜度。有限sigmoid版本還要另外控制平滑誤差。",
+      "The ideal bound requires N>20 pi≈62.831853, so the smallest integer is 63. That means 62 transitions plus a constant, or 63 hidden units if the constant uses a unit. This is a sufficient condition derived from a bound; it does not prove that 62 actual cells fail or that other constructions require this many units. Finite sigmoids require separate smoothing control."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [
+      "practice2"
+    ],
+    "page": 33,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "practice3q",
+    "title": "練習三：為何不能用 UAT 保證訓練成功？",
+    "title_en": "Practice 3: why does UAT not guarantee training success?",
+    "takeaway": "試著分成表示、搜尋與泛化三個問題。",
+    "takeaway_en": "Try separating representation, search and generalization.",
+    "source_anchors": [
+      "小練習#3"
+    ],
+    "bridge": "數值構造做完，回到定理真正回答的問題。",
+    "bridge_en": "After the numerical construction, return to the theorem’s actual claim.",
+    "visual": "存在到訓練到未見資料三關卡，全部問號中立",
+    "math": [],
+    "notes": [
+      "先用自己的話回答，不只寫一句因為沒有保證。指出定理量詞承諾了什麼，再指出演算法、資料與評估有哪些資訊不在其中。想想：只給某組好參數存在，能否知道梯度下降從你的起點一定找到它？找到訓練擬合後又能否知道未見資料誤差？",
+      "Answer in your own words rather than merely saying “no guarantee.” State the theorem’s quantified promise and identify which algorithm, data and evaluation information it lacks. Does existence tell you gradient descent from your initialization will find the fit? Would fitting training data control unseen-data error?"
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "page": 34,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "practice3a",
+    "title": "訓練成功，需要定理以外的演算法與資料證據",
+    "title_en": "Successful training requires algorithmic and data evidence",
+    "takeaway": "有解、找到解、泛化好，是三種不同主張。",
+    "takeaway_en": "Existence, finding a fit and generalization are distinct claims.",
+    "source_anchors": [
+      "小練習#3",
+      "4. 定理保證什麼、不保證什麼"
+    ],
+    "bridge": "把上一頁的三個問題分別回答。",
+    "bridge_en": "Answer the three distinct questions from the previous page.",
+    "visual": "三關卡各自獨立檢查與必要證據標註",
+    "math": [],
+    "notes": [
+      "參考回答：UAT只保證存在某個足夠寬網路和一組參數，沒有指定找到參數的演算法，也沒有說任意初值與步長都能收斂，更沒有說有限樣本訓練後的未見資料誤差。因此訓練成功必須另看最佳化、數值穩定、資料涵蓋與泛化分析。這是依講義主旨新增的參考解析，沒有把演算法結果當成已做過的實驗。",
+      "Suggested answer: UAT guarantees existence at some sufficient width, without a parameter-finding algorithm, convergence from arbitrary initializations and step sizes, or unseen-data performance after finite-sample training. Successful training needs additional optimization, stability, data-coverage and generalization evidence. This explanation is added from the handout’s reasoning, not presented as an experiment."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "page": 35,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "quiz1q",
+    "title": "檢核1：活化函數的核心假設是什麼？",
+    "title_en": "Check 1: What are this version’s activation assumptions?",
+    "takeaway": "先選一項，再到下一頁對照理由。",
+    "takeaway_en": "Choose an option, then compare reasons on the next page.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "自我檢核：獨立作答，不用猜顏色。",
+    "bridge_en": "Self-check: decide independently; the styling does not indicate an answer.",
+    "visual": "四選項全寬兩欄同樣式，中立科學小圖",
+    "math": [],
+    "notes": [
+      "本頁四選項同樣式，沒有正確答案提示。請先選一項，寫下你所用的定理條件或推理，再翻頁核對。",
+      "All four choices have equal styling, with no answer indicator. Select one and state the theorem condition or reasoning you used before turning the page."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "options": [
+      [
+        "必須是 ReLU",
+        "Must be ReLU"
+      ],
+      [
+        "連續、有界、非常數",
+        "Continuous, bounded, nonconstant"
+      ],
+      [
+        "必須可微",
+        "Must be differentiable"
+      ],
+      [
+        "必須有界且可導",
+        "Must be bounded and differentiable"
+      ]
+    ],
+    "page": 36,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "quiz1a",
+    "title": "本版的三項假設缺一不可",
+    "title_en": "This version uses all three stated assumptions",
+    "takeaway": "本版不要求可微；ReLU 另用擴展版本。",
+    "takeaway_en": "Differentiability is not required here; ReLU uses an extension.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "上一頁的選項，現在逐一核對理由。",
+    "bridge_en": "Now check the reasoning behind the previous choices.",
+    "visual": "正解字母對應理由鏈及其他三項排除說明",
+    "math": [],
+    "notes": [
+      "B是講義本版條件。A把特定活化誤認成必要條件；C和D加入不必要的可微性，並未完整保留三個假設。這題只問這個版本，不是否定其他版本。",
+      "B matches this version. A makes one activation mandatory. C and D add unnecessary differentiability while failing to state the full assumptions. The question does not deny other versions."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "answer": 1,
+    "page": 37,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "quiz2q",
+    "title": "檢核2：假設不稠密，反證會得到什麼？",
+    "title_en": "Check 2: What follows from assuming a failure of density?",
+    "takeaway": "先選一項，再到下一頁對照理由。",
+    "takeaway_en": "Choose an option, then compare reasons on the next page.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "自我檢核：獨立作答，不用猜顏色。",
+    "bridge_en": "Self-check: decide independently; the styling does not indicate an answer.",
+    "visual": "四選項全寬兩欄同樣式，中立科學小圖",
+    "math": [],
+    "notes": [
+      "本頁四選項同樣式，沒有正確答案提示。請先選一項，寫下你所用的定理條件或推理，再翻頁核對。",
+      "All four choices have equal styling, with no answer indicator. Select one and state the theorem condition or reasoning you used before turning the page."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "options": [
+      [
+        "非零連續線性泛函 $L$\n湮滅整個近似族",
+        "A nonzero continuous linear functional $L$\nannihilates the approximation family"
+      ],
+      [
+        "存在零泛函",
+        "The zero functional exists"
+      ],
+      [
+        "活化必為常數",
+        "The activation must be constant"
+      ],
+      [
+        "找不到容許誤差",
+        "A tolerance cannot be found"
+      ]
+    ],
+    "page": 38,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "quiz2a",
+    "title": "需要非零泛函，才能在最後形成矛盾",
+    "title_en": "The functional must be nonzero to produce a contradiction",
+    "takeaway": "零泛函本來就存在，不能當作分離工具。",
+    "takeaway_en": "The zero functional always exists and cannot separate the spaces.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "上一頁的選項，現在逐一核對理由。",
+    "bridge_en": "Now check the reasoning behind the previous choices.",
+    "visual": "正解字母對應理由鏈及其他三項排除說明",
+    "math": [],
+    "notes": [
+      "A是反證步驟：由Hahn–Banach得到非零連續線性泛函，在近似族上取零。B雖然永遠有零泛函，卻無法導致矛盾。C與D不是這個定理的結論。原選項只寫線性，解析補上證明所需的連續性。",
+      "A is the Hahn–Banach conclusion: a nonzero continuous linear functional vanishing on the family. The zero functional in B always exists but cannot lead to the needed contradiction. C and D are not the theorem’s conclusions. Continuity is made explicit for the proof."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "answer": 0,
+    "page": 39,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "quiz3q",
+    "title": "檢核3：UAT 保證什麼，又沒有提供什麼？",
+    "title_en": "Check 3: What does UAT guarantee, and what does it not provide?",
+    "takeaway": "先選一項，再到下一頁對照理由。",
+    "takeaway_en": "Choose an option, then compare reasons on the next page.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "自我檢核：獨立作答，不用猜顏色。",
+    "bridge_en": "Self-check: decide independently; the styling does not indicate an answer.",
+    "visual": "四選項全寬兩欄同樣式，中立科學小圖",
+    "math": [],
+    "notes": [
+      "本頁四選項同樣式，沒有正確答案提示。請先選一項，寫下你所用的定理條件或推理，再翻頁核對。",
+      "All four choices have equal styling, with no answer indicator. Select one and state the theorem condition or reasoning you used before turning the page."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "options": [
+      [
+        "保證存在任意精度的逼近，\n不提供一般找參數的方法",
+        "Approximations exist to any tolerance;\nno general parameter-search method is supplied"
+      ],
+      [
+        "保證收斂到全域最佳",
+        "Convergence to a global optimum"
+      ],
+      [
+        "保證不過擬合",
+        "No overfitting"
+      ],
+      [
+        "保證計算複雜度很低",
+        "Low computational complexity"
+      ]
+    ],
+    "page": 40,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "quiz3a",
+    "title": "存在性不能換成低成本或訓練保證",
+    "title_en": "Existence is not a low-cost or training guarantee",
+    "takeaway": "本版存在敘述，沒有一般的實用搜尋法。",
+    "takeaway_en": "This existence statement supplies no general practical search method.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "上一頁的選項，現在逐一核對理由。",
+    "bridge_en": "Now check the reasoning behind the previous choices.",
+    "visual": "正解字母對應理由鏈及其他三項排除說明",
+    "math": [],
+    "notes": [
+      "A對應講義的存在性保證。B是最佳化收斂，C是泛化，D是計算效率，都需要額外條件。來源把這句寫作不提供構造性方法，這裡明確限定本版存在性敘述；不能說所有UAT研究都沒有構造性版本。",
+      "A expresses the handout’s existence claim. B concerns optimization, C generalization and D efficiency, each requiring additional conditions. The absence of a construction is specific to this existence statement; other universal-approximation results can be constructive."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "answer": 0,
+    "page": 41,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "quiz4q",
+    "title": "檢核4：與 Fourier 相比，神經單元扮演什麼角色？",
+    "title_en": "Check 4: Compared with Fourier methods, what role do the units play?",
+    "takeaway": "先選一項，再到下一頁對照理由。",
+    "takeaway_en": "Choose an option, then compare reasons on the next page.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "自我檢核：獨立作答，不用猜顏色。",
+    "bridge_en": "Self-check: decide independently; the styling does not indicate an answer.",
+    "visual": "四選項全寬兩欄同樣式，中立科學小圖",
+    "math": [],
+    "notes": [
+      "本頁四選項同樣式，沒有正確答案提示。請先選一項，寫下你所用的定理條件或推理，再翻頁核對。",
+      "All four choices have equal styling, with no answer indicator. Select one and state the theorem condition or reasoning you used before turning the page."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "options": [
+      [
+        "與三角函數完全無關",
+        "Entirely unrelated to trigonometric functions"
+      ],
+      [
+        "作為生成函數族，\n加權組合來逼近函數",
+        "A generating family whose\nweighted sums approximate functions"
+      ],
+      [
+        "只能逼近線性函數",
+        "Approximate only linear functions"
+      ],
+      [
+        "只能逼近常數函數",
+        "Approximate only constant functions"
+      ]
+    ],
+    "page": 42,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "quiz4a",
+    "title": "兩者都用生成函數的加權組合表示目標",
+    "title_en": "Both combine generating functions to represent a target",
+    "takeaway": "類比的是表示方式，不是逐項相同的基底。",
+    "takeaway_en": "The analogy concerns representation, not identical basis functions.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "上一頁的選項，現在逐一核對理由。",
+    "bridge_en": "Now check the reasoning behind the previous choices.",
+    "visual": "正解字母對應理由鏈及其他三項排除說明",
+    "math": [],
+    "notes": [
+      "B是講義要表達的類比，稱生成函數族更精確，因為不保證線性獨立。A忽略共同的加權表示想法，C和D錯把逼近範圍限制為線性或常數。圖中的曲線只用來呈現表示方式，沒有暗示Fourier條件與UAT完全相同。",
+      "B captures the analogy; generating family is more precise because independence is not guaranteed. A overlooks the shared weighted-representation idea. C and D incorrectly restrict approximation to linear or constant functions. Similar diagrams do not make the two theorems’ assumptions identical."
+    ],
+    "self_check": true,
+    "new_terms": [],
+    "numbers": [],
+    "answer": 1,
+    "page": 43,
+    "note": "原講義解題示範保留；其他解析依講義推理新增。有限sigmoid、取樣最大值、單元計數與歷史限制均明示釐清。"
+  },
+  {
+    "kind": "summary",
+    "title": "把條件、構造、證明與限制接成一條線",
+    "title_en": "Connect assumptions, construction, proof and limitations",
+    "takeaway": "表示能力有理論後盾，學習能力仍須另外驗證。",
+    "takeaway_en": "Representation has theoretical support; learning needs separate validation.",
+    "source_anchors": [
+      "本單元重點整理",
+      "重點:一句話重點",
+      "重點:白話說明",
+      "重點:正式定義",
+      "重點:例子"
+    ],
+    "bridge": "題目都核對後，重新拼起整個單元。",
+    "bridge_en": "After checking the questions, reconnect the whole unit.",
+    "visual": "四階段水平流程，完整UAT公式與一維例回顧",
+    "math": [
+      "\\forall f\\in C([0,1]^n),\\ \\forall\\varepsilon>0,\\ \\exists F:\\ \\|f-F\\|_\\infty<\\varepsilon"
+    ],
+    "notes": [
+      "先核對活化連續有界非常數、目標連續與緊緻域。再讀量詞：每個目標與容許誤差，都可選某個有限寬度與參數。一維階梯給親手構造；一般證明靠稠密、非零泛函、帶符號測度與判別性矛盾。最後記得存在性不提供一般寬度成本、參數搜尋、泛化或全域收斂。重看你曾選錯的題目，比只背一句定理更有效。",
+      "Check activation continuity, boundedness and nonconstancy, a continuous target and a compact domain. For each target and tolerance, some finite width and parameters suffice. The one-dimensional staircase offers a construction; the general outline uses density, a nonzero functional, a signed measure and a discriminatory contradiction. Existence alone does not supply width cost, search, generalization or global convergence. Revisit your missed questions rather than only memorizing the statement."
+    ],
+    "self_check": false,
+    "new_terms": [],
+    "numbers": [],
+    "page": 44,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  },
+  {
+    "kind": "next",
+    "title": "第三章要回答：隱藏層權重怎麼自己學？",
+    "title_en": "Chapter 3 asks how hidden-layer weights can be learned",
+    "takeaway": "從「能表示」，走向梯度下降與反向傳播。",
+    "takeaway_en": "Move from representation to gradient descent and backpropagation.",
+    "source_anchors": [
+      "重點:留給下一個知識點的問題"
+    ],
+    "bridge": "第二章已說明能表示什麼，下一步是怎麼學。",
+    "bridge_en": "Chapter 2 established what can be represented; next comes how to learn.",
+    "visual": "目標到損失到反傳梯度到更新的原生連接循環，不假稱已執行",
+    "math": [
+      "\\boldsymbol\\theta^+=\\boldsymbol\\theta-\\eta\\nabla_{\\boldsymbol\\theta}L"
+    ],
+    "notes": [
+      "本章從固定邏輯、感知器、連續損失到多層、RBF、SOM和表示定理，已建立網路能做什麼的基礎。真正訓練隱藏層時，中間單元沒有直接標籤，怎麼知道每個權重該往哪調？第三章透過鏈式法則計算梯度，用反向傳播傳遞它，再配合梯度下降。這頁只是下一章的問題與一般更新記號，不是宣稱一般神經網路都能收斂到全域最佳。",
+      "The chapter developed fixed logic, perceptrons, continuous losses, multilayer models, RBF, SOM and representation theory. Hidden units do not receive direct target labels, so how do we decide each weight’s update? Chapter 3 uses the chain rule and backpropagation to compute gradients, then gradient descent to update parameters. The diagram previews that process without claiming global convergence for general neural networks."
+    ],
+    "self_check": false,
+    "new_terms": [],
+    "numbers": [],
+    "page": 45,
+    "note": "來源忠實改寫；示意與實算區分，完整白話說明見每拍自學導讀。"
+  }
+]

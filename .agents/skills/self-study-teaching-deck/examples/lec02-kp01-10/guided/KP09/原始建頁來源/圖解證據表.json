@@ -1,0 +1,366 @@
+[
+  {
+    "page": 1,
+    "source_section": "前言與目標",
+    "title": "KP09 RBF 與 SOM",
+    "takeaway": "有標籤學輸出；無標籤排地圖。",
+    "visual": "輸入分流到RBF的局部旗子及SOM橡皮網",
+    "math": [],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 2,
+    "source_section": "§1 高斯基函數",
+    "title": "高斯只在中心附近反應強",
+    "takeaway": "中心值為一；遠離中心時逐漸趨近零。",
+    "visual": "精算一維高斯剖面，中心及一個標準差標註",
+    "math": [
+      "\\phi_i(\\mathbf x)=\\exp\\!\\left(-\\frac{\\|\\mathbf x-\\boldsymbol\\mu_i\\|^2}{2\\sigma_i^2}\\right)",
+      "\\sigma_i>0,\\quad\\phi_i(\\boldsymbol\\mu_i)=1"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 3,
+    "source_section": "§1 RBF流程",
+    "title": "先定中心與寬度，再固定特徵",
+    "takeaway": "本課流程先用 K-means，再只求輸出權重。",
+    "visual": "Kmeans至固定高斯至可訓練線性輸出，標籤只進輸出求解",
+    "math": [],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 4,
+    "source_section": "§1 輸出式",
+    "title": "非線性換座標，線性組合輸出",
+    "takeaway": "輸出對權重是線性的，對原始輸入可非線性。",
+    "visual": "輸入通往兩高斯再合併線性輸出原生連線",
+    "math": [
+      "\\hat y_j=\\sum_{i=1}^{m}w_{ij}\\phi_i(\\mathbf x)"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 5,
+    "source_section": "§1 矩陣符號",
+    "title": "每一欄是一筆資料",
+    "takeaway": "矩陣方向先對齊，乘積才有正確尺寸。",
+    "visual": "m乘n特徵矩陣至k乘n預測矩陣與各維標註",
+    "math": [
+      "\\Phi\\in\\mathbb R^{m\\times n},\\quad\\mathbf W\\in\\mathbb R^{m\\times k}",
+      "\\mathbf Y,\\hat{\\mathbf Y}\\in\\mathbb R^{k\\times n},\\quad\\hat{\\mathbf Y}=\\mathbf W^\\top\\Phi"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 6,
+    "source_section": "§1 最小二乘",
+    "title": "固定特徵後，解一組正規方程",
+    "takeaway": "滿列秩用逆矩陣；奇異時用偽逆求最小範數解。",
+    "visual": "損失到梯度為零到正規方程與兩種解，分步揭露",
+    "math": [
+      "E=\\|\\mathbf Y-\\mathbf W^\\top\\Phi\\|_F^2",
+      "\\Phi\\Phi^\\top\\mathbf W=\\Phi\\mathbf Y^\\top",
+      "\\mathbf W=(\\Phi\\Phi^\\top)^{-1}\\Phi\\mathbf Y^\\top",
+      "\\mathbf W=(\\Phi\\Phi^\\top)^\\dagger\\Phi\\mathbf Y^\\top"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 7,
+    "source_section": "§1 XOR與來源取捨",
+    "title": "XOR：先看原本不能線性分的四點",
+    "takeaway": "兩個中心是手選，這不是 K-means 的結果。",
+    "visual": "XOR四點精確座標加中心十字與半徑.7虛線圈",
+    "math": [
+      "\\boldsymbol\\mu_1=(0,0),\\quad\\boldsymbol\\mu_2=(1,1)",
+      "2\\sigma^2=1,\\quad\\phi_i=e^{-\\|\\mathbf x-\\boldsymbol\\mu_i\\|^2}"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 8,
+    "source_section": "§1 XOR算例",
+    "title": "先算平方距離，再取指數",
+    "takeaway": "四筆到兩中心的平方距離是特徵計算的起點。",
+    "visual": "四列輸入對兩中心的距離矩陣表格，非堆文字卡",
+    "math": [],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 9,
+    "source_section": "§1 XOR表與圖",
+    "title": "兩個不同輸入，可以落在同一特徵點",
+    "takeaway": "兩個正類恰好重疊；對本例分類仍足夠。",
+    "visual": "精確高斯特徵表及特徵座標三個位置，連線對應",
+    "math": [],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 10,
+    "source_section": "§1 XOR、來源取捨",
+    "title": "要精確擬合 XOR，必須加入偏置",
+    "takeaway": "常數一也是基函數；增廣後有三個獨立特徵列。",
+    "visual": "兩高斯加常數基函數至三權重，原生connector",
+    "math": [
+      "\\tilde\\Phi=\\begin{pmatrix}\\Phi\\\\\\mathbf1^\\top\\end{pmatrix}\\in\\mathbb R^{3\\times4}",
+      "\\hat y=a\\phi_1+a\\phi_2+b"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 11,
+    "source_section": "§1 XOR最小二乘",
+    "title": "保留完整精度，才得到精確的零與一",
+    "takeaway": "顯示的權重取近似值；實算使用完整精度。",
+    "visual": "對稱權重a與偏置b兩方程相減求a再求b",
+    "math": [
+      "a(1+e^{-2})+b=0",
+      "a(2e^{-1})+b=1",
+      "a=\\frac{-1}{1+e^{-2}-2e^{-1}}\\approx-2.502650",
+      "b=-a(1+e^{-2})\\approx2.841347"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 12,
+    "source_section": "§1 XOR輸出",
+    "title": "用同一組參數，核對四筆輸出",
+    "takeaway": "完整精度擬合四筆標籤；四捨五入只供閱讀。",
+    "visual": "兩種對稱輸入分組，加權和計算連至精確0和1",
+    "math": [],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 13,
+    "source_section": "§1 XOR分界圖",
+    "title": "在特徵空間，一條直線就夠",
+    "takeaway": "正類的特徵和較小；輸出門檻是零點五。",
+    "visual": "精確三特徵點與分界線，標明重疊兩點與正負側",
+    "math": [
+      "\\hat y=a(\\phi_1+\\phi_2)+b",
+      "\\hat y\\ge0.5\\Longleftrightarrow\\phi_1+\\phi_2\\le\\frac{0.5-b}{a}\\approx0.935547"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 14,
+    "source_section": "選讀、來源取捨",
+    "title": "寬度太大，特徵可能難以區分",
+    "takeaway": "太窄有覆蓋空隙；太寬會造成近線性相依。",
+    "visual": "三組真實高斯剖面，固定中心0和1、不同sigma",
+    "math": [],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 15,
+    "source_section": "§2 SOM介紹",
+    "title": "SOM 學的是原型地圖，不是類別名稱",
+    "takeaway": "沒有標籤；勝者索引不能直接當作語意類別。",
+    "visual": "輸入向量至一維三原型網格，無標籤分支",
+    "math": [],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 16,
+    "source_section": "§2 拓撲與鄰域",
+    "title": "資料空間找勝者，格子空間找鄰居",
+    "takeaway": "固定的是格子鄰接關係；移動的是資料空間原型。",
+    "visual": "資料平面三原型與拓撲一列對照，用跨圖connector",
+    "math": [],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 17,
+    "source_section": "§2 手算一步",
+    "title": "三個距離，決定這次的勝者",
+    "takeaway": "歐氏距離最小的是神經元三。",
+    "visual": "資料平面精確三原型與輸入，右邊逐筆距離完整平方根",
+    "math": [
+      "z=\\arg\\min_j\\|\\mathbf x-\\mathbf w_j\\|_2"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 18,
+    "source_section": "§2 手算鄰域更新",
+    "title": "勝者與左鄰居，一起往輸入靠近",
+    "takeaway": "本例學習率零點五；鄰域外的神經元一不動。",
+    "visual": "原型前後精確座標與移動原生箭頭，並列兩條計算",
+    "math": [
+      "\\mathbf w_3^+=(0.8,0.8)+0.5(0.1,-0.1)=(0.85,0.75)",
+      "\\mathbf w_2^+=(0.5,0.5)+0.5(0.4,0.2)=(0.7,0.6)",
+      "\\mathbf w_1^+=(0.2,0.2)"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 19,
+    "source_section": "§2 五步訓練",
+    "title": "鄰域限制，要寫在更新公式旁",
+    "takeaway": "硬鄰域內同率更新，外面保持原權重。",
+    "visual": "拓撲一列高亮兩格，piecewise向量更新公式",
+    "math": [
+      "j\\in\\mathcal N_z:\\quad\\mathbf w_j^+=\\mathbf w_j+\\eta(\\mathbf x-\\mathbf w_j)",
+      "j\\notin\\mathcal N_z:\\quad\\mathbf w_j^+=\\mathbf w_j",
+      "0<\\eta\\le1"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 20,
+    "source_section": "§2 衰減、來源取捨",
+    "title": "學習率與鄰域都要逐漸縮小",
+    "takeaway": "先整理整體，再做局部微調。",
+    "visual": "時間軸大到小鄰域與講義衰減式索引說明",
+    "math": [
+      "\\eta^{(\\tau+1)}=\\eta^{(0)}(1-\\tau/t)",
+      "\\tau=0,\\ldots,t-1"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 21,
+    "source_section": "SOM圖產圖程式",
+    "title": "圖中實驗用高斯鄰域，並非硬截斷",
+    "takeaway": "格子距離決定影響力；遠處仍有很小的非零更新。",
+    "visual": "8x8格子以第一筆真實BMU之h值透明度精算呈現",
+    "math": [
+      "h_j=\\exp\\!\\left(-\\frac{\\|\\mathbf r_j-\\mathbf r_z\\|^2}{2s_\\tau^2}\\right)",
+      "\\mathbf w_j^+=\\mathbf w_j+\\eta_\\tau h_j(\\mathbf x-\\mathbf w_j)",
+      "\\eta_\\tau=0.5(1-\\tau/4000)+0.01",
+      "s_\\tau=3(1-\\tau/4000)+0.4"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 22,
+    "source_section": "SOM圖與產圖程式",
+    "title": "重跑四千步，橡皮網逐漸攤開",
+    "takeaway": "六十四個原型與一百一十二條鄰接邊，都由實算取得。",
+    "visual": "重現seed0的初始和4000步最終8x8網格同尺度比較",
+    "math": [
+      "\\mathbf w^{(0)}=0.5+0.06\\,\\operatorname{Normal}(0,1)",
+      "\\mathbf x_\\tau\\sim U([0,1]^2),\\quad\\tau=0,\\ldots,3999"
+    ],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 23,
+    "source_section": "重點整理與常見迷思",
+    "title": "RBF 對照 SOM：誰固定、誰移動？",
+    "takeaway": "RBF 用目標學輸出；SOM 用鄰域組織原型。",
+    "visual": "上下兩條流程分別固定局部座標與移動網格，文字少量標註",
+    "math": [],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 24,
+    "source_section": "留給下一知識點的問題",
+    "title": "下一問：一層隱藏層能表示多少？",
+    "takeaway": "換座標的能力，引出萬有逼近定理。",
+    "visual": "三個局部基函數加權至平滑曲線概念流程，不作定理證明",
+    "math": [],
+    "extension": false,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 25,
+    "source_section": "小練習1",
+    "title": "練習一：中點的高斯特徵是多少？",
+    "takeaway": "提示：先算到兩中心的平方距離。",
+    "visual": "手選兩中心與中點座標，空白特徵格不提供答案",
+    "math": [
+      "\\boldsymbol\\mu_1=(0,0),\\quad\\boldsymbol\\mu_2=(1,1),\\quad2\\sigma^2=1",
+      "\\mathbf x=(0.5,0.5),\\quad(\\phi_1,\\phi_2)=?"
+    ],
+    "extension": true,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 26,
+    "source_section": "小練習2",
+    "title": "練習二：選出勝者，再更新一次",
+    "takeaway": "提示：只更新勝者，學習率零點五。",
+    "visual": "兩原型和輸入精確位置，不指示勝者或更新終點",
+    "math": [
+      "\\mathbf w_1=(0,0),\\quad\\mathbf w_2=(1,1),\\quad\\mathbf x=(0.8,0.6)",
+      "\\eta=0.5,\\quad z=?,\\quad\\mathbf w_z^+=?"
+    ],
+    "extension": true,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 27,
+    "source_section": "小練習3",
+    "title": "練習三：為何只學第二層可一次求解？",
+    "takeaway": "提示：先說清楚哪些參數固定。",
+    "visual": "固定基函數到待求權重與全層待求兩流程，無作答提示色差",
+    "math": [],
+    "extension": true,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 28,
+    "source_section": "自我檢核1",
+    "title": "檢核一：中心與寬度如何決定？",
+    "takeaway": "提示：看本課 RBF 第一層的準備流程。",
+    "visual": "四選項中立排列與四面旗子相同圖示",
+    "math": [],
+    "extension": true,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 29,
+    "source_section": "自我檢核2",
+    "title": "檢核二：矩陣奇異時，改用什麼？",
+    "takeaway": "提示：回看最小二乘的秩條件。",
+    "visual": "四公式選項中立排列不標正確答案",
+    "math": [],
+    "extension": true,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 30,
+    "source_section": "自我檢核3",
+    "title": "檢核三：SOM 如何定義勝者？",
+    "takeaway": "提示：回看每筆輸入的第一個選擇步驟。",
+    "visual": "四選項中立排列與等距裝飾節點，不暗示勝者",
+    "math": [],
+    "extension": true,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  },
+  {
+    "page": 31,
+    "source_section": "自我檢核4",
+    "title": "檢核四：哪些神經元要更新？",
+    "takeaway": "提示：題目指講義的硬鄰域更新規則。",
+    "visual": "四選項同色同尺寸不高亮鄰域",
+    "math": [],
+    "extension": true,
+    "source_role": "原講義內容與算例；width為新增剖面概念圖，gaussian/grid為來源程式精算"
+  }
+]

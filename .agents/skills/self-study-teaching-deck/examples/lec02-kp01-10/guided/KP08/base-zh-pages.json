@@ -1,0 +1,342 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP08 ADALINE 與邏輯回歸",
+  "source_section": "前言、目標",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "train",
+  "title": "ADALINE 訓練時，先不切成零或一",
+  "source_section": "§1",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "lms",
+  "title": "平方誤差的梯度，保留誤差大小",
+  "source_section": "§1 LMS定義",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "ordata",
+  "title": "先用四筆 OR 資料把流程走一遍",
+  "source_section": "§1 OR算例",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "orgrad",
+  "title": "把殘差乘輸入，再對整批加總",
+  "source_section": "§1 OR第一步",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "orupdate",
+  "title": "減掉負梯度，三個參數就往上加",
+  "source_section": "§1 OR第一步",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "orloss",
+  "title": "更新後，要重新算一次預測與損失",
+  "source_section": "§1 OR第一步",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "orlimit",
+  "title": "最小平方解分對 OR，損失仍不為零",
+  "source_section": "§1 OR極限",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "orboundary",
+  "title": "兩條邊界在這個 OR 例子中位置不同",
+  "source_section": "§1 原圖左",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "ortrace",
+  "title": "這個步長下，批次平方損失逐步下降",
+  "source_section": "§1 原圖右",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "madaline",
+  "title": "MADALINE 曾嘗試讓多層也能調權重",
+  "source_section": "§1 MADALINE",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "logistic",
+  "title": "邏輯回歸把線性分數轉成類別機率",
+  "source_section": "§2 模型、歷史",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "likelihood",
+  "title": "最大似然，等價於最小化二元交叉熵",
+  "source_section": "§2 似然",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "compare",
+  "title": "更新方向都含「目標減預測」乘輸入",
+  "source_section": "§1–2 梯度比較",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "hessian",
+  "title": "對數似然是凹的，負對數似然是凸的",
+  "source_section": "§2 g與H",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "newton",
+  "title": "代入負 Hessian 後，這個牛頓式才成加號",
+  "source_section": "§2 牛頓方向、更正",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "newtondata",
+  "title": "交錯的一維資料，先從一半機率開始",
+  "source_section": "§2 牛頓手算",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "newtongrad",
+  "title": "殘差決定梯度，曲率決定縮放矩陣",
+  "source_section": "§2 牛頓手算",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 19,
+  "kind": "newtonstep",
+  "title": "第一步牛頓更新，得到負截距與正斜率",
+  "source_section": "§2 牛頓手算",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 20,
+  "kind": "newtontrace",
+  "title": "前兩步已接近最後的 Sigmoid 曲線",
+  "source_section": "§2 原圖與數值",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 21,
+  "kind": "outcome",
+  "title": "最大似然解，不等於分類錯誤數最少",
+  "source_section": "§2 收斂結果釐清",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 22,
+  "kind": "limits",
+  "title": "凹目標也有條件：可分資料可能沒有有限解",
+  "source_section": "選讀、迷思",
+  "first_step": 64,
+  "final_step": 66,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 23,
+  "kind": "next",
+  "title": "下一步：把局部基函數與無標籤學習接進來",
+  "source_section": "銜接KP09",
+  "first_step": 67,
+  "final_step": 69,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 24,
+  "kind": "practice1",
+  "title": "練習一：自己算出 ADALINE 第二步",
+  "source_section": "練習1",
+  "first_step": 70,
+  "final_step": 72,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 25,
+  "kind": "practice2",
+  "title": "練習二：用牛頓第一步參數算機率",
+  "source_section": "練習2",
+  "first_step": 73,
+  "final_step": 75,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 26,
+  "kind": "practice3",
+  "title": "練習三：為何還要使用分類門檻",
+  "source_section": "練習3",
+  "first_step": 76,
+  "final_step": 78,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 27,
+  "kind": "quiz1",
+  "title": "自我檢核1：ADALINE 訓練時比較哪一種輸出",
+  "source_section": "小測驗1",
+  "first_step": 79,
+  "final_step": 81,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 28,
+  "kind": "quiz2",
+  "title": "自我檢核2：ADALINE 最小化哪一種目標",
+  "source_section": "小測驗2",
+  "first_step": 82,
+  "final_step": 84,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 29,
+  "kind": "quiz3",
+  "title": "自我檢核3：梯度下降該往哪個方向更新",
+  "source_section": "小測驗3",
+  "first_step": 85,
+  "final_step": 87,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 30,
+  "kind": "quiz4",
+  "title": "自我檢核4：MADALINE 規則如何演進",
+  "source_section": "小測驗4",
+  "first_step": 88,
+  "final_step": 90,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 31,
+  "kind": "quiz5",
+  "title": "自我檢核5：邏輯回歸直接建模什麼",
+  "source_section": "小測驗5",
+  "first_step": 91,
+  "final_step": 93,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 32,
+  "kind": "quiz6",
+  "title": "自我檢核6：logistic 曲線的早期用途是什麼",
+  "source_section": "小測驗6",
+  "first_step": 94,
+  "final_step": 96,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 33,
+  "kind": "quiz7",
+  "title": "自我檢核7：代入本稿記號，牛頓式是哪一個",
+  "source_section": "小測驗7",
+  "first_step": 97,
+  "final_step": 99,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 34,
+  "kind": "quiz8",
+  "title": "自我檢核8：機率算出後，如何做預設分類",
+  "source_section": "小測驗8",
+  "first_step": 100,
+  "final_step": 102,
+  "beats": 3,
+  "extension": true
+ }
+]

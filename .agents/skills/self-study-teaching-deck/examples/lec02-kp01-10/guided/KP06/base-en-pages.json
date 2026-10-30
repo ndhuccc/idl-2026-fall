@@ -1,0 +1,312 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP06 Activation functions",
+  "source_section": "前言、學習目標",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "map",
+  "title": "Locate all 13 functions in four families",
+  "source_section": "§1",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "linear",
+  "title": "Linear passes the input unchanged",
+  "source_section": "§1",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "step",
+  "title": "Step and Sign jump, but have flat derivatives",
+  "source_section": "§1、§4",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "softmax",
+  "title": "Softmax turns scores into one distribution",
+  "source_section": "§2",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "softmaxcalc",
+  "title": "Exponentiate, then divide by the total",
+  "source_section": "§2 手算",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "softmaxjac",
+  "title": "Changing one score changes the distribution",
+  "source_section": "§1、§2",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "sigmoid",
+  "title": "Sigmoid squeezes inputs between zero and one",
+  "source_section": "§1、§2",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "tanh",
+  "title": "tanh is zero-centered but still saturates",
+  "source_section": "§1、§2",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "gaussian",
+  "title": "Gaussian is bell-shaped, not S-shaped",
+  "source_section": "§1",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "gradient",
+  "title": "Five small slope factors shrink the signal",
+  "source_section": "§2",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "relu",
+  "title": "ReLU keeps a slope of one on the positive side",
+  "source_section": "§1、§3、§4",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "dying",
+  "title": "A ReLU can stall when all relevant inputs are negative",
+  "source_section": "§3",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "leaky",
+  "title": "Leaky ReLU leaves a small negative-side slope",
+  "source_section": "§1、§3",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "prelu",
+  "title": "PReLU learns the negative-side slope",
+  "source_section": "§1、§3",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "elu",
+  "title": "ELU bends toward a lower limit",
+  "source_section": "§1、§3",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "softplus",
+  "title": "Softplus rounds the ReLU corner",
+  "source_section": "§1、§3",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "minus",
+  "title": "At minus two, four functions take different paths",
+  "source_section": "§3 圖、例子",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 19,
+  "kind": "plus",
+  "title": "At plus two, Softplus is still different",
+  "source_section": "§3 圖、例子",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 20,
+  "kind": "maxout",
+  "title": "Maxout selects among affine branches",
+  "source_section": "§1、§4",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 21,
+  "kind": "hidden",
+  "title": "Start hidden layers with ReLU, then diagnose",
+  "source_section": "§4",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 22,
+  "kind": "output",
+  "title": "The prediction task determines the output activation",
+  "source_section": "§4",
+  "first_step": 64,
+  "final_step": 66,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 23,
+  "kind": "derive",
+  "title": "Sigmoid and Softplus derivatives connect",
+  "source_section": "補充推導",
+  "first_step": 67,
+  "final_step": 69,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 24,
+  "kind": "next",
+  "title": "Next, measure how far the output misses",
+  "source_section": "銜接KP07",
+  "first_step": 70,
+  "final_step": 72,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 25,
+  "kind": "practice1",
+  "title": "Practice 1: compute Sigmoid and its slope",
+  "source_section": "延伸練習1",
+  "first_step": 73,
+  "final_step": 75,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 26,
+  "kind": "practice2",
+  "title": "Practice 2: what if all three scores are equal?",
+  "source_section": "延伸練習2",
+  "first_step": 76,
+  "final_step": 78,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 27,
+  "kind": "practice3",
+  "title": "Practice 3: compare two negative-side paths",
+  "source_section": "延伸練習3",
+  "first_step": 79,
+  "final_step": 81,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 28,
+  "kind": "quiz1",
+  "title": "Check 1: what is a common ReLU advantage?",
+  "source_section": "小測驗1",
+  "first_step": 82,
+  "final_step": 84,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 29,
+  "kind": "quiz2",
+  "title": "Check 2: which normalizes the whole vector?",
+  "source_section": "小測驗2",
+  "first_step": 85,
+  "final_step": 87,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 30,
+  "kind": "quiz3",
+  "title": "Check 3: which situation describes a dying ReLU?",
+  "source_section": "小測驗3",
+  "first_step": 88,
+  "final_step": 90,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 31,
+  "kind": "quiz4",
+  "title": "Check 4: how does PReLU differ from Leaky ReLU?",
+  "source_section": "小測驗4",
+  "first_step": 91,
+  "final_step": 93,
+  "beats": 3,
+  "extension": true
+ }
+]

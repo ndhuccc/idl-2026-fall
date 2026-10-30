@@ -1,0 +1,396 @@
+[
+  {
+    "page": 1,
+    "source_section": "前言、目標",
+    "title": "KP08 ADALINE 與邏輯回歸",
+    "takeaway": "兩種連續目標，讓單一神經元能逐步學習。",
+    "visual": "輸入分流至線性輸出+平方損失與Sigmoid+負對數似然兩條流程",
+    "math": [
+      "\\hat y\\to L_{\\rm LMS}",
+      "p\\to-\\ell"
+    ],
+    "extension": false
+  },
+  {
+    "page": 2,
+    "source_section": "§1",
+    "title": "ADALINE 訓練時，先不切成零或一",
+    "takeaway": "平方損失比較連續加權和；門檻留到分類時。",
+    "visual": "輸入到線性加權和，再分流到訓練平方損失與推論門檻兩條路",
+    "math": [
+      "\\hat y_i=\\sum_jw_jx_{ij}+w_0",
+      "\\hat c_i=\\mathbf1[\\hat y_i\\ge0.5]"
+    ],
+    "extension": false
+  },
+  {
+    "page": 3,
+    "source_section": "§1 LMS定義",
+    "title": "平方誤差的梯度，保留誤差大小",
+    "takeaway": "本稿用半平方誤差總和，不是批次平均。",
+    "visual": "左側拋物線與誤差指示，右側LMS公式、兩個偏導及下降更新",
+    "math": [
+      "E=\\frac12\\sum_i(y_i-\\hat y_i)^2",
+      "\\frac{\\partial E}{\\partial w_j}=-\\sum_i(y_i-\\hat y_i)x_{ij}",
+      "\\frac{\\partial E}{\\partial w_0}=-\\sum_i(y_i-\\hat y_i)",
+      "\\mathbf w^+=\\mathbf w-\\eta\\nabla E"
+    ],
+    "extension": false
+  },
+  {
+    "page": 4,
+    "source_section": "§1 OR算例",
+    "title": "先用四筆 OR 資料把流程走一遍",
+    "takeaway": "權重與偏置全為零；第一批預測也全為零。",
+    "visual": "四個OR輸入座標、類別形狀與數字；旁邊起點和初始殘差向量",
+    "math": [
+      "\\mathbf w=(w_1,w_2,w_0)=(0,0,0)",
+      "\\mathbf y=(0,1,1,1),\\quad\\hat{\\mathbf y}=\\mathbf0",
+      "\\mathbf r=\\mathbf y-\\hat{\\mathbf y}=(0,1,1,1)"
+    ],
+    "extension": false
+  },
+  {
+    "page": 5,
+    "source_section": "§1 OR第一步",
+    "title": "把殘差乘輸入，再對整批加總",
+    "takeaway": "兩個權重梯度都是負二；偏置梯度是負三。",
+    "visual": "四殘差0,1,1,1與三個輸入欄配對，用原生連線串出三個負加總",
+    "math": [
+      "g_1=-(0\\cdot0+1\\cdot0+1\\cdot1+1\\cdot1)=-2",
+      "g_2=-(0\\cdot0+1\\cdot1+1\\cdot0+1\\cdot1)=-2",
+      "g_0=-(0+1+1+1)=-3"
+    ],
+    "extension": false
+  },
+  {
+    "page": 6,
+    "source_section": "§1 OR第一步",
+    "title": "減掉負梯度，三個參數就往上加",
+    "takeaway": "學習率零點一，把參數更新成指定的第一步。",
+    "visual": "零向量到負梯度向量經η=.1後得到(.2,.2,.3)，三個參數箭頭一一對齊",
+    "math": [
+      "\\eta=0.1,\\quad\\mathbf g=(-2,-2,-3)",
+      "\\mathbf w^+=(0,0,0)-0.1(-2,-2,-3)=(0.2,0.2,0.3)"
+    ],
+    "extension": false
+  },
+  {
+    "page": 7,
+    "source_section": "§1 OR第一步",
+    "title": "更新後，要重新算一次預測與損失",
+    "takeaway": "四個新輸出為零點三、零點五、零點五、零點七。",
+    "visual": "四個輸出與目標配對差距，完整半平方和由1.5到.34，長條同比例",
+    "math": [
+      "\\hat{\\mathbf y}=0.2\\mathbf x_1+0.2\\mathbf x_2+0.3\\mathbf1=(0.3,0.5,0.5,0.7)",
+      "E_0=\\frac12(0^2+1^2+1^2+1^2)=1.5",
+      "E_1=\\frac12[(-0.3)^2+0.5^2+0.5^2+0.3^2]=0.34"
+    ],
+    "extension": false
+  },
+  {
+    "page": 8,
+    "source_section": "§1 OR極限",
+    "title": "最小平方解分對 OR，損失仍不為零",
+    "takeaway": "連續值與硬分類不同；輸出可以超過一。",
+    "visual": "閉式最小平方解與四輸出.25,.75,.75,1.25，閾值.5對照，不把分數當機率",
+    "math": [
+      "\\mathbf w^\\ast=(0.5,0.5,0.25)",
+      "\\hat{\\mathbf y}^\\ast=(0.25,0.75,0.75,1.25)",
+      "E^\\ast=\\frac12[(-0.25)^2+0.25^2+0.25^2+(-0.25)^2]=0.125"
+    ],
+    "extension": false
+  },
+  {
+    "page": 9,
+    "source_section": "§1 原圖左",
+    "title": "兩條邊界在這個 OR 例子中位置不同",
+    "takeaway": "這是特定算例的比較，不是泛化能力保證。",
+    "visual": "精確OR四點與x1+x2=.5實線、=1虛線，軸同尺度，邊界裁在框內",
+    "math": [
+      "0.5x_1+0.5x_2+0.25=0.5\\Rightarrow x_1+x_2=0.5",
+      "x_1+x_2=1"
+    ],
+    "extension": false
+  },
+  {
+    "page": 10,
+    "source_section": "§1 原圖右",
+    "title": "這個步長下，批次平方損失逐步下降",
+    "takeaway": "依原程式重算十二步；下限來自最小平方解。",
+    "visual": "13個真實迭代損失點連線，0.125水平虛線，0..12橫軸",
+    "math": [
+      "E_k=\\frac12\\|\\mathbf y-\\mathbf A\\mathbf w_k\\|_2^2",
+      "\\mathbf w_{k+1}=\\mathbf w_k+0.1\\mathbf A^\\top(\\mathbf y-\\mathbf A\\mathbf w_k)",
+      "E^\\ast=0.125"
+    ],
+    "extension": false
+  },
+  {
+    "page": 11,
+    "source_section": "§1 MADALINE",
+    "title": "MADALINE 曾嘗試讓多層也能調權重",
+    "takeaway": "依講義所列沿革，訓練規則逐步擴充。",
+    "visual": "1962 MRI、1988 MRII、1990 MRIII時間線和對應簡化多層節點圖",
+    "math": [],
+    "extension": false
+  },
+  {
+    "page": 12,
+    "source_section": "§2 模型、歷史",
+    "title": "邏輯回歸把線性分數轉成類別機率",
+    "takeaway": "直接建模條件機率；決策門檻在機率零點五。",
+    "visual": "實算sigmoid曲線與s0,p.5交點，左下輸入偏置節點示意；歷史與LDA放備註",
+    "math": [
+      "s=\\boldsymbol\\beta^\\top\\mathbf x,\\quad\\mathbf x=(1,x_1,\\dots,x_d)^\\top",
+      "p=\\frac{e^s}{1+e^s}=\\frac1{1+e^{-s}}",
+      "P(y=0\\mid\\mathbf x)=1-p",
+      "\\hat c=\\mathbf1[p\\ge0.5]"
+    ],
+    "extension": false
+  },
+  {
+    "page": 13,
+    "source_section": "§2 似然",
+    "title": "最大似然，等價於最小化二元交叉熵",
+    "takeaway": "最大化對數似然；最小化它的負值。",
+    "visual": "Bernoulli單筆y,p互補流程到乘積再log加總；保留三種等價公式",
+    "math": [
+      "P(y_i\\mid\\mathbf x_i;\\boldsymbol\\beta)=p_i^{y_i}(1-p_i)^{1-y_i}",
+      "\\ell=\\sum_i[y_i\\ln p_i+(1-y_i)\\ln(1-p_i)]",
+      "=\\sum_i[y_is_i-\\ln(1+e^{s_i})]",
+      "L_{\\rm BCE}=-\\ell"
+    ],
+    "extension": false
+  },
+  {
+    "page": 14,
+    "source_section": "§1–2 梯度比較",
+    "title": "更新方向都含「目標減預測」乘輸入",
+    "takeaway": "比較下降與上升的更新方向，才不會混淆符號。",
+    "visual": "ADALINE下坡與loglikelihood上坡兩個函數曲線，對齊殘差×輸入箭頭",
+    "math": [
+      "-\\nabla E=\\sum_i(y_i-\\hat y_i)\\mathbf x_i",
+      "\\nabla\\ell=\\sum_i(y_i-p_i)\\mathbf x_i"
+    ],
+    "extension": false
+  },
+  {
+    "page": 15,
+    "source_section": "§2 g與H",
+    "title": "對數似然是凹的，負對數似然是凸的",
+    "takeaway": "樣本放矩陣的欄；Hessian 帶負號。",
+    "visual": "X為(d+1)×n的欄向量矩陣、W對角權重與負H分解流程；凹凸小曲線",
+    "math": [
+      "\\mathbf X\\in\\mathbb R^{(d+1)\\times n}",
+      "\\mathbf W=\\operatorname{diag}(p_i(1-p_i))",
+      "\\mathbf g=\\mathbf X(\\mathbf y-\\mathbf p)",
+      "\\mathbf H=-\\mathbf X\\mathbf W\\mathbf X^\\top"
+    ],
+    "extension": false
+  },
+  {
+    "page": 16,
+    "source_section": "§2 牛頓方向、更正",
+    "title": "代入負 Hessian 後，這個牛頓式才成加號",
+    "takeaway": "一般形式仍是參數減 Hessian 的逆乘梯度。",
+    "visual": "先β-H^-1g，再令A=-H得β+A^-1g兩拍替換，正負號逐項對應",
+    "math": [
+      "\\boldsymbol\\beta^+=\\boldsymbol\\beta-\\mathbf H^{-1}\\mathbf g",
+      "\\mathbf A=-\\mathbf H=\\mathbf X\\mathbf W\\mathbf X^\\top",
+      "\\boldsymbol\\beta^+=\\boldsymbol\\beta+\\mathbf A^{-1}\\mathbf X(\\mathbf y-\\mathbf p)"
+    ],
+    "extension": false
+  },
+  {
+    "page": 17,
+    "source_section": "§2 牛頓手算",
+    "title": "交錯的一維資料，先從一半機率開始",
+    "takeaway": "每筆特徵向量都含偏置常數一。",
+    "visual": "四筆x0,1,2,3,y0,1,0,1散點，X欄矩陣與初始p向量",
+    "math": [
+      "\\mathbf X=\\begin{pmatrix}1&1&1&1\\\\0&1&2&3\\end{pmatrix}",
+      "\\mathbf y=(0,1,0,1)^\\top",
+      "\\boldsymbol\\beta=(0,0)^\\top,\\quad\\mathbf p=(0.5,0.5,0.5,0.5)^\\top"
+    ],
+    "extension": false
+  },
+  {
+    "page": 18,
+    "source_section": "§2 牛頓手算",
+    "title": "殘差決定梯度，曲率決定縮放矩陣",
+    "takeaway": "這一批起點的梯度與曲率矩陣都能直接算。",
+    "visual": "初始±.5四筆殘差signed bars，g=(0,1)，A= .25[[4,6],[6,14]]完整推導",
+    "math": [
+      "\\mathbf r=\\mathbf y-\\mathbf p=(-0.5,0.5,-0.5,0.5)^\\top",
+      "\\mathbf g=\\begin{pmatrix}\\sum_i r_i\\\\\\sum_i r_ix_i\\end{pmatrix}=\\begin{pmatrix}0\\\\1\\end{pmatrix}",
+      "\\mathbf A=\\frac14\\begin{pmatrix}4&6\\\\6&14\\end{pmatrix}=\\begin{pmatrix}1&1.5\\\\1.5&3.5\\end{pmatrix}"
+    ],
+    "extension": false
+  },
+  {
+    "page": 19,
+    "source_section": "§2 牛頓手算",
+    "title": "第一步牛頓更新，得到負截距與正斜率",
+    "takeaway": "行列式為正，這一步的逆矩陣存在。",
+    "visual": "2×2矩陣逆與g相乘的分步完整公式，配參數平面從原點到(-1.2,.8)的原生連線",
+    "math": [
+      "\\det\\mathbf A=1\\cdot3.5-1.5^2=1.25",
+      "\\mathbf A^{-1}=\\frac1{1.25}\\begin{pmatrix}3.5&-1.5\\\\-1.5&1\\end{pmatrix}",
+      "\\boldsymbol\\beta^+=\\begin{pmatrix}0\\\\0\\end{pmatrix}+\\mathbf A^{-1}\\begin{pmatrix}0\\\\1\\end{pmatrix}=\\begin{pmatrix}-1.2\\\\0.8\\end{pmatrix}"
+    ],
+    "extension": false
+  },
+  {
+    "page": 20,
+    "source_section": "§2 原圖與數值",
+    "title": "前兩步已接近最後的 Sigmoid 曲線",
+    "takeaway": "曲線與對數似然都依原資料重算。",
+    "visual": "起點、一步、二步Sigmoid真實300點曲線；旁列β與ll、完整ll定義放備註",
+    "math": [
+      "p_k(x)=\\frac1{1+\\exp[-(\\beta_{0,k}+\\beta_{1,k}x)]}"
+    ],
+    "extension": false
+  },
+  {
+    "page": 21,
+    "source_section": "§2 收斂結果釐清",
+    "title": "最大似然解，不等於分類錯誤數最少",
+    "takeaway": "此解錯兩筆；這不是這批資料可達的最少錯誤數。",
+    "visual": "收斂四機率與threshold1.5分類對照，再以.5門檻反例標補充，不給普遍最優說法",
+    "math": [
+      "\\boldsymbol\\beta^\\ast\\approx(-1.362,0.908)",
+      "\\mathbf p^\\ast\\approx(0.204,0.388,0.612,0.796)",
+      "x_0=-\\beta_0^\\ast/\\beta_1^\\ast=1.5"
+    ],
+    "extension": false
+  },
+  {
+    "page": 22,
+    "source_section": "選讀、迷思",
+    "title": "凹目標也有條件：可分資料可能沒有有限解",
+    "takeaway": "標準牛頓步不保證每次改善；需留意可分與矩陣條件。",
+    "visual": "可分資料分數曲線逐漸變陡、β範數增加，有限MLE條件與正則化概念牌",
+    "math": [
+      "\\mathbf H\\preceq0",
+      "\\|\\boldsymbol\\beta\\|\\to\\infty"
+    ],
+    "extension": false
+  },
+  {
+    "page": 23,
+    "source_section": "銜接KP09",
+    "title": "下一步：把局部基函數與無標籤學習接進來",
+    "takeaway": "KP09：RBF 與 SOM 的另一種建模方式。",
+    "visual": "學得權重分流至局部基函數與無標籤地圖，幾何圓形中心與網格示意",
+    "math": [],
+    "extension": false
+  },
+  {
+    "page": 24,
+    "source_section": "練習1",
+    "title": "練習一：自己算出 ADALINE 第二步",
+    "takeaway": "提示：先重算四個連續預測，再求殘差與梯度。",
+    "visual": "OR四點加w(.2,.2,.3)與η.1，更新向量留問號，不附答案",
+    "math": [
+      "\\mathbf w=(0.2,0.2,0.3),\\quad\\eta=0.1",
+      "\\mathbf w^+=?"
+    ],
+    "extension": true
+  },
+  {
+    "page": 25,
+    "source_section": "練習2",
+    "title": "練習二：用牛頓第一步參數算機率",
+    "takeaway": "提示：先求線性分數，再代入 Sigmoid。",
+    "visual": "x2至β(-1.2,.8)至s?至p?流程，不顯示.4或.599",
+    "math": [
+      "\\boldsymbol\\beta=(-1.2,0.8),\\quad x=2",
+      "s=?,\\quad p=?"
+    ],
+    "extension": true
+  },
+  {
+    "page": 26,
+    "source_section": "練習3",
+    "title": "練習三：為何還要使用分類門檻",
+    "takeaway": "提示：訓練的輸出型態，和分類決策不是同一件事。",
+    "visual": "連續數線節點經門檻問號分流到0/1兩牌，不揭答案",
+    "math": [
+      "\\hat c=\\mathbf1[\\hat y\\ge0.5]"
+    ],
+    "extension": true
+  },
+  {
+    "page": 27,
+    "source_section": "小測驗1",
+    "title": "自我檢核1：ADALINE 訓練時比較哪一種輸出",
+    "takeaway": "提示：訓練過程中的預測型態；不附答案。",
+    "visual": "四個選項同色同樣式；每個選項用對應曲線／符號小圖，不標正解",
+    "math": [],
+    "extension": true
+  },
+  {
+    "page": 28,
+    "source_section": "小測驗2",
+    "title": "自我檢核2：ADALINE 最小化哪一種目標",
+    "takeaway": "提示：LMS 定義；不附答案。",
+    "visual": "四個選項同色同樣式；每個選項用對應曲線／符號小圖，不標正解",
+    "math": [],
+    "extension": true
+  },
+  {
+    "page": 29,
+    "source_section": "小測驗3",
+    "title": "自我檢核3：梯度下降該往哪個方向更新",
+    "takeaway": "提示：先分清損失與導數；不附答案。",
+    "visual": "四個選項同色同樣式；每個選項用對應曲線／符號小圖，不標正解",
+    "math": [],
+    "extension": true
+  },
+  {
+    "page": 30,
+    "source_section": "小測驗4",
+    "title": "自我檢核4：MADALINE 規則如何演進",
+    "takeaway": "提示：依講義的年份與簡化範圍；不附答案。",
+    "visual": "四個選項同色同樣式；每個選項用對應曲線／符號小圖，不標正解",
+    "math": [],
+    "extension": true
+  },
+  {
+    "page": 31,
+    "source_section": "小測驗5",
+    "title": "自我檢核5：邏輯回歸直接建模什麼",
+    "takeaway": "提示：條件機率的方向；不附答案。",
+    "visual": "四個選項同色同樣式；每個選項用對應曲線／符號小圖，不標正解",
+    "math": [],
+    "extension": true
+  },
+  {
+    "page": 32,
+    "source_section": "小測驗6",
+    "title": "自我檢核6：logistic 曲線的早期用途是什麼",
+    "takeaway": "提示：講義中的歷史註記；不附答案。",
+    "visual": "四個選項同色同樣式；每個選項用對應曲線／符號小圖，不標正解",
+    "math": [],
+    "extension": true
+  },
+  {
+    "page": 33,
+    "source_section": "小測驗7",
+    "title": "自我檢核7：代入本稿記號，牛頓式是哪一個",
+    "takeaway": "提示：先確認 X、W 與 Hessian 的定義；不附答案。",
+    "visual": "四個選項同色同樣式；每個選項用對應曲線／符號小圖，不標正解",
+    "math": [],
+    "extension": true
+  },
+  {
+    "page": 34,
+    "source_section": "小測驗8",
+    "title": "自我檢核8：機率算出後，如何做預設分類",
+    "takeaway": "提示：機率與決策門檻；不附答案。",
+    "visual": "四個選項同色同樣式；每個選項用對應曲線／符號小圖，不標正解",
+    "math": [],
+    "extension": true
+  }
+]

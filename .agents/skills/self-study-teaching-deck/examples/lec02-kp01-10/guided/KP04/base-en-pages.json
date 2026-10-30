@@ -1,0 +1,212 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP04 Perceptron limits and generalization",
+  "source_section": "單元主張",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "xor",
+  "title": "XOR places each class on opposite corners",
+  "source_section": "§1",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "lines",
+  "title": "A different line still leaves mistakes",
+  "source_section": "§1圖說釐清",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "updates",
+  "title": "After ten passes, updates never reach zero",
+  "source_section": "§1實跑",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "cycle",
+  "title": "Four updates return to the same weights",
+  "source_section": "§1、數值重現",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "proof",
+  "title": "The class segments cross at the same midpoint",
+  "source_section": "選讀、引第1章KP08",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "grid",
+  "title": "The grid gets at most three right; it is not every real weight",
+  "source_section": "§1格點搜尋",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "boundaries",
+  "title": "Two boundaries can fit the same training points perfectly",
+  "source_section": "§2",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "newpoint",
+  "title": "The same new point receives opposite predictions",
+  "source_section": "§2",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "scores",
+  "title": "Full-precision scores place the point on different sides",
+  "source_section": "§2計算",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "unseen",
+  "title": "Without the true label, disagreement does not name a winner",
+  "source_section": "§2、補充釐清",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "remedies",
+  "title": "Expressive power and boundary selection need different remedies",
+  "source_section": "§3",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "history",
+  "title": "Three historical milestones motivate two directions",
+  "source_section": "§3歷史",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "next",
+  "title": "Can connected neurons overcome the one-line limit?",
+  "source_section": "留給KP05問題",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "practice1",
+  "title": "Practice: write the four XNOR conditions",
+  "source_section": "練習1",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 16,
+  "kind": "practice2",
+  "title": "Practice: why does AND work while XOR does not?",
+  "source_section": "練習2",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 17,
+  "kind": "practice3",
+  "title": "Practice: what else do you need after perfect training fit?",
+  "source_section": "練習3",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 18,
+  "kind": "quiz1",
+  "title": "Self-check: which data support the convergence guarantee?",
+  "source_section": "自我檢核1釐清",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 19,
+  "kind": "quiz2",
+  "title": "Self-check: which logic task is the famous counterexample?",
+  "source_section": "自我檢核2",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 20,
+  "kind": "quiz3",
+  "title": "Self-check: why can separable data generalize poorly?",
+  "source_section": "自我檢核3",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 21,
+  "kind": "quiz4",
+  "title": "Self-check: which learning objective does ADALINE use?",
+  "source_section": "自我檢核4釐清",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": true
+ }
+]

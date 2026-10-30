@@ -1,0 +1,212 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP04 感知器的限制與泛化",
+  "source_section": "單元主張",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "xor",
+  "title": "同類點在對角，XOR 就是這個難題",
+  "source_section": "§1",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "lines",
+  "title": "換一條線，還是會留下錯點",
+  "source_section": "§1圖說釐清",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "updates",
+  "title": "十輪過去，每輪更新仍未歸零",
+  "source_section": "§1實跑",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "cycle",
+  "title": "第四輪改了四次，又回到同一組權重",
+  "source_section": "§1、數值重現",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "proof",
+  "title": "兩類連線在中心相交，一條線無法隔開",
+  "source_section": "選讀、引第1章KP08",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "grid",
+  "title": "格點搜尋最多對三筆，仍不是窮盡所有實數",
+  "source_section": "§1格點搜尋",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "boundaries",
+  "title": "同一批訓練點，可以被兩條線全部分對",
+  "source_section": "§2",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "newpoint",
+  "title": "同一個新點，兩條邊界卻給相反答案",
+  "source_section": "§2",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "scores",
+  "title": "用完整權重計算，新點確實落在不同側",
+  "source_section": "§2計算",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "unseen",
+  "title": "不知道新點正解，就不能宣布誰泛化較好",
+  "source_section": "§2、補充釐清",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "remedies",
+  "title": "表示力與邊界選擇，要用不同方法處理",
+  "source_section": "§3",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "history",
+  "title": "三個歷史節點，帶出兩條發展方向",
+  "source_section": "§3歷史",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "next",
+  "title": "把神經元接起來，能越過一條線的限制嗎",
+  "source_section": "留給KP05問題",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "practice1",
+  "title": "延伸：把 XNOR 的四條條件排出來",
+  "source_section": "練習1",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 16,
+  "kind": "practice2",
+  "title": "延伸：為什麼 AND 可以，XOR 卻不行",
+  "source_section": "練習2",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 17,
+  "kind": "practice3",
+  "title": "延伸：訓練全對時，你還想知道什麼",
+  "source_section": "練習3",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 18,
+  "kind": "quiz1",
+  "title": "自我檢核：收斂保證適用於哪種資料",
+  "source_section": "自我檢核1釐清",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 19,
+  "kind": "quiz2",
+  "title": "自我檢核：哪個邏輯問題是著名反例",
+  "source_section": "自我檢核2",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 20,
+  "kind": "quiz3",
+  "title": "自我檢核：可分資料仍可能泛化差，原因是什麼",
+  "source_section": "自我檢核3",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 21,
+  "kind": "quiz4",
+  "title": "自我檢核：ADALINE 採用哪種學習目標",
+  "source_section": "自我檢核4釐清",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": true
+ }
+]

@@ -1,0 +1,1696 @@
+[
+  {
+    "kind": "base",
+    "title": "把預測和目標的差異，變成可最小化的分數。",
+    "title_en": "Turn prediction–target mismatch into a score to minimize.",
+    "takeaway": "把預測和目標的差異，變成可最小化的分數。",
+    "takeaway_en": "Turn prediction–target mismatch into a score to minimize.",
+    "source_anchors": [
+      "學習目標",
+      "符號表"
+    ],
+    "bridge": "承接前置知識：先看本單元要回答什麼。",
+    "bridge_en": "From prerequisites: identify this unit’s central question.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "L"
+    ],
+    "notes": [
+      "損失比較預測與目標，提供要最小化的訓練目標。靶心與三角形是教學比喻，不是量測實驗。本單元保留六種損失，先講實數回歸，再講機率分布和分類分數。\n\n講義補讀：\n讀完之後，你能寫出六種損失的公式並說出各自適用的場合；能用一組含離群值的殘差說明 MSE、MAE、Huber 的差別；能用 softmax 輸出手算交叉熵與 KL 散度；能說明 hinge 為什麼連「分對但太近」也要罰；能為回歸與分類各選一種損失。\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。\n\n符號速查：\n$f_o(\\mathbf{x}_i)$: 網路對第 $i$ 筆輸入的輸出\n$y_i$: 第 $i$ 筆的目標（回歸為實數，二分類 hinge 用 $\\pm1$）\n$e=f_o-y$: 殘差\n$b,\\ c$: 批次大小、類別數\n$\\delta$: Huber 的切換門檻\n$m$: Hinge 的安全邊界",
+      "A loss compares predictions with targets and supplies an objective to minimize. The target icon is a metaphor, not an experiment. We cover six losses, from real-valued regression to distributions and classification scores.\n\nSource context:\nAfter reading, you can write the six losses and say where each applies; use a set of residuals with an outlier to show how MSE, MAE and Huber differ; compute the cross-entropy and KL divergence by hand from a softmax output; explain why hinge punishes even \"right but too close\"; and choose a loss for regression and one for classification.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2.\n\nSymbols:\n$f_o(\\mathbf{x}_i)$: the network output for the $i$-th input\n$y_i$: the target of the $i$-th sample (a real number for regression, $\\pm1$ for binary hinge)\n$e=f_o-y$: the residual\n$b,\\ c$: batch size and number of classes\n$\\delta$: the switching threshold of Huber\n$m$: the margin of hinge"
+    ],
+    "new_terms": [
+      {
+        "symbol": "$f_o(\\mathbf{x}_i)$",
+        "meaning_zh": "網路對第 $i$ 筆輸入的輸出",
+        "meaning_en": "the network output for the $i$-th input"
+      },
+      {
+        "symbol": "$y_i$",
+        "meaning_zh": "第 $i$ 筆的目標（回歸為實數，二分類 hinge 用 $\\pm1$）",
+        "meaning_en": "the target of the $i$-th sample (a real number for regression, $\\pm1$ for binary hinge)"
+      },
+      {
+        "symbol": "$e=f_o-y$",
+        "meaning_zh": "殘差",
+        "meaning_en": "the residual"
+      },
+      {
+        "symbol": "$b,\\ c$",
+        "meaning_zh": "批次大小、類別數",
+        "meaning_en": "batch size and number of classes"
+      },
+      {
+        "symbol": "$\\delta$",
+        "meaning_zh": "Huber 的切換門檻",
+        "meaning_en": "the switching threshold of Huber"
+      },
+      {
+        "symbol": "$m$",
+        "meaning_zh": "Hinge 的安全邊界",
+        "meaning_en": "the margin of hinge"
+      }
+    ],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "這次要解決\n哪一個問題？",
+      "bubble_en": "What problem\nare we solving?"
+    },
+    "base_page": 1,
+    "base_kind": "cover",
+    "page": 1,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "先把預測減掉目標，得到殘差",
+    "title_en": "Subtract the target to obtain a residual",
+    "takeaway": "正負表示方向；懲罰方式由損失函數決定。",
+    "takeaway_en": "Sign gives direction; the loss sets the penalty.",
+    "source_anchors": [
+      "1. 回歸：MSE、MAE、Huber",
+      "符號表"
+    ],
+    "bridge": "上一頁：把預測和目標的差異，變成可最小化的分數。",
+    "bridge_en": "Previously: Turn prediction–target mismatch into a score to minimize.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "e_i=f_o(\\mathbf x_i)-y_i",
+      "y_1",
+      "e_1=1",
+      "y_2",
+      "e_2=1",
+      "y_3",
+      "e_3=1",
+      "y_4",
+      "e_4=10"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。正負表示方向；懲罰方式由損失函數決定。\n\n講義補讀：\n| 損失 | 公式（對批次求和） | 特點 |\n|---|---|---|\n| MSE | $\\sum_{i=1}^{b}e_i^2$ | 處處可導；平方把離群值放大 |\n| MAE | $\\sum_{i=1}^{b}\\lvert e_i\\rvert$ | 對離群值穩健；零點不可導 |\n| Huber | $\\lvert e\\rvert\\le\\delta$ 時 $\\tfrac12e^2$，否則 $\\delta(\\lvert e\\rvert-\\tfrac12\\delta)$ | 兩者折衷，要調 $\\delta$ |\n\n**圖說 `lec02-kp07-loss-regression`**：先看紅色的 MSE，它是拋物線，殘差越大升得越快；再看藍色 MAE，兩條直線；最後看綠色虛線 Huber，中間像拋物線、兩側像直線，而且比 MAE 低。 / **Caption `lec02-kp07-loss-regression`:** Look first at the MSE, a parabola that rises faster the larger the residual; then at the MAE, two straight lines; finally at the dashed Huber, parabolic in the middle and linear on both sides, and below the MAE.\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Explain the newly revealed evidence and mascot prompt: Sign gives direction; the loss sets the penalty.\n\nSource context:\nFour data points have residuals $(1,1,1,10)$, and the last is an outlier. Take Huber with $\\delta=1$ (computed by program):\n\nThe last Huber term is $\\delta(|e|-\\tfrac12\\delta)=1\\times(10-0.5)=9.5$. MSE cares almost only about that one outlier, MAE is least swayed by it, and Huber sits in between: this is what \"MSE is sensitive to outliers\" means in numbers.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 2,
+    "base_kind": "residual",
+    "page": 2,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "平方會放大那一筆大殘差",
+    "title_en": "Squaring amplifies the large residual",
+    "takeaway": "四筆平方誤差總和為 103；這裡尚未取平均。",
+    "takeaway_en": "The squared-error sum is 103, before averaging.",
+    "source_anchors": [
+      "1. 回歸：MSE、MAE、Huber"
+    ],
+    "bridge": "上一頁：正負表示方向；懲罰方式由損失函數決定。",
+    "bridge_en": "Previously: Sign gives direction; the loss sets the penalty.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "(1,1,1,10)",
+      "e_1^2=1",
+      "e_2^2=1",
+      "e_3^2=1",
+      "e_4^2=100",
+      "L_{\\rm sq,sum}=\\sum_{i=1}^{b}e_i^2",
+      "1^2+1^2+1^2+10^2=103"
+    ],
+    "notes": [
+      "單筆平方誤差處處可微，對殘差的導數是兩倍殘差。來源把批次平方誤差總和稱作MSE，本稿明確寫平方誤差總和。四個正方形邊長按殘差絕對值，面積按損失，不能把邊長誤讀為平方損失。真正取mean要除以批次大小，下一頁組將單獨釐清。\n\n講義補讀：\n| 損失 | 公式（對批次求和） | 特點 |\n|---|---|---|\n| MSE | $\\sum_{i=1}^{b}e_i^2$ | 處處可導；平方把離群值放大 |\n| MAE | $\\sum_{i=1}^{b}\\lvert e_i\\rvert$ | 對離群值穩健；零點不可導 |\n| Huber | $\\lvert e\\rvert\\le\\delta$ 時 $\\tfrac12e^2$，否則 $\\delta(\\lvert e\\rvert-\\tfrac12\\delta)$ | 兩者折衷，要調 $\\delta$ |\n\n四筆資料的殘差是 $(1,1,1,10)$，最後一筆是離群值。取 Huber 的 $\\delta=1$〔程式計算〕：\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Squared error is differentiable everywhere, with residual derivative twice the residual. The handout calls a sum MSE; here it is explicitly the squared-error sum. Square side lengths encode absolute residuals, while areas encode losses. A true mean requires division by batch size, addressed separately.\n\nSource context:\nFour data points have residuals $(1,1,1,10)$, and the last is an outlier. Take Huber with $\\delta=1$ (computed by program):\n\nThe last Huber term is $\\delta(|e|-\\tfrac12\\delta)=1\\times(10-0.5)=9.5$. MSE cares almost only about that one outlier, MAE is least swayed by it, and Huber sits in between: this is what \"MSE is sensitive to outliers\" means in numbers.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 3,
+    "base_kind": "squared",
+    "page": 3,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "絕對值只按殘差大小線性計罰",
+    "title_en": "Absolute error grows linearly with the miss",
+    "takeaway": "四筆絕對誤差總和為 13。",
+    "takeaway_en": "The absolute-error sum is 13.",
+    "source_anchors": [
+      "1. 回歸：MSE、MAE、Huber"
+    ],
+    "bridge": "上一頁：四筆平方誤差總和為 103；這裡尚未取平均。",
+    "bridge_en": "Previously: The squared-error sum is 103, before averaging.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "(1,1,1,10)",
+      "e_1",
+      "1",
+      "e_2",
+      "1",
+      "e_3",
+      "1",
+      "e_4",
+      "10",
+      "L_{\\rm abs,sum}=\\sum_{i=1}^{b}|e_i|",
+      "|1|+|1|+|1|+|10|=13"
+    ],
+    "notes": [
+      "單筆絕對誤差在零點不可微；在正負兩側的導數分別是一和負一。離群值增大時損失線性增長，較不會像平方誤差那樣放大。穩健是相對比較，不代表對任何離群模式都免疫。\n\n講義補讀：\n四筆資料的殘差是 $(1,1,1,10)$，最後一筆是離群值。取 Huber 的 $\\delta=1$〔程式計算〕：\n\n| 損失 | 四筆的值 | 總和 | 離群點占比 |\n|---|---|---|---|\n| MSE | $1,\\,1,\\,1,\\,100$ | $103$ | $100/103=97\\%$ |\n| MAE | $1,\\,1,\\,1,\\,10$ | $13$ | $10/13=77\\%$ |\n| Huber | $0.5,\\,0.5,\\,0.5,\\,9.5$ | $11$ | $9.5/11=86\\%$ |\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Absolute error is not differentiable at zero; its slopes are one and minus one on the two sides. Linear growth makes it less sensitive to large residuals than squared error, not immune to every outlier pattern.\n\nSource context:\nFour data points have residuals $(1,1,1,10)$, and the last is an outlier. Take Huber with $\\delta=1$ (computed by program):\n\nThe last Huber term is $\\delta(|e|-\\tfrac12\\delta)=1\\times(10-0.5)=9.5$. MSE cares almost only about that one outlier, MAE is least swayed by it, and Huber sits in between: this is what \"MSE is sensitive to outliers\" means in numbers.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 4,
+    "base_kind": "absolute",
+    "page": 4,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "Huber 在近處平方、遠處改走直線",
+    "title_en": "Huber is quadratic nearby and linear farther away",
+    "takeaway": "門檻為正；本例取門檻一。",
+    "takeaway_en": "Use a positive threshold; this example uses one.",
+    "source_anchors": [
+      "1. 回歸：MSE、MAE、Huber"
+    ],
+    "bridge": "上一頁：四筆絕對誤差總和為 13。",
+    "bridge_en": "Previously: The absolute-error sum is 13.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\delta>0",
+      "\\delta=1",
+      "h_1(e)",
+      "e",
+      "-3",
+      "0",
+      "3",
+      "0",
+      "2.7",
+      "-1",
+      "1",
+      "|e|\\le\\delta:\\ h_\\delta(e)=\\frac12e^2",
+      "|e|>\\delta:\\ h_\\delta(e)=\\delta(|e|-\\frac12\\delta)",
+      "L_{\\rm H,sum}=\\sum_i h_\\delta(e_i)",
+      "0"
+    ],
+    "notes": [
+      "Huber門檻delta必須為正。中央半平方、外側delta乘絕對值減半delta；當delta一時，負正一之間為二次區。不要把Huber恆低於MAE當成任意門檻下的結論，delta會改變外側斜率與尺度。\n\n講義補讀：\n| 損失 | 公式（對批次求和） | 特點 |\n|---|---|---|\n| MSE | $\\sum_{i=1}^{b}e_i^2$ | 處處可導；平方把離群值放大 |\n| MAE | $\\sum_{i=1}^{b}\\lvert e_i\\rvert$ | 對離群值穩健；零點不可導 |\n| Huber | $\\lvert e\\rvert\\le\\delta$ 時 $\\tfrac12e^2$，否則 $\\delta(\\lvert e\\rvert-\\tfrac12\\delta)$ | 兩者折衷，要調 $\\delta$ |\n\n四筆資料的殘差是 $(1,1,1,10)$，最後一筆是離群值。取 Huber 的 $\\delta=1$〔程式計算〕：\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Huber requires a positive delta. The center is half the squared residual; outside is delta times absolute residual minus half delta. With delta one, the quadratic region is [-1,1]. Huber need not remain below MAE for arbitrary thresholds because delta changes the outer slope and scale.\n\nSource context:\nFour data points have residuals $(1,1,1,10)$, and the last is an outlier. Take Huber with $\\delta=1$ (computed by program):\n\nThe last Huber term is $\\delta(|e|-\\tfrac12\\delta)=1\\times(10-0.5)=9.5$. MSE cares almost only about that one outlier, MAE is least swayed by it, and Huber sits in between: this is what \"MSE is sensitive to outliers\" means in numbers.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 5,
+    "base_kind": "huber",
+    "page": 5,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "同一筆殘差十，Huber 計為九點五",
+    "title_en": "Huber assigns 9.5 to a residual of ten",
+    "takeaway": "四筆 Huber 損失總和為 11。",
+    "takeaway_en": "The four Huber losses sum to 11.",
+    "source_anchors": [
+      "1. 回歸：MSE、MAE、Huber"
+    ],
+    "bridge": "上一頁：門檻為正；本例取門檻一。",
+    "bridge_en": "Previously: Use a positive threshold; this example uses one.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "(1,1,1,10)",
+      "e_1",
+      "0.5",
+      "e_2",
+      "0.5",
+      "e_3",
+      "0.5",
+      "e_4",
+      "9.5",
+      "h_1(1)=\\frac12(1)^2=\\frac12,\\quad h_1(10)=1(10-\\frac12)=9.5",
+      "\\frac12+\\frac12+\\frac12+9.5=11"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。四筆 Huber 損失總和為 11。\n\n講義補讀：\n四筆資料的殘差是 $(1,1,1,10)$，最後一筆是離群值。取 Huber 的 $\\delta=1$〔程式計算〕：\n\n| 損失 | 四筆的值 | 總和 | 離群點占比 |\n|---|---|---|---|\n| MSE | $1,\\,1,\\,1,\\,100$ | $103$ | $100/103=97\\%$ |\n| MAE | $1,\\,1,\\,1,\\,10$ | $13$ | $10/13=77\\%$ |\n| Huber | $0.5,\\,0.5,\\,0.5,\\,9.5$ | $11$ | $9.5/11=86\\%$ |\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Explain the newly revealed evidence and mascot prompt: The four Huber losses sum to 11.\n\nSource context:\nFour data points have residuals $(1,1,1,10)$, and the last is an outlier. Take Huber with $\\delta=1$ (computed by program):\n\nThe last Huber term is $\\delta(|e|-\\tfrac12\\delta)=1\\times(10-0.5)=9.5$. MSE cares almost only about that one outlier, MAE is least swayed by it, and Huber sits in between: this is what \"MSE is sensitive to outliers\" means in numbers.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 6,
+    "base_kind": "huberexample",
+    "page": 6,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "加總與平均，差一個批次大小",
+    "title_en": "Sum and mean differ by the batch size",
+    "takeaway": "同一批資料要先對齊計算約定。",
+    "takeaway_en": "Align reduction conventions before comparing.",
+    "source_anchors": [
+      "1. 回歸：MSE、MAE、Huber"
+    ],
+    "bridge": "上一頁：四筆 Huber 損失總和為 11。",
+    "bridge_en": "Previously: The four Huber losses sum to 11.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "103",
+      "25.75",
+      "\\mathrm{MSE}=\\frac{103}{4}=25.75",
+      "13",
+      "3.25",
+      "\\mathrm{MAE}=\\frac{13}{4}=3.25",
+      "11.0",
+      "2.75",
+      "\\bar h=\\frac{11}{4}=2.75"
+    ],
+    "notes": [
+      "講義103、13、11都是總和，不能直接稱平均。四筆的平均分別25.75、3.25、2.75；原例的離群占比不受共同除四影響。固定批次時兩者最小化位置相同，但梯度尺度不同，學習率和其他正則項的相對尺度會受影響。\n\n講義補讀：\n| 損失 | 公式（對批次求和） | 特點 |\n|---|---|---|\n| MSE | $\\sum_{i=1}^{b}e_i^2$ | 處處可導；平方把離群值放大 |\n| MAE | $\\sum_{i=1}^{b}\\lvert e_i\\rvert$ | 對離群值穩健；零點不可導 |\n| Huber | $\\lvert e\\rvert\\le\\delta$ 時 $\\tfrac12e^2$，否則 $\\delta(\\lvert e\\rvert-\\tfrac12\\delta)$ | 兩者折衷，要調 $\\delta$ |\n\n四筆資料的殘差是 $(1,1,1,10)$，最後一筆是離群值。取 Huber 的 $\\delta=1$〔程式計算〕：\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "The source values 103,13,11 are sums. Their four-sample means are 25.75,3.25,2.75. Shares are unchanged by dividing every term by four. For a fixed batch, minimizers agree but gradient scaling changes, including relative scaling against regularization.\n\nSource context:\nFour data points have residuals $(1,1,1,10)$, and the last is an outlier. Take Huber with $\\delta=1$ (computed by program):\n\nThe last Huber term is $\\delta(|e|-\\tfrac12\\delta)=1\\times(10-0.5)=9.5$. MSE cares almost only about that one outlier, MAE is least swayed by it, and Huber sits in between: this is what \"MSE is sensitive to outliers\" means in numbers.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 7,
+    "base_kind": "summean",
+    "page": 7,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "看占比，才知道大殘差支配了多少",
+    "title_en": "Use shares to see how much the outlier dominates",
+    "takeaway": "此例的占比：平方最大，絕對值最小。",
+    "takeaway_en": "Here, squared error gives the largest outlier share.",
+    "source_anchors": [
+      "1. 回歸：MSE、MAE、Huber"
+    ],
+    "bridge": "上一頁：同一批資料要先對齊計算約定。",
+    "bridge_en": "Previously: Align reduction conventions before comparing.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\frac{100}{103}\\approx97.09\\%",
+      "\\frac{10}{13}\\approx76.92\\%",
+      "\\frac{9.5}{11}\\approx86.36\\%"
+    ],
+    "notes": [
+      "長條分別除各自總和。前三筆用三種淺藍段，最後一筆紅色。占比依完整精度計算：100/103、10/13、9.5/11。此例Huber占比在平方與絕對值之間，並不是保證所有資料或delta都具有同樣次序。不同損失總分不直接用來排名模型。\n\n講義補讀：\n| 損失 | 公式（對批次求和） | 特點 |\n|---|---|---|\n| MSE | $\\sum_{i=1}^{b}e_i^2$ | 處處可導；平方把離群值放大 |\n| MAE | $\\sum_{i=1}^{b}\\lvert e_i\\rvert$ | 對離群值穩健；零點不可導 |\n| Huber | $\\lvert e\\rvert\\le\\delta$ 時 $\\tfrac12e^2$，否則 $\\delta(\\lvert e\\rvert-\\tfrac12\\delta)$ | 兩者折衷，要調 $\\delta$ |\n\n**圖說 `lec02-kp07-loss-regression`**：先看紅色的 MSE，它是拋物線，殘差越大升得越快；再看藍色 MAE，兩條直線；最後看綠色虛線 Huber，中間像拋物線、兩側像直線，而且比 MAE 低。 / **Caption `lec02-kp07-loss-regression`:** Look first at the MSE, a parabola that rises faster the larger the residual; then at the MAE, two straight lines; finally at the dashed Huber, parabolic in the middle and linear on both sides, and below the MAE.\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Each bar is normalized by its own total. Pale blue marks the first three observations and red the last. Shares use full precision. Huber falls between the other shares in this example, not for every dataset or delta. Do not rank models by unlike loss totals.\n\nSource context:\nFour data points have residuals $(1,1,1,10)$, and the last is an outlier. Take Huber with $\\delta=1$ (computed by program):\n\nThe last Huber term is $\\delta(|e|-\\tfrac12\\delta)=1\\times(10-0.5)=9.5$. MSE cares almost only about that one outlier, MAE is least swayed by it, and Huber sits in between: this is what \"MSE is sensitive to outliers\" means in numbers.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 8,
+    "base_kind": "outlier",
+    "page": 8,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "三把尺，對大誤差的反應不同",
+    "title_en": "Three rulers respond differently to large errors",
+    "takeaway": "曲線比較成長方式，不把不同損失值當成同一把尺。",
+    "takeaway_en": "Compare growth patterns, not unlike numerical scales.",
+    "source_anchors": [
+      "1. 回歸：MSE、MAE、Huber"
+    ],
+    "bridge": "上一頁：此例的占比：平方最大，絕對值最小。",
+    "bridge_en": "Previously: Here, squared error gives the largest outlier share.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\ell(e)",
+      "-3",
+      "0",
+      "3",
+      "0",
+      "9.5",
+      "e^2",
+      "|e|",
+      "h_1(e)",
+      "e"
+    ],
+    "notes": [
+      "依原程式在負三到三取六百點。原圖縱軸上限六會裁掉平方曲線在兩端的九，本稿改上限九點五以完整保留曲線。平方紅、絕對值藍、Huber綠虛線。這是不同懲罰規則的形狀比較，不是驗證集表現實驗。\n\n講義補讀：\n| 損失 | 公式（對批次求和） | 特點 |\n|---|---|---|\n| MSE | $\\sum_{i=1}^{b}e_i^2$ | 處處可導；平方把離群值放大 |\n| MAE | $\\sum_{i=1}^{b}\\lvert e_i\\rvert$ | 對離群值穩健；零點不可導 |\n| Huber | $\\lvert e\\rvert\\le\\delta$ 時 $\\tfrac12e^2$，否則 $\\delta(\\lvert e\\rvert-\\tfrac12\\delta)$ | 兩者折衷，要調 $\\delta$ |\n\n四筆資料的殘差是 $(1,1,1,10)$，最後一筆是離群值。取 Huber 的 $\\delta=1$〔程式計算〕：\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "We use the source’s 600 samples on [-3,3]. Its y-limit of six clips the squared loss of nine at the ends; this deck uses 9.5 to preserve the entire curve. Red is squared, blue absolute, green dashed Huber. These are penalty shapes, not empirical validation results.\n\nSource context:\nFour data points have residuals $(1,1,1,10)$, and the last is an outlier. Take Huber with $\\delta=1$ (computed by program):\n\nThe last Huber term is $\\delta(|e|-\\tfrac12\\delta)=1\\times(10-0.5)=9.5$. MSE cares almost only about that one outlier, MAE is least swayed by it, and Huber sits in between: this is what \"MSE is sensitive to outliers\" means in numbers.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 9,
+    "base_kind": "curves",
+    "page": 9,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "交叉熵會重罰給正解很小的機率",
+    "title_en": "Cross-entropy penalizes low true-class probability",
+    "takeaway": "單一正確類別時，只取那一類的負對數。",
+    "takeaway_en": "For a one-hot target, take the true class’s negative log.",
+    "source_anchors": [
+      "2. 分類：交叉熵與 KL 散度"
+    ],
+    "bridge": "上一頁：曲線比較成長方式，不把不同損失值當成同一把尺。",
+    "bridge_en": "Previously: Compare growth patterns, not unlike numerical scales.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\ln",
+      "-\\ln p",
+      "0.02",
+      "1",
+      "0",
+      "4",
+      "p",
+      "L_{\\rm CE}=-\\sum_{i=1}^{b}\\sum_{l=1}^{c}y_{il}\\ln p_{il}",
+      "\\ell=-\\ln p_{\\rm true}",
+      "\\sum_l p_l=1,\\quad p_l\\ge0"
+    ],
+    "notes": [
+      "此頁先假設互斥類別的目標是one-hot，交叉熵才簡化成正解類別負對數。一般軟分布目標仍需保留全部類別和。ln採自然對數，單位nats。機率可由Softmax產生，但不限定只有Softmax一種方式；實作常直接把logits交給內建交叉熵，由程式做穩定的log-softmax。\n\n講義補讀：\n交叉熵是 $-\\sum_i\\sum_{l=1}^{c}(y_i)_l\\log f_o(\\mathbf{x}_i)_l$：「給正確類別的機率，取負對數」。它要求輸出像機率，所以輸出層必須接 softmax（多類）或 sigmoid（二元）。沿用 KP06 的 softmax 輸出 $\\mathbf{p}=(0.665,\\,0.245,\\,0.090)$〔程式計算〕：\n\n預測給正確答案的機率越小，損失越大。KL 散度 $\\sum_l(y_i)_l\\log\\frac{(y_i)_l}{f(\\mathbf{x}_i)_l}$ 用在目標本身是機率分布（軟標籤，例如知識蒸餾）的時候。目標 $\\mathbf{y}=(0.7,0.2,0.1)$ 對上面的 $\\mathbf{p}$：$0.7\\ln\\frac{0.7}{0.665}+0.2\\ln\\frac{0.2}{0.245}+0.1\\ln\\frac{0.1}{0.090}=0.0058$〔程式計算〕，很接近 0，因為兩個分布很像。若目標是 one-hot $(1,0,0)$，KL 只剩 $\\ln\\frac{1}{0.665}=0.408$，與交叉熵相同。\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "The negative-log simplification assumes a one-hot categorical target. Soft targets require the full class sum. We use natural logs, hence nats. Softmax is a common probability parameterization, not the only one. APIs often accept logits and compute stable log-softmax internally.\n\nSource context:\nCross-entropy is $-\\sum_i\\sum_{l=1}^{c}(y_i)_l\\log f_o(\\mathbf{x}_i)_l$: \"the negative log of the probability given to the correct class\". It needs the output to look like probabilities, so the output layer must be softmax (multi-class) or sigmoid (binary). Reuse the softmax output of KP06, $\\mathbf{p}=(0.665,\\,0.245,\\,0.090)$ (computed by program):\n\nThe less probability the prediction gives to the correct answer, the larger the loss. The KL divergence $\\sum_l(y_i)_l\\log\\frac{(y_i)_l}{f(\\mathbf{x}_i)_l}$ is used when the target itself is a probability distribution (a soft label, as in knowledge distillation). For the target $\\mathbf{y}=(0.7,0.2,0.1)$ against the $\\mathbf{p}$ above: $0.7\\ln\\frac{0.7}{0.665}+0.2\\ln\\frac{0.2}{0.245}+0.1\\ln\\frac{0.1}{0.090}=0.0058$ (computed by program), very close to 0 because the two distributions are alike. With a one-hot target $(1,0,0)$ the KL reduces to $\\ln\\frac{1}{0.665}=0.408$, the same as the cross-entropy.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 10,
+    "base_kind": "crossentropy",
+    "page": 10,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "同一個預測，正解換了損失也會換",
+    "title_en": "The same prediction has different losses for different targets",
+    "takeaway": "沿用 KP06 的完整 Softmax 值，最後才取位數。",
+    "takeaway_en": "Use full-precision KP06 probabilities before rounding.",
+    "source_anchors": [
+      "2. 分類：交叉熵與 KL 散度"
+    ],
+    "bridge": "上一頁：單一正確類別時，只取那一類的負對數。",
+    "bridge_en": "Previously: For a one-hot target, take the true class’s negative log.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "(2,1,0)",
+      "S=e^2+e+1,\\quad\\mathbf p=(e^2,e,1)/S",
+      "-\\ln(e^2/S)\\approx0.408",
+      "-\\ln(e/S)\\approx1.408",
+      "-\\ln(1/S)\\approx2.408"
+    ],
+    "notes": [
+      "計算沿用KP06未取位數的Softmax(2,1,0)，得到負對數0.4076059644、1.4076059644、2.4076059644。講義用三位顯示機率再列這組結果，其實若真的拿0.245重算會是1.406497。本稿用完整中間值並只在最後取位數，避免混用兩種輸入。\n\n講義補讀：\n交叉熵是 $-\\sum_i\\sum_{l=1}^{c}(y_i)_l\\log f_o(\\mathbf{x}_i)_l$：「給正確類別的機率，取負對數」。它要求輸出像機率，所以輸出層必須接 softmax（多類）或 sigmoid（二元）。沿用 KP06 的 softmax 輸出 $\\mathbf{p}=(0.665,\\,0.245,\\,0.090)$〔程式計算〕：\n\n預測給正確答案的機率越小，損失越大。KL 散度 $\\sum_l(y_i)_l\\log\\frac{(y_i)_l}{f(\\mathbf{x}_i)_l}$ 用在目標本身是機率分布（軟標籤，例如知識蒸餾）的時候。目標 $\\mathbf{y}=(0.7,0.2,0.1)$ 對上面的 $\\mathbf{p}$：$0.7\\ln\\frac{0.7}{0.665}+0.2\\ln\\frac{0.2}{0.245}+0.1\\ln\\frac{0.1}{0.090}=0.0058$〔程式計算〕，很接近 0，因為兩個分布很像。若目標是 one-hot $(1,0,0)$，KL 只剩 $\\ln\\frac{1}{0.665}=0.408$，與交叉熵相同。\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "The probabilities are the full-precision Softmax of (2,1,0), yielding 0.4076059644,1.4076059644,2.4076059644. Recomputing from the displayed 0.245 instead would give 1.406497. We retain full precision and round only the final display.\n\nSource context:\nCross-entropy is $-\\sum_i\\sum_{l=1}^{c}(y_i)_l\\log f_o(\\mathbf{x}_i)_l$: \"the negative log of the probability given to the correct class\". It needs the output to look like probabilities, so the output layer must be softmax (multi-class) or sigmoid (binary). Reuse the softmax output of KP06, $\\mathbf{p}=(0.665,\\,0.245,\\,0.090)$ (computed by program):\n\nThe less probability the prediction gives to the correct answer, the larger the loss. The KL divergence $\\sum_l(y_i)_l\\log\\frac{(y_i)_l}{f(\\mathbf{x}_i)_l}$ is used when the target itself is a probability distribution (a soft label, as in knowledge distillation). For the target $\\mathbf{y}=(0.7,0.2,0.1)$ against the $\\mathbf{p}$ above: $0.7\\ln\\frac{0.7}{0.665}+0.2\\ln\\frac{0.2}{0.245}+0.1\\ln\\frac{0.1}{0.090}=0.0058$ (computed by program), very close to 0 because the two distributions are alike. With a one-hot target $(1,0,0)$ the KL reduces to $\\ln\\frac{1}{0.665}=0.408$, the same as the cross-entropy.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 11,
+    "base_kind": "cecalc",
+    "page": 11,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "二元交叉熵要把兩種結果都寫進來",
+    "title_en": "Binary cross-entropy includes both outcomes",
+    "takeaway": "一個機率配它的補數；不用讓單一輸出和為一。",
+    "takeaway_en": "One probability and its complement, not a scalar summing to one.",
+    "source_anchors": [
+      "2. 分類：交叉熵與 KL 散度"
+    ],
+    "bridge": "上一頁：沿用 KP06 的完整 Softmax 值，最後才取位數。",
+    "bridge_en": "Previously: Use full-precision KP06 probabilities before rounding.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "p",
+      "1-p",
+      "\\ell=-y\\ln p-(1-y)\\ln(1-p)",
+      "y\\in\\{0,1\\},\\quad0<p<1",
+      "0",
+      "1"
+    ],
+    "notes": [
+      "二元標籤零或一，預測p是正類機率，負類機率為一減p。一般二元交叉熵必須保留兩項，只有代入某個硬標籤後才剩一項；可推廣軟二元目標。補充的互補長條只示意分配，不標數值避免被當作來源算例。常用BCEWithLogits直接接未活化分數，比手動Sigmoid再log穩定。\n\n講義補讀：\n交叉熵是 $-\\sum_i\\sum_{l=1}^{c}(y_i)_l\\log f_o(\\mathbf{x}_i)_l$：「給正確類別的機率，取負對數」。它要求輸出像機率，所以輸出層必須接 softmax（多類）或 sigmoid（二元）。沿用 KP06 的 softmax 輸出 $\\mathbf{p}=(0.665,\\,0.245,\\,0.090)$〔程式計算〕：\n\n預測給正確答案的機率越小，損失越大。KL 散度 $\\sum_l(y_i)_l\\log\\frac{(y_i)_l}{f(\\mathbf{x}_i)_l}$ 用在目標本身是機率分布（軟標籤，例如知識蒸餾）的時候。目標 $\\mathbf{y}=(0.7,0.2,0.1)$ 對上面的 $\\mathbf{p}$：$0.7\\ln\\frac{0.7}{0.665}+0.2\\ln\\frac{0.2}{0.245}+0.1\\ln\\frac{0.1}{0.090}=0.0058$〔程式計算〕，很接近 0，因為兩個分布很像。若目標是 one-hot $(1,0,0)$，KL 只剩 $\\ln\\frac{1}{0.665}=0.408$，與交叉熵相同。\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "For a binary target, p is the positive probability and 1-p the negative probability. Keep both terms in the general BCE; a hard target removes one only after substitution. Soft binary targets are also possible. The unlabeled bar is conceptual. A logits-based API can compute this more stably than manual Sigmoid and logs.\n\nSource context:\nCross-entropy is $-\\sum_i\\sum_{l=1}^{c}(y_i)_l\\log f_o(\\mathbf{x}_i)_l$: \"the negative log of the probability given to the correct class\". It needs the output to look like probabilities, so the output layer must be softmax (multi-class) or sigmoid (binary). Reuse the softmax output of KP06, $\\mathbf{p}=(0.665,\\,0.245,\\,0.090)$ (computed by program):\n\nThe less probability the prediction gives to the correct answer, the larger the loss. The KL divergence $\\sum_l(y_i)_l\\log\\frac{(y_i)_l}{f(\\mathbf{x}_i)_l}$ is used when the target itself is a probability distribution (a soft label, as in knowledge distillation). For the target $\\mathbf{y}=(0.7,0.2,0.1)$ against the $\\mathbf{p}$ above: $0.7\\ln\\frac{0.7}{0.665}+0.2\\ln\\frac{0.2}{0.245}+0.1\\ln\\frac{0.1}{0.090}=0.0058$ (computed by program), very close to 0 because the two distributions are alike. With a one-hot target $(1,0,0)$ the KL reduces to $\\ln\\frac{1}{0.665}=0.408$, the same as the cross-entropy.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 12,
+    "base_kind": "binary",
+    "page": 12,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "KL 衡量目標分布與預測分布的差異",
+    "title_en": "KL compares target and predicted distributions",
+    "takeaway": "方向不能交換；目標有機率的位置，預測也要有。",
+    "takeaway_en": "Direction matters; predictions need support where targets do.",
+    "source_anchors": [
+      "2. 分類：交叉熵與 KL 散度"
+    ],
+    "bridge": "上一頁：一個機率配它的補數；不用讓單一輸出和為一。",
+    "bridge_en": "Previously: One probability and its complement, not a scalar summing to one.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf y",
+      "\\mathbf p",
+      "1",
+      "2",
+      "3",
+      "D_{\\rm KL}(\\mathbf y\\Vert\\mathbf p)=\\sum_l y_l\\ln\\frac{y_l}{p_l}",
+      "\\sum_l y_l=\\sum_l p_l=1",
+      "y_l>0\\Rightarrow p_l>0",
+      "?",
+      "?"
+    ],
+    "notes": [
+      "目標y與預測p皆為正規化機率分布。y正的位置若p為零，KL為無限；y零的項按極限約定為零。方向y對p一般不可交換。KL可以用於蒸餾等軟分布對齊，不限於分類。它不是一般的對稱距離。\n\n講義補讀：\n交叉熵是 $-\\sum_i\\sum_{l=1}^{c}(y_i)_l\\log f_o(\\mathbf{x}_i)_l$：「給正確類別的機率，取負對數」。它要求輸出像機率，所以輸出層必須接 softmax（多類）或 sigmoid（二元）。沿用 KP06 的 softmax 輸出 $\\mathbf{p}=(0.665,\\,0.245,\\,0.090)$〔程式計算〕：\n\n預測給正確答案的機率越小，損失越大。KL 散度 $\\sum_l(y_i)_l\\log\\frac{(y_i)_l}{f(\\mathbf{x}_i)_l}$ 用在目標本身是機率分布（軟標籤，例如知識蒸餾）的時候。目標 $\\mathbf{y}=(0.7,0.2,0.1)$ 對上面的 $\\mathbf{p}$：$0.7\\ln\\frac{0.7}{0.665}+0.2\\ln\\frac{0.2}{0.245}+0.1\\ln\\frac{0.1}{0.090}=0.0058$〔程式計算〕，很接近 0，因為兩個分布很像。若目標是 one-hot $(1,0,0)$，KL 只剩 $\\ln\\frac{1}{0.665}=0.408$，與交叉熵相同。\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Targets and predictions must be normalized distributions. A positive target with zero predicted probability gives infinite KL. Zero-target terms use the limiting zero convention. KL is generally asymmetric, supports distribution matching such as distillation, and is not an ordinary symmetric metric.\n\nSource context:\nCross-entropy is $-\\sum_i\\sum_{l=1}^{c}(y_i)_l\\log f_o(\\mathbf{x}_i)_l$: \"the negative log of the probability given to the correct class\". It needs the output to look like probabilities, so the output layer must be softmax (multi-class) or sigmoid (binary). Reuse the softmax output of KP06, $\\mathbf{p}=(0.665,\\,0.245,\\,0.090)$ (computed by program):\n\nThe less probability the prediction gives to the correct answer, the larger the loss. The KL divergence $\\sum_l(y_i)_l\\log\\frac{(y_i)_l}{f(\\mathbf{x}_i)_l}$ is used when the target itself is a probability distribution (a soft label, as in knowledge distillation). For the target $\\mathbf{y}=(0.7,0.2,0.1)$ against the $\\mathbf{p}$ above: $0.7\\ln\\frac{0.7}{0.665}+0.2\\ln\\frac{0.2}{0.245}+0.1\\ln\\frac{0.1}{0.090}=0.0058$ (computed by program), very close to 0 because the two distributions are alike. With a one-hot target $(1,0,0)$ the KL reduces to $\\ln\\frac{1}{0.665}=0.408$, the same as the cross-entropy.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 13,
+    "base_kind": "kl",
+    "page": 13,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "兩個很接近的分布，KL 仍要逐項相加",
+    "title_en": "Compute every KL term before adding",
+    "takeaway": "個別項可以負；總 KL 才必定非負。",
+    "takeaway_en": "Individual terms may be negative; the total KL is nonnegative.",
+    "source_anchors": [
+      "2. 分類：交叉熵與 KL 散度"
+    ],
+    "bridge": "上一頁：方向不能交換；目標有機率的位置，預測也要有。",
+    "bridge_en": "Previously: Direction matters; predictions need support where targets do.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "S=e^2+e+1,\\quad\\mathbf p=(e^2,e,1)/S,\\quad\\mathbf y=(0.7,0.2,0.1)",
+      "0.7\\ln\\frac{0.7}{e^2/S}",
+      "\\approx0.035652",
+      "0.2\\ln\\frac{0.2}{e/S}",
+      "\\approx-0.040366",
+      "0.1\\ln\\frac{0.1}{1/S}",
+      "\\approx0.010502",
+      "D_{\\rm KL}=\\sum_l y_l\\ln(y_l/p_l)\\approx0.005787"
+    ],
+    "notes": [
+      "三個分量逐項可正可負，但正規化分布的KL總和非負。以完整Softmax計算總和0.005787411901，而若硬用講義三位機率計算則為0.005853188838。本稿不把後者也寫成0.0058，來源對照說明列出兩個版本。\n\n講義補讀：\n交叉熵是 $-\\sum_i\\sum_{l=1}^{c}(y_i)_l\\log f_o(\\mathbf{x}_i)_l$：「給正確類別的機率，取負對數」。它要求輸出像機率，所以輸出層必須接 softmax（多類）或 sigmoid（二元）。沿用 KP06 的 softmax 輸出 $\\mathbf{p}=(0.665,\\,0.245,\\,0.090)$〔程式計算〕：\n\n預測給正確答案的機率越小，損失越大。KL 散度 $\\sum_l(y_i)_l\\log\\frac{(y_i)_l}{f(\\mathbf{x}_i)_l}$ 用在目標本身是機率分布（軟標籤，例如知識蒸餾）的時候。目標 $\\mathbf{y}=(0.7,0.2,0.1)$ 對上面的 $\\mathbf{p}$：$0.7\\ln\\frac{0.7}{0.665}+0.2\\ln\\frac{0.2}{0.245}+0.1\\ln\\frac{0.1}{0.090}=0.0058$〔程式計算〕，很接近 0，因為兩個分布很像。若目標是 one-hot $(1,0,0)$，KL 只剩 $\\ln\\frac{1}{0.665}=0.408$，與交叉熵相同。\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Individual contributions may be positive or negative; the total KL between normalized distributions is nonnegative. Full-precision Softmax gives 0.005787411901, whereas the handout’s three-digit vector gives 0.005853188838. The review documents both rather than conflating them.\n\nSource context:\nCross-entropy is $-\\sum_i\\sum_{l=1}^{c}(y_i)_l\\log f_o(\\mathbf{x}_i)_l$: \"the negative log of the probability given to the correct class\". It needs the output to look like probabilities, so the output layer must be softmax (multi-class) or sigmoid (binary). Reuse the softmax output of KP06, $\\mathbf{p}=(0.665,\\,0.245,\\,0.090)$ (computed by program):\n\nThe less probability the prediction gives to the correct answer, the larger the loss. The KL divergence $\\sum_l(y_i)_l\\log\\frac{(y_i)_l}{f(\\mathbf{x}_i)_l}$ is used when the target itself is a probability distribution (a soft label, as in knowledge distillation). For the target $\\mathbf{y}=(0.7,0.2,0.1)$ against the $\\mathbf{p}$ above: $0.7\\ln\\frac{0.7}{0.665}+0.2\\ln\\frac{0.2}{0.245}+0.1\\ln\\frac{0.1}{0.090}=0.0058$ (computed by program), very close to 0 because the two distributions are alike. With a one-hot target $(1,0,0)$ the KL reduces to $\\ln\\frac{1}{0.665}=0.408$, the same as the cross-entropy.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 14,
+    "base_kind": "klcalc",
+    "page": 14,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "固定目標時，交叉熵與 KL 只差常數",
+    "title_en": "For fixed targets, cross-entropy and KL differ by a constant",
+    "takeaway": "目標是 one-hot 時，熵為零，兩者相同。",
+    "takeaway_en": "One-hot targets have zero entropy, so the two losses agree.",
+    "source_anchors": [
+      "2. 分類：交叉熵與 KL 散度",
+      "來源更正與取捨"
+    ],
+    "bridge": "上一頁：個別項可以負；總 KL 才必定非負。",
+    "bridge_en": "Previously: Individual terms may be negative; the total KL is nonnegative.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "H(\\mathbf y,\\mathbf p)=H(\\mathbf y)+D_{\\rm KL}(\\mathbf y\\Vert\\mathbf p)",
+      "H(\\mathbf y)",
+      "D_{\\rm KL}",
+      "H(\\mathbf y)=-\\sum_l y_l\\ln y_l",
+      "\\mathbf y=(1,0,0)\\Rightarrow H(\\mathbf y)=0",
+      "0"
+    ],
+    "notes": [
+      "交叉熵等於目標熵加KL，這是補充的完整關係。固定目標時熵與預測參數無關，所以最小化目標等價。軟目標即使預測完全相同，交叉熵仍等於目標熵，通常不是零；只有one-hot目標熵零才與KL數值相同。堆疊長條依實算熵與KL比例，KL段很細正是本例分布很接近。\n\n講義補讀：\n交叉熵是 $-\\sum_i\\sum_{l=1}^{c}(y_i)_l\\log f_o(\\mathbf{x}_i)_l$：「給正確類別的機率，取負對數」。它要求輸出像機率，所以輸出層必須接 softmax（多類）或 sigmoid（二元）。沿用 KP06 的 softmax 輸出 $\\mathbf{p}=(0.665,\\,0.245,\\,0.090)$〔程式計算〕：\n\n預測給正確答案的機率越小，損失越大。KL 散度 $\\sum_l(y_i)_l\\log\\frac{(y_i)_l}{f(\\mathbf{x}_i)_l}$ 用在目標本身是機率分布（軟標籤，例如知識蒸餾）的時候。目標 $\\mathbf{y}=(0.7,0.2,0.1)$ 對上面的 $\\mathbf{p}$：$0.7\\ln\\frac{0.7}{0.665}+0.2\\ln\\frac{0.2}{0.245}+0.1\\ln\\frac{0.1}{0.090}=0.0058$〔程式計算〕，很接近 0，因為兩個分布很像。若目標是 one-hot $(1,0,0)$，KL 只剩 $\\ln\\frac{1}{0.665}=0.408$，與交叉熵相同。\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Cross-entropy is target entropy plus KL. For fixed targets the entropy is independent of prediction parameters, so the minimizers agree. Even a perfect soft-target match has cross-entropy equal to target entropy, usually positive. One-hot targets have zero entropy. The thin KL bar accurately reflects this example’s close match.\n\nSource context:\nCross-entropy is $-\\sum_i\\sum_{l=1}^{c}(y_i)_l\\log f_o(\\mathbf{x}_i)_l$: \"the negative log of the probability given to the correct class\". It needs the output to look like probabilities, so the output layer must be softmax (multi-class) or sigmoid (binary). Reuse the softmax output of KP06, $\\mathbf{p}=(0.665,\\,0.245,\\,0.090)$ (computed by program):\n\nThe less probability the prediction gives to the correct answer, the larger the loss. The KL divergence $\\sum_l(y_i)_l\\log\\frac{(y_i)_l}{f(\\mathbf{x}_i)_l}$ is used when the target itself is a probability distribution (a soft label, as in knowledge distillation). For the target $\\mathbf{y}=(0.7,0.2,0.1)$ against the $\\mathbf{p}$ above: $0.7\\ln\\frac{0.7}{0.665}+0.2\\ln\\frac{0.2}{0.245}+0.1\\ln\\frac{0.1}{0.090}=0.0058$ (computed by program), very close to 0 because the two distributions are alike. With a one-hot target $(1,0,0)$ the KL reduces to $\\ln\\frac{1}{0.665}=0.408$, the same as the cross-entropy.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 15,
+    "base_kind": "relation",
+    "page": 15,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "Hinge 不只求分對，還要留出分數餘裕",
+    "title_en": "Hinge asks for a score margin, beyond a correct sign",
+    "takeaway": "零損失需要標籤乘分數至少達到門檻。",
+    "takeaway_en": "Zero loss requires the signed score to reach the margin.",
+    "source_anchors": [
+      "3. Hinge：分對了但離邊界太近，也要罰"
+    ],
+    "bridge": "上一頁：目標是 one-hot 時，熵為零，兩者相同。",
+    "bridge_en": "Previously: One-hot targets have zero entropy, so the two losses agree.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "y\\in\\{-1,+1\\}",
+      "m=1",
+      "\\ell(yf_o)",
+      "-2",
+      "0",
+      "3",
+      "-0.1",
+      "3.1",
+      "yf_o",
+      "\\ell=\\max(0,m-yf_o),\\quad m=1",
+      "yf_o\\ge1\\Rightarrow\\ell=0"
+    ],
+    "notes": [
+      "Hinge作用在分數而非機率，二元標籤取負一或正一。零損失的條件是標籤乘分數至少margin，不是分數絕對值夠大。0與1之間的signed score符號正確但還未達margin，因此仍罰。零分數時的0-1曲線本頁採不罰的畫圖約定，不是指定模型的平手分類規則。\n\n講義補讀：\nHinge 用在二分類，標籤 $y_i\\in\\{-1,+1\\}$：損失 $\\max\\big(0,\\,m-y_if_o(\\mathbf{x}_i)\\big)$。取 $m=1$。$y=+1$ 時：$f_o=1.5$ 損失 $0$；$f_o=0.3$ 損失 $1-0.3=0.7$；$f_o=-0.5$ 損失 $1-(-0.5)=1.5$。第二個點分對了（$0.3>0$），卻因離邊界不到 $m$ 而被罰 $0.7$。它和 KP02 那種只問對錯的 0-1 損失不同，是連續的。\n\n**圖說 `lec02-kp07-loss-hinge`**：先看灰色點線，0-1 損失只在分錯（$yf<0$）時為 1；再看橘色 hinge，在 $yf<1$ 時就開始罰，三個標出的點損失分別是 0、0.7、1.5。 / **Caption `lec02-kp07-loss-hinge`:** Look first at the grey dotted 0-1 loss, which is 1 only when the point is wrong ($yf<0$); then at the orange hinge, which starts punishing already when $yf<1$, with losses 0, 0.7 and 1.5 at the three marked points.\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Hinge acts on scores, not probabilities, with labels -1 or +1. Zero loss requires y times score to reach the margin, not merely a large absolute score. Scores between zero and one have the correct sign but still incur a penalty. The 0-1 plot convention at zero does not prescribe a classifier tie rule.\n\nSource context:\nHinge is used in binary classification with labels $y_i\\in\\{-1,+1\\}$: the loss is $\\max\\big(0,\\,m-y_if_o(\\mathbf{x}_i)\\big)$. Take $m=1$. For $y=+1$: $f_o=1.5$ gives loss $0$; $f_o=0.3$ gives $1-0.3=0.7$; $f_o=-0.5$ gives $1-(-0.5)=1.5$. The second point is classified right ($0.3>0$) yet is punished by $0.7$ because it lies within $m$ of the boundary. Unlike the 0-1 loss of KP02 that asks only right or wrong, it is continuous.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 16,
+    "base_kind": "hinge",
+    "page": 16,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "三個分數：安全、太近、分錯",
+    "title_en": "Three scores: safe, too close, and wrong",
+    "takeaway": "先算標籤乘分數，再代入 Hinge。",
+    "takeaway_en": "Compute the signed score before applying Hinge.",
+    "source_anchors": [
+      "3. Hinge：分對了但離邊界太近，也要罰"
+    ],
+    "bridge": "上一頁：零損失需要標籤乘分數至少達到門檻。",
+    "bridge_en": "Previously: Zero loss requires the signed score to reach the margin.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "y\\in\\{-1,+1\\}",
+      "m=1",
+      "\\ell(yf_o)",
+      "-2",
+      "0",
+      "3",
+      "-0.1",
+      "3.1",
+      "yf_o",
+      "y=+1,\\quad m=1",
+      "\\max(0,1-1.5)=0",
+      "\\max(0,1-0.3)=0.7",
+      "\\max(0,1-(-0.5))=1.5"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。先算標籤乘分數，再代入 Hinge。\n\n講義補讀：\nHinge 用在二分類，標籤 $y_i\\in\\{-1,+1\\}$：損失 $\\max\\big(0,\\,m-y_if_o(\\mathbf{x}_i)\\big)$。取 $m=1$。$y=+1$ 時：$f_o=1.5$ 損失 $0$；$f_o=0.3$ 損失 $1-0.3=0.7$；$f_o=-0.5$ 損失 $1-(-0.5)=1.5$。第二個點分對了（$0.3>0$），卻因離邊界不到 $m$ 而被罰 $0.7$。它和 KP02 那種只問對錯的 0-1 損失不同，是連續的。\n\n**圖說 `lec02-kp07-loss-hinge`**：先看灰色點線，0-1 損失只在分錯（$yf<0$）時為 1；再看橘色 hinge，在 $yf<1$ 時就開始罰，三個標出的點損失分別是 0、0.7、1.5。 / **Caption `lec02-kp07-loss-hinge`:** Look first at the grey dotted 0-1 loss, which is 1 only when the point is wrong ($yf<0$); then at the orange hinge, which starts punishing already when $yf<1$, with losses 0, 0.7 and 1.5 at the three marked points.\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Explain the newly revealed evidence and mascot prompt: Compute the signed score before applying Hinge.\n\nSource context:\nHinge is used in binary classification with labels $y_i\\in\\{-1,+1\\}$: the loss is $\\max\\big(0,\\,m-y_if_o(\\mathbf{x}_i)\\big)$. Take $m=1$. For $y=+1$: $f_o=1.5$ gives loss $0$; $f_o=0.3$ gives $1-0.3=0.7$; $f_o=-0.5$ gives $1-(-0.5)=1.5$. The second point is classified right ($0.3>0$) yet is punished by $0.7$ because it lies within $m$ of the boundary. Unlike the 0-1 loss of KP02 that asks only right or wrong, it is continuous.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 17,
+    "base_kind": "hingecalc",
+    "page": 17,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "分數餘裕不是幾何距離",
+    "title_en": "A score margin is not a geometric distance",
+    "takeaway": "同時放大權重與偏置，邊界不變，分數卻改變。",
+    "takeaway_en": "Scaling weights and bias keeps the boundary but changes scores.",
+    "source_anchors": [
+      "3. Hinge：分對了但離邊界太近，也要罰",
+      "來源更正與取捨"
+    ],
+    "bridge": "上一頁：先算標籤乘分數，再代入 Hinge。",
+    "bridge_en": "Previously: Compute the signed score before applying Hinge.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "d=\\frac{s}{\\|\\mathbf w\\|_2}",
+      "s=\\mathbf w^\\top\\mathbf x+b",
+      "s\\mapsto2s",
+      "\\frac{2s}{\\|2\\mathbf w\\|_2}=\\frac{s}{\\|\\mathbf w\\|_2}"
+    ],
+    "notes": [
+      "線性分數s等於w轉置x加b，非零w時除其範數才是帶符號幾何距離。把權重和偏置同乘正二，不改零邊界，s變兩倍，但距離不變，因此本單元m是分數尺度上的門檻。圖是補充概念示意，不宣稱相同模型訓練結果。\n\n講義補讀：\nHinge 用在二分類，標籤 $y_i\\in\\{-1,+1\\}$：損失 $\\max\\big(0,\\,m-y_if_o(\\mathbf{x}_i)\\big)$。取 $m=1$。$y=+1$ 時：$f_o=1.5$ 損失 $0$；$f_o=0.3$ 損失 $1-0.3=0.7$；$f_o=-0.5$ 損失 $1-(-0.5)=1.5$。第二個點分對了（$0.3>0$），卻因離邊界不到 $m$ 而被罰 $0.7$。它和 KP02 那種只問對錯的 0-1 損失不同，是連續的。\n\n**圖說 `lec02-kp07-loss-hinge`**：先看灰色點線，0-1 損失只在分錯（$yf<0$）時為 1；再看橘色 hinge，在 $yf<1$ 時就開始罰，三個標出的點損失分別是 0、0.7、1.5。 / **Caption `lec02-kp07-loss-hinge`:** Look first at the grey dotted 0-1 loss, which is 1 only when the point is wrong ($yf<0$); then at the orange hinge, which starts punishing already when $yf<1$, with losses 0, 0.7 and 1.5 at the three marked points.\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "For nonzero w, signed geometric distance is (w transpose x+b)/norm(w). Multiplying weights and bias by positive two leaves the zero boundary and geometric distance unchanged but doubles the score. The Hinge margin is on the score scale. This is an added concept sketch, not a training comparison.\n\nSource context:\nHinge is used in binary classification with labels $y_i\\in\\{-1,+1\\}$: the loss is $\\max\\big(0,\\,m-y_if_o(\\mathbf{x}_i)\\big)$. Take $m=1$. For $y=+1$: $f_o=1.5$ gives loss $0$; $f_o=0.3$ gives $1-0.3=0.7$; $f_o=-0.5$ gives $1-(-0.5)=1.5$. The second point is classified right ($0.3>0$) yet is punished by $0.7$ because it lies within $m$ of the boundary. Unlike the 0-1 loss of KP02 that asks only right or wrong, it is continuous.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 18,
+    "base_kind": "margin",
+    "page": 18,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "Huber 在兩個接點都接得上斜率",
+    "title_en": "Huber joins values and slopes at both thresholds",
+    "takeaway": "一次導數連續；二次導數仍有切換。",
+    "takeaway_en": "The first derivative is continuous; the second changes.",
+    "source_anchors": [
+      "本單元重點整理"
+    ],
+    "bridge": "上一頁：同時放大權重與偏置，邊界不變，分數卻改變。",
+    "bridge_en": "Previously: Scaling weights and bias keeps the boundary but changes scores.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\delta>0",
+      "\\delta=1",
+      "h_1(e)",
+      "e",
+      "-3",
+      "0",
+      "3",
+      "0",
+      "2.7",
+      "\\frac12(\\pm\\delta)^2=\\delta(\\delta-\\frac12\\delta)",
+      "h_\\delta(\\pm\\delta)=\\frac12\\delta^2",
+      "h_\\delta^{\\prime}(-\\delta)=-\\delta",
+      "h_\\delta^{\\prime}(+\\delta)=+\\delta"
+    ],
+    "notes": [
+      "正接點delta：二次值半delta平方、線性值delta乘delta減半delta，相同；左、右一階導數都delta。負接點同值，兩側導數皆負delta。因此Huber在正門檻時一次可微且一階導數連續，但二階導數從一變零，不是處處二次光滑。\n\n講義補讀：\n**想深入**（選讀）：Huber 在 $|e|=\\delta$ 處，二次段與線性段的值與斜率都相同，所以整條曲線是平滑的：二次段 $\\tfrac12\\delta^2$、斜率 $\\delta$；線性段 $\\delta(\\delta-\\tfrac12\\delta)=\\tfrac12\\delta^2$、斜率 $\\delta$。另外，二元交叉熵的負值正是第 KP08 要用的對數似然。\n\n| 題 / Question | A | B | C | D | 提示 / Hint |\n|---|---|---|---|---|---|\n| 1. MSE 的主要缺點？ / What is the main drawback of MSE? | 零點不可導 | 平方把離群值放大，對離群值敏感 | 無法用於回歸 | 輸出不落在 $[0,1]$ | 看第 1 節的表。 / The table of section 1. |\n| 2. Huber 的超參數 $\\delta$ 作用？ / What does $\\delta$ do? | 決定學習率 | 決定二次與線性區的切換門檻 | 決定類別數 | 決定 margin | 看公式。 / See the formula. |\n| 3. 哪種損失在目標是軟標籤時特別有用？ / Which loss suits soft targets? | Hinge | MSE | KL divergence | MAE | 看第 2 節。 / Section 2. |\n| 4. 使用交叉熵時，輸出層必須具備什麼條件？ / What must the output layer satisfy for cross-entropy? | 線性活化即可 | 接 softmax 或 sigmoid，使預測落在 $[0,1]$ 且和為 1 | 用 maxout | 必須有 bias | 對數裡的值要像機率。 / The value inside the log must look like a probability. |\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "At positive delta both values are half delta squared and both first derivatives delta. At negative delta the values again agree and both slopes are minus delta. Huber is continuously once differentiable for positive thresholds, but the second derivative changes from one to zero.\n\nSource context:\n1. For residuals $(2,-1,0.5,6)$ compute the sums of MSE, MAE and Huber ($\\delta=1$). (Hint: for Huber, first decide whether each residual lies in the quadratic or the linear zone.)\n2. For a 3-class softmax with input $(0,0,0)$, what is the cross-entropy for any correct class? (Hint: what is each probability?)\n3. For hinge with $m=1$, $y=-1$ and $f_o=0.8$, what is the loss, and is the point classified right? (Hint: compute $yf_o$ first.)\n\n**Question for the next knowledge point**: The Perceptron's loss only counts \"how many are wrong\", which is discrete and cannot be learned by gradients. If it is replaced by a continuous squared error, we can walk downhill step by step. That idea is ADALINE.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 19,
+    "base_kind": "join",
+    "page": 19,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "先認清任務，再挑對損失",
+    "title_en": "Choose a loss after identifying the task",
+    "takeaway": "實數、互斥類別、軟分布與分數間隔，需要不同的尺。",
+    "takeaway_en": "Real targets, classes, soft distributions and margins need different rulers.",
+    "source_anchors": [
+      "本單元重點整理"
+    ],
+    "bridge": "上一頁：一次導數連續；二次導數仍有切換。",
+    "bridge_en": "Previously: The first derivative is continuous; the second changes.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。實數、互斥類別、軟分布與分數間隔，需要不同的尺。\n\n講義補讀：\n1. 殘差 $(2,-1,0.5,6)$，算 MSE、MAE 與 Huber（$\\delta=1$）的總和。（提示：Huber 要先判斷每個殘差在二次區還是線性區。）\n2. 3 類的 softmax 輸入 $(0,0,0)$，正確類別任選，交叉熵是多少？（提示：三個機率各是多少？）\n3. Hinge（$m=1$），$y=-1$、$f_o=0.8$，損失是多少？它分對了嗎？（提示：先算 $yf_o$。）\n\n| 題 / Question | A | B | C | D | 提示 / Hint |\n|---|---|---|---|---|---|\n| 1. MSE 的主要缺點？ / What is the main drawback of MSE? | 零點不可導 | 平方把離群值放大，對離群值敏感 | 無法用於回歸 | 輸出不落在 $[0,1]$ | 看第 1 節的表。 / The table of section 1. |\n| 2. Huber 的超參數 $\\delta$ 作用？ / What does $\\delta$ do? | 決定學習率 | 決定二次與線性區的切換門檻 | 決定類別數 | 決定 margin | 看公式。 / See the formula. |\n| 3. 哪種損失在目標是軟標籤時特別有用？ / Which loss suits soft targets? | Hinge | MSE | KL divergence | MAE | 看第 2 節。 / Section 2. |\n| 4. 使用交叉熵時，輸出層必須具備什麼條件？ / What must the output layer satisfy for cross-entropy? | 線性活化即可 | 接 softmax 或 sigmoid，使預測落在 $[0,1]$ 且和為 1 | 用 maxout | 必須有 bias | 對數裡的值要像機率。 / The value inside the log must look like a probability. |\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Explain the newly revealed evidence and mascot prompt: Real targets, classes, soft distributions and margins need different rulers.\n\nSource context:\n**One-sentence summary**: A loss function turns \"how wrong the network is\" into one number to minimize; regression commonly uses MSE, MAE or Huber, and classification almost always uses cross-entropy (with softmax or sigmoid in the output layer).\n\n- \"The smaller the loss, the better the network.\" No: the loss is measured on the training data only, and a very small value may just mean the training data were memorized (the generalization problem of KP04).\n- \"Values of different losses can be compared directly.\" They cannot: MSE's $103$ and MAE's $13$ say nothing meaningful about which is larger, because they are different rulers.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 20,
+    "base_kind": "choose",
+    "page": 20,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "小損失的意義，要連資料與尺一起看",
+    "title_en": "Read a low loss with its data and ruler",
+    "takeaway": "訓練低損失{color=#b24b52}不保證{/color}泛化；不同尺不直接比高低。",
+    "takeaway_en": "Low training loss {color=#b24b52}does not ensure{/color} generalization.",
+    "source_anchors": [
+      "本單元重點整理"
+    ],
+    "bridge": "上一頁：實數、互斥類別、軟分布與分數間隔，需要不同的尺。",
+    "bridge_en": "Previously: Real targets, classes, soft distributions and margins need different rulers.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [],
+    "notes": [
+      "損失可以量在訓練、驗證或測試資料上，不是只能在訓練資料上計算。低訓練損失不保證低未見資料損失。比較模型需固定資料集、目標、損失定義和加總或平均約定；平方103與絕對值13的大小不能直接證明何者模型較好。\n\n講義補讀：\n- 「損失越小，網路一定越好」——不對。損失只在訓練資料上量到，太小可能只是把訓練資料背起來（KP04 的泛化問題）。\n- 「不同損失的數值可以直接比大小」——不能：MSE 的 $103$ 與 MAE 的 $13$ 沒有誰比較大的意義，它們是不同的尺。\n\n| 題 / Question | A | B | C | D | 提示 / Hint |\n|---|---|---|---|---|---|\n| 1. MSE 的主要缺點？ / What is the main drawback of MSE? | 零點不可導 | 平方把離群值放大，對離群值敏感 | 無法用於回歸 | 輸出不落在 $[0,1]$ | 看第 1 節的表。 / The table of section 1. |\n| 2. Huber 的超參數 $\\delta$ 作用？ / What does $\\delta$ do? | 決定學習率 | 決定二次與線性區的切換門檻 | 決定類別數 | 決定 margin | 看公式。 / See the formula. |\n| 3. 哪種損失在目標是軟標籤時特別有用？ / Which loss suits soft targets? | Hinge | MSE | KL divergence | MAE | 看第 2 節。 / Section 2. |\n| 4. 使用交叉熵時，輸出層必須具備什麼條件？ / What must the output layer satisfy for cross-entropy? | 線性活化即可 | 接 softmax 或 sigmoid，使預測落在 $[0,1]$ 且和為 1 | 用 maxout | 必須有 bias | 對數裡的值要像機率。 / The value inside the log must look like a probability. |\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Loss can be measured on training, validation or test data. Low training loss does not guarantee unseen-data performance. Comparisons require the same dataset, target, loss and reduction convention. A squared sum of 103 versus an absolute sum of 13 does not establish which model is better.\n\nSource context:\n**One-sentence summary**: A loss function turns \"how wrong the network is\" into one number to minimize; regression commonly uses MSE, MAE or Huber, and classification almost always uses cross-entropy (with softmax or sigmoid in the output layer).\n\n- \"The smaller the loss, the better the network.\" No: the loss is measured on the training data only, and a very small value may just mean the training data were memorized (the generalization problem of KP04).\n- \"Values of different losses can be compared directly.\" They cannot: MSE's $103$ and MAE's $13$ say nothing meaningful about which is larger, because they are different rulers.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 21,
+    "base_kind": "myths",
+    "page": 21,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "concept",
+    "title": "再深一層：把條件與主張接起來",
+    "title_en": "Go deeper: connect assumptions and claims",
+    "takeaway": "選讀內容也要分清來源敘述與適用條件。",
+    "takeaway_en": "Separate the optional claim from its assumptions.",
+    "source_anchors": [
+      "想深入"
+    ],
+    "bridge": "主線走完後，再看講義的選讀內容。",
+    "bridge_en": "After the main route, revisit the optional material.",
+    "visual": "原生流程連接條件、方法、結論，完整推理在導讀",
+    "math": [
+      "|e|=\\delta",
+      "\\tfrac12\\delta^2",
+      "\\delta"
+    ],
+    "notes": [
+      "Huber 在 $|e|=\\delta$ 處，二次段與線性段的值與斜率都相同，所以整條曲線是平滑的：二次段 $\\tfrac12\\delta^2$、斜率 $\\delta$；線性段 $\\delta(\\delta-\\tfrac12\\delta)=\\tfrac12\\delta^2$、斜率 $\\delta$。另外，二元交叉熵的負值正是第 KP08 要用的對數似然。\n\n本稿釐清：平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "At $|e|=\\delta$ the quadratic piece and the linear piece of Huber have the same value and slope, so the whole curve is smooth: the quadratic piece gives $\\tfrac12\\delta^2$ with slope $\\delta$, and the linear piece $\\delta(\\delta-\\tfrac12\\delta)=\\tfrac12\\delta^2$ with slope $\\delta$. Also, the negative of the binary cross-entropy is exactly the log-likelihood that KP08 will use.\n\nClarification: Sums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "answer_text": [
+      "Huber 在 $|e|=\\delta$ 處，二次段與線性段的值與斜率都相同，所以整條曲線是平滑的：二次段 $\\tfrac12\\delta^2$、斜率 $\\delta$；線性段 $\\delta(\\delta-\\tfrac12\\delta)=\\tfrac12\\delta^2$、斜率 $\\delta$。另外，二元交叉熵的負值正是第 KP08 要用的對數似然。",
+      "At $|e|=\\delta$ the quadratic piece and the linear piece of Huber have the same value and slope, so the whole curve is smooth: the quadratic piece gives $\\tfrac12\\delta^2$ with slope $\\delta$, and the linear piece $\\delta(\\delta-\\tfrac12\\delta)=\\tfrac12\\delta^2$ with slope $\\delta$. Also, the negative of the binary cross-entropy is exactly the log-likelihood that KP08 will use."
+    ],
+    "page": 22,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "concept",
+    "title": "再深一層：把條件與主張接起來",
+    "title_en": "Go deeper: connect assumptions and claims",
+    "takeaway": "選讀內容也要分清來源敘述與適用條件。",
+    "takeaway_en": "Separate the optional claim from its assumptions.",
+    "source_anchors": [
+      "想深入"
+    ],
+    "bridge": "主線走完後，再看講義的選讀內容。",
+    "bridge_en": "After the main route, revisit the optional material.",
+    "visual": "原生流程連接條件、方法、結論，完整推理在導讀",
+    "math": [
+      "\\delta(\\delta-\\tfrac12\\delta)=\\tfrac12\\delta^2",
+      "\\delta"
+    ],
+    "notes": [
+      "Huber 在 $|e|=\\delta$ 處，二次段與線性段的值與斜率都相同，所以整條曲線是平滑的：二次段 $\\tfrac12\\delta^2$、斜率 $\\delta$；線性段 $\\delta(\\delta-\\tfrac12\\delta)=\\tfrac12\\delta^2$、斜率 $\\delta$。另外，二元交叉熵的負值正是第 KP08 要用的對數似然。\n\n本稿釐清：平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "At $|e|=\\delta$ the quadratic piece and the linear piece of Huber have the same value and slope, so the whole curve is smooth: the quadratic piece gives $\\tfrac12\\delta^2$ with slope $\\delta$, and the linear piece $\\delta(\\delta-\\tfrac12\\delta)=\\tfrac12\\delta^2$ with slope $\\delta$. Also, the negative of the binary cross-entropy is exactly the log-likelihood that KP08 will use.\n\nClarification: Sums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "answer_text": [
+      "Huber 在 $|e|=\\delta$ 處，二次段與線性段的值與斜率都相同，所以整條曲線是平滑的：二次段 $\\tfrac12\\delta^2$、斜率 $\\delta$；線性段 $\\delta(\\delta-\\tfrac12\\delta)=\\tfrac12\\delta^2$、斜率 $\\delta$。另外，二元交叉熵的負值正是第 KP08 要用的對數似然。",
+      "At $|e|=\\delta$ the quadratic piece and the linear piece of Huber have the same value and slope, so the whole curve is smooth: the quadratic piece gives $\\tfrac12\\delta^2$ with slope $\\delta$, and the linear piece $\\delta(\\delta-\\tfrac12\\delta)=\\tfrac12\\delta^2$ with slope $\\delta$. Also, the negative of the binary cross-entropy is exactly the log-likelihood that KP08 will use."
+    ],
+    "page": 23,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "迷思1：這個說法成立嗎？",
+    "title_en": "Misconception 1: does the claim hold?",
+    "takeaway": "先寫下你的判斷與條件，再翻頁核對。",
+    "takeaway_en": "Write your judgment and conditions before checking.",
+    "source_anchors": [
+      "常見迷思#1"
+    ],
+    "bridge": "主線有了，試著辨認一個容易混淆的說法。",
+    "bridge_en": "Use the main ideas to examine a tempting claim.",
+    "visual": "中立問題與兩個待核對分支",
+    "math": [],
+    "notes": [
+      "「損失越小，網路一定越好」",
+      "The smaller the loss, the better the network."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "「損失越小，網路一定越好」",
+      "The smaller the loss, the better the network."
+    ],
+    "self_check": true,
+    "page": 24,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "explain",
+    "title": "迷思1解析：條件不能省略",
+    "title_en": "Misconception 1: keep the conditions",
+    "takeaway": "先把適用範圍說清楚，才判斷結論。",
+    "takeaway_en": "State the scope before accepting the conclusion.",
+    "source_anchors": [
+      "常見迷思#1"
+    ],
+    "bridge": "核對上一頁：先問是哪個模型、哪個條件。",
+    "bridge_en": "Check the previous page: which model and which assumptions?",
+    "visual": "條件到推理到正確結論，角色提醒例外",
+    "math": [],
+    "notes": [
+      "不對。損失只在訓練資料上量到，太小可能只是把訓練資料背起來（KP04 的泛化問題）。\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "No: the loss is measured on the training data only, and a very small value may just mean the training data were memorized (the generalization problem of KP04).\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "不對。損失只在訓練資料上量到，太小可能只是把訓練資料背起來（KP04 的泛化問題）。",
+      "No: the loss is measured on the training data only, and a very small value may just mean the training data were memorized (the generalization problem of KP04)."
+    ],
+    "self_check": true,
+    "page": 25,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "迷思2：這個說法成立嗎？",
+    "title_en": "Misconception 2: does the claim hold?",
+    "takeaway": "先寫下你的判斷與條件，再翻頁核對。",
+    "takeaway_en": "Write your judgment and conditions before checking.",
+    "source_anchors": [
+      "常見迷思#2"
+    ],
+    "bridge": "主線有了，試著辨認一個容易混淆的說法。",
+    "bridge_en": "Use the main ideas to examine a tempting claim.",
+    "visual": "中立問題與兩個待核對分支",
+    "math": [],
+    "notes": [
+      "「不同損失的數值可以直接比大小」",
+      "Values of different losses can be compared directly."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "「不同損失的數值可以直接比大小」",
+      "Values of different losses can be compared directly."
+    ],
+    "self_check": true,
+    "page": 26,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "explain",
+    "title": "迷思2解析：條件不能省略",
+    "title_en": "Misconception 2: keep the conditions",
+    "takeaway": "先把適用範圍說清楚，才判斷結論。",
+    "takeaway_en": "State the scope before accepting the conclusion.",
+    "source_anchors": [
+      "常見迷思#2"
+    ],
+    "bridge": "核對上一頁：先問是哪個模型、哪個條件。",
+    "bridge_en": "Check the previous page: which model and which assumptions?",
+    "visual": "條件到推理到正確結論，角色提醒例外",
+    "math": [],
+    "notes": [
+      "不能：MSE 的 $103$ 與 MAE 的 $13$ 沒有誰比較大的意義，它們是不同的尺。\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "They cannot: MSE's $103$ and MAE's $13$ say nothing meaningful about which is larger, because they are different rulers.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "不能：MSE 的 $103$ 與 MAE 的 $13$ 沒有誰比較大的意義，它們是不同的尺。",
+      "They cannot: MSE's $103$ and MAE's $13$ say nothing meaningful about which is larger, because they are different rulers."
+    ],
+    "self_check": true,
+    "page": 27,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習1：先獨立完成，再翻頁",
+    "title_en": "Practice 1: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#1"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "殘差 $(2,-1,0.5,6)$，算 MSE、MAE 與 Huber（$\\delta=1$）的總和。（提示：Huber 要先判斷每個殘差在二次區還是線性區。）",
+      "For residuals $(2,-1,0.5,6)$ compute the sums of MSE, MAE and Huber ($\\delta=1$). (Hint: for Huber, first decide whether each residual lies in the quadratic or the linear zone.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "殘差 $(2,-1,0.5,6)$，算 MSE、MAE 與 Huber（$\\delta=1$）的總和。（提示：Huber 要先判斷每個殘差在二次區還是線性區。）",
+      "For residuals $(2,-1,0.5,6)$ compute the sums of MSE, MAE and Huber ($\\delta=1$). (Hint: for Huber, first decide whether each residual lies in the quadratic or the linear zone.)"
+    ],
+    "self_check": true,
+    "page": 28,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "同一組殘差，三種加總得到不同的尺",
+    "title_en": "Three sums measure the same residuals differently",
+    "takeaway": "這裡明確計加總；平均各自再除以四。",
+    "takeaway_en": "These are sums; divide each by four for means.",
+    "source_anchors": [
+      "小練習#1",
+      "解題示範"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "\\sum e_i^2=2^2+(-1)^2+0.5^2+6^2=41.25",
+      "\\sum|e_i|=2+1+0.5+6=9.5",
+      "\\sum h_1(e_i)=(2-0.5)+0.5+0.5(0.5)^2+(6-0.5)=7.625"
+    ],
+    "notes": [
+      "對Huber先判斷絕對殘差是否超過一。四項依序1.5、0.5、0.125、5.5，再相加為7.625。來源把平方加總稱MSE容易混淆，若採mean則為10.3125；MAE平均2.375、Huber平均1.90625。不同尺的數字不直接比較優劣。",
+      "Huber terms are 1.5,0.5,0.125,5.5, summing to 7.625. The source calls a squared sum MSE; the corresponding mean is 10.3125. Mean absolute and Huber losses are 2.375 and 1.90625. Different loss scales cannot be ranked by raw magnitude."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 29,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習2：先獨立完成，再翻頁",
+    "title_en": "Practice 2: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "3 類的 softmax 輸入 $(0,0,0)$，正確類別任選，交叉熵是多少？（提示：三個機率各是多少？）",
+      "For a 3-class softmax with input $(0,0,0)$, what is the cross-entropy for any correct class? (Hint: what is each probability?)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "3 類的 softmax 輸入 $(0,0,0)$，正確類別任選，交叉熵是多少？（提示：三個機率各是多少？）",
+      "For a 3-class softmax with input $(0,0,0)$, what is the cross-entropy for any correct class? (Hint: what is each probability?)"
+    ],
+    "self_check": true,
+    "page": 30,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "三個零分數的交叉熵是自然對數三",
+    "title_en": "Three zero logits give cross-entropy ln three",
+    "takeaway": "互斥三類、one-hot 標籤，任選正類結果相同。",
+    "takeaway_en": "For mutually exclusive classes and a one-hot target, each class gives the same loss.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "p_j=\\frac{e^0}{e^0+e^0+e^0}=\\frac13",
+      "\\ell=-\\ln(1/3)=\\ln3\\approx1.098612289"
+    ],
+    "notes": [
+      "先算softmax均勻分布，再取正確類別機率的負自然對數。不要把sigmoid(0)=0.5用在三類softmax，也不要把負對數寫成負三分之一。",
+      "Compute the uniform softmax and take the negative natural log of the correct-class probability. Sigmoid(0)=0.5 is not the three-class answer."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 31,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習3：先獨立完成，再翻頁",
+    "title_en": "Practice 3: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#3"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "Hinge（$m=1$），$y=-1$、$f_o=0.8$，損失是多少？它分對了嗎？（提示：先算 $yf_o$。）",
+      "For hinge with $m=1$, $y=-1$ and $f_o=0.8$, what is the loss, and is the point classified right? (Hint: compute $yf_o$ first.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "Hinge（$m=1$），$y=-1$、$f_o=0.8$，損失是多少？它分對了嗎？（提示：先算 $yf_o$。）",
+      "For hinge with $m=1$, $y=-1$ and $f_o=0.8$, what is the loss, and is the point classified right? (Hint: compute $yf_o$ first.)"
+    ],
+    "self_check": true,
+    "page": 32,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "負標籤遇正分數，Hinge 損失是一點八",
+    "title_en": "A negative label with a positive score has hinge loss 1.8",
+    "takeaway": "分數符號與標籤相反，這筆確實分錯。",
+    "takeaway_en": "The score and target have opposite signs, so classification is wrong.",
+    "source_anchors": [
+      "小練習#3"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "yf_o=(-1)(0.8)=-0.8",
+      "\\ell=\\max(0,1-(-0.8))=1.8"
+    ],
+    "notes": [
+      "先把標籤乘分數，得到負0.8，再用1減它，得到1.8。負乘正是負，不能漏負號。此處的margin是一個分數門檻，不是已除以權重範數的幾何距離。",
+      "Multiply target and score first: -0.8. Then the hinge is max(0,1.8)=1.8. This margin is a score threshold, not automatically a normalized geometric distance."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 33,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核1：選出最符合條件的一項",
+    "title_en": "Check 1: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "1. MSE 的主要缺點？",
+      "What is the main drawback of MSE?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "1. MSE 的主要缺點？",
+      "What is the main drawback of MSE?"
+    ],
+    "options": [
+      [
+        "零點不可導",
+        "Nondifferentiable at zero"
+      ],
+      [
+        "平方把離群值放大，對離群值敏感",
+        "Squaring amplifies large residuals and outliers"
+      ],
+      [
+        "無法用於回歸",
+        "It cannot be used for regression"
+      ],
+      [
+        "輸出不落在 $[0,1]$",
+        "Outputs are not in $[0,1]$"
+      ]
+    ],
+    "quiz_index": 1,
+    "self_check": true,
+    "page": 34,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核1解析：對照條件逐項判斷",
+    "title_en": "Check 1: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "平方放大大殘差，使離群值主導；不是不能用於回歸，也不是零點不可導。",
+      "Squaring emphasizes large residuals and outliers; it is differentiable at zero and usable for regression."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "平方放大大殘差，使離群值主導；不是不能用於回歸，也不是零點不可導。",
+      "Squaring emphasizes large residuals and outliers; it is differentiable at zero and usable for regression."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 35,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核2：選出最符合條件的一項",
+    "title_en": "Check 2: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "2. Huber 的超參數 $\\delta$ 作用？",
+      "What does $\\delta$ do?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "2. Huber 的超參數 $\\delta$ 作用？",
+      "What does $\\delta$ do?"
+    ],
+    "options": [
+      [
+        "決定學習率",
+        "Set the learning rate"
+      ],
+      [
+        "決定二次與線性區的切換門檻",
+        "Set the quadratic-to-linear transition"
+      ],
+      [
+        "決定類別數",
+        "Set the number of classes"
+      ],
+      [
+        "決定 margin",
+        "Set the classification margin"
+      ]
+    ],
+    "quiz_index": 2,
+    "self_check": true,
+    "page": 36,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核2解析：對照條件逐項判斷",
+    "title_en": "Check 2: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "delta決定平方區與線性區的切換位置，不是學習率或類別數。",
+      "Delta selects the quadratic-to-linear transition, not the learning rate or class count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "delta決定平方區與線性區的切換位置，不是學習率或類別數。",
+      "Delta selects the quadratic-to-linear transition, not the learning rate or class count."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 37,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核3：選出最符合條件的一項",
+    "title_en": "Check 3: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "3. 哪種損失在目標是軟標籤時特別有用？",
+      "Which loss suits soft targets?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "3. 哪種損失在目標是軟標籤時特別有用？",
+      "Which loss suits soft targets?"
+    ],
+    "options": [
+      [
+        "Hinge",
+        "Hinge"
+      ],
+      [
+        "MSE",
+        "MSE"
+      ],
+      [
+        "KL divergence",
+        "KL divergence"
+      ],
+      [
+        "MAE",
+        "MAE"
+      ]
+    ],
+    "quiz_index": 3,
+    "self_check": true,
+    "page": 38,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核3解析：對照條件逐項判斷",
+    "title_en": "Check 3: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "KL比較目標與預測分布，適用軟標籤；交叉熵也可用，題目只在列出的四項中選。",
+      "KL compares target and predicted distributions and suits soft labels; cross-entropy can too, but is not an offered alternative."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "KL比較目標與預測分布，適用軟標籤；交叉熵也可用，題目只在列出的四項中選。",
+      "KL compares target and predicted distributions and suits soft labels; cross-entropy can too, but is not an offered alternative."
+    ],
+    "answer": 2,
+    "self_check": true,
+    "page": 39,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核4：選出最符合條件的一項",
+    "title_en": "Check 4: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "4. 使用交叉熵時，輸出層必須具備什麼條件？",
+      "What must the output layer satisfy for cross-entropy?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "4. 使用交叉熵時，輸出層必須具備什麼條件？",
+      "What must the output layer satisfy for cross-entropy?"
+    ],
+    "options": [
+      [
+        "線性活化即可",
+        "A linear activation alone suffices"
+      ],
+      [
+        "有效機率：多類正規化，或二元 p 與 1-p",
+        "A valid distribution: softmax vector, or binary p and 1-p"
+      ],
+      [
+        "用 maxout",
+        "Use maxout"
+      ],
+      [
+        "必須有 bias",
+        "A bias is required"
+      ]
+    ],
+    "quiz_index": 4,
+    "self_check": true,
+    "page": 40,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核4解析：對照條件逐項判斷",
+    "title_en": "Check 4: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "互斥多類用正規化向量；二元只需p及補數1-p。單一sigmoid輸出不需自己和為一；實作也可直接接logits再做穩定組合損失。",
+      "Exclusive multiclass uses a normalized vector; binary uses p and 1-p. One sigmoid output need not itself sum to one. Stable fused losses may accept logits directly."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "互斥多類用正規化向量；二元只需p及補數1-p。單一sigmoid輸出不需自己和為一；實作也可直接接logits再做穩定組合損失。",
+      "Exclusive multiclass uses a normalized vector; binary uses p and 1-p. One sigmoid output need not itself sum to one. Stable fused losses may accept logits directly."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 41,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "review",
+    "title": "重點回顧：把輸入、運算與限制連起來",
+    "title_en": "Review: connect inputs, operations and limitations",
+    "takeaway": "用自己的話重述方法，再檢查例外。",
+    "takeaway_en": "Restate the method, then check exceptions.",
+    "source_anchors": [
+      "重點:一句話重點",
+      "重點:白話說明",
+      "重點:正式定義",
+      "重點:例子",
+      "重點:圖",
+      "本單元重點整理"
+    ],
+    "bridge": "練習與檢核完成後，回到整個單元。",
+    "bridge_en": "After exercises and checks, reconnect the whole unit.",
+    "visual": "條件、核心方法、算例、限制的知識流程",
+    "math": [],
+    "notes": [
+      "損失函數把「網路錯了多少」變成一個可以最小化的數；回歸常用 MSE、MAE、Huber，分類幾乎一律用交叉熵（輸出層配 softmax 或 sigmoid）。\n\n像練射箭：損失是箭離靶心的距離。MSE 把距離平方，一支飛很遠的箭被重罰；MAE 只用距離本身，較寬容；Huber 在近處像 MSE、遠處像 MAE。分類量的不是距離，而是「預測機率」與「正確答案」差多少。\n\nMSE $\\sum e^2$；MAE $\\sum|e|$；Huber 在 $|e|\\le\\delta$ 用 $\\tfrac12e^2$、否則 $\\delta(|e|-\\tfrac12\\delta)$；交叉熵 $-\\sum\\sum y_l\\log f_l$；KL $\\sum\\sum y_l\\log(y_l/f_l)$；Hinge $\\max(0,m-yf_o)$。\n\n殘差 $(1,1,1,10)$：MSE 總和 103（離群點占 97%）、MAE 13（77%）、Huber 11（86%）；softmax $(0.665,0.245,0.090)$ 的交叉熵為 $0.408/1.408/2.408$；hinge 在 $yf_o=1.5,0.3,-0.5$ 為 $0,0.7,1.5$。\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "A loss function turns \"how wrong the network is\" into one number to minimize; regression commonly uses MSE, MAE or Huber, and classification almost always uses cross-entropy (with softmax or sigmoid in the output layer).\n\nLike archery: the loss is the distance of the arrow from the bullseye. MSE squares it, so a wild arrow is heavily punished; MAE uses the distance itself and is more tolerant; Huber acts like MSE up close and like MAE far away. Classification measures not a distance but how far the predicted probability is from the correct answer.\n\nMSE $\\sum e^2$; MAE $\\sum|e|$; Huber uses $\\tfrac12e^2$ when $|e|\\le\\delta$ and $\\delta(|e|-\\tfrac12\\delta)$ otherwise; cross-entropy $-\\sum\\sum y_l\\log f_l$; KL $\\sum\\sum y_l\\log(y_l/f_l)$; hinge $\\max(0,m-yf_o)$.\n\nResiduals $(1,1,1,10)$: MSE sum 103 (outlier 97%), MAE 13 (77%), Huber 11 (86%); the cross-entropy of the softmax $(0.665,0.245,0.090)$ is $0.408/1.408/2.408$; hinge at $yf_o=1.5,0.3,-0.5$ is $0,0.7,1.5$.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "page": 42,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "scope",
+    "title": "來源與限制：別把特例當成保證",
+    "title_en": "Source and scope: do not turn an example into a guarantee",
+    "takeaway": "原始數字可重現，適用條件也必須保留。",
+    "takeaway_en": "Reproduce the values and preserve their scope.",
+    "source_anchors": [
+      "來源更正與取捨"
+    ],
+    "bridge": "最後核對：哪些是講義例子，哪些是一般結論？",
+    "bridge_en": "Finally: which statements are examples, and which are general claims?",
+    "visual": "來源到重算到條件三個關卡，提醒科學圖與角色比喻不同",
+    "math": [],
+    "notes": [
+      "平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "Sums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "page": 43,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "下一步：用平方誤差學出一個線性單元",
+    "title_en": "Next: learn a linear unit through squared error",
+    "takeaway": "KP08：ADALINE 把連續誤差接到權重更新。",
+    "takeaway_en": "KP08: ADALINE connects continuous error to weight updates.",
+    "source_anchors": [
+      "重點:留給下一個知識點的問題"
+    ],
+    "bridge": "上一頁：訓練低損失不保證泛化；不同尺不直接比高低。",
+    "bridge_en": "Previously: Low training loss does not ensure generalization.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "(f_o-y)^2",
+      "-1",
+      "0",
+      "1",
+      "0",
+      "1.1"
+    ],
+    "notes": [
+      "銜接KP08的ADALINE：線性單元搭配平方誤差，提供連續可微的目標。來源把Perceptron損失概括成0-1計數，但一般Perceptron更新不是對0-1做普通梯度下降；本頁不沿用那個概括。此處只指出0-1對比的局部指引不足，不把連續與可微混為一談。\n\n講義補讀：\n| 題 / Question | A | B | C | D | 提示 / Hint |\n|---|---|---|---|---|---|\n| 1. MSE 的主要缺點？ / What is the main drawback of MSE? | 零點不可導 | 平方把離群值放大，對離群值敏感 | 無法用於回歸 | 輸出不落在 $[0,1]$ | 看第 1 節的表。 / The table of section 1. |\n| 2. Huber 的超參數 $\\delta$ 作用？ / What does $\\delta$ do? | 決定學習率 | 決定二次與線性區的切換門檻 | 決定類別數 | 決定 margin | 看公式。 / See the formula. |\n| 3. 哪種損失在目標是軟標籤時特別有用？ / Which loss suits soft targets? | Hinge | MSE | KL divergence | MAE | 看第 2 節。 / Section 2. |\n| 4. 使用交叉熵時，輸出層必須具備什麼條件？ / What must the output layer satisfy for cross-entropy? | 線性活化即可 | 接 softmax 或 sigmoid，使預測落在 $[0,1]$ 且和為 1 | 用 maxout | 必須有 bias | 對數裡的值要像機率。 / The value inside the log must look like a probability. |\n\n**留給下一個知識點的問題**：Perceptron 的損失只數「錯幾個」，是離散的，不能用梯度學。如果改成連續的平方誤差，就能一步一步往下走。這個想法就是 ADALINE。\n\n平方和與均方差一個樣本數。KL需指定方向與支撐；單一sigmoid不需自己和為一。Hinge的分數餘裕不自動等於幾何距離；Huber值與一階導數連續，不代表二階處處連續。",
+      "ADALINE combines a linear unit with a squared-error objective. The handout calls the Perceptron loss a 0-1 count, but standard Perceptron updates are not ordinary gradient descent on 0-1 loss. We avoid that conflation, and distinguish continuity from differentiability.\n\nSource context:\n**Figures**: Two figures in this unit, `lec02-kp07-loss-regression` (three regression losses; functions 1, 2) and `lec02-kp07-loss-hinge` (hinge and 0-1 loss; functions 1, 2), drawn by `assets/figures/src/lec02-kp0507-figures.py`.\n\n**Question for the next knowledge point**: The Perceptron's loss only counts \"how many are wrong\", which is discrete and cannot be learned by gradients. If it is replaced by a continuous squared error, we can walk downhill step by step. That idea is ADALINE.\n\nSums and means differ by sample count. KL needs direction and support conditions; one sigmoid need not sum to one. Hinge score margin is not automatically geometric distance. Huber is C1, not everywhere C2."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "bridge",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 22,
+    "base_kind": "next",
+    "page": 44,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  }
+]

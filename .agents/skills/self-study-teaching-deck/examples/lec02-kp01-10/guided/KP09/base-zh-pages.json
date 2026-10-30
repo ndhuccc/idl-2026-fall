@@ -1,0 +1,312 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP09 RBF 與 SOM",
+  "source_section": "前言與目標",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "local",
+  "title": "高斯只在中心附近反應強",
+  "source_section": "§1 高斯基函數",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "fixed",
+  "title": "先定中心與寬度，再固定特徵",
+  "source_section": "§1 RBF流程",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "linear",
+  "title": "非線性換座標，線性組合輸出",
+  "source_section": "§1 輸出式",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "matrix",
+  "title": "每一欄是一筆資料",
+  "source_section": "§1 矩陣符號",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "solve",
+  "title": "固定特徵後，解一組正規方程",
+  "source_section": "§1 最小二乘",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "xorinput",
+  "title": "XOR：先看原本不能線性分的四點",
+  "source_section": "§1 XOR與來源取捨",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "xordist",
+  "title": "先算平方距離，再取指數",
+  "source_section": "§1 XOR算例",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "xorfeatures",
+  "title": "兩個不同輸入，可以落在同一特徵點",
+  "source_section": "§1 XOR表與圖",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "bias",
+  "title": "要精確擬合 XOR，必須加入偏置",
+  "source_section": "§1 XOR、來源取捨",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "xorweights",
+  "title": "保留完整精度，才得到精確的零與一",
+  "source_section": "§1 XOR最小二乘",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "xorfit",
+  "title": "用同一組參數，核對四筆輸出",
+  "source_section": "§1 XOR輸出",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "xorboundary",
+  "title": "在特徵空間，一條直線就夠",
+  "source_section": "§1 XOR分界圖",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "width",
+  "title": "寬度太大，特徵可能難以區分",
+  "source_section": "選讀、來源取捨",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "som",
+  "title": "SOM 學的是原型地圖，不是類別名稱",
+  "source_section": "§2 SOM介紹",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "twospaces",
+  "title": "資料空間找勝者，格子空間找鄰居",
+  "source_section": "§2 拓撲與鄰域",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "winner",
+  "title": "三個距離，決定這次的勝者",
+  "source_section": "§2 手算一步",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "update",
+  "title": "勝者與左鄰居，一起往輸入靠近",
+  "source_section": "§2 手算鄰域更新",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 19,
+  "kind": "rule",
+  "title": "鄰域限制，要寫在更新公式旁",
+  "source_section": "§2 五步訓練",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 20,
+  "kind": "schedule",
+  "title": "學習率與鄰域都要逐漸縮小",
+  "source_section": "§2 衰減、來源取捨",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 21,
+  "kind": "gaussian",
+  "title": "圖中實驗用高斯鄰域，並非硬截斷",
+  "source_section": "SOM圖產圖程式",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 22,
+  "kind": "grid",
+  "title": "重跑四千步，橡皮網逐漸攤開",
+  "source_section": "SOM圖與產圖程式",
+  "first_step": 64,
+  "final_step": 66,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 23,
+  "kind": "compare",
+  "title": "RBF 對照 SOM：誰固定、誰移動？",
+  "source_section": "重點整理與常見迷思",
+  "first_step": 67,
+  "final_step": 69,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 24,
+  "kind": "next",
+  "title": "下一問：一層隱藏層能表示多少？",
+  "source_section": "留給下一知識點的問題",
+  "first_step": 70,
+  "final_step": 72,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 25,
+  "kind": "practice1",
+  "title": "練習一：中點的高斯特徵是多少？",
+  "source_section": "小練習1",
+  "first_step": 73,
+  "final_step": 75,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 26,
+  "kind": "practice2",
+  "title": "練習二：選出勝者，再更新一次",
+  "source_section": "小練習2",
+  "first_step": 76,
+  "final_step": 78,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 27,
+  "kind": "practice3",
+  "title": "練習三：為何只學第二層可一次求解？",
+  "source_section": "小練習3",
+  "first_step": 79,
+  "final_step": 81,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 28,
+  "kind": "quiz1",
+  "title": "檢核一：中心與寬度如何決定？",
+  "source_section": "自我檢核1",
+  "first_step": 82,
+  "final_step": 84,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 29,
+  "kind": "quiz2",
+  "title": "檢核二：矩陣奇異時，改用什麼？",
+  "source_section": "自我檢核2",
+  "first_step": 85,
+  "final_step": 87,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 30,
+  "kind": "quiz3",
+  "title": "檢核三：SOM 如何定義勝者？",
+  "source_section": "自我檢核3",
+  "first_step": 88,
+  "final_step": 90,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 31,
+  "kind": "quiz4",
+  "title": "檢核四：哪些神經元要更新？",
+  "source_section": "自我檢核4",
+  "first_step": 91,
+  "final_step": 93,
+  "beats": 3,
+  "extension": true
+ }
+]

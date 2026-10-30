@@ -1,0 +1,85 @@
+{
+  "residuals": [
+    1,
+    1,
+    1,
+    10
+  ],
+  "values": [
+    [
+      1,
+      1,
+      1,
+      100
+    ],
+    [
+      1,
+      1,
+      1,
+      10
+    ],
+    [
+      0.5,
+      0.5,
+      0.5,
+      9.5
+    ]
+  ],
+  "sums": [
+    103,
+    13,
+    11.0
+  ],
+  "means": [
+    25.75,
+    3.25,
+    2.75
+  ],
+  "outlier_shares": [
+    0.970873786407767,
+    0.7692307692307693,
+    0.8636363636363636
+  ],
+  "softmax": [
+    0.6652409557748219,
+    0.24472847105479764,
+    0.09003057317038046
+  ],
+  "exponential_sum": 11.107337927389695,
+  "cross_entropy": [
+    0.4076059644443803,
+    1.4076059644443804,
+    2.40760596444438
+  ],
+  "target": [
+    0.7,
+    0.2,
+    0.1
+  ],
+  "kl_terms": [
+    0.03565171435395346,
+    -0.040366389597944,
+    0.010502087145033463
+  ],
+  "kl": 0.005787411901042918,
+  "entropy": 0.8018185525433373,
+  "soft_cross_entropy": 0.8076059644443803,
+  "rounded_input_cross_entropy": [
+    0.4079682383262829,
+    1.40649706843741,
+    2.4079456086518722
+  ],
+  "rounded_input_kl": 0.00585318883772991,
+  "huber_joins": "values and first derivatives match at both thresholds; tested three positive thresholds",
+  "source_regression_domain": [
+    -3,
+    3
+  ],
+  "source_regression_ymax": 6,
+  "deck_regression_ymax": 9.5,
+  "source_hinge_domain": [
+    -2,
+    3
+  ],
+  "source_samples": 600
+}

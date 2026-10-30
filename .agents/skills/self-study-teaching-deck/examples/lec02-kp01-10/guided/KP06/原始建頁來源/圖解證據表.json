@@ -1,0 +1,312 @@
+[
+  {
+    "page": 1,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "前言、學習目標",
+    "question": "KP06 活化函數",
+    "takeaway": "先看輸出範圍，再看梯度能否通過。",
+    "visual": "輸入節點經活化菱形到輸出；下方三個真實函數曲線",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 2,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§1",
+    "question": "13 種函數，先找到各自的家族",
+    "takeaway": "階梯與 Sign 分開計數；Gaussian 並不是 S 形。",
+    "visual": "四個不同色形狀作家族中心，連接13個名稱；Gaussian旁加鐘形小圖",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 3,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§1",
+    "question": "Linear 原樣通過輸入",
+    "takeaway": "全線性網路才會合併為一次映射。",
+    "visual": "精確直線，輸入輸出對角對應；右側定義、值域、導數",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 4,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§1、§4",
+    "question": "階梯與 Sign：跳得動，梯度卻傳不動",
+    "takeaway": "非零處導數為零；零點不可微。",
+    "visual": "兩幅並排階梯圖，空心實心端點明示零點約定，兩條平坦區域",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 5,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§2",
+    "question": "Softmax 把整組分數變成一份分配",
+    "takeaway": "所有分量共用同一個分母。",
+    "visual": "三個分數經exp與共用分母流程，輸出比例長條",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 6,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§2 手算",
+    "question": "先取指數，再除以同一個總和",
+    "takeaway": "以未取位數的中間值計算，最後才近似。",
+    "visual": "三個原始分數與exp長條依真實數值比例，再正規化成比例長條",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 7,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§1、§2",
+    "question": "改一個分數，整份分配都跟著改",
+    "takeaway": "Softmax 的導數是矩陣，而不是單一斜率。",
+    "visual": "固定其餘分數0，改a1在[-3,3]，p1上升p2p3下降；右側Jacobian",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 8,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§1、§2",
+    "question": "Sigmoid 把輸入擠進零與一之間",
+    "takeaway": "兩端飽和，斜率接近零。",
+    "visual": "精確sigmoid主曲線及導數虛線；零點星標最大斜率",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 9,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§1、§2",
+    "question": "tanh 以零為中心，兩端仍會飽和",
+    "takeaway": "零點斜率為一，不代表整段斜率都為一。",
+    "visual": "精確tanh曲線及導數，負正兩半不同色透明區域",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 10,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§1",
+    "question": "Gaussian 是鐘形，不是 S 形",
+    "takeaway": "左右兩側斜率異號，峰頂斜率為零。",
+    "visual": "精確exp(-a²)鐘形曲線及導數，星標峰頂；標補充分類釐清",
+    "role": "source + explicit clarification",
+    "extension": false
+  },
+  {
+    "page": 11,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§2",
+    "question": "五個小斜率連乘，訊號迅速縮小",
+    "takeaway": "此處只乘活化導數；完整梯度還包含權重。",
+    "visual": "五個同尺度遞減長條，標(1/4)^k；上方五個因子連線",
+    "role": "source + explicit clarification",
+    "extension": false
+  },
+  {
+    "page": 12,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§1、§3、§4",
+    "question": "ReLU 的正側斜率一直是一",
+    "takeaway": "正側不衰減活化因子；零點仍有折角。",
+    "visual": "精確ReLU曲線，正側綠色帶，零點警示三角",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 13,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§3",
+    "question": "所有相關輸入都落在負側，ReLU 會卡住",
+    "takeaway": "該單元的局部導數為零，資料梯度因此受阻。",
+    "visual": "三個負輸入進同一ReLU，輸出零且三盞熄燈，回傳路徑虛線",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 14,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§1、§3",
+    "question": "Leaky ReLU 留一條很小的負側斜坡",
+    "takeaway": "負側斜率固定為 0.01；仍不保證一定有更新。",
+    "visual": "精確Leaky曲線，負側放大插圖0.01a，ReLU灰色作比較",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 15,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§1、§3",
+    "question": "PReLU 把負側斜率交給訓練",
+    "takeaway": "值域為全實數的敘述，需要負側斜率為正。",
+    "visual": "α=.01,.2,.5三條曲線正側重合，旋鈕指向可學α；分段公式及條件",
+    "role": "source + explicit clarification",
+    "extension": false
+  },
+  {
+    "page": 16,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§1、§3",
+    "question": "ELU 在負側彎向一個下限",
+    "takeaway": "取參數為一，零點的左右斜率才接得上。",
+    "visual": "α1精確ELU曲線，水平虛線負下限，零點圓圈及左右斜率",
+    "role": "source + explicit clarification",
+    "extension": false
+  },
+  {
+    "page": 17,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§1、§3",
+    "question": "Softplus 把 ReLU 的折角磨圓",
+    "takeaway": "有限的正輸入，其斜率仍小於一。",
+    "visual": "真實softplus曲線與灰色ReLU對照；右側完整公式及導數",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 18,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§3 圖、例子",
+    "question": "負二輸入：四個函數走出不同路線",
+    "takeaway": "高度表示輸出；旁邊另列局部斜率。",
+    "visual": "共同座標精確四曲線標a=-2各點；右側分四列值與導數",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 19,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§3 圖、例子",
+    "question": "正二輸入：Softplus 還沒等同 ReLU",
+    "takeaway": "ReLU、Leaky、ELU 同值同斜率；Softplus 只是接近。",
+    "visual": "放大a在1..3四曲線，softplus高於其餘；標正2精確數值",
+    "role": "source + explicit clarification",
+    "extension": false
+  },
+  {
+    "page": 20,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§1、§4",
+    "question": "Maxout 讓多條仿射分支競爭",
+    "takeaway": "導數對候選值與對輸入不同；平手處需小心。",
+    "visual": "補充例子max(a,-a)=|a|的兩條分支與上包絡，最優分支星標",
+    "role": "source + explicit clarification",
+    "extension": false
+  },
+  {
+    "page": 21,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§4",
+    "question": "隱藏層先試 ReLU 家族，再觀察問題",
+    "takeaway": "這是常用起點，不是所有問題的保證。",
+    "visual": "ReLU起點連到負側卡住的決策菱形，再到Leaky/PReLU兩分支",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 22,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "§4",
+    "question": "輸出活化由預測任務決定",
+    "takeaway": "互斥多類別用 Softmax；值域本身不保證機率校準。",
+    "visual": "三條任務路徑回歸實數線、二分類燈、互斥三類比例長條，原生連接線",
+    "role": "source + explicit clarification",
+    "extension": false
+  },
+  {
+    "page": 23,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "補充推導",
+    "question": "Sigmoid 與 Softplus 的導數接得起來",
+    "takeaway": "一個導數是自己乘補數；另一個導數就是 Sigmoid。",
+    "visual": "左側sigmoid導數三步公式，右側softplus與sigmoid精確曲線對照",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 24,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "銜接KP07",
+    "question": "有了輸出，下一步要衡量錯多少",
+    "takeaway": "KP07：把預測與目標接成損失函數。",
+    "visual": "預測與目標兩節點流入損失菱形到單一標量輸出",
+    "role": "source",
+    "extension": false
+  },
+  {
+    "page": 25,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "延伸練習1",
+    "question": "練習一：算出 Sigmoid 的值與斜率",
+    "takeaway": "提示：先算函數值，再代入導數式。",
+    "visual": "sigmoid未標答案曲線，a1垂線及未知圓點，兩公式留問號",
+    "role": "source",
+    "extension": true
+  },
+  {
+    "page": 26,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "延伸練習2",
+    "question": "練習二：三個分數都相同會怎樣",
+    "takeaway": "提示：三個指數相等，共用同一個分母。",
+    "visual": "三個1輸入經exp，三個未知輸出等樣式節點，不顯示數值答案",
+    "role": "source",
+    "extension": true
+  },
+  {
+    "page": 27,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "延伸練習3",
+    "question": "練習三：全負輸入時，兩條路有何差別",
+    "takeaway": "提示：比較 ReLU 與 Leaky 的局部導數。",
+    "visual": "三負輸入分流至ReLU和Leaky，輸出均問號，公平並列",
+    "role": "source",
+    "extension": true
+  },
+  {
+    "page": 28,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "小測驗1",
+    "question": "自我檢核一：ReLU 的常見優勢是什麼",
+    "takeaway": "提示：分別想正側與負側；不揭答案。",
+    "visual": "四選項等色中立圓形符號，均附小線圖，選項不透露答案",
+    "role": "source",
+    "extension": true
+  },
+  {
+    "page": 29,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "小測驗2",
+    "question": "自我檢核二：哪一種會把整組正規化",
+    "takeaway": "提示：要讓整組輸出的總和為一。",
+    "visual": "ReLU Maxout Softmax tanh四個等樣式候選，各附中立三節點圖",
+    "role": "source",
+    "extension": true
+  },
+  {
+    "page": 30,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "小測驗3",
+    "question": "自我檢核三：什麼情況叫 dying ReLU",
+    "takeaway": "提示：想「所有相關訓練輸入」與局部導數。",
+    "visual": "四種敘述等權呈現，負側狀態與梯度問題，不以顏色標答案",
+    "role": "source",
+    "extension": true
+  },
+  {
+    "page": 31,
+    "source": "lectures/lec02-kp06-activation-functions.md",
+    "section": "小測驗4",
+    "question": "自我檢核四：PReLU 與 Leaky 差在哪裡",
+    "takeaway": "提示：檢查負側斜率由誰決定。",
+    "visual": "四個等樣式旋鈕選項，不標勾與答案",
+    "role": "source",
+    "extension": true
+  }
+]

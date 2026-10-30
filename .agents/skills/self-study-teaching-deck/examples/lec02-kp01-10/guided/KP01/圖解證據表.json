@@ -1,0 +1,1326 @@
+[
+  {
+    "kind": "base",
+    "title": "把訊號加起來，達到門檻才輸出一。",
+    "title_en": "Add the signals; output one when the threshold is reached.",
+    "takeaway": "把訊號加起來，達到門檻才輸出一。",
+    "takeaway_en": "Add the signals; output one when the threshold is reached.",
+    "source_anchors": [
+      "學習目標",
+      "符號表"
+    ],
+    "bridge": "承接前置知識：先看本單元要回答什麼。",
+    "bridge_en": "From prerequisites: identify this unit’s central question.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "1"
+    ],
+    "notes": [
+      "教材程度：大學生。第二章 KP01。原生圖解審閱稿。 多路訊號進來後，先加在一起，再問有沒有達到門檻。這個單元要把這件事變成能親手計算的規則。\n\n講義補讀：\n讀完之後，你能說出生物神經元的四個部件與「累積、過門檻、才放電」的機制；能把它對應到加權和、偏置與活化函數三個元件；能手算 $o=f(\\sum_jw_jx_j+w_0)$；能只改閾值或權重，讓同一顆神經元變成 AND、OR、NOT。\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。\n\n符號速查：\n$x_j$: 第 $j$ 路輸入，本節只取 0 或 1\n$w_j$: 第 $j$ 路的權重，代表這一路多重要\n$w_0$: 偏置，等於負的閾值 $-\\theta$\n$\\theta$: 閾值：加權和要達到的門檻\n$s=\\sum_jw_jx_j+w_0$: 活化前的加權和\n$f(s)$: 二元階梯函數：$s\\ge0$ 輸出 1，否則 0\n$o$: 輸出，1 代表放電、0 代表沉默",
+      "Level: undergraduate. Chapter 2 KP01. Native teaching-diagram review draft. Several signals arrive. Add their contributions, then test whether the threshold is reached. We will turn this mechanism into a rule we can compute by hand.\n\nSource context:\nAfter reading, you can name the four parts of a biological neuron and the mechanism \"accumulate, pass a threshold, then fire\"; map it onto the three parts weighted sum, bias and activation function; compute $o=f(\\sum_jw_jx_j+w_0)$ by hand; and turn the same neuron into AND, OR and NOT by changing only the threshold or the weights.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning.\n\nSymbols:\n$x_j$: the $j$-th input, only 0 or 1 in this note\n$w_j$: weight of the $j$-th input, its importance\n$w_0$: bias, equal to the negative threshold $-\\theta$\n$\\theta$: threshold the weighted sum must reach\n$s=\\sum_jw_jx_j+w_0$: pre-activation weighted sum\n$f(s)$: binary step: 1 when $s\\ge0$, otherwise 0\n$o$: output; 1 means fire, 0 means silent"
+    ],
+    "new_terms": [
+      {
+        "symbol": "$x_j$",
+        "meaning_zh": "第 $j$ 路輸入，本節只取 0 或 1",
+        "meaning_en": "the $j$-th input, only 0 or 1 in this note"
+      },
+      {
+        "symbol": "$w_j$",
+        "meaning_zh": "第 $j$ 路的權重，代表這一路多重要",
+        "meaning_en": "weight of the $j$-th input, its importance"
+      },
+      {
+        "symbol": "$w_0$",
+        "meaning_zh": "偏置，等於負的閾值 $-\\theta$",
+        "meaning_en": "bias, equal to the negative threshold $-\\theta$"
+      },
+      {
+        "symbol": "$\\theta$",
+        "meaning_zh": "閾值：加權和要達到的門檻",
+        "meaning_en": "threshold the weighted sum must reach"
+      },
+      {
+        "symbol": "$s=\\sum_jw_jx_j+w_0$",
+        "meaning_zh": "活化前的加權和",
+        "meaning_en": "pre-activation weighted sum"
+      },
+      {
+        "symbol": "$f(s)$",
+        "meaning_zh": "二元階梯函數：$s\\ge0$ 輸出 1，否則 0",
+        "meaning_en": "binary step: 1 when $s\\ge0$, otherwise 0"
+      },
+      {
+        "symbol": "$o$",
+        "meaning_zh": "輸出，1 代表放電、0 代表沉默",
+        "meaning_en": "output; 1 means fire, 0 means silent"
+      }
+    ],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "這次要解決\n哪一個問題？",
+      "bubble_en": "What problem\nare we solving?"
+    },
+    "base_page": 1,
+    "base_kind": "cover",
+    "page": 1,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "四個部件接力，把訊號傳出去",
+    "title_en": "Four parts relay a signal",
+    "takeaway": "接收、整合、傳出、接力。",
+    "takeaway_en": "Receive, integrate, transmit, relay.",
+    "source_anchors": [
+      "1. 生物神經元：累加之後才決定放不放電"
+    ],
+    "bridge": "上一頁：把訊號加起來，達到門檻才輸出一。",
+    "bridge_en": "Previously: Add the signals; output one when the threshold is reached.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [],
+    "notes": [
+      "樹突接收訊號，細胞體在這張簡化圖中代表整合，軸突把放電訊號送出，突觸把訊號接力給下一顆神經元。人工模型取用的是整合與門檻的機制。\n\n講義補讀：\n一顆神經元有四個要認識的部件。**樹突**（dendrites）像天線，接收其他神經元的訊號；**細胞體**（soma）把收到的訊號加在一起，細胞核在它裡面；**軸突**（axon）把放電的脈衝送出去；**突觸**（synapse）是軸突末端與下一顆神經元之間的微小縫隙，訊號在這裡以化學方式接力。\n\n**圖說 `lec02-kp01-neuron-anatomy`**：先看左邊三條樹突，各帶一路訊號；再看中間細胞體，訊號在這裡相加；最後看右邊，放電後脈衝沿軸突經突觸傳給下一顆神經元。底部一行是整個機制的縮寫。 / **Caption `lec02-kp01-neuron-anatomy`:** Look first at the three dendrites, each carrying one signal; then at the soma where the signals add; finally at the axon and synapse that pass the pulse on. The bottom line is the whole mechanism.\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "Dendrites receive signals. The soma represents integration in this simplified diagram. The axon transmits a pulse, and synapses relay it onward. The artificial model abstracts integration and thresholding.\n\nSource context:\nA neuron has four parts to know. **Dendrites** act like antennas and receive signals from other neurons; the **soma** adds the received signals together, with the nucleus inside it; the **axon** carries the firing pulse outward; the **synapse** is the tiny gap between the end of an axon and the next neuron, where the signal is relayed chemically.\n\nThe key is the mechanism: the soma accumulates the signals, and the neuron fires only when the **total** crosses a threshold; otherwise it stays completely silent. It is a switch, not a volume knob: however loud one signal is, there is no reaction if the total is too small. An artificial neuron copies this mechanism, not the shape.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "bridge",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 2,
+    "base_kind": "anatomy",
+    "page": 2,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "達到門檻才放電，輸出不是音量",
+    "title_en": "Firing is a switch, not a volume knob",
+    "takeaway": "達標與更強，都只回答一。",
+    "takeaway_en": "At or above the threshold, the answer stays one.",
+    "source_anchors": [
+      "1. 生物神經元：累加之後才決定放不放電"
+    ],
+    "bridge": "上一頁：接收、整合、傳出、接力。",
+    "bridge_en": "Previously: Receive, integrate, transmit, relay.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "z=1",
+      "1<2\\Rightarrow o=0",
+      "0",
+      "z=2",
+      "2\\ge2\\Rightarrow o=1",
+      "1",
+      "z=3",
+      "3\\ge2\\Rightarrow o=1",
+      "1",
+      "\\theta=2"
+    ],
+    "notes": [
+      "把門檻固定為二，總和一沒有達標；總和二剛好達標，總和三也達標。後兩者輸出都只是一，模型不把輸出當成音量。這是計算機制的示意。\n\n講義補讀：\n一顆神經元有四個要認識的部件。**樹突**（dendrites）像天線，接收其他神經元的訊號；**細胞體**（soma）把收到的訊號加在一起，細胞核在它裡面；**軸突**（axon）把放電的脈衝送出去；**突觸**（synapse）是軸突末端與下一顆神經元之間的微小縫隙，訊號在這裡以化學方式接力。\n\n關鍵在機制：細胞體把各路訊號累積起來，只有**總量**跨過門檻，神經元才放電；沒跨過就完全沉默。所以它是開關，不是音量鈕：任何單一訊號再大，總量不夠就沒有反應。人工神經元模仿的正是這個機制，而不是外形。\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "Fix the threshold at two. A sum of one falls short; two reaches it exactly; three exceeds it. The last two both output one. This is a simplified computational mechanism, not a physiological amplitude model.\n\nSource context:\nA neuron has four parts to know. **Dendrites** act like antennas and receive signals from other neurons; the **soma** adds the received signals together, with the nucleus inside it; the **axon** carries the firing pulse outward; the **synapse** is the tiny gap between the end of an axon and the next neuron, where the signal is relayed chemically.\n\nThe key is the mechanism: the soma accumulates the signals, and the neuron fires only when the **total** crosses a threshold; otherwise it stays completely silent. It is a switch, not a volume knob: however loud one signal is, there is no reaction if the total is too small. An artificial neuron copies this mechanism, not the shape.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 3,
+    "base_kind": "switch",
+    "page": 3,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "每路先乘權重，再把貢獻加起來",
+    "title_en": "Weight each input, then add its contribution",
+    "takeaway": "權重決定每路訊號的影響。",
+    "takeaway_en": "A weight sets how much an input contributes.",
+    "source_anchors": [
+      "2. 寫成式子：加權和、偏置、活化函數",
+      "符號表"
+    ],
+    "bridge": "上一頁：達標與更強，都只回答一。",
+    "bridge_en": "Previously: At or above the threshold, the answer stays one.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "w_1",
+      "x_2",
+      "w_2",
+      "x_d",
+      "w_d",
+      "\\sum",
+      "z",
+      "z=\\sum_{j=1}^{d} w_jx_j",
+      "d"
+    ],
+    "notes": [
+      "每一路輸入先乘上它的權重，然後把所有乘積加起來。字母 d 表示輸入共有幾路，z 是還沒有減掉門檻的加權總和。\n\n講義補讀：\n把「多路訊號」寫成輸入 $x_1,\\dots,x_d$，「每一路的重要性」寫成權重 $w_1,\\dots,w_d$，「門檻」搬進偏置 $w_0=-\\theta$，「放電或沉默」寫成階梯函數 $f$。McCulloch 與 Pitts 在 1943 年提出的神經元就是：\n\n| 生物機制 | 數學元件 | 符號 |\n|---|---|---|\n| 多路訊號 / signals | 輸入 / input | $x_1,\\dots,x_d$ |\n| 每路的重要性 / importance | 權重 / weight | $w_1,\\dots,w_d$ |\n| 門檻 / threshold | 偏置 / bias | $w_0=-\\theta$ |\n| 放電或沉默 / fire or not | 活化函數 / activation | $f(s)$ |\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "Multiply each input by its weight, then add the products. The symbol d is the number of inputs. The weighted sum z does not yet include the threshold adjustment.\n\nSource context:\nWrite the \"many signals\" as inputs $x_1,\\dots,x_d$, the \"importance of each signal\" as weights $w_1,\\dots,w_d$, move the \"threshold\" into the bias $w_0=-\\theta$, and write \"fire or stay silent\" as the step function $f$. The neuron proposed by McCulloch and Pitts in 1943 is:\n\n$$\no=f\\!\\left(\\sum_{j=1}^{d}w_jx_j+w_0\\right),\\qquad f(s)=\\begin{cases}1&s\\ge0\\\\0&s<0\\end{cases}\n$$\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 4,
+    "base_kind": "weighted",
+    "page": 4,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "減掉門檻，就能統一和零比較",
+    "title_en": "Subtract the threshold to compare with zero",
+    "takeaway": "偏置就是負的門檻。",
+    "takeaway_en": "The bias is the negative threshold.",
+    "source_anchors": [
+      "2. 寫成式子：加權和、偏置、活化函數"
+    ],
+    "bridge": "上一頁：權重決定每路訊號的影響。",
+    "bridge_en": "Previously: A weight sets how much an input contributes.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\theta",
+      "z",
+      "z\\ge\\theta",
+      "0",
+      "s",
+      "s=z-\\theta\\ge0",
+      "-\\theta",
+      "w_0=-\\theta",
+      "s=z+w_0"
+    ],
+    "notes": [
+      "原本的問題是總和有沒有達到門檻。兩邊同減門檻後，就改成與零比較；把負門檻叫作偏置，便能寫成總和加偏置。圖中兩個位置一起左移，距離不變。\n\n講義補讀：\n把「多路訊號」寫成輸入 $x_1,\\dots,x_d$，「每一路的重要性」寫成權重 $w_1,\\dots,w_d$，「門檻」搬進偏置 $w_0=-\\theta$，「放電或沉默」寫成階梯函數 $f$。McCulloch 與 Pitts 在 1943 年提出的神經元就是：\n\n| 生物機制 | 數學元件 | 符號 |\n|---|---|---|\n| 多路訊號 / signals | 輸入 / input | $x_1,\\dots,x_d$ |\n| 每路的重要性 / importance | 權重 / weight | $w_1,\\dots,w_d$ |\n| 門檻 / threshold | 偏置 / bias | $w_0=-\\theta$ |\n| 放電或沉默 / fire or not | 活化函數 / activation | $f(s)$ |\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "Start by comparing the sum with the threshold. Subtract the threshold from both sides to compare with zero instead. Calling the negative threshold the bias gives sum plus bias. Both marked positions shift equally, so their distance is unchanged.\n\nSource context:\nWrite the \"many signals\" as inputs $x_1,\\dots,x_d$, the \"importance of each signal\" as weights $w_1,\\dots,w_d$, move the \"threshold\" into the bias $w_0=-\\theta$, and write \"fire or stay silent\" as the step function $f$. The neuron proposed by McCulloch and Pitts in 1943 is:\n\nChapter 1 KP08 noted that the original McCulloch–Pitts unit has 0/1 inputs, fixed weights and no learning; the formula itself allows any real weights, which KP02 will use. The switch $w_0=-\\theta$ matters: \"the sum $\\sum x_j\\ge\\theta$\" and \"$\\sum x_j+w_0\\ge0$\" are the same condition.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 5,
+    "base_kind": "bias",
+    "page": 5,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "階梯函數把總和變成零或一",
+    "title_en": "The step function turns a sum into zero or one",
+    "takeaway": "剛好等於零，也輸出一。",
+    "takeaway_en": "Exactly zero also outputs one.",
+    "source_anchors": [
+      "2. 寫成式子：加權和、偏置、活化函數"
+    ],
+    "bridge": "上一頁：偏置就是負的門檻。",
+    "bridge_en": "Previously: The bias is the negative threshold.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "s",
+      "o",
+      "s<0",
+      "s\\ge0",
+      "1",
+      "0",
+      "1",
+      "o=f(s)",
+      "f(s)=1\\;(s\\ge0)",
+      "f(s)=0\\;(s<0)"
+    ],
+    "notes": [
+      "負半軸的輸出是零，非負半軸的輸出是一。零的位置下面是空心點，上面是實心點，表示等於零時取上面的一。\n\n講義補讀：\n把「多路訊號」寫成輸入 $x_1,\\dots,x_d$，「每一路的重要性」寫成權重 $w_1,\\dots,w_d$，「門檻」搬進偏置 $w_0=-\\theta$，「放電或沉默」寫成階梯函數 $f$。McCulloch 與 Pitts 在 1943 年提出的神經元就是：\n\n第1章 KP08 提過原始的 McCulloch–Pitts 單元輸入是 0 或 1、權重固定、不學習；式子本身允許任意實數權重，這一點留給 KP02 使用。$w_0=-\\theta$ 這個換法很重要：「總和 $\\sum x_j\\ge\\theta$」與「$\\sum x_j+w_0\\ge0$」是同一個條件。\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "The negative half-axis outputs zero; the nonnegative half-axis outputs one. At zero, the lower point is open and the upper point is filled. Equality belongs to the upper branch.\n\nSource context:\nWrite the \"many signals\" as inputs $x_1,\\dots,x_d$, the \"importance of each signal\" as weights $w_1,\\dots,w_d$, move the \"threshold\" into the bias $w_0=-\\theta$, and write \"fire or stay silent\" as the step function $f$. The neuron proposed by McCulloch and Pitts in 1943 is:\n\nChapter 1 KP08 noted that the original McCulloch–Pitts unit has 0/1 inputs, fixed weights and no learning; the formula itself allows any real weights, which KP02 will use. The switch $w_0=-\\theta$ matters: \"the sum $\\sum x_j\\ge\\theta$\" and \"$\\sum x_j+w_0\\ge0$\" are the same condition.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "gate",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 6,
+    "base_kind": "step",
+    "page": 6,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "三路輸入一、零、一，總和就是二",
+    "title_en": "Inputs one, zero, one add up to two",
+    "takeaway": "沒有訊號的那一路，貢獻零。",
+    "takeaway_en": "The inactive input contributes zero.",
+    "source_anchors": [
+      "3. 手算一遍：同一組輸入，只換門檻"
+    ],
+    "bridge": "上一頁：剛好等於零，也輸出一。",
+    "bridge_en": "Previously: Exactly zero also outputs one.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "w_1x_1=1\\times1=1",
+      "w_2x_2=1\\times0=0",
+      "w_3x_3=1\\times1=1",
+      "z=1+0+1=2",
+      "\\mathbf{x}=(1,0,1),\\quad w_1=w_2=w_3=1"
+    ],
+    "notes": [
+      "三路輸入是一、零、一，權重都為一。每路的乘積分別是一、零、一，所以有兩路提供一，總和是二。中間的虛線格代表零貢獻。\n\n講義補讀：\n主例子：三路輸入 $\\mathbf{x}=(1,0,1)$，權重全為 1。總和 $z=1+0+1=2$，$x_2=0$ 不貢獻。對三個門檻各算一次，$s=z-\\theta$：\n\n**圖說 `lec02-kp01-mp-threshold`**：先看橫條的長度，它就是總和 $z=2$（$x_1$ 與 $x_3$ 各貢獻 1）；再看三條虛線，落在橫條右端或內側的門檻，神經元就放電。 / **Caption `lec02-kp01-mp-threshold`:** Look first at the length of the bar, the total $z=2$; then at the three dashed lines: a threshold at or inside the right end of the bar means the neuron fires.\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "The three inputs are one, zero, one, with all weights one. Their contributions are one, zero, one. Two active inputs each contribute one, so the sum is two. The dashed slot marks zero contribution.\n\nSource context:\nMain example: three inputs $\\mathbf{x}=(1,0,1)$ with all weights 1. The total is $z=1+0+1=2$, and $x_2=0$ contributes nothing. Evaluate three thresholds with $s=z-\\theta$:\n\nThe total never changes; only the threshold does. At $\\theta=2$ we get $s=0$, which just reaches the bar, so the neuron still fires; this is why the step uses $s\\ge0$.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 7,
+    "base_kind": "sum",
+    "page": 7,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "總和不變，只移門檻就改變輸出",
+    "title_en": "Keep the sum fixed and move the threshold",
+    "takeaway": "門檻一、二、三，輸出一、一、零。",
+    "takeaway_en": "Thresholds one, two, three give outputs one, one, zero.",
+    "source_anchors": [
+      "3. 手算一遍：同一組輸入，只換門檻"
+    ],
+    "bridge": "上一頁：沒有訊號的那一路，貢獻零。",
+    "bridge_en": "Previously: The inactive input contributes zero.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "z=1+0+1=2,\\quad s=z-\\theta,\\quad w_0=-\\theta",
+      "\\theta=1",
+      "s=2-1=1",
+      "o=",
+      "1",
+      "\\theta=2",
+      "s=2-2=0",
+      "o=",
+      "1",
+      "\\theta=3",
+      "s=2-3=-1",
+      "o=",
+      "0"
+    ],
+    "notes": [
+      "三列的藍條完全一樣，因為總和一直是二。門檻往右移時，剩下的量依序是一、零、負一。剛好剩零仍然算達標。\n\n講義補讀：\n主例子：三路輸入 $\\mathbf{x}=(1,0,1)$，權重全為 1。總和 $z=1+0+1=2$，$x_2=0$ 不貢獻。對三個門檻各算一次，$s=z-\\theta$：\n\n總和不變，只有門檻在變。$\\theta=2$ 時 $s=0$ 剛好達標，所以仍然放電，這就是階梯函數用 $s\\ge0$ 的原因。\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "All three blue bars are identical because the sum stays two. Moving the threshold gives pre-activation values one, zero, and minus one. Exactly zero still meets the condition.\n\nSource context:\nMain example: three inputs $\\mathbf{x}=(1,0,1)$ with all weights 1. The total is $z=1+0+1=2$, and $x_2=0$ contributes nothing. Evaluate three thresholds with $s=z-\\theta$:\n\nThe total never changes; only the threshold does. At $\\theta=2$ we get $s=0$, which just reaches the bar, so the neuron still fires; this is why the step uses $s\\ge0$.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 8,
+    "base_kind": "threshold",
+    "page": 8,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "兩路都為一，才通過門檻二",
+    "title_en": "AND needs both inputs to be one",
+    "takeaway": "AND：兩個條件都成立。",
+    "takeaway_en": "AND: both conditions must hold.",
+    "source_anchors": [
+      "4. 只改閾值或權重，就是邏輯閘"
+    ],
+    "bridge": "上一頁：門檻一、二、三，輸出一、一、零。",
+    "bridge_en": "Previously: Thresholds one, two, three give outputs one, one, zero.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "0+0-2=-2\\quad\\Rightarrow o=0",
+      "0+1-2=-1\\quad\\Rightarrow o=0",
+      "1+0-2=-1\\quad\\Rightarrow o=0",
+      "1+1-2=0\\quad\\Rightarrow o=1",
+      "x_1+x_2=2",
+      "w_1=w_2=1,\\quad s=x_1+x_2-2,\\quad o=1\\;(s\\ge0)"
+    ],
+    "notes": [
+      "橫軸與縱軸是兩路輸入。四個角是全部可能的二元輸入。只有右上角的總和達到二，所以只有那一點填實；右側逐一列出代入計算。\n\n講義補讀：\n兩個輸入、權重全為 1：$\\theta=2$ 要兩路都為 1 才放電，這是 **AND**（$s=x_1+x_2-2$）；$\\theta=1$ 只要有一路為 1 就放電，這是 **OR**（$s=x_1+x_2-1$）。\n\n**圖說 `lec02-kp01-mp-gates`**：先看左邊兩張圖的四個角，實心點輸出 1、空心點輸出 0；再看斜線 $x_1+x_2=\\theta$，線上與右上方是放電區。AND 與 OR 只差線的位置；最右邊 NOT 只有一個輸入，所以邊界是一條垂直線。 / **Caption `lec02-kp01-mp-gates`:** Look first at the four corners of the two left panels, filled for output 1 and open for output 0; then at the line $x_1+x_2=\\theta$, with the firing zone on and above it. AND and OR differ only in where the line sits; NOT, on the right, has one input, so its boundary is a vertical line.\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "The axes are the two inputs. The four corners are all possible binary input pairs. Only the upper-right corner reaches a sum of two, so only that point is filled. The substitutions on the right verify each case.\n\nSource context:\nWith two inputs and all weights 1, $\\theta=2$ needs both inputs to be 1, which is **AND** ($s=x_1+x_2-2$); $\\theta=1$ needs at least one input to be 1, which is **OR** ($s=x_1+x_2-1$).\n\n| $(x_1,x_2)$ | AND：$s$，$o$ | OR：$s$，$o$ |\n|---|---|---|\n| (0,0) | $-2$，0 | $-1$，0 |\n| (0,1) | $-1$，0 | $0$，1 |\n| (1,0) | $-1$，0 | $0$，1 |\n| (1,1) | $0$，1 | $1$，1 |\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 9,
+    "base_kind": "and",
+    "page": 9,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "任一路為一，就通過門檻一",
+    "title_en": "OR needs at least one input to be one",
+    "takeaway": "OR：至少一個條件成立。",
+    "takeaway_en": "OR: at least one condition must hold.",
+    "source_anchors": [
+      "4. 只改閾值或權重，就是邏輯閘"
+    ],
+    "bridge": "上一頁：AND：兩個條件都成立。",
+    "bridge_en": "Previously: AND: both conditions must hold.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "0+0-1=-1\\quad\\Rightarrow o=0",
+      "0+1-1=0\\quad\\Rightarrow o=1",
+      "1+0-1=0\\quad\\Rightarrow o=1",
+      "1+1-1=1\\quad\\Rightarrow o=1",
+      "x_1+x_2=1",
+      "w_1=w_2=1,\\quad s=x_1+x_2-1,\\quad o=1\\;(s\\ge0)"
+    ],
+    "notes": [
+      "這次門檻降為一。兩個恰有一路為一的角點就在邊界上，因此也輸出一；兩路皆零的角點還沒有達標。\n\n講義補讀：\n兩個輸入、權重全為 1：$\\theta=2$ 要兩路都為 1 才放電，這是 **AND**（$s=x_1+x_2-2$）；$\\theta=1$ 只要有一路為 1 就放電，這是 **OR**（$s=x_1+x_2-1$）。\n\n**圖說 `lec02-kp01-mp-gates`**：先看左邊兩張圖的四個角，實心點輸出 1、空心點輸出 0；再看斜線 $x_1+x_2=\\theta$，線上與右上方是放電區。AND 與 OR 只差線的位置；最右邊 NOT 只有一個輸入，所以邊界是一條垂直線。 / **Caption `lec02-kp01-mp-gates`:** Look first at the four corners of the two left panels, filled for output 1 and open for output 0; then at the line $x_1+x_2=\\theta$, with the firing zone on and above it. AND and OR differ only in where the line sits; NOT, on the right, has one input, so its boundary is a vertical line.\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "Lower the threshold to one. The two corners with exactly one active input lie on the boundary and therefore output one. The all-zero corner remains below the threshold.\n\nSource context:\nWith two inputs and all weights 1, $\\theta=2$ needs both inputs to be 1, which is **AND** ($s=x_1+x_2-2$); $\\theta=1$ needs at least one input to be 1, which is **OR** ($s=x_1+x_2-1$).\n\n**[Added] The NOT gate.** Take $w=-1$ and $w_0=0.5$: at $x=0$ we get $s=0.5$ and $o=1$; at $x=1$ we get $s=-0.5$ and $o=0$. A larger input must lower $s$, so the weight must be negative; a neuron with all-positive weights cannot make NOT.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 10,
+    "base_kind": "or",
+    "page": 10,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "AND 變 OR，只需要把門檻降低",
+    "title_en": "Lowering the threshold turns AND into OR",
+    "takeaway": "輸入與權重沒變，邊界移動了。",
+    "takeaway_en": "The inputs and weights stay fixed; the boundary moves.",
+    "source_anchors": [
+      "4. 只改閾值或權重，就是邏輯閘"
+    ],
+    "bridge": "上一頁：OR：至少一個條件成立。",
+    "bridge_en": "Previously: OR: at least one condition must hold.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "x_1",
+      "x_2",
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "s=x_1+x_2-2",
+      "s=x_1+x_2-1",
+      "w_1=w_2=1,\\quad o=1\\Leftrightarrow s\\ge0"
+    ],
+    "notes": [
+      "兩張圖的座標、四個輸入點與權重都相同。改變的只是門檻，讓直線往左下移；原本不達標的兩個角點因此變成達標。\n\n講義補讀：\n兩個輸入、權重全為 1：$\\theta=2$ 要兩路都為 1 才放電，這是 **AND**（$s=x_1+x_2-2$）；$\\theta=1$ 只要有一路為 1 就放電，這是 **OR**（$s=x_1+x_2-1$）。\n\n**圖說 `lec02-kp01-mp-gates`**：先看左邊兩張圖的四個角，實心點輸出 1、空心點輸出 0；再看斜線 $x_1+x_2=\\theta$，線上與右上方是放電區。AND 與 OR 只差線的位置；最右邊 NOT 只有一個輸入，所以邊界是一條垂直線。 / **Caption `lec02-kp01-mp-gates`:** Look first at the four corners of the two left panels, filled for output 1 and open for output 0; then at the line $x_1+x_2=\\theta$, with the firing zone on and above it. AND and OR differ only in where the line sits; NOT, on the right, has one input, so its boundary is a vertical line.\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "Both diagrams use the same axes, four input points, and weights. Only the threshold changes, moving the line down and left. The two single-active-input corners now reach the threshold.\n\nSource context:\nWith two inputs and all weights 1, $\\theta=2$ needs both inputs to be 1, which is **AND** ($s=x_1+x_2-2$); $\\theta=1$ needs at least one input to be 1, which is **OR** ($s=x_1+x_2-1$).\n\n**[Added] The NOT gate.** Take $w=-1$ and $w_0=0.5$: at $x=0$ we get $s=0.5$ and $o=1$; at $x=1$ we get $s=-0.5$ and $o=0$. A larger input must lower $s$, so the weight must be negative; a neuron with all-positive weights cannot make NOT.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "bridge",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 11,
+    "base_kind": "compare",
+    "page": 11,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "要把輸出反過來，權重就要是負的",
+    "title_en": "A negative weight reverses the response",
+    "takeaway": "補充：正權重不能做 NOT。",
+    "takeaway_en": "Added: a positive weight cannot implement NOT.",
+    "source_anchors": [
+      "4. 只改閾值或權重，就是邏輯閘"
+    ],
+    "bridge": "上一頁：輸入與權重沒變，邊界移動了。",
+    "bridge_en": "Previously: The inputs and weights stay fixed; the boundary moves.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "1",
+      "s=-1\\times0+0.5=0.5",
+      "0",
+      "s=-1\\times1+0.5=-0.5",
+      "w=-1,\\quad w_0=0.5",
+      "s=-x+0.5",
+      "x",
+      "s",
+      "0.5",
+      "1",
+      "o=1\\;(s\\ge0),\\quad o=0\\;(s<0)"
+    ],
+    "notes": [
+      "這是講義補充的一個單輸入例子。權重取負一，偏置取零點五。輸入由零增為一時，加總結果從正的零點五降成負的零點五，輸出因而反過來。\n\n講義補讀：\n兩個輸入、權重全為 1：$\\theta=2$ 要兩路都為 1 才放電，這是 **AND**（$s=x_1+x_2-2$）；$\\theta=1$ 只要有一路為 1 就放電，這是 **OR**（$s=x_1+x_2-1$）。\n\n**[補充] NOT 閘。** 取 $w=-1$、$w_0=0.5$：$x=0$ 時 $s=0.5$，$o=1$；$x=1$ 時 $s=-0.5$，$o=0$。輸入變大要讓 $s$ 變小，所以權重必須是負的；全部權重為正的神經元做不出 NOT。\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "This added example from the lecture has one input. Set its weight to minus one and its bias to one half. Raising the input from zero to one lowers pre-activation from positive one half to negative one half, reversing the output.\n\nSource context:\nWith two inputs and all weights 1, $\\theta=2$ needs both inputs to be 1, which is **AND** ($s=x_1+x_2-2$); $\\theta=1$ needs at least one input to be 1, which is **OR** ($s=x_1+x_2-1$).\n\n**[Added] The NOT gate.** Take $w=-1$ and $w_0=0.5$: at $x=0$ we get $s=0.5$ and $o=1$; at $x=1$ we get $s=-0.5$ and $o=0$. A larger input must lower $s$, so the weight must be negative; a neuron with all-positive weights cannot make NOT.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 12,
+    "base_kind": "not",
+    "page": 12,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "concept",
+    "title": "再深一層：把條件與主張接起來",
+    "title_en": "Go deeper: connect assumptions and claims",
+    "takeaway": "選讀內容也要分清來源敘述與適用條件。",
+    "takeaway_en": "Separate the optional claim from its assumptions.",
+    "source_anchors": [
+      "想深入"
+    ],
+    "bridge": "主線走完後，再看講義的選讀內容。",
+    "bridge_en": "After the main route, revisit the optional material.",
+    "visual": "原生流程連接條件、方法、結論，完整推理在導讀",
+    "math": [],
+    "notes": [
+      "McCulloch 與 Pitts 證明，把這種神經元連成網路，可以算出任何邏輯函數。所以這顆神經元已經有計算力；缺的是**學習**，也就是權重不用人算。下一個知識點的 Perceptron 補上這一環。\n\n本稿釐清：本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "McCulloch and Pitts showed that networks of such neurons can compute any logic function. So the neuron already has computing power; what it lacks is **learning**, meaning weights that need not be worked out by a person. The Perceptron of the next knowledge point fills this gap.\n\nClarification: This is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "answer_text": [
+      "McCulloch 與 Pitts 證明，把這種神經元連成網路，可以算出任何邏輯函數。所以這顆神經元已經有計算力；缺的是**學習**，也就是權重不用人算。下一個知識點的 Perceptron 補上這一環。",
+      "McCulloch and Pitts showed that networks of such neurons can compute any logic function. So the neuron already has computing power; what it lacks is **learning**, meaning weights that need not be worked out by a person. The Perceptron of the next knowledge point fills this gap."
+    ],
+    "page": 13,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "迷思1：這個說法成立嗎？",
+    "title_en": "Misconception 1: does the claim hold?",
+    "takeaway": "先寫下你的判斷與條件，再翻頁核對。",
+    "takeaway_en": "Write your judgment and conditions before checking.",
+    "source_anchors": [
+      "常見迷思#1"
+    ],
+    "bridge": "主線有了，試著辨認一個容易混淆的說法。",
+    "bridge_en": "Use the main ideas to examine a tempting claim.",
+    "visual": "中立問題與兩個待核對分支",
+    "math": [],
+    "notes": [
+      "「輸入越強，神經元輸出越大」",
+      "A stronger input gives a larger output."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "「輸入越強，神經元輸出越大」",
+      "A stronger input gives a larger output."
+    ],
+    "self_check": true,
+    "page": 14,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "explain",
+    "title": "迷思1解析：條件不能省略",
+    "title_en": "Misconception 1: keep the conditions",
+    "takeaway": "先把適用範圍說清楚，才判斷結論。",
+    "takeaway_en": "State the scope before accepting the conclusion.",
+    "source_anchors": [
+      "常見迷思#1"
+    ],
+    "bridge": "核對上一頁：先問是哪個模型、哪個條件。",
+    "bridge_en": "Check the previous page: which model and which assumptions?",
+    "visual": "條件到推理到正確結論，角色提醒例外",
+    "math": [],
+    "notes": [
+      "不是，輸出只回答「有沒有跨過門檻」。以 $\\theta=2$ 為例，$z=2$ 與 $z=3$ 都輸出 1，$z=1$ 輸出 0。\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "No: the output only says whether the threshold was crossed. At $\\theta=2$, $z=2$ and $z=3$ both give 1 and $z=1$ gives 0.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "不是，輸出只回答「有沒有跨過門檻」。以 $\\theta=2$ 為例，$z=2$ 與 $z=3$ 都輸出 1，$z=1$ 輸出 0。",
+      "No: the output only says whether the threshold was crossed. At $\\theta=2$, $z=2$ and $z=3$ both give 1 and $z=1$ gives 0."
+    ],
+    "self_check": true,
+    "page": 15,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "迷思2：這個說法成立嗎？",
+    "title_en": "Misconception 2: does the claim hold?",
+    "takeaway": "先寫下你的判斷與條件，再翻頁核對。",
+    "takeaway_en": "Write your judgment and conditions before checking.",
+    "source_anchors": [
+      "常見迷思#2"
+    ],
+    "bridge": "主線有了，試著辨認一個容易混淆的說法。",
+    "bridge_en": "Use the main ideas to examine a tempting claim.",
+    "visual": "中立問題與兩個待核對分支",
+    "math": [],
+    "notes": [
+      "「門檻要用 $>$，剛好等於不算」",
+      "The threshold test must be $>$, and equality does not count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "「門檻要用 $>$，剛好等於不算」",
+      "The threshold test must be $>$, and equality does not count."
+    ],
+    "self_check": true,
+    "page": 16,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "explain",
+    "title": "迷思2解析：條件不能省略",
+    "title_en": "Misconception 2: keep the conditions",
+    "takeaway": "先把適用範圍說清楚，才判斷結論。",
+    "takeaway_en": "State the scope before accepting the conclusion.",
+    "source_anchors": [
+      "常見迷思#2"
+    ],
+    "bridge": "核對上一頁：先問是哪個模型、哪個條件。",
+    "bridge_en": "Check the previous page: which model and which assumptions?",
+    "visual": "條件到推理到正確結論，角色提醒例外",
+    "math": [],
+    "notes": [
+      "本講義用 $s\\ge0$，$z=\\theta$ 時仍放電；換成 $>$ 只是約定不同，但同一份計算要一致。\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "This note uses $s\\ge0$, so the neuron still fires at $z=\\theta$; using $>$ is only another convention, but one computation must use one convention throughout.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "本講義用 $s\\ge0$，$z=\\theta$ 時仍放電；換成 $>$ 只是約定不同，但同一份計算要一致。",
+      "This note uses $s\\ge0$, so the neuron still fires at $z=\\theta$; using $>$ is only another convention, but one computation must use one convention throughout."
+    ],
+    "self_check": true,
+    "page": 17,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習1：先獨立完成，再翻頁",
+    "title_en": "Practice 1: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#1"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "三路輸入 $\\mathbf{x}=(1,1,0)$，權重全為 1，$\\theta=2$。輸出是多少？（提示：先算 $z$，再算 $s=z-\\theta$。）",
+      "Three inputs $\\mathbf{x}=(1,1,0)$, all weights 1 and $\\theta=2$. What is the output? (Hint: compute $z$ first, then $s=z-\\theta$.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "三路輸入 $\\mathbf{x}=(1,1,0)$，權重全為 1，$\\theta=2$。輸出是多少？（提示：先算 $z$，再算 $s=z-\\theta$。）",
+      "Three inputs $\\mathbf{x}=(1,1,0)$, all weights 1 and $\\theta=2$. What is the output? (Hint: compute $z$ first, then $s=z-\\theta$.)"
+    ],
+    "self_check": true,
+    "page": 18,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "先加總，再減門檻，等於零也放電",
+    "title_en": "Sum, subtract the threshold, and fire at zero",
+    "takeaway": "本課採大於等於；輸出是一，不是零。",
+    "takeaway_en": "This course includes equality; the output is one.",
+    "source_anchors": [
+      "小練習#1",
+      "解題示範"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "z=1+1+0=2",
+      "w_0=-\\theta=-2,\\quad s=z+w_0=2-2=0",
+      "o=\\mathbf1[s\\ge0]=1"
+    ],
+    "notes": [
+      "先把三個輸入乘上權重一相加。偏置等於負門檻，減完恰為零。本課約定零也放電，因此輸出一。若採嚴格大於，答案會改變，所以平手約定必須先定。",
+      "All three weights are one. The bias is the negative threshold. The score is exactly zero, and this course includes equality, so the output is one. A strict inequality would change the answer."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 19,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習2：先獨立完成，再翻頁",
+    "title_en": "Practice 2: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "三路輸入、權重全為 1，要「至少兩路為 1 才放電」，$\\theta$ 該取多少？（提示：試 $(1,1,0)$ 與 $(1,0,0)$，找能分開它們的 $\\theta$。）",
+      "With three inputs and all weights 1, which $\\theta$ makes the neuron fire only when at least two inputs are 1? (Hint: try $(1,1,0)$ and $(1,0,0)$ and find the $\\theta$ that separates them.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "三路輸入、權重全為 1，要「至少兩路為 1 才放電」，$\\theta$ 該取多少？（提示：試 $(1,1,0)$ 與 $(1,0,0)$，找能分開它們的 $\\theta$。）",
+      "With three inputs and all weights 1, which $\\theta$ makes the neuron fire only when at least two inputs are 1? (Hint: try $(1,1,0)$ and $(1,0,0)$ and find the $\\theta$ that separates them.)"
+    ],
+    "self_check": true,
+    "page": 20,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "整數門檻取二；實數門檻有一整段可用",
+    "title_en": "Choose two for an integer threshold; a real interval also works",
+    "takeaway": "整數解是二；不要誤稱實數解只有二。",
+    "takeaway_en": "Two is the integer choice, not the only real threshold.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "z=1\\Rightarrow1-\\theta<0\\Rightarrow\\theta>1",
+      "z=2\\Rightarrow2-\\theta\\ge0\\Rightarrow\\theta\\le2",
+      "1<\\theta\\le2"
+    ],
+    "notes": [
+      "至少兩路為一時才放電，要求總和一不能放電、總和二要放電。兩條不等式合起來是1<theta<=2。如果門檻限制為整數，唯一解才是二。",
+      "Reject a sum of one and accept a sum of two. These give 1<theta<=2. Only when thresholds are restricted to integers is two the unique choice."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 21,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習3：先獨立完成，再翻頁",
+    "title_en": "Practice 3: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#3"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "為什麼全部權重為正的神經元做不出 NOT？（提示：輸入由 0 變 1 時，$s$ 變大還是變小？）",
+      "Why can a neuron with all-positive weights not make NOT? (Hint: when an input goes from 0 to 1, does $s$ grow or shrink?)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "為什麼全部權重為正的神經元做不出 NOT？（提示：輸入由 0 變 1 時，$s$ 變大還是變小？）",
+      "Why can a neuron with all-positive weights not make NOT? (Hint: when an input goes from 0 to 1, does $s$ grow or shrink?)"
+    ],
+    "self_check": true,
+    "page": 22,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "正權重使分數單調，無法把一翻成零",
+    "title_en": "Positive weights make the score monotone, so NOT is impossible",
+    "takeaway": "NOT 需要反向影響；負權重提供這個方向。",
+    "takeaway_en": "NOT needs an inhibitory direction, supplied by a negative weight.",
+    "source_anchors": [
+      "小練習#3"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "w>0\\Rightarrow s(1)-s(0)=w>0",
+      "o(0)=1\\Rightarrow s(0)\\ge0\\Rightarrow s(1)>0",
+      "\\operatorname{NOT}:\\quad w=-1,\\quad w_0=0.5"
+    ],
+    "notes": [
+      "若單一輸入從零升到一，正權重只會增加分數；本來放電就不會變成不放電。反例使用負權重一、偏置0.5，零時正分、一時負分。這是人工模型的方向例子，不是完整生理機制。",
+      "Raising an input cannot reduce a positive-weight score. If zero already fires, one cannot stop firing. A weight of -1 and bias 0.5 implements NOT in this artificial model."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 23,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核1：選出最符合條件的一項",
+    "title_en": "Check 1: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "1. 生物神經元中，負責把收到的訊號整合起來的是？",
+      "Which part integrates the received signals?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "1. 生物神經元中，負責把收到的訊號整合起來的是？",
+      "Which part integrates the received signals?"
+    ],
+    "options": [
+      [
+        "樹突",
+        "Dendrites"
+      ],
+      [
+        "突觸",
+        "Synapse"
+      ],
+      [
+        "細胞體",
+        "Soma"
+      ],
+      [
+        "軸突",
+        "Axon"
+      ]
+    ],
+    "quiz_index": 1,
+    "self_check": true,
+    "page": 24,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核1解析：對照條件逐項判斷",
+    "title_en": "Check 1: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "細胞體整合訊號；樹突接收，軸突傳出，突觸連接。",
+      "The soma integrates; dendrites receive, the axon transmits and synapses connect."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "細胞體整合訊號；樹突接收，軸突傳出，突觸連接。",
+      "The soma integrates; dendrites receive, the axon transmits and synapses connect."
+    ],
+    "answer": 2,
+    "self_check": true,
+    "page": 25,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核2：選出最符合條件的一項",
+    "title_en": "Check 2: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "2. 人工神經元主要模仿生物神經元的什麼？",
+      "What does the artificial neuron mainly copy?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "2. 人工神經元主要模仿生物神經元的什麼？",
+      "What does the artificial neuron mainly copy?"
+    ],
+    "options": [
+      [
+        "完整的細胞代謝",
+        "Full cell metabolism"
+      ],
+      [
+        "累積訊號、過閾值、開關式發火",
+        "Summation, thresholding and switch-like firing"
+      ],
+      [
+        "神經元的形狀",
+        "The neuron’s physical shape"
+      ],
+      [
+        "遺傳物質複製",
+        "DNA replication"
+      ]
+    ],
+    "quiz_index": 2,
+    "self_check": true,
+    "page": 26,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核2解析：對照條件逐項判斷",
+    "title_en": "Check 2: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "人工模型保留加總與門檻的計算抽象，不模擬代謝或DNA複製。",
+      "The model abstracts summation and thresholding, not metabolism or DNA replication."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "人工模型保留加總與門檻的計算抽象，不模擬代謝或DNA複製。",
+      "The model abstracts summation and thresholding, not metabolism or DNA replication."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 27,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核3：選出最符合條件的一項",
+    "title_en": "Check 3: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "3. McCulloch–Pitts 模型由誰於何年提出？",
+      "Who proposed the model, and when?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "3. McCulloch–Pitts 模型由誰於何年提出？",
+      "Who proposed the model, and when?"
+    ],
+    "options": [
+      [
+        "Rosenblatt, 1958",
+        "Rosenblatt, 1958"
+      ],
+      [
+        "McCulloch 與 Pitts, 1943",
+        "McCulloch and Pitts, 1943"
+      ],
+      [
+        "Widrow 與 Hoff, 1960",
+        "Widrow and Hoff, 1960"
+      ],
+      [
+        "Minsky 與 Papert, 1969",
+        "Minsky and Papert, 1969"
+      ]
+    ],
+    "quiz_index": 3,
+    "self_check": true,
+    "page": 28,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核3解析：對照條件逐項判斷",
+    "title_en": "Check 3: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "本課沿用McCulloch與Pitts，1943；其他選項分別是後續模型或討論。",
+      "The handout credits McCulloch and Pitts, 1943; the alternatives refer to later developments."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "本課沿用McCulloch與Pitts，1943；其他選項分別是後續模型或討論。",
+      "The handout credits McCulloch and Pitts, 1943; the alternatives refer to later developments."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 29,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核4：選出最符合條件的一項",
+    "title_en": "Check 4: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "4. 式中 $f$ 在這個模型裡是？",
+      "What is $f$ in this model?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "4. 式中 $f$ 在這個模型裡是？",
+      "What is $f$ in this model?"
+    ],
+    "options": [
+      [
+        "Sigmoid",
+        "Sigmoid"
+      ],
+      [
+        "ReLU",
+        "ReLU"
+      ],
+      [
+        "二元階梯函數",
+        "Binary step"
+      ],
+      [
+        "tanh",
+        "tanh"
+      ]
+    ],
+    "quiz_index": 4,
+    "self_check": true,
+    "page": 30,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核4解析：對照條件逐項判斷",
+    "title_en": "Check 4: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "本單元f是二元階梯，其他連續活化在KP06另談。",
+      "Here f is a binary step; later units discuss other activations."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "本單元f是二元階梯，其他連續活化在KP06另談。",
+      "Here f is a binary step; later units discuss other activations."
+    ],
+    "answer": 2,
+    "self_check": true,
+    "page": 31,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "review",
+    "title": "重點回顧：把輸入、運算與限制連起來",
+    "title_en": "Review: connect inputs, operations and limitations",
+    "takeaway": "用自己的話重述方法，再檢查例外。",
+    "takeaway_en": "Restate the method, then check exceptions.",
+    "source_anchors": [
+      "重點:一句話重點",
+      "重點:白話說明",
+      "重點:正式定義",
+      "重點:例子",
+      "重點:圖",
+      "本單元重點整理"
+    ],
+    "bridge": "練習與檢核完成後，回到整個單元。",
+    "bridge_en": "After exercises and checks, reconnect the whole unit.",
+    "visual": "條件、核心方法、算例、限制的知識流程",
+    "math": [],
+    "notes": [
+      "人工神經元模仿的是「把訊號加起來、過門檻才放電」的機制，寫成 $o=f(\\sum_jw_jx_j+w_0)$；只改閾值或權重，同一顆神經元就能當 AND、OR、NOT，但權重要由人事先算好。\n\n每顆神經元先問「證據加起來夠不夠」，夠就回答 1，不夠就回答 0。證據的重要性由權重決定，門檻由偏置決定。\n\n$o=f(\\sum_{j=1}^{d}w_jx_j+w_0)$，$f(s)=1$ 當 $s\\ge0$、否則 0，$w_0=-\\theta$。\n\n$\\mathbf{x}=(1,0,1)$、權重全為 1：$z=2$；$\\theta=1,2,3$ 的 $s$ 是 $1,0,-1$，輸出 $1,1,0$。兩輸入：AND 用 $w_0=-2$，OR 用 $w_0=-1$，NOT 用 $w=-1$、$w_0=0.5$。\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "An artificial neuron copies the mechanism \"add up the signals and fire only past a threshold\", written $o=f(\\sum_jw_jx_j+w_0)$; changing only the threshold or the weights turns the same neuron into AND, OR and NOT, but a person must work out the weights beforehand.\n\nEach neuron first asks \"do the pieces of evidence add up to enough?\" and answers 1 if so, 0 otherwise. The importance of each piece of evidence is set by the weights, and the bar by the bias.\n\n$o=f(\\sum_{j=1}^{d}w_jx_j+w_0)$, with $f(s)=1$ when $s\\ge0$ and 0 otherwise, and $w_0=-\\theta$.\n\n$\\mathbf{x}=(1,0,1)$ with all weights 1: $z=2$; for $\\theta=1,2,3$ the sums $s$ are $1,0,-1$ and the outputs $1,1,0$. With two inputs, AND uses $w_0=-2$, OR uses $w_0=-1$, and NOT uses $w=-1$, $w_0=0.5$.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "page": 32,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "scope",
+    "title": "來源與限制：別把特例當成保證",
+    "title_en": "Source and scope: do not turn an example into a guarantee",
+    "takeaway": "原始數字可重現，適用條件也必須保留。",
+    "takeaway_en": "Reproduce the values and preserve their scope.",
+    "source_anchors": [
+      "來源更正與取捨"
+    ],
+    "bridge": "最後核對：哪些是講義例子，哪些是一般結論？",
+    "bridge_en": "Finally: which statements are examples, and which are general claims?",
+    "visual": "來源到重算到條件三個關卡，提醒科學圖與角色比喻不同",
+    "math": [],
+    "notes": [
+      "本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "This is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "page": 33,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "能算邏輯，還不等於會自己學",
+    "title_en": "Computing logic is not the same as learning",
+    "takeaway": "下一步：讓資料幫我們改權重。",
+    "takeaway_en": "Next: use data to change the weights.",
+    "source_anchors": [
+      "重點:留給下一個知識點的問題"
+    ],
+    "bridge": "上一頁：補充：正權重不能做 NOT。",
+    "bridge_en": "Previously: Added: a positive weight cannot implement NOT.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\sum",
+      "o=f(\\sum_j w_jx_j+w_0),\\quad w_0=-\\theta"
+    ],
+    "notes": [
+      "McCulloch 與 Pitts 在一九四三年提出早期神經元模型。這裡的權重由人預先設定，會算邏輯並不代表會自己修正參數。接下來的感知器要回答如何利用資料修改權重。\n\n講義補讀：\n把「多路訊號」寫成輸入 $x_1,\\dots,x_d$，「每一路的重要性」寫成權重 $w_1,\\dots,w_d$，「門檻」搬進偏置 $w_0=-\\theta$，「放電或沉默」寫成階梯函數 $f$。McCulloch 與 Pitts 在 1943 年提出的神經元就是：\n\n第1章 KP08 提過原始的 McCulloch–Pitts 單元輸入是 0 或 1、權重固定、不學習；式子本身允許任意實數權重，這一點留給 KP02 使用。$w_0=-\\theta$ 這個換法很重要：「總和 $\\sum x_j\\ge\\theta$」與「$\\sum x_j+w_0\\ge0$」是同一個條件。\n\n本模型只是加總與門檻的計算抽象，不是完整生理模擬；平手採大於等於，固定權重不等於已會學習。",
+      "McCulloch and Pitts proposed the early model in 1943. Here a person sets the weights in advance. Computing logic does not mean the model can adjust its own parameters. The perceptron will introduce learning from data.\n\nSource context:\nWrite the \"many signals\" as inputs $x_1,\\dots,x_d$, the \"importance of each signal\" as weights $w_1,\\dots,w_d$, move the \"threshold\" into the bias $w_0=-\\theta$, and write \"fire or stay silent\" as the step function $f$. The neuron proposed by McCulloch and Pitts in 1943 is:\n\nChapter 1 KP08 noted that the original McCulloch–Pitts unit has 0/1 inputs, fixed weights and no learning; the formula itself allows any real weights, which KP02 will use. The switch $w_0=-\\theta$ matters: \"the sum $\\sum x_j\\ge\\theta$\" and \"$\\sum x_j+w_0\\ge0$\" are the same condition.\n\nThis is a computational abstraction, not a full biological simulation. Equality fires; fixed weights do not imply learning."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "bridge",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 13,
+    "base_kind": "learn",
+    "page": 34,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  }
+]

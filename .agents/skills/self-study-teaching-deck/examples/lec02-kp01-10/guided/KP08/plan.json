@@ -1,0 +1,2136 @@
+[
+  {
+    "kind": "base",
+    "title": "兩種連續目標，讓單一神經元能逐步學習。",
+    "title_en": "Two continuous objectives let a single unit learn step by step.",
+    "takeaway": "兩種連續目標，讓單一神經元能逐步學習。",
+    "takeaway_en": "Two continuous objectives let a single unit learn step by step.",
+    "source_anchors": [
+      "學習目標",
+      "符號表"
+    ],
+    "bridge": "承接前置知識：先看本單元要回答什麼。",
+    "bridge_en": "From prerequisites: identify this unit’s central question.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\frac12\\sum(y-\\hat y)^2",
+      "-\\ell"
+    ],
+    "notes": [
+      "承接KP07，以連續可微的目標來引導更新。一般Perceptron更新不是對0–1錯誤數做普通梯度下降，不能說Perceptron不能學。ADALINE採平方損失配線性輸出；邏輯回歸採條件Bernoulli模型配最大似然。\n\n講義補讀：\n讀完之後，你能寫出 ADALINE 的 LMS 損失、梯度與更新式；能用 OR 資料手算一步更新並說出收斂到哪裡；能說明邏輯回歸如何用 sigmoid 把線性輸出變成機率，並寫出它的對數似然與梯度；能指出兩者梯度的形式相同；能為牛頓法寫出正確的更新方向。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。\n\n符號速查：\n$\\mathbf{x}_i,\\ y_i$: 第 $i$ 筆輸入與標籤\n$w_j,\\ w_0$: 權重與偏置\n$b$: 批次大小（來源用 $b$，$n$ 為全部資料筆數）\n$e$: ADALINE 的 LMS 損失\n$\\eta>0$: 學習率\n$\\boldsymbol\\beta$: 邏輯回歸的參數（偏置併入，$\\mathbf{x}=[1,x_1,\\dots,x_d]^\\top$）\n$p_i$: 模型給第 $i$ 筆的 $P(y=1\\mid\\mathbf{x}_i)$\n$\\ell(\\boldsymbol\\beta)$: 對數似然（要最大化）",
+      "Continuous differentiable objectives guide updates. Standard Perceptron updates are not ordinary gradient descent on the 0–1 count, so this does not mean Perceptrons cannot learn. ADALINE uses squared loss and linear outputs; logistic regression uses a conditional Bernoulli model and maximum likelihood.\n\nSource context:\nAfter reading, you can write the LMS loss, gradient and update of ADALINE; do one update by hand on the OR data and say where it converges; explain how logistic regression turns a linear output into a probability with a sigmoid and write its log-likelihood and gradient; point out that the two gradients have the same form; and write the correct direction of the Newton update.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count.\n\nSymbols:\n$\\mathbf{x}_i,\\ y_i$: the $i$-th input and label\n$w_j,\\ w_0$: weights and bias\n$b$: batch size (the source uses $b$; $n$ is the number of all samples)\n$e$: the LMS loss of ADALINE\n$\\eta>0$: learning rate\n$\\boldsymbol\\beta$: parameters of logistic regression (bias folded in)\n$p_i$: the model's $P(y=1\\mid\\mathbf{x}_i)$ for sample $i$\n$\\ell(\\boldsymbol\\beta)$: the log-likelihood (to be maximized)"
+    ],
+    "new_terms": [
+      {
+        "symbol": "$\\mathbf{x}_i,\\ y_i$",
+        "meaning_zh": "第 $i$ 筆輸入與標籤",
+        "meaning_en": "the $i$-th input and label"
+      },
+      {
+        "symbol": "$w_j,\\ w_0$",
+        "meaning_zh": "權重與偏置",
+        "meaning_en": "weights and bias"
+      },
+      {
+        "symbol": "$b$",
+        "meaning_zh": "批次大小（來源用 $b$，$n$ 為全部資料筆數）",
+        "meaning_en": "batch size (the source uses $b$; $n$ is the number of all samples)"
+      },
+      {
+        "symbol": "$e$",
+        "meaning_zh": "ADALINE 的 LMS 損失",
+        "meaning_en": "the LMS loss of ADALINE"
+      },
+      {
+        "symbol": "$\\eta>0$",
+        "meaning_zh": "學習率",
+        "meaning_en": "learning rate"
+      },
+      {
+        "symbol": "$\\boldsymbol\\beta$",
+        "meaning_zh": "邏輯回歸的參數（偏置併入，$\\mathbf{x}=[1,x_1,\\dots,x_d]^\\top$）",
+        "meaning_en": "parameters of logistic regression (bias folded in)"
+      },
+      {
+        "symbol": "$p_i$",
+        "meaning_zh": "模型給第 $i$ 筆的 $P(y=1\\mid\\mathbf{x}_i)$",
+        "meaning_en": "the model's $P(y=1\\mid\\mathbf{x}_i)$ for sample $i$"
+      },
+      {
+        "symbol": "$\\ell(\\boldsymbol\\beta)$",
+        "meaning_zh": "對數似然（要最大化）",
+        "meaning_en": "the log-likelihood (to be maximized)"
+      }
+    ],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "這次要解決\n哪一個問題？",
+      "bubble_en": "What problem\nare we solving?"
+    },
+    "base_page": 1,
+    "base_kind": "cover",
+    "page": 1,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "ADALINE 訓練時，先不切成零或一",
+    "title_en": "ADALINE trains before applying a hard threshold",
+    "takeaway": "平方損失比較連續加權和；門檻留到分類時。",
+    "takeaway_en": "Squared loss uses the continuous score; threshold it for classification.",
+    "source_anchors": [
+      "1. ADALINE：拿「還沒過活化」的加權和去比標籤"
+    ],
+    "bridge": "上一頁：兩種連續目標，讓單一神經元能逐步學習。",
+    "bridge_en": "Previously: Two continuous objectives let a single unit learn step by step.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf x",
+      "\\hat y",
+      "\\hat y_i=\\sum_jw_jx_{ij}+w_0",
+      "\\hat c_i=\\mathbf1[\\hat y_i\\ge0.5]"
+    ],
+    "notes": [
+      "ADALINE 是 Widrow 與 Hoff 在1960年提出的自適應線性單元，更新亦稱 LMS 或 Widrow–Hoff 規則。本圖比較訓練與推論兩條路：訓練看連續和，推論才套用本例的0.5門檻。\n\n講義補讀：\n1960 年 Widrow 與 Hoff 的 ADALINE 做了一個小改變：訓練時不先用階梯切成 0/1，而是直接拿加權和 $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ 和標籤 $y_i$ 比，損失是 LMS（最小均方）二次損失\n\n繼續跑，$e$ 依序是 $1.5,\\ 0.34,\\ 0.183,\\ 0.159,\\dots$，最後收斂到最小平方解 $\\mathbf{w}=(0.5,\\,0.5,\\,0.25)$，$e=0.125$。此時四個輸出是 $0.25,\\ 0.75,\\ 0.75,\\ 1.25$，以 $0.5$ 為門檻就分成 $0,1,1,1$，是正確的 OR。邊界是 $0.5x_1+0.5x_2+0.25=0.5$，即 $x_1+x_2=0.5$，落在 $(0,0)$ 與另外三點的中間；KP02 的 Perceptron 停在 $x_1+x_2=1$，剛好壓在 $(0,1)$ 與 $(1,0)$ 上。注意 $(1,1)$ 的輸出 $1.25$ 雖然分對，LMS 仍把它的 $0.25$ 當作誤差，這是平方損失的特性。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "Widrow and Hoff introduced ADALINE in 1960; its update is also called LMS or the Widrow–Hoff rule. Training uses a continuous score, while inference applies the example’s 0.5 threshold.\n\nSource context:\nIn 1960 Widrow and Hoff's ADALINE made one small change: during training it does not first cut the sum into 0/1 with a step, but compares the weighted sum $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ directly with the label $y_i$. The loss is the LMS (least mean squares) quadratic loss above, and the update is gradient descent $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$. The step is used only at inference time. This is called the LMS algorithm or the Widrow-Hoff rule; it is the same kind of loss as the MSE of KP07, here acting on one neuron.\n\n- $\\partial e/\\partial w_1=-(0\\cdot0+1\\cdot0+1\\cdot1+1\\cdot1)=-2$, $\\partial e/\\partial w_2=-2$, $\\partial e/\\partial w_0=-(0+1+1+1)=-3$;\n- after the update $\\mathbf{w}=(0.2,\\,0.2,\\,0.3)$, and the loss drops from $e=\\tfrac12(0+1+1+1)=1.5$ to $0.34$.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "gate",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 2,
+    "base_kind": "train",
+    "page": 2,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "平方誤差的梯度，保留誤差大小",
+    "title_en": "The squared-error gradient retains error magnitude",
+    "takeaway": "本稿用半平方誤差總和，不是批次平均。",
+    "takeaway_en": "We use a half squared-error sum, not a batch mean.",
+    "source_anchors": [
+      "1. ADALINE：拿「還沒過活化」的加權和去比標籤"
+    ],
+    "bridge": "上一頁：平方損失比較連續加權和；門檻留到分類時。",
+    "bridge_en": "Previously: Squared loss uses the continuous score; threshold it for classification.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "E",
+      "-3",
+      "0",
+      "3",
+      "0",
+      "5",
+      "E=\\frac12\\sum_i(y_i-\\hat y_i)^2",
+      "\\frac{\\partial E}{\\partial w_j}=-\\sum_i(y_i-\\hat y_i)x_{ij}",
+      "\\frac{\\partial E}{\\partial w_0}=-\\sum_i(y_i-\\hat y_i)",
+      "\\mathbf w^+=\\mathbf w-\\eta\\nabla E"
+    ],
+    "notes": [
+      "講義用小寫e代表損失，與前單元殘差e容易混淆，這裡改E，殘差定義r等於目標減預測。LMS此處是半平方誤差總和，不是mean。偏置的輸入等效常數一，因此其梯度是殘差負加總。普通批次梯度下降要用適當學習率；一般LMS也常指逐筆或隨機更新，本例明確全批次。\n\n講義補讀：\n1960 年 Widrow 與 Hoff 的 ADALINE 做了一個小改變：訓練時不先用階梯切成 0/1，而是直接拿加權和 $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ 和標籤 $y_i$ 比，損失是 LMS（最小均方）二次損失\n\n更新是梯度下降 $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$。階梯只留到推論時才用。這套做法叫 LMS 演算法或 Widrow-Hoff 規則；它和 KP07 的 MSE 是同一種損失，只是這裡作用在一個神經元上。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "We use E for loss and r=target-prediction for residuals. This LMS objective is a half squared-error sum, not a mean. The bias has a constant input of one. The example uses full-batch gradient descent with a suitable rate; LMS also commonly denotes online/stochastic updates.\n\nSource context:\nIn 1960 Widrow and Hoff's ADALINE made one small change: during training it does not first cut the sum into 0/1 with a step, but compares the weighted sum $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ directly with the label $y_i$. The loss is the LMS (least mean squares) quadratic loss above, and the update is gradient descent $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$. The step is used only at inference time. This is called the LMS algorithm or the Widrow-Hoff rule; it is the same kind of loss as the MSE of KP07, here acting on one neuron.\n\nKeep going and $e$ is $1.5,\\ 0.34,\\ 0.183,\\ 0.159,\\dots$, converging to the least-squares solution $\\mathbf{w}=(0.5,\\,0.5,\\,0.25)$ with $e=0.125$. The four outputs are then $0.25,\\ 0.75,\\ 0.75,\\ 1.25$, and thresholding at $0.5$ gives $0,1,1,1$, the correct OR. The boundary $0.5x_1+0.5x_2+0.25=0.5$ is $x_1+x_2=0.5$, between $(0,0)$ and the other three points, whereas the Perceptron of KP02 stops at $x_1+x_2=1$, right on top of $(0,1)$ and $(1,0)$. Note that although the output $1.25$ of $(1,1)$ is right, LMS still counts its $0.25$ as error, a property of the squared loss.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 3,
+    "base_kind": "lms",
+    "page": 3,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "先用四筆 OR 資料把流程走一遍",
+    "title_en": "Start with all four OR observations",
+    "takeaway": "權重與偏置全為零；第一批預測也全為零。",
+    "takeaway_en": "Zero weights and bias give zero initial predictions.",
+    "source_anchors": [
+      "1. ADALINE：拿「還沒過活化」的加權和去比標籤"
+    ],
+    "bridge": "上一頁：本稿用半平方誤差總和，不是批次平均。",
+    "bridge_en": "Previously: We use a half squared-error sum, not a batch mean.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "x_1",
+      "x_2",
+      "\\mathbf w=(w_1,w_2,w_0)=(0,0,0)",
+      "\\mathbf y=(0,1,1,1),\\quad\\hat{\\mathbf y}=\\mathbf0",
+      "\\mathbf r=\\mathbf y-\\hat{\\mathbf y}=(0,1,1,1)",
+      "E_0=\\frac12(0^2+1^2+1^2+1^2)=1.5",
+      "0",
+      "1"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。權重與偏置全為零；第一批預測也全為零。\n\n講義補讀：\n1960 年 Widrow 與 Hoff 的 ADALINE 做了一個小改變：訓練時不先用階梯切成 0/1，而是直接拿加權和 $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ 和標籤 $y_i$ 比，損失是 LMS（最小均方）二次損失\n\n**用 OR 資料手算〔程式計算〕。** 四筆資料 $(x_1,x_2)\\to y$：$(0,0)\\to0$、$(0,1)\\to1$、$(1,0)\\to1$、$(1,1)\\to1$，從 $\\mathbf{w}=(w_1,w_2,w_0)=(0,0,0)$ 開始，$\\eta=0.1$。所有 $\\hat y_i=0$，殘差 $y_i-\\hat y_i=(0,1,1,1)$，所以\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "Explain the newly revealed evidence and mascot prompt: Zero weights and bias give zero initial predictions.\n\nSource context:\n**A hand calculation on the OR data (computed by program).** The four samples $(x_1,x_2)\\to y$ are $(0,0)\\to0$, $(0,1)\\to1$, $(1,0)\\to1$, $(1,1)\\to1$, starting from $\\mathbf{w}=(w_1,w_2,w_0)=(0,0,0)$ with $\\eta=0.1$. All $\\hat y_i=0$, so the residuals $y_i-\\hat y_i$ are $(0,1,1,1)$, and\n\nKeep going and $e$ is $1.5,\\ 0.34,\\ 0.183,\\ 0.159,\\dots$, converging to the least-squares solution $\\mathbf{w}=(0.5,\\,0.5,\\,0.25)$ with $e=0.125$. The four outputs are then $0.25,\\ 0.75,\\ 0.75,\\ 1.25$, and thresholding at $0.5$ gives $0,1,1,1$, the correct OR. The boundary $0.5x_1+0.5x_2+0.25=0.5$ is $x_1+x_2=0.5$, between $(0,0)$ and the other three points, whereas the Perceptron of KP02 stops at $x_1+x_2=1$, right on top of $(0,1)$ and $(1,0)$. Note that although the output $1.25$ of $(1,1)$ is right, LMS still counts its $0.25$ as error, a property of the squared loss.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "tags",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 4,
+    "base_kind": "ordata",
+    "page": 4,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "把殘差乘輸入，再對整批加總",
+    "title_en": "Multiply residuals by inputs, then sum the batch",
+    "takeaway": "兩個權重梯度都是負二；偏置梯度是負三。",
+    "takeaway_en": "The weight gradients are minus two; the bias gradient is minus three.",
+    "source_anchors": [
+      "1. ADALINE：拿「還沒過活化」的加權和去比標籤"
+    ],
+    "bridge": "上一頁：權重與偏置全為零；第一批預測也全為零。",
+    "bridge_en": "Previously: Zero weights and bias give zero initial predictions.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "r_i",
+      "0",
+      "1",
+      "1",
+      "1",
+      "x_1",
+      "0",
+      "0",
+      "1",
+      "1",
+      "x_2",
+      "0",
+      "1",
+      "0",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "g_1=-(0\\cdot0+1\\cdot0+1\\cdot1+1\\cdot1)=-2",
+      "g_2=-(0\\cdot0+1\\cdot1+1\\cdot0+1\\cdot1)=-2",
+      "g_0=-(0+1+1+1)=-3"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。兩個權重梯度都是負二；偏置梯度是負三。\n\n講義補讀：\n繼續跑，$e$ 依序是 $1.5,\\ 0.34,\\ 0.183,\\ 0.159,\\dots$，最後收斂到最小平方解 $\\mathbf{w}=(0.5,\\,0.5,\\,0.25)$，$e=0.125$。此時四個輸出是 $0.25,\\ 0.75,\\ 0.75,\\ 1.25$，以 $0.5$ 為門檻就分成 $0,1,1,1$，是正確的 OR。邊界是 $0.5x_1+0.5x_2+0.25=0.5$，即 $x_1+x_2=0.5$，落在 $(0,0)$ 與另外三點的中間；KP02 的 Perceptron 停在 $x_1+x_2=1$，剛好壓在 $(0,1)$ 與 $(1,0)$ 上。注意 $(1,1)$ 的輸出 $1.25$ 雖然分對，LMS 仍把它的 $0.25$ 當作誤差，這是平方損失的特性。\n\n**MADALINE。** 把多顆 ADALINE 疊成層就是 MADALINE：1962 年的 MRI 只能更新輸入到隱藏層的權重；1988 年的 MRII 兩段連接都能更新；1990 年的 MRIII 支援更深的多層訓練。這是在反向傳播普及之前，最早訓練多層網路的嘗試之一。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "Explain the newly revealed evidence and mascot prompt: The weight gradients are minus two; the bias gradient is minus three.\n\nSource context:\nIn 1960 Widrow and Hoff's ADALINE made one small change: during training it does not first cut the sum into 0/1 with a step, but compares the weighted sum $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ directly with the label $y_i$. The loss is the LMS (least mean squares) quadratic loss above, and the update is gradient descent $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$. The step is used only at inference time. This is called the LMS algorithm or the Widrow-Hoff rule; it is the same kind of loss as the MSE of KP07, here acting on one neuron.\n\nKeep going and $e$ is $1.5,\\ 0.34,\\ 0.183,\\ 0.159,\\dots$, converging to the least-squares solution $\\mathbf{w}=(0.5,\\,0.5,\\,0.25)$ with $e=0.125$. The four outputs are then $0.25,\\ 0.75,\\ 0.75,\\ 1.25$, and thresholding at $0.5$ gives $0,1,1,1$, the correct OR. The boundary $0.5x_1+0.5x_2+0.25=0.5$ is $x_1+x_2=0.5$, between $(0,0)$ and the other three points, whereas the Perceptron of KP02 stops at $x_1+x_2=1$, right on top of $(0,1)$ and $(1,0)$. Note that although the output $1.25$ of $(1,1)$ is right, LMS still counts its $0.25$ as error, a property of the squared loss.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 5,
+    "base_kind": "orgrad",
+    "page": 5,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "減掉負梯度，三個參數就往上加",
+    "title_en": "Subtracting negative gradients increases the parameters",
+    "takeaway": "學習率零點一，把參數更新成指定的第一步。",
+    "takeaway_en": "A learning rate of 0.1 produces the first update.",
+    "source_anchors": [
+      "1. ADALINE：拿「還沒過活化」的加權和去比標籤"
+    ],
+    "bridge": "上一頁：兩個權重梯度都是負二；偏置梯度是負三。",
+    "bridge_en": "Previously: The weight gradients are minus two; the bias gradient is minus three.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "w_1=0",
+      "w_1=0.2",
+      "0-0.1(-2)=0.2",
+      "w_2=0",
+      "w_2=0.2",
+      "0-0.1(-2)=0.2",
+      "w_0=0",
+      "w_0=0.3",
+      "0-0.1(-3)=0.3",
+      "\\eta=0.1,\\quad\\mathbf g=(-2,-2,-3)"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。學習率零點一，把參數更新成指定的第一步。\n\n講義補讀：\n更新是梯度下降 $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$。階梯只留到推論時才用。這套做法叫 LMS 演算法或 Widrow-Hoff 規則；它和 KP07 的 MSE 是同一種損失，只是這裡作用在一個神經元上。\n\n繼續跑，$e$ 依序是 $1.5,\\ 0.34,\\ 0.183,\\ 0.159,\\dots$，最後收斂到最小平方解 $\\mathbf{w}=(0.5,\\,0.5,\\,0.25)$，$e=0.125$。此時四個輸出是 $0.25,\\ 0.75,\\ 0.75,\\ 1.25$，以 $0.5$ 為門檻就分成 $0,1,1,1$，是正確的 OR。邊界是 $0.5x_1+0.5x_2+0.25=0.5$，即 $x_1+x_2=0.5$，落在 $(0,0)$ 與另外三點的中間；KP02 的 Perceptron 停在 $x_1+x_2=1$，剛好壓在 $(0,1)$ 與 $(1,0)$ 上。注意 $(1,1)$ 的輸出 $1.25$ 雖然分對，LMS 仍把它的 $0.25$ 當作誤差，這是平方損失的特性。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "Explain the newly revealed evidence and mascot prompt: A learning rate of 0.1 produces the first update.\n\nSource context:\nIn 1960 Widrow and Hoff's ADALINE made one small change: during training it does not first cut the sum into 0/1 with a step, but compares the weighted sum $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ directly with the label $y_i$. The loss is the LMS (least mean squares) quadratic loss above, and the update is gradient descent $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$. The step is used only at inference time. This is called the LMS algorithm or the Widrow-Hoff rule; it is the same kind of loss as the MSE of KP07, here acting on one neuron.\n\n- $\\partial e/\\partial w_1=-(0\\cdot0+1\\cdot0+1\\cdot1+1\\cdot1)=-2$, $\\partial e/\\partial w_2=-2$, $\\partial e/\\partial w_0=-(0+1+1+1)=-3$;\n- after the update $\\mathbf{w}=(0.2,\\,0.2,\\,0.3)$, and the loss drops from $e=\\tfrac12(0+1+1+1)=1.5$ to $0.34$.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 6,
+    "base_kind": "orupdate",
+    "page": 6,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "更新後，要重新算一次預測與損失",
+    "title_en": "Recompute predictions and loss after the update",
+    "takeaway": "四個新輸出為零點三、零點五、零點五、零點七。",
+    "takeaway_en": "The new scores are 0.3, 0.5, 0.5 and 0.7.",
+    "source_anchors": [
+      "1. ADALINE：拿「還沒過活化」的加權和去比標籤"
+    ],
+    "bridge": "上一頁：學習率零點一，把參數更新成指定的第一步。",
+    "bridge_en": "Previously: A learning rate of 0.1 produces the first update.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\hat{\\mathbf y}=0.2\\mathbf x_1+0.2\\mathbf x_2+0.3\\mathbf1=(0.3,0.5,0.5,0.7)",
+      "0.3",
+      "0.5",
+      "0.5",
+      "0.7",
+      "E_1=\\frac12[(-0.3)^2+0.5^2+0.5^2+0.3^2]=0.34"
+    ],
+    "notes": [
+      "新參數0.2、0.2、0.3給四個預測0.3、0.5、0.5、0.7。初始損失半乘零平方加三個一平方等於1.5；更新後半乘負0.3平方、0.5平方、0.5平方、0.3平方之和為0.34。這個特定步長下降不保證任意學習率都下降。\n\n講義補讀：\n更新是梯度下降 $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$。階梯只留到推論時才用。這套做法叫 LMS 演算法或 Widrow-Hoff 規則；它和 KP07 的 MSE 是同一種損失，只是這裡作用在一個神經元上。\n\n繼續跑，$e$ 依序是 $1.5,\\ 0.34,\\ 0.183,\\ 0.159,\\dots$，最後收斂到最小平方解 $\\mathbf{w}=(0.5,\\,0.5,\\,0.25)$，$e=0.125$。此時四個輸出是 $0.25,\\ 0.75,\\ 0.75,\\ 1.25$，以 $0.5$ 為門檻就分成 $0,1,1,1$，是正確的 OR。邊界是 $0.5x_1+0.5x_2+0.25=0.5$，即 $x_1+x_2=0.5$，落在 $(0,0)$ 與另外三點的中間；KP02 的 Perceptron 停在 $x_1+x_2=1$，剛好壓在 $(0,1)$ 與 $(1,0)$ 上。注意 $(1,1)$ 的輸出 $1.25$ 雖然分對，LMS 仍把它的 $0.25$ 當作誤差，這是平方損失的特性。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "The new parameters give predictions 0.3,0.5,0.5,0.7. The initial half squared sum is 1.5 and the updated sum 0.34. Decrease for this particular step size does not guarantee decrease for arbitrary learning rates.\n\nSource context:\nIn 1960 Widrow and Hoff's ADALINE made one small change: during training it does not first cut the sum into 0/1 with a step, but compares the weighted sum $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ directly with the label $y_i$. The loss is the LMS (least mean squares) quadratic loss above, and the update is gradient descent $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$. The step is used only at inference time. This is called the LMS algorithm or the Widrow-Hoff rule; it is the same kind of loss as the MSE of KP07, here acting on one neuron.\n\n- $\\partial e/\\partial w_1=-(0\\cdot0+1\\cdot0+1\\cdot1+1\\cdot1)=-2$, $\\partial e/\\partial w_2=-2$, $\\partial e/\\partial w_0=-(0+1+1+1)=-3$;\n- after the update $\\mathbf{w}=(0.2,\\,0.2,\\,0.3)$, and the loss drops from $e=\\tfrac12(0+1+1+1)=1.5$ to $0.34$.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 7,
+    "base_kind": "orloss",
+    "page": 7,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "最小平方解分對 OR，損失仍不為零",
+    "title_en": "Least squares classifies OR correctly with nonzero loss",
+    "takeaway": "連續值與硬分類不同；輸出可以超過一。",
+    "takeaway_en": "Continuous scores differ from hard classes and can exceed one.",
+    "source_anchors": [
+      "1. ADALINE：拿「還沒過活化」的加權和去比標籤"
+    ],
+    "bridge": "上一頁：四個新輸出為零點三、零點五、零點五、零點七。",
+    "bridge_en": "Previously: The new scores are 0.3, 0.5, 0.5 and 0.7.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf w^\\ast=(0.5,0.5,0.25)",
+      "0.25",
+      "0",
+      "0.75",
+      "1",
+      "0.75",
+      "1",
+      "1.25",
+      "1",
+      "E^\\ast=\\frac12[(-0.25)^2+0.25^2+0.25^2+(-0.25)^2]=0.125"
+    ],
+    "notes": [
+      "這是四筆資料的唯一最小平方解，輸出0.25、0.75、0.75、1.25。0.5門檻正確分類所有四點，但每筆連續值仍差四分之一，因此半平方和為0.125。1.25不是合法機率；ADALINE沒有機率輸出的約束。門檻取決於標籤編碼，本例0/1取0.5，不是所有ADALINE都用這個數。\n\n講義補讀：\n1960 年 Widrow 與 Hoff 的 ADALINE 做了一個小改變：訓練時不先用階梯切成 0/1，而是直接拿加權和 $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ 和標籤 $y_i$ 比，損失是 LMS（最小均方）二次損失\n\n繼續跑，$e$ 依序是 $1.5,\\ 0.34,\\ 0.183,\\ 0.159,\\dots$，最後收斂到最小平方解 $\\mathbf{w}=(0.5,\\,0.5,\\,0.25)$，$e=0.125$。此時四個輸出是 $0.25,\\ 0.75,\\ 0.75,\\ 1.25$，以 $0.5$ 為門檻就分成 $0,1,1,1$，是正確的 OR。邊界是 $0.5x_1+0.5x_2+0.25=0.5$，即 $x_1+x_2=0.5$，落在 $(0,0)$ 與另外三點的中間；KP02 的 Perceptron 停在 $x_1+x_2=1$，剛好壓在 $(0,1)$ 與 $(1,0)$ 上。注意 $(1,1)$ 的輸出 $1.25$ 雖然分對，LMS 仍把它的 $0.25$ 當作誤差，這是平方損失的特性。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "The unique least-squares solution outputs 0.25,0.75,0.75,1.25. A 0.5 threshold classifies all four correctly, yet residual magnitudes remain one quarter and loss 0.125. These scores are not probabilities. The threshold depends on label coding; 0.5 is specific to this 0/1 example.\n\nSource context:\nIn 1960 Widrow and Hoff's ADALINE made one small change: during training it does not first cut the sum into 0/1 with a step, but compares the weighted sum $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ directly with the label $y_i$. The loss is the LMS (least mean squares) quadratic loss above, and the update is gradient descent $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$. The step is used only at inference time. This is called the LMS algorithm or the Widrow-Hoff rule; it is the same kind of loss as the MSE of KP07, here acting on one neuron.\n\nKeep going and $e$ is $1.5,\\ 0.34,\\ 0.183,\\ 0.159,\\dots$, converging to the least-squares solution $\\mathbf{w}=(0.5,\\,0.5,\\,0.25)$ with $e=0.125$. The four outputs are then $0.25,\\ 0.75,\\ 0.75,\\ 1.25$, and thresholding at $0.5$ gives $0,1,1,1$, the correct OR. The boundary $0.5x_1+0.5x_2+0.25=0.5$ is $x_1+x_2=0.5$, between $(0,0)$ and the other three points, whereas the Perceptron of KP02 stops at $x_1+x_2=1$, right on top of $(0,1)$ and $(1,0)$. Note that although the output $1.25$ of $(1,1)$ is right, LMS still counts its $0.25$ as error, a property of the squared loss.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 8,
+    "base_kind": "orlimit",
+    "page": 8,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "兩條邊界在這個 OR 例子中位置不同",
+    "title_en": "The two boundaries differ in this OR example",
+    "takeaway": "這是特定算例的比較，不是泛化能力保證。",
+    "takeaway_en": "This example does not establish a generalization guarantee.",
+    "source_anchors": [
+      "1. ADALINE：拿「還沒過活化」的加權和去比標籤"
+    ],
+    "bridge": "上一頁：連續值與硬分類不同；輸出可以超過一。",
+    "bridge_en": "Previously: Continuous scores differ from hard classes and can exceed one.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "(0,0)",
+      "(0,1)",
+      "(1,0)",
+      "(1,1)",
+      "x_1",
+      "x_2",
+      "x_1+x_2=1",
+      "0.5x_1+0.5x_2+0.25=0.5",
+      "x_1+x_2=0.5"
+    ],
+    "notes": [
+      "兩條線分別是本例ADALINE與KP02那次Perceptron的結果。Perceptron的解會隨順序、初始化與平手約定改變，不能說它必停在這條線。兩類之間的邊界位置不構成較好泛化能力的實驗證據。\n\n講義補讀：\n繼續跑，$e$ 依序是 $1.5,\\ 0.34,\\ 0.183,\\ 0.159,\\dots$，最後收斂到最小平方解 $\\mathbf{w}=(0.5,\\,0.5,\\,0.25)$，$e=0.125$。此時四個輸出是 $0.25,\\ 0.75,\\ 0.75,\\ 1.25$，以 $0.5$ 為門檻就分成 $0,1,1,1$，是正確的 OR。邊界是 $0.5x_1+0.5x_2+0.25=0.5$，即 $x_1+x_2=0.5$，落在 $(0,0)$ 與另外三點的中間；KP02 的 Perceptron 停在 $x_1+x_2=1$，剛好壓在 $(0,1)$ 與 $(1,0)$ 上。注意 $(1,1)$ 的輸出 $1.25$ 雖然分對，LMS 仍把它的 $0.25$ 當作誤差，這是平方損失的特性。\n\n**圖說 `lec02-kp08-adaline-or`**：先看左圖，藍色虛線是 Perceptron 的邊界，擦過兩個點；橘色實線是 ADALINE 的邊界，落在兩類中間。再看右圖，LMS 損失從 $1.5$ 平滑降到 $0.125$ 的最小值附近。 / **Caption `lec02-kp08-adaline-or`:** Look first at the left panel: the blue dashed Perceptron boundary grazes two points, whereas the orange solid ADALINE boundary lies between the classes. Then the right panel: the LMS loss falls smoothly from $1.5$ toward its minimum of $0.125$.\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "These are this ADALINE solution and the particular KP02 Perceptron result. Perceptron solutions depend on order, initialization and tie conventions. The displayed location between classes is not experimental evidence of better generalization.\n\nSource context:\nIn 1960 Widrow and Hoff's ADALINE made one small change: during training it does not first cut the sum into 0/1 with a step, but compares the weighted sum $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ directly with the label $y_i$. The loss is the LMS (least mean squares) quadratic loss above, and the update is gradient descent $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$. The step is used only at inference time. This is called the LMS algorithm or the Widrow-Hoff rule; it is the same kind of loss as the MSE of KP07, here acting on one neuron.\n\n**A hand calculation on the OR data (computed by program).** The four samples $(x_1,x_2)\\to y$ are $(0,0)\\to0$, $(0,1)\\to1$, $(1,0)\\to1$, $(1,1)\\to1$, starting from $\\mathbf{w}=(w_1,w_2,w_0)=(0,0,0)$ with $\\eta=0.1$. All $\\hat y_i=0$, so the residuals $y_i-\\hat y_i$ are $(0,1,1,1)$, and\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 9,
+    "base_kind": "orboundary",
+    "page": 9,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "這個步長下，批次平方損失逐步下降",
+    "title_en": "This batch loss decreases with the chosen step size",
+    "takeaway": "依原程式重算十二步；下限來自最小平方解。",
+    "takeaway_en": "Reproduce twelve source updates; least squares gives the minimum.",
+    "source_anchors": [
+      "1. ADALINE：拿「還沒過活化」的加權和去比標籤"
+    ],
+    "bridge": "上一頁：這是特定算例的比較，不是泛化能力保證。",
+    "bridge_en": "Previously: This example does not establish a generalization guarantee.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "0",
+      "1",
+      "4",
+      "8",
+      "12",
+      "1.5",
+      "0.34",
+      "E^\\ast=0.125",
+      "E_k=\\frac12\\|\\mathbf y-\\mathbf A\\mathbf w_k\\|_2^2",
+      "\\mathbf w_{k+1}=\\mathbf w_k+0.1\\mathbf A^\\top(\\mathbf y-\\mathbf A\\mathbf w_k)"
+    ],
+    "notes": [
+      "完全重現原程式十二次全批次更新，另以最小平方求解得到下限。更新曲線只連接真實迭代點，不插造中間損失。學習率0.1小於這個二次問題Hessian最大特徵值的二倒數，因此本例收斂；不是所有步長都能得到相同下降圖。\n\n講義補讀：\n1960 年 Widrow 與 Hoff 的 ADALINE 做了一個小改變：訓練時不先用階梯切成 0/1，而是直接拿加權和 $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ 和標籤 $y_i$ 比，損失是 LMS（最小均方）二次損失\n\n繼續跑，$e$ 依序是 $1.5,\\ 0.34,\\ 0.183,\\ 0.159,\\dots$，最後收斂到最小平方解 $\\mathbf{w}=(0.5,\\,0.5,\\,0.25)$，$e=0.125$。此時四個輸出是 $0.25,\\ 0.75,\\ 0.75,\\ 1.25$，以 $0.5$ 為門檻就分成 $0,1,1,1$，是正確的 OR。邊界是 $0.5x_1+0.5x_2+0.25=0.5$，即 $x_1+x_2=0.5$，落在 $(0,0)$ 與另外三點的中間；KP02 的 Perceptron 停在 $x_1+x_2=1$，剛好壓在 $(0,1)$ 與 $(1,0)$ 上。注意 $(1,1)$ 的輸出 $1.25$ 雖然分對，LMS 仍把它的 $0.25$ 當作誤差，這是平方損失的特性。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "The thirteen points reproduce twelve full-batch source updates. A separate least-squares solve gives the minimum. Lines join actual iterations, not invented intermediate losses. A rate of 0.1 is below two over the largest Hessian eigenvalue here; arbitrary rates need not converge.\n\nSource context:\nIn 1960 Widrow and Hoff's ADALINE made one small change: during training it does not first cut the sum into 0/1 with a step, but compares the weighted sum $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ directly with the label $y_i$. The loss is the LMS (least mean squares) quadratic loss above, and the update is gradient descent $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$. The step is used only at inference time. This is called the LMS algorithm or the Widrow-Hoff rule; it is the same kind of loss as the MSE of KP07, here acting on one neuron.\n\nKeep going and $e$ is $1.5,\\ 0.34,\\ 0.183,\\ 0.159,\\dots$, converging to the least-squares solution $\\mathbf{w}=(0.5,\\,0.5,\\,0.25)$ with $e=0.125$. The four outputs are then $0.25,\\ 0.75,\\ 0.75,\\ 1.25$, and thresholding at $0.5$ gives $0,1,1,1$, the correct OR. The boundary $0.5x_1+0.5x_2+0.25=0.5$ is $x_1+x_2=0.5$, between $(0,0)$ and the other three points, whereas the Perceptron of KP02 stops at $x_1+x_2=1$, right on top of $(0,1)$ and $(1,0)$. Note that although the output $1.25$ of $(1,1)$ is right, LMS still counts its $0.25$ as error, a property of the squared loss.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 10,
+    "base_kind": "ortrace",
+    "page": 10,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "MADALINE 曾嘗試讓多層也能調權重",
+    "title_en": "MADALINE explored weight updates across layers",
+    "takeaway": "依講義所列沿革，訓練規則逐步擴充。",
+    "takeaway_en": "The handout traces progressively broader training rules.",
+    "source_anchors": [
+      "1. ADALINE：拿「還沒過活化」的加權和去比標籤"
+    ],
+    "bridge": "上一頁：依原程式重算十二步；下限來自最小平方解。",
+    "bridge_en": "Previously: Reproduce twelve source updates; least squares gives the minimum.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "?",
+      "?"
+    ],
+    "notes": [
+      "沿用講義所列簡化沿革：1962 MRI、1988 MRII、1990 MRIII及其訓練範圍。這不是完整架構或歷史文獻考證。只有早期嘗試可合理放在反向傳播普及之前；不能把1988、1990的改進全部說成發生在反向傳播普及之前。\n\n講義補讀：\n1960 年 Widrow 與 Hoff 的 ADALINE 做了一個小改變：訓練時不先用階梯切成 0/1，而是直接拿加權和 $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ 和標籤 $y_i$ 比，損失是 LMS（最小均方）二次損失\n\n**MADALINE。** 把多顆 ADALINE 疊成層就是 MADALINE：1962 年的 MRI 只能更新輸入到隱藏層的權重；1988 年的 MRII 兩段連接都能更新；1990 年的 MRIII 支援更深的多層訓練。這是在反向傳播普及之前，最早訓練多層網路的嘗試之一。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "We retain the handout’s simplified MRI/MRII/MRIII chronology and training scope, not a full architectural or historical survey. Early attempts predate widespread backpropagation; the later 1988/1990 refinements should not all be described that way.\n\nSource context:\nIn 1960 Widrow and Hoff's ADALINE made one small change: during training it does not first cut the sum into 0/1 with a step, but compares the weighted sum $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ directly with the label $y_i$. The loss is the LMS (least mean squares) quadratic loss above, and the update is gradient descent $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$. The step is used only at inference time. This is called the LMS algorithm or the Widrow-Hoff rule; it is the same kind of loss as the MSE of KP07, here acting on one neuron.\n\n**MADALINE.** Stacking several ADALINEs into layers gives MADALINE: MRI of 1962 could update only the weights from input to hidden layer; MRII of 1988 could update both connections; MRIII of 1990 supported deeper multilayer training. It was among the earliest attempts to train multilayer networks, before backpropagation became widespread.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 11,
+    "base_kind": "madaline",
+    "page": 11,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "邏輯回歸把線性分數轉成類別機率",
+    "title_en": "Logistic regression turns a linear score into a probability",
+    "takeaway": "直接建模條件機率；決策門檻在機率零點五。",
+    "takeaway_en": "Model the conditional probability; the default threshold is 0.5.",
+    "source_anchors": [
+      "2. 邏輯回歸：把線性輸出壓成機率"
+    ],
+    "bridge": "上一頁：依講義所列沿革，訓練規則逐步擴充。",
+    "bridge_en": "Previously: The handout traces progressively broader training rules.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "P(y\\mid\\mathbf x)",
+      "P(\\mathbf x\\mid y)",
+      "-3",
+      "0",
+      "3",
+      "0",
+      "1.05",
+      "p=\\sigma(s)",
+      "s=\\boldsymbol\\beta^\\top\\mathbf x,\\quad\\mathbf x=(1,x_1,\\dots,x_d)^\\top",
+      "p=\\frac{e^s}{1+e^s}=\\frac1{1+e^{-s}}",
+      "P(y=0\\mid\\mathbf x)=1-p",
+      "\\hat c=\\mathbf1[p\\ge0.5]"
+    ],
+    "notes": [
+      "邏輯回歸直接建模給定輸入後的標籤條件機率；LDA通常先建模各類別的輸入分布和先驗，再用貝氏法則取得後驗。本單元不展開LDA假設。logistic模型輸出連續機率，最後才做分類，名稱中的回歸不代表輸出不能連續。講義以Verhulst1845人口成長文獻作歷史小記；不把此年解釋為所有logistic形式第一次出現。\n\n講義補讀：\n邏輯回歸不屬於神經網路的歷史，但它就是「一顆神經元加 sigmoid」。設 $y\\in\\{0,1\\}$，它直接建模後驗機率（不像 LDA 先算似然與先驗），線性部分 $\\boldsymbol\\beta^\\top\\mathbf{x}$ 沒有上下界，所以用 sigmoid 壓到 $(0,1)$：\n\n其中 $\\mathbf{X}$ 的每一欄是一筆資料（第一列全為 1）。把它和 ADALINE 的梯度 $-\\sum(y_i-\\hat y_i)x_{ij}$ 並排看：兩者都是「（標籤 − 預測）× 輸入」，差別只在預測是線性輸出 $\\hat y_i$ 還是 sigmoid 輸出 $p_i$。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "Logistic regression directly models labels conditional on inputs. LDA usually models class-conditional input distributions and priors, then derives posteriors by Bayes’ rule. Logistic outputs are continuous probabilities before classification. The handout cites Verhulst’s 1845 population-growth work; this is not asserted as the first appearance of every logistic formulation.\n\nSource context:\nLogistic regression is outside the history of neural networks, but it is exactly \"one neuron plus a sigmoid\". With $y\\in\\{0,1\\}$ it models the posterior probability directly (unlike LDA, which computes the likelihood and prior first). The linear part $\\boldsymbol\\beta^\\top\\mathbf{x}$ has no bounds, so a sigmoid squashes it into $(0,1)$ as above. The logistic function was proposed by Verhulst in 1845 for population growth. At test time the sample is labelled 1 if $p\\ge0.5$.\n\n**The loss comes from maximum likelihood.** For $n$ independent samples, add up the log posteriors (the log-likelihood) as above. Its negative is exactly the binary cross-entropy $-\\sum[y\\ln p+(1-y)\\ln(1-p)]$ of KP07. The gradient and Hessian are as shown, where each column of $\\mathbf{X}$ is one sample (the first row is all 1). Set it next to the ADALINE gradient $-\\sum(y_i-\\hat y_i)x_{ij}$: both are \"(label − prediction) × input\", differing only in whether the prediction is the linear output $\\hat y_i$ or the sigmoid output $p_i$.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 12,
+    "base_kind": "logistic",
+    "page": 12,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "最大似然，等價於最小化二元交叉熵",
+    "title_en": "Maximum likelihood matches binary cross-entropy minimization",
+    "takeaway": "最大化對數似然；最小化它的負值。",
+    "takeaway_en": "Maximize log-likelihood, or minimize its negative.",
+    "source_anchors": [
+      "2. 邏輯回歸：把線性輸出壓成機率"
+    ],
+    "bridge": "上一頁：直接建模條件機率；決策門檻在機率零點五。",
+    "bridge_en": "Previously: Model the conditional probability; the default threshold is 0.5.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "p_i",
+      "1-p_i",
+      "\\ln",
+      "P(y_i\\mid\\mathbf x_i;\\boldsymbol\\beta)=p_i^{y_i}(1-p_i)^{1-y_i}",
+      "\\ell=\\sum_i[y_i\\ln p_i+(1-y_i)\\ln(1-p_i)]",
+      "=\\sum_i[y_is_i-\\ln(1+e^{s_i})]",
+      "L_{\\rm BCE}=-\\ell"
+    ],
+    "notes": [
+      "固定觀測輸入、假設給定參數後標籤條件獨立，樣本條件機率乘積是似然，對數後成加總。這不是對參數的貝氏後驗，除非另加參數先驗。代入sigmoid後得到y乘線性分數減softplus的式子，負值等於二元交叉熵；實作使用logaddexp避免溢位。\n\n講義補讀：\n它的負值正是 KP07 的二元交叉熵 $-\\sum[y\\ln p+(1-y)\\ln(1-p)]$。梯度與 Hessian 為\n\n對數似然從 $-2.7726$（$=-4\\ln2$）升到 $-2.3526$；第二步 $\\boldsymbol\\beta=(-1.356,\\,0.904)$，$\\ell=-2.3475$；第三步起幾乎不變，收斂在 $\\boldsymbol\\beta=(-1.362,\\,0.908)$，四個機率是 $0.204,\\ 0.388,\\ 0.612,\\ 0.796$。邊界在 $p=0.5$，即 $x=1.362/0.908=1.5$。因為資料交錯，四筆裡有兩筆（$x=1$ 與 $x=2$）仍判錯，這是資料的問題，不是演算法的問題。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "For fixed inputs and conditionally independent labels, the product of label probabilities is a likelihood as a function of parameters; taking logs yields a sum. It is not a Bayesian parameter posterior without a parameter prior. Substituting Sigmoid gives y times score minus Softplus. Its negative is BCE; logaddexp provides stable computation.\n\nSource context:\n**The loss comes from maximum likelihood.** For $n$ independent samples, add up the log posteriors (the log-likelihood) as above. Its negative is exactly the binary cross-entropy $-\\sum[y\\ln p+(1-y)\\ln(1-p)]$ of KP07. The gradient and Hessian are as shown, where each column of $\\mathbf{X}$ is one sample (the first row is all 1). Set it next to the ADALINE gradient $-\\sum(y_i-\\hat y_i)x_{ij}$: both are \"(label − prediction) × input\", differing only in whether the prediction is the linear output $\\hat y_i$ or the sigmoid output $p_i$.\n\nThe log-likelihood rises from $-2.7726$ ($=-4\\ln2$) to $-2.3526$; the second step gives $\\boldsymbol\\beta=(-1.356,\\,0.904)$ with $\\ell=-2.3475$; from the third step it barely changes and settles at $\\boldsymbol\\beta=(-1.362,\\,0.908)$, with four probabilities $0.204,\\ 0.388,\\ 0.612,\\ 0.796$. The boundary is at $p=0.5$, i.e. $x=1.362/0.908=1.5$. Because the classes interleave, two of the four samples ($x=1$ and $x=2$) are still wrong; that is a property of the data, not of the algorithm.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 13,
+    "base_kind": "likelihood",
+    "page": 13,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "更新方向都含「目標減預測」乘輸入",
+    "title_en": "Both update directions use target minus prediction",
+    "takeaway": "比較下降與上升的更新方向，才不會混淆符號。",
+    "takeaway_en": "Compare update directions to keep the signs consistent.",
+    "source_anchors": [
+      "1. ADALINE：拿「還沒過活化」的加權和去比標籤"
+    ],
+    "bridge": "上一頁：最大化對數似然；最小化它的負值。",
+    "bridge_en": "Previously: Maximize log-likelihood, or minimize its negative.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-1",
+      "0",
+      "1",
+      "0",
+      "1.1",
+      "-1",
+      "0",
+      "1",
+      "0",
+      "1.1",
+      "-\\nabla E=\\sum_i(y_i-\\hat y_i)\\mathbf x_i",
+      "\\nabla\\ell=\\sum_i(y_i-p_i)\\mathbf x_i",
+      "0"
+    ],
+    "notes": [
+      "講義直接比較ADALINE的損失梯度與loglikelihood的梯度，少了一個符號差別。本頁明確比較ADALINE下降方向負梯度與loglikelihood上升方向正梯度，才同為目標減預測乘輸入。偏置併入常數一時，ADALINE的增廣輸入順序要與參數順序配對。\n\n講義補讀：\n更新是梯度下降 $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$。階梯只留到推論時才用。這套做法叫 LMS 演算法或 Widrow-Hoff 規則；它和 KP07 的 MSE 是同一種損失，只是這裡作用在一個神經元上。\n\n**MADALINE。** 把多顆 ADALINE 疊成層就是 MADALINE：1962 年的 MRI 只能更新輸入到隱藏層的權重；1988 年的 MRII 兩段連接都能更新；1990 年的 MRIII 支援更深的多層訓練。這是在反向傳播普及之前，最早訓練多層網路的嘗試之一。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "The loss gradient and log-likelihood gradient have opposite sign conventions. We compare ADALINE’s negative loss gradient with logistic’s positive likelihood gradient, both residual times input. Match the augmented feature ordering to the parameter ordering, including the bias.\n\nSource context:\nIn 1960 Widrow and Hoff's ADALINE made one small change: during training it does not first cut the sum into 0/1 with a step, but compares the weighted sum $\\hat y_i=\\sum_jw_jx_{ij}+w_0$ directly with the label $y_i$. The loss is the LMS (least mean squares) quadratic loss above, and the update is gradient descent $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$. The step is used only at inference time. This is called the LMS algorithm or the Widrow-Hoff rule; it is the same kind of loss as the MSE of KP07, here acting on one neuron.\n\n- $\\partial e/\\partial w_1=-(0\\cdot0+1\\cdot0+1\\cdot1+1\\cdot1)=-2$, $\\partial e/\\partial w_2=-2$, $\\partial e/\\partial w_0=-(0+1+1+1)=-3$;\n- after the update $\\mathbf{w}=(0.2,\\,0.2,\\,0.3)$, and the loss drops from $e=\\tfrac12(0+1+1+1)=1.5$ to $0.34$.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "bridge",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 14,
+    "base_kind": "compare",
+    "page": 14,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "對數似然是凹的，負對數似然是凸的",
+    "title_en": "Log-likelihood is concave; its negative is convex",
+    "takeaway": "樣本放矩陣的欄；Hessian 帶負號。",
+    "takeaway_en": "Samples are columns; the log-likelihood Hessian has a minus sign.",
+    "source_anchors": [
+      "2. 邏輯回歸：把線性輸出壓成機率"
+    ],
+    "bridge": "上一頁：比較下降與上升的更新方向，才不會混淆符號。",
+    "bridge_en": "Previously: Compare update directions to keep the signs consistent.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf X\\in\\mathbb R^{(d+1)\\times n}",
+      "\\mathbf g=\\mathbf X(\\mathbf y-\\mathbf p)",
+      "\\mathbf W=\\operatorname{diag}(p_i(1-p_i))",
+      "\\mathbf H=-\\mathbf X\\mathbf W\\mathbf X^\\top",
+      "\\mathbf H\\preceq0"
+    ],
+    "notes": [
+      "X採每欄一筆資料，因此尺寸(d+1)乘n，與常見每列一筆的軟體習慣相反。W是n乘n對角矩陣，對角p乘1-p非負，所以H等於負XWX轉置是負半定。這給凹性，不自動給嚴格凹性、有限MLE或Hessian可逆；滿列秩與有限分數時A=-H才正定。\n\n講義補讀：\n邏輯回歸不屬於神經網路的歷史，但它就是「一顆神經元加 sigmoid」。設 $y\\in\\{0,1\\}$，它直接建模後驗機率（不像 LDA 先算似然與先驗），線性部分 $\\boldsymbol\\beta^\\top\\mathbf{x}$ 沒有上下界，所以用 sigmoid 壓到 $(0,1)$：\n\n對數似然從 $-2.7726$（$=-4\\ln2$）升到 $-2.3526$；第二步 $\\boldsymbol\\beta=(-1.356,\\,0.904)$，$\\ell=-2.3475$；第三步起幾乎不變，收斂在 $\\boldsymbol\\beta=(-1.362,\\,0.908)$，四個機率是 $0.204,\\ 0.388,\\ 0.612,\\ 0.796$。邊界在 $p=0.5$，即 $x=1.362/0.908=1.5$。因為資料交錯，四筆裡有兩筆（$x=1$ 與 $x=2$）仍判錯，這是資料的問題，不是演算法的問題。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "Samples are columns of a (d+1)-by-n matrix, unlike common row-sample software notation. W is diagonal with nonnegative p(1-p), making H negative semidefinite. Concavity alone does not imply strict concavity, a finite MLE or an invertible Hessian. Full row rank and finite logits make A=-H positive definite.\n\nSource context:\n**The loss comes from maximum likelihood.** For $n$ independent samples, add up the log posteriors (the log-likelihood) as above. Its negative is exactly the binary cross-entropy $-\\sum[y\\ln p+(1-y)\\ln(1-p)]$ of KP07. The gradient and Hessian are as shown, where each column of $\\mathbf{X}$ is one sample (the first row is all 1). Set it next to the ADALINE gradient $-\\sum(y_i-\\hat y_i)x_{ij}$: both are \"(label − prediction) × input\", differing only in whether the prediction is the linear output $\\hat y_i$ or the sigmoid output $p_i$.\n\nThe log-likelihood rises from $-2.7726$ ($=-4\\ln2$) to $-2.3526$; the second step gives $\\boldsymbol\\beta=(-1.356,\\,0.904)$ with $\\ell=-2.3475$; from the third step it barely changes and settles at $\\boldsymbol\\beta=(-1.362,\\,0.908)$, with four probabilities $0.204,\\ 0.388,\\ 0.612,\\ 0.796$. The boundary is at $p=0.5$, i.e. $x=1.362/0.908=1.5$. Because the classes interleave, two of the four samples ($x=1$ and $x=2$) are still wrong; that is a property of the data, not of the algorithm.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 15,
+    "base_kind": "hessian",
+    "page": 15,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "代入負 Hessian 後，這個牛頓式才成加號",
+    "title_en": "Substituting the negative Hessian yields this plus sign",
+    "takeaway": "一般形式仍是參數減 Hessian 的逆乘梯度。",
+    "takeaway_en": "The generic step still subtracts inverse Hessian times gradient.",
+    "source_anchors": [
+      "2. 邏輯回歸：把線性輸出壓成機率",
+      "來源更正與取捨"
+    ],
+    "bridge": "上一頁：樣本放矩陣的欄；Hessian 帶負號。",
+    "bridge_en": "Previously: Samples are columns; the log-likelihood Hessian has a minus sign.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\boldsymbol\\beta^+=\\boldsymbol\\beta-\\mathbf H^{-1}\\mathbf g",
+      "\\mathbf A=-\\mathbf H=\\mathbf X\\mathbf W\\mathbf X^\\top",
+      "\\boldsymbol\\beta^+=\\boldsymbol\\beta+\\mathbf A^{-1}\\mathbf X(\\mathbf y-\\mathbf p)"
+    ],
+    "notes": [
+      "一般牛頓式是beta減H逆乘g，無論尋找極大或極小的駐點都採這個形式。此處H是loglikelihood的負半定Hessian，令A=-H才出現加A逆g。不可說最大化的一般牛頓法都直接用加H逆g。實作應解A乘delta等於g，不真的形成逆矩陣；必要時阻尼或線搜尋確保改善。\n\n講義補讀：\n它的負值正是 KP07 的二元交叉熵 $-\\sum[y\\ln p+(1-y)\\ln(1-p)]$。梯度與 Hessian 為\n\n**牛頓法的方向。** 我們要**最大化** $\\ell$，牛頓法是 $\\boldsymbol\\beta\\leftarrow\\boldsymbol\\beta-H^{-1}g$，其中 $g$ 是梯度、$H$ 是 Hessian；把上面的 $g=\\mathbf{X}(\\mathbf{y}-\\mathbf{p})$ 與 $H=-\\mathbf{X}\\mathbf{W}\\mathbf{X}^\\top$ 代入，得到\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "The generic Newton stationary-point step is beta minus inverse H times g for minima and maxima alike. Here H is the log-likelihood Hessian, so A=-H yields plus inverse A times g. Do not replace this with a universal maximization plus sign. Solve A delta=g in practice; damping or line search may be needed.\n\nSource context:\n**The loss comes from maximum likelihood.** For $n$ independent samples, add up the log posteriors (the log-likelihood) as above. Its negative is exactly the binary cross-entropy $-\\sum[y\\ln p+(1-y)\\ln(1-p)]$ of KP07. The gradient and Hessian are as shown, where each column of $\\mathbf{X}$ is one sample (the first row is all 1). Set it next to the ADALINE gradient $-\\sum(y_i-\\hat y_i)x_{ij}$: both are \"(label − prediction) × input\", differing only in whether the prediction is the linear output $\\hat y_i$ or the sigmoid output $p_i$.\n\n**Direction of the Newton step.** We **maximize** $\\ell$. Newton's method is $\\boldsymbol\\beta\\leftarrow\\boldsymbol\\beta-H^{-1}g$ with gradient $g$ and Hessian $H$; substituting $g=\\mathbf{X}(\\mathbf{y}-\\mathbf{p})$ and $H=-\\mathbf{X}\\mathbf{W}\\mathbf{X}^\\top$ gives the update above, with a **plus** sign.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 16,
+    "base_kind": "newton",
+    "page": 16,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "交錯的一維資料，先從一半機率開始",
+    "title_en": "Start interleaved one-dimensional data at probability one half",
+    "takeaway": "每筆特徵向量都含偏置常數一。",
+    "takeaway_en": "Every feature vector includes a constant for the bias.",
+    "source_anchors": [
+      "2. 邏輯回歸：把線性輸出壓成機率"
+    ],
+    "bridge": "上一頁：一般形式仍是參數減 Hessian 的逆乘梯度。",
+    "bridge_en": "Previously: The generic step still subtracts inverse Hessian times gradient.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "\\mathbf X=\\begin{pmatrix}1&1&1&1\\\\0&1&2&3\\end{pmatrix}",
+      "\\mathbf y=(0,1,0,1)^\\top",
+      "\\boldsymbol\\beta=(0,0)^\\top,\\quad\\mathbf p=(0.5,0.5,0.5,0.5)^\\top",
+      "0",
+      "1"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。每筆特徵向量都含偏置常數一。\n\n講義補讀：\n**手算〔程式計算〕。** 四筆一維資料 $x=(0,1,2,3)$、$y=(0,1,0,1)$（不可分，所以最大似然解有限）。從 $\\boldsymbol\\beta=(0,0)$ 開始，所有 $p_i=0.5$：\n\n對數似然從 $-2.7726$（$=-4\\ln2$）升到 $-2.3526$；第二步 $\\boldsymbol\\beta=(-1.356,\\,0.904)$，$\\ell=-2.3475$；第三步起幾乎不變，收斂在 $\\boldsymbol\\beta=(-1.362,\\,0.908)$，四個機率是 $0.204,\\ 0.388,\\ 0.612,\\ 0.796$。邊界在 $p=0.5$，即 $x=1.362/0.908=1.5$。因為資料交錯，四筆裡有兩筆（$x=1$ 與 $x=2$）仍判錯，這是資料的問題，不是演算法的問題。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "Explain the newly revealed evidence and mascot prompt: Every feature vector includes a constant for the bias.\n\nSource context:\nLogistic regression is outside the history of neural networks, but it is exactly \"one neuron plus a sigmoid\". With $y\\in\\{0,1\\}$ it models the posterior probability directly (unlike LDA, which computes the likelihood and prior first). The linear part $\\boldsymbol\\beta^\\top\\mathbf{x}$ has no bounds, so a sigmoid squashes it into $(0,1)$ as above. The logistic function was proposed by Verhulst in 1845 for population growth. At test time the sample is labelled 1 if $p\\ge0.5$.\n\n**By hand (computed by program).** Four one-dimensional samples $x=(0,1,2,3)$, $y=(0,1,0,1)$ (not separable, so the maximum-likelihood solution is finite). Start at $\\boldsymbol\\beta=(0,0)$, where all $p_i=0.5$:\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 17,
+    "base_kind": "newtondata",
+    "page": 17,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "殘差決定梯度，曲率決定縮放矩陣",
+    "title_en": "Residuals give the gradient; curvature gives its scaling",
+    "takeaway": "這一批起點的梯度與曲率矩陣都能直接算。",
+    "takeaway_en": "Both gradient and curvature can be computed at this start.",
+    "source_anchors": [
+      "2. 邏輯回歸：把線性輸出壓成機率"
+    ],
+    "bridge": "上一頁：每筆特徵向量都含偏置常數一。",
+    "bridge_en": "Previously: Every feature vector includes a constant for the bias.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\boldsymbol\\beta=\\mathbf0",
+      "\\mathbf r=\\mathbf y-\\mathbf p=(-0.5,0.5,-0.5,0.5)^\\top",
+      "\\mathbf g=\\begin{pmatrix}\\sum_i r_i\\\\\\sum_i r_ix_i\\end{pmatrix}=\\begin{pmatrix}0\\\\1\\end{pmatrix}",
+      "\\mathbf A=\\frac14\\begin{pmatrix}4&6\\\\6&14\\end{pmatrix}=\\begin{pmatrix}1&1.5\\\\1.5&3.5\\end{pmatrix}"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。這一批起點的梯度與曲率矩陣都能直接算。\n\n講義補讀：\n邏輯回歸不屬於神經網路的歷史，但它就是「一顆神經元加 sigmoid」。設 $y\\in\\{0,1\\}$，它直接建模後驗機率（不像 LDA 先算似然與先驗），線性部分 $\\boldsymbol\\beta^\\top\\mathbf{x}$ 沒有上下界，所以用 sigmoid 壓到 $(0,1)$：\n\n其中 $\\mathbf{X}$ 的每一欄是一筆資料（第一列全為 1）。把它和 ADALINE 的梯度 $-\\sum(y_i-\\hat y_i)x_{ij}$ 並排看：兩者都是「（標籤 − 預測）× 輸入」，差別只在預測是線性輸出 $\\hat y_i$ 還是 sigmoid 輸出 $p_i$。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "Explain the newly revealed evidence and mascot prompt: Both gradient and curvature can be computed at this start.\n\nSource context:\n**The loss comes from maximum likelihood.** For $n$ independent samples, add up the log posteriors (the log-likelihood) as above. Its negative is exactly the binary cross-entropy $-\\sum[y\\ln p+(1-y)\\ln(1-p)]$ of KP07. The gradient and Hessian are as shown, where each column of $\\mathbf{X}$ is one sample (the first row is all 1). Set it next to the ADALINE gradient $-\\sum(y_i-\\hat y_i)x_{ij}$: both are \"(label − prediction) × input\", differing only in whether the prediction is the linear output $\\hat y_i$ or the sigmoid output $p_i$.\n\n**Direction of the Newton step.** We **maximize** $\\ell$. Newton's method is $\\boldsymbol\\beta\\leftarrow\\boldsymbol\\beta-H^{-1}g$ with gradient $g$ and Hessian $H$; substituting $g=\\mathbf{X}(\\mathbf{y}-\\mathbf{p})$ and $H=-\\mathbf{X}\\mathbf{W}\\mathbf{X}^\\top$ gives the update above, with a **plus** sign.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 18,
+    "base_kind": "newtongrad",
+    "page": 18,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "第一步牛頓更新，得到負截距與正斜率",
+    "title_en": "The first Newton step gives a negative intercept and positive slope",
+    "takeaway": "行列式為正，這一步的逆矩陣存在。",
+    "takeaway_en": "The positive determinant makes this inverse available.",
+    "source_anchors": [
+      "2. 邏輯回歸：把線性輸出壓成機率"
+    ],
+    "bridge": "上一頁：這一批起點的梯度與曲率矩陣都能直接算。",
+    "bridge_en": "Previously: Both gradient and curvature can be computed at this start.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\beta_0",
+      "\\beta_1",
+      "0.8",
+      "-1.2",
+      "\\det\\mathbf A=1\\cdot3.5-1.5^2=1.25",
+      "\\mathbf A^{-1}=\\frac1{1.25}\\begin{pmatrix}3.5&-1.5\\\\-1.5&1\\end{pmatrix}",
+      "\\boldsymbol\\beta^+=\\begin{pmatrix}0\\\\0\\end{pmatrix}+\\mathbf A^{-1}\\begin{pmatrix}0\\\\1\\end{pmatrix}=\\begin{pmatrix}-1.2\\\\0.8\\end{pmatrix}"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。行列式為正，這一步的逆矩陣存在。\n\n講義補讀：\n其中 $\\mathbf{X}$ 的每一欄是一筆資料（第一列全為 1）。把它和 ADALINE 的梯度 $-\\sum(y_i-\\hat y_i)x_{ij}$ 並排看：兩者都是「（標籤 − 預測）× 輸入」，差別只在預測是線性輸出 $\\hat y_i$ 還是 sigmoid 輸出 $p_i$。\n\n對數似然從 $-2.7726$（$=-4\\ln2$）升到 $-2.3526$；第二步 $\\boldsymbol\\beta=(-1.356,\\,0.904)$，$\\ell=-2.3475$；第三步起幾乎不變，收斂在 $\\boldsymbol\\beta=(-1.362,\\,0.908)$，四個機率是 $0.204,\\ 0.388,\\ 0.612,\\ 0.796$。邊界在 $p=0.5$，即 $x=1.362/0.908=1.5$。因為資料交錯，四筆裡有兩筆（$x=1$ 與 $x=2$）仍判錯，這是資料的問題，不是演算法的問題。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "Explain the newly revealed evidence and mascot prompt: The positive determinant makes this inverse available.\n\nSource context:\n**The loss comes from maximum likelihood.** For $n$ independent samples, add up the log posteriors (the log-likelihood) as above. Its negative is exactly the binary cross-entropy $-\\sum[y\\ln p+(1-y)\\ln(1-p)]$ of KP07. The gradient and Hessian are as shown, where each column of $\\mathbf{X}$ is one sample (the first row is all 1). Set it next to the ADALINE gradient $-\\sum(y_i-\\hat y_i)x_{ij}$: both are \"(label − prediction) × input\", differing only in whether the prediction is the linear output $\\hat y_i$ or the sigmoid output $p_i$.\n\n**Direction of the Newton step.** We **maximize** $\\ell$. Newton's method is $\\boldsymbol\\beta\\leftarrow\\boldsymbol\\beta-H^{-1}g$ with gradient $g$ and Hessian $H$; substituting $g=\\mathbf{X}(\\mathbf{y}-\\mathbf{p})$ and $H=-\\mathbf{X}\\mathbf{W}\\mathbf{X}^\\top$ gives the update above, with a **plus** sign.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 19,
+    "base_kind": "newtonstep",
+    "page": 19,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "前兩步已接近最後的 Sigmoid 曲線",
+    "title_en": "Two steps nearly reach the final Sigmoid curve",
+    "takeaway": "曲線與對數似然都依原資料重算。",
+    "takeaway_en": "Recompute curves and log-likelihood on the source data.",
+    "source_anchors": [
+      "2. 邏輯回歸：把線性輸出壓成機率"
+    ],
+    "bridge": "上一頁：行列式為正，這一步的逆矩陣存在。",
+    "bridge_en": "Previously: The positive determinant makes this inverse available.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "\\boldsymbol\\beta_0\\approx(0.000,0.000)",
+      "\\ell_0\\approx-2.7726",
+      "\\boldsymbol\\beta_1\\approx(-1.200,0.800)",
+      "\\ell_1\\approx-2.3526",
+      "\\boldsymbol\\beta_2\\approx(-1.356,0.904)",
+      "\\ell_2\\approx-2.3475",
+      "p_k(x)=\\frac1{1+\\exp[-(\\beta_{0,k}+\\beta_{1,k}x)]}",
+      "\\ell_k=\\sum_{i=1}^{4}[y_i\\ln p_k(x_i)+(1-y_i)\\ln(1-p_k(x_i))]"
+    ],
+    "notes": [
+      "由原資料與初值重現300個網格點的三條曲線，與每一步精確beta、對數似然一致。起點likelihood為負四ln二，第一步約負2.3526、第二步約負2.3475。所有數字用完整中間精度。這個例子前兩步改善，不宣稱一般牛頓法每一步都上升。\n\n講義補讀：\n對數似然從 $-2.7726$（$=-4\\ln2$）升到 $-2.3526$；第二步 $\\boldsymbol\\beta=(-1.356,\\,0.904)$，$\\ell=-2.3475$；第三步起幾乎不變，收斂在 $\\boldsymbol\\beta=(-1.362,\\,0.908)$，四個機率是 $0.204,\\ 0.388,\\ 0.612,\\ 0.796$。邊界在 $p=0.5$，即 $x=1.362/0.908=1.5$。因為資料交錯，四筆裡有兩筆（$x=1$ 與 $x=2$）仍判錯，這是資料的問題，不是演算法的問題。\n\n**圖說 `lec02-kp08-logistic-newton`**：先看灰色虛線，起點 $\\boldsymbol\\beta=(0,0)$ 是一條平的 0.5；再看藍色曲線，一步就把 sigmoid 立起來；橘色是第二步，已經很接近最後的解。四個圓點是資料。 / **Caption `lec02-kp08-logistic-newton`:** Look first at the grey dashed line: the start $\\boldsymbol\\beta=(0,0)$ is a flat 0.5; then at the blue curve: one step already stands the sigmoid up; the orange is the second step, close to the final solution. The four dots are the data.\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "The source data and initialization reproduce three curves on 300 grid points, using each exact beta and log-likelihood. The start is -4 ln 2, then approximately -2.3526 and -2.3475. Intermediate computations retain full precision. This example improves, not every plain Newton step in general.\n\nSource context:\n**The loss comes from maximum likelihood.** For $n$ independent samples, add up the log posteriors (the log-likelihood) as above. Its negative is exactly the binary cross-entropy $-\\sum[y\\ln p+(1-y)\\ln(1-p)]$ of KP07. The gradient and Hessian are as shown, where each column of $\\mathbf{X}$ is one sample (the first row is all 1). Set it next to the ADALINE gradient $-\\sum(y_i-\\hat y_i)x_{ij}$: both are \"(label − prediction) × input\", differing only in whether the prediction is the linear output $\\hat y_i$ or the sigmoid output $p_i$.\n\nThe log-likelihood rises from $-2.7726$ ($=-4\\ln2$) to $-2.3526$; the second step gives $\\boldsymbol\\beta=(-1.356,\\,0.904)$ with $\\ell=-2.3475$; from the third step it barely changes and settles at $\\boldsymbol\\beta=(-1.362,\\,0.908)$, with four probabilities $0.204,\\ 0.388,\\ 0.612,\\ 0.796$. The boundary is at $p=0.5$, i.e. $x=1.362/0.908=1.5$. Because the classes interleave, two of the four samples ($x=1$ and $x=2$) are still wrong; that is a property of the data, not of the algorithm.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "dial",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 20,
+    "base_kind": "newtontrace",
+    "page": 20,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "最大似然解，不等於分類錯誤數最少",
+    "title_en": "Maximum likelihood need not minimize classification errors",
+    "takeaway": "最大似然解{color=#b24b52}不等於{/color}分類錯誤數最少。",
+    "takeaway_en": "Best likelihood {color=#b24b52}need not{/color} mean fewest errors.",
+    "source_anchors": [
+      "2. 邏輯回歸：把線性輸出壓成機率"
+    ],
+    "bridge": "上一頁：曲線與對數似然都依原資料重算。",
+    "bridge_en": "Previously: Recompute curves and log-likelihood on the source data.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\boldsymbol\\beta^\\ast\\approx(-1.362,0.908)",
+      "0",
+      "1",
+      "2",
+      "3",
+      "0.204",
+      "0.388",
+      "0.612",
+      "0.796",
+      "x_0=0.5",
+      "x_0=1.5",
+      "\\mathrm{MLE}:\\ (0,0,1,1),\\quad 2/4",
+      "x_0=0.5:\\ (0,1,1,1),\\quad 1/4"
+    ],
+    "notes": [
+      "本例滿秩且無完全或準完全分離，有限最大似然解約負1.362、0.908，邊界1.5，四個預測機率約0.204、0.388、0.612、0.796，硬分類0011造成兩錯。交錯資料確實無法由單一門檻全對，但補充反例門檻0.5給0111只錯一筆。因此兩錯不是資料所迫的最低錯誤數；最大似然與最少0-1錯誤是不同目標。\n\n講義補讀：\n邏輯回歸不屬於神經網路的歷史，但它就是「一顆神經元加 sigmoid」。設 $y\\in\\{0,1\\}$，它直接建模後驗機率（不像 LDA 先算似然與先驗），線性部分 $\\boldsymbol\\beta^\\top\\mathbf{x}$ 沒有上下界，所以用 sigmoid 壓到 $(0,1)$：\n\n**手算〔程式計算〕。** 四筆一維資料 $x=(0,1,2,3)$、$y=(0,1,0,1)$（不可分，所以最大似然解有限）。從 $\\boldsymbol\\beta=(0,0)$ 開始，所有 $p_i=0.5$：\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "This full-rank example has neither complete nor quasi-complete separation, giving a finite MLE near (-1.362,0.908). Boundary 1.5 and probabilities (0.204,0.388,0.612,0.796) give 0011, with two errors. A threshold at 0.5 instead gives 0111 with one error. Interleaving prevents zero errors, but two is not the minimum attainable 0–1 count.\n\nSource context:\n**By hand (computed by program).** Four one-dimensional samples $x=(0,1,2,3)$, $y=(0,1,0,1)$ (not separable, so the maximum-likelihood solution is finite). Start at $\\boldsymbol\\beta=(0,0)$, where all $p_i=0.5$:\n\nThe log-likelihood rises from $-2.7726$ ($=-4\\ln2$) to $-2.3526$; the second step gives $\\boldsymbol\\beta=(-1.356,\\,0.904)$ with $\\ell=-2.3475$; from the third step it barely changes and settles at $\\boldsymbol\\beta=(-1.362,\\,0.908)$, with four probabilities $0.204,\\ 0.388,\\ 0.612,\\ 0.796$. The boundary is at $p=0.5$, i.e. $x=1.362/0.908=1.5$. Because the classes interleave, two of the four samples ($x=1$ and $x=2$) are still wrong; that is a property of the data, not of the algorithm.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 21,
+    "base_kind": "outcome",
+    "page": 21,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "凹目標也有條件：可分資料可能沒有有限解",
+    "title_en": "Concavity has limits: separable data may lack a finite optimum",
+    "takeaway": "標準牛頓步不保證每次改善；需留意可分與矩陣條件。",
+    "takeaway_en": "Check separation and rank; Newton steps may need damping.",
+    "source_anchors": [
+      "本單元重點整理"
+    ],
+    "bridge": "上一頁：最大似然解不等於分類錯誤數最少。",
+    "bridge_en": "Previously: Best likelihood need not mean fewest errors.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "3",
+      "0",
+      "1.05",
+      "p=\\sigma(ks),\\quad k=1,3,8",
+      "\\mathbf H\\preceq0",
+      "\\|\\boldsymbol\\beta\\|\\to\\infty"
+    ],
+    "notes": [
+      "無正則化loglikelihood凹，不代表有有限最大值或每一步牛頓都改善。完全或準完全分離可能使部分參數往無窮增長；單說不可完全分就保證有限MLE也不足。可加適當正則化，檢查秩、穩定性並用阻尼或線搜尋。此圖的三條sigmoid是明示補充概念例子，不是另一項來源訓練實驗。\n\n講義補讀：\n**想深入**（選讀）：邏輯回歸的對數似然對 $\\boldsymbol\\beta$ 是凹函數（負值是凸的），所以存在的最優解是全域最優，但普通牛頓步仍可能惡化目標；但若資料完全可分，似然沒有有限的最大值，$\\|\\boldsymbol\\beta\\|$ 會無限增大，實務上要加正則化。\n\n| 題 / Question | A | B | C | D | 提示 / Hint |\n|---|---|---|---|---|---|\n| 1. ADALINE 訓練時拿什麼當預測誤差的基準？ / What is the baseline of the prediction error in ADALINE training? | 套用硬閾值後的二元輸出 | 尚未套活化的加權和 | 經過 sigmoid 後的機率 | 對權重取絕對值 | 看第 1 節。 / Section 1. |\n| 2. ADALINE 最小化哪一個損失？ / Which loss does ADALINE minimize? | 交叉熵 | LMS 二次損失 | Hinge 損失 | KL 散度 | 看公式。 / See the formula. |\n| 3. 權重的梯度下降更新式？ / The gradient-descent update of a weight? | $w_j:=w_j+\\eta\\,\\partial e/\\partial w_j$ | $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$ | $w_j:=\\eta\\,\\partial e/\\partial w_j$ | $w_j:=w_j/\\eta$ | 要讓損失下降。 / The loss should go down. |\n| 4. MADALINE 訓練規則的演進，何者正確？ / Which statement on the MADALINE rules is correct? | MRI（1962）只能更新輸入到隱藏層，MRII（1988）才支援兩段連接 | MRI 已能全連接更新 | MRIII 是最早的規則 | MRII 不需要隱藏層 | 看年份。 / Look at the years. |\n| 5. 與 LDA 相比，邏輯回歸建模的是？ / Compared with LDA, what does logistic regression model? | 似然 $P(\\mathbf{x}\\mid y)$ | 直接建模後驗 $P(y\\mid\\mathbf{x})$ | 先驗 $P(y)$ | 生成模型 $P(\\mathbf{x},y)$ | 看第 2 節。 / Section 2. |\n| 6. logistic 函數最初的用途？ / What was the logistic function first used for? | 建模人口成長（Verhulst，1845） | 影像分類 | 矩陣分解 | 圖論最短徑 | 看歷史小記。 / The history note. |\n| 7. 矩陣形式的牛頓更新式？ / The matrix form of the Newton update? | $\\boldsymbol\\beta+(\\mathbf{X}\\mathbf{W}\\mathbf{X}^\\top)^{-1}\\mathbf{X}(\\mathbf{y}-\\mathbf{p})$ | $\\boldsymbol\\beta+\\mathbf{X}\\mathbf{W}\\mathbf{X}^\\top$ | $\\boldsymbol\\beta-\\mathbf{W}^{-1}\\mathbf{y}$ | $\\boldsymbol\\beta+(\\mathbf{y}-\\mathbf{p})$ | 注意正負號（見下方更正）。 / Mind the sign (see the correction below). |\n| 8. 測試階段如何決定類別？ / How is the class decided at test time? | 看梯度是否為 0 | 機率是否 $\\ge0.5$ | 直接取權重總和 | 隨機猜測 | 看第 2 節。 / Section 2. |\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "Unregularized concavity does not guarantee a finite optimum or improving Newton steps. Complete or quasi-complete separation may send parameters to infinity, so absence of complete separation alone is insufficient. Consider appropriate regularization, rank and stability checks, and damping/line search. The three steepening curves are an added concept example, not another training experiment.\n\nSource context:\n**Example**: On the OR data one step takes $\\mathbf{w}=0$ to $(0.2,0.2,0.3)$ and the loss from $1.5$ to $0.34$, finally converging to $(0.5,0.5,0.25)$ with loss $0.125$; on the one-dimensional data one Newton step takes $\\boldsymbol\\beta=(0,0)$ to $(-1.2,0.8)$ and the log-likelihood from $-2.7726$ to $-2.3526$.\n\n**Going deeper** (optional): The log-likelihood of logistic regression is concave in $\\boldsymbol\\beta$ (its negative is convex), so Newton's method has no local-optimum problem; but if the data are perfectly separable the likelihood has no finite maximum and $\\|\\boldsymbol\\beta\\|$ grows without bound, so in practice regularization is added.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 22,
+    "base_kind": "limits",
+    "page": 22,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "concept",
+    "title": "再深一層：把條件與主張接起來",
+    "title_en": "Go deeper: connect assumptions and claims",
+    "takeaway": "選讀內容也要分清來源敘述與適用條件。",
+    "takeaway_en": "Separate the optional claim from its assumptions.",
+    "source_anchors": [
+      "想深入"
+    ],
+    "bridge": "主線走完後，再看講義的選讀內容。",
+    "bridge_en": "After the main route, revisit the optional material.",
+    "visual": "原生流程連接條件、方法、結論，完整推理在導讀",
+    "math": [
+      "\\boldsymbol\\beta",
+      "\\|\\boldsymbol\\beta\\|"
+    ],
+    "notes": [
+      "邏輯回歸的對數似然對 $\\boldsymbol\\beta$ 是凹函數（負值是凸的），所以存在的最優解是全域最優，但普通牛頓步仍可能惡化目標；但若資料完全可分，似然沒有有限的最大值，$\\|\\boldsymbol\\beta\\|$ 會無限增大，實務上要加正則化。\n\n本稿釐清：一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "The log-likelihood of logistic regression is concave in $\\boldsymbol\\beta$ (its negative is convex), so Newton's method has no local-optimum problem; but if the data are perfectly separable the likelihood has no finite maximum and $\\|\\boldsymbol\\beta\\|$ grows without bound, so in practice regularization is added.\n\nClarification: The generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "answer_text": [
+      "邏輯回歸的對數似然對 $\\boldsymbol\\beta$ 是凹函數（負值是凸的），所以存在的最優解是全域最優，但普通牛頓步仍可能惡化目標；但若資料完全可分，似然沒有有限的最大值，$\\|\\boldsymbol\\beta\\|$ 會無限增大，實務上要加正則化。",
+      "The log-likelihood of logistic regression is concave in $\\boldsymbol\\beta$ (its negative is convex), so Newton's method has no local-optimum problem; but if the data are perfectly separable the likelihood has no finite maximum and $\\|\\boldsymbol\\beta\\|$ grows without bound, so in practice regularization is added."
+    ],
+    "page": 23,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "迷思1：這個說法成立嗎？",
+    "title_en": "Misconception 1: does the claim hold?",
+    "takeaway": "先寫下你的判斷與條件，再翻頁核對。",
+    "takeaway_en": "Write your judgment and conditions before checking.",
+    "source_anchors": [
+      "常見迷思#1"
+    ],
+    "bridge": "主線有了，試著辨認一個容易混淆的說法。",
+    "bridge_en": "Use the main ideas to examine a tempting claim.",
+    "visual": "中立問題與兩個待核對分支",
+    "math": [],
+    "notes": [
+      "「ADALINE 就是 Perceptron 換個名字」",
+      "ADALINE is the Perceptron under another name."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "「ADALINE 就是 Perceptron 換個名字」",
+      "ADALINE is the Perceptron under another name."
+    ],
+    "self_check": true,
+    "page": 24,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "explain",
+    "title": "迷思1解析：條件不能省略",
+    "title_en": "Misconception 1: keep the conditions",
+    "takeaway": "先把適用範圍說清楚，才判斷結論。",
+    "takeaway_en": "State the scope before accepting the conclusion.",
+    "source_anchors": [
+      "常見迷思#1"
+    ],
+    "bridge": "核對上一頁：先問是哪個模型、哪個條件。",
+    "bridge_en": "Check the previous page: which model and which assumptions?",
+    "visual": "條件到推理到正確結論，角色提醒例外",
+    "math": [],
+    "notes": [
+      "不是。差別在訓練時比較的對象：Perceptron 比階梯後的 0/1，ADALINE 比階梯前的連續和。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "No: they differ in what is compared during training. The Perceptron compares the 0/1 after the step; ADALINE compares the continuous sum before it.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "不是。差別在訓練時比較的對象：Perceptron 比階梯後的 0/1，ADALINE 比階梯前的連續和。",
+      "No: they differ in what is compared during training. The Perceptron compares the 0/1 after the step; ADALINE compares the continuous sum before it."
+    ],
+    "self_check": true,
+    "page": 25,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "迷思2：這個說法成立嗎？",
+    "title_en": "Misconception 2: does the claim hold?",
+    "takeaway": "先寫下你的判斷與條件，再翻頁核對。",
+    "takeaway_en": "Write your judgment and conditions before checking.",
+    "source_anchors": [
+      "常見迷思#2"
+    ],
+    "bridge": "主線有了，試著辨認一個容易混淆的說法。",
+    "bridge_en": "Use the main ideas to examine a tempting claim.",
+    "visual": "中立問題與兩個待核對分支",
+    "math": [],
+    "notes": [
+      "「邏輯回歸是回歸，所以輸出是連續數」",
+      "Logistic regression is regression, so its output is a continuous number."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "「邏輯回歸是回歸，所以輸出是連續數」",
+      "Logistic regression is regression, so its output is a continuous number."
+    ],
+    "self_check": true,
+    "page": 26,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "explain",
+    "title": "迷思2解析：條件不能省略",
+    "title_en": "Misconception 2: keep the conditions",
+    "takeaway": "先把適用範圍說清楚，才判斷結論。",
+    "takeaway_en": "State the scope before accepting the conclusion.",
+    "source_anchors": [
+      "常見迷思#2"
+    ],
+    "bridge": "核對上一頁：先問是哪個模型、哪個條件。",
+    "bridge_en": "Check the previous page: which model and which assumptions?",
+    "visual": "條件到推理到正確結論，角色提醒例外",
+    "math": [],
+    "notes": [
+      "邏輯回歸先輸出連續機率，再用門檻分類；名稱不表示它只輸出離散類別。",
+      "Logistic regression outputs continuous probabilities before thresholding into classes."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "邏輯回歸先輸出連續機率，再用門檻分類；名稱不表示它只輸出離散類別。",
+      "Logistic regression outputs continuous probabilities before thresholding into classes."
+    ],
+    "self_check": true,
+    "page": 27,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "迷思3：這個說法成立嗎？",
+    "title_en": "Misconception 3: does the claim hold?",
+    "takeaway": "先寫下你的判斷與條件，再翻頁核對。",
+    "takeaway_en": "Write your judgment and conditions before checking.",
+    "source_anchors": [
+      "常見迷思#3"
+    ],
+    "bridge": "主線有了，試著辨認一個容易混淆的說法。",
+    "bridge_en": "Use the main ideas to examine a tempting claim.",
+    "visual": "中立問題與兩個待核對分支",
+    "math": [],
+    "notes": [
+      "「牛頓法的更新式前面是減號」",
+      "The Newton update has a minus sign."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "「牛頓法的更新式前面是減號」",
+      "The Newton update has a minus sign."
+    ],
+    "self_check": true,
+    "page": 28,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "explain",
+    "title": "迷思3解析：條件不能省略",
+    "title_en": "Misconception 3: keep the conditions",
+    "takeaway": "先把適用範圍說清楚，才判斷結論。",
+    "takeaway_en": "State the scope before accepting the conclusion.",
+    "source_anchors": [
+      "常見迷思#3"
+    ],
+    "bridge": "核對上一頁：先問是哪個模型、哪個條件。",
+    "bridge_en": "Check the previous page: which model and which assumptions?",
+    "visual": "條件到推理到正確結論，角色提醒例外",
+    "math": [],
+    "notes": [
+      "一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "The generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "The generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "self_check": true,
+    "page": 29,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習1：先獨立完成，再翻頁",
+    "title_en": "Practice 1: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#1"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "用 OR 資料、$\\mathbf{w}=(0.2,0.2,0.3)$、$\\eta=0.1$，算 ADALINE 的第二步梯度與新的 $\\mathbf{w}$。（提示：先算四個 $\\hat y_i$ 與殘差。）",
+      "With the OR data, $\\mathbf{w}=(0.2,0.2,0.3)$ and $\\eta=0.1$, compute the second-step gradient and the new $\\mathbf{w}$ of ADALINE. (Hint: compute the four $\\hat y_i$ and the residuals first.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "用 OR 資料、$\\mathbf{w}=(0.2,0.2,0.3)$、$\\eta=0.1$，算 ADALINE 的第二步梯度與新的 $\\mathbf{w}$。（提示：先算四個 $\\hat y_i$ 與殘差。）",
+      "With the OR data, $\\mathbf{w}=(0.2,0.2,0.3)$ and $\\eta=0.1$, compute the second-step gradient and the new $\\mathbf{w}$ of ADALINE. (Hint: compute the four $\\hat y_i$ and the residuals first.)"
+    ],
+    "self_check": true,
+    "page": 30,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "第二批的梯度是負零點八、負零點八、負一",
+    "title_en": "The second batch gradient is (-0.8,-0.8,-1)",
+    "takeaway": "這裡採半平方誤差總和；平均時尺度要另對齊。",
+    "takeaway_en": "This uses the half squared-error sum; a mean has a different scale.",
+    "source_anchors": [
+      "小練習#1",
+      "解題示範"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "\\hat{\\mathbf y}=(0.3,0.5,0.5,0.7),\\quad\\mathbf r=(-0.3,0.5,0.5,0.3)",
+      "\\mathbf g=-(\\sum r_ix_{i1},\\sum r_ix_{i2},\\sum r_i)=(-0.8,-0.8,-1)",
+      "\\mathbf w^+=(0.2,0.2,0.3)-0.1\\mathbf g=(0.28,0.28,0.4)"
+    ],
+    "notes": [
+      "先重新前饋四筆OR輸入，不能沿用第一批的預測。殘差定義是目標減預測，因此損失梯度加一個負號。偏置輸入一使其梯度為負殘差總和。完整新損失為0.1832，講義0.183是取位。",
+      "Recompute predictions for all four OR samples. Residuals are target minus prediction, so the loss gradient has a minus sign. The bias uses constant input one. The new exact loss is 0.1832; 0.183 is rounded."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 31,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習2：先獨立完成，再翻頁",
+    "title_en": "Practice 2: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "邏輯回歸 $\\boldsymbol\\beta=(-1.2,0.8)$，求 $x=2$ 的 $p$。（提示：先算 $\\beta_0+\\beta_1x$ 再代 sigmoid。）",
+      "For logistic regression with $\\boldsymbol\\beta=(-1.2,0.8)$, find $p$ at $x=2$. (Hint: compute $\\beta_0+\\beta_1x$ first and then the sigmoid.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "邏輯回歸 $\\boldsymbol\\beta=(-1.2,0.8)$，求 $x=2$ 的 $p$。（提示：先算 $\\beta_0+\\beta_1x$ 再代 sigmoid。）",
+      "For logistic regression with $\\boldsymbol\\beta=(-1.2,0.8)$, find $p$ at $x=2$. (Hint: compute $\\beta_0+\\beta_1x$ first and then the sigmoid.)"
+    ],
+    "self_check": true,
+    "page": 32,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "先算分數零點四，再換成機率",
+    "title_en": "Compute score 0.4, then convert to probability",
+    "takeaway": "零點四是分數，不是輸出機率。",
+    "takeaway_en": "The score 0.4 is not the probability.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "s=-1.2+0.8\\cdot2=0.4",
+      "p=\\frac1{1+e^{-0.4}}\\approx0.598687660"
+    ],
+    "notes": [
+      "偏置放參數第一項，第二項乘x。代入得到0.4，再經sigmoid得到約0.599。若用0.5機率門檻，這筆會判為一；分類門檻是另一個選擇。",
+      "The first parameter is the bias and the second multiplies x. The score is 0.4 and sigmoid gives about 0.599. A probability threshold of 0.5 would predict one."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 33,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習3：先獨立完成，再翻頁",
+    "title_en": "Practice 3: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#3"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "為什麼 ADALINE 訓練完仍要用門檻 0.5 才能分類？（提示：它訓練時比的是連續和。）",
+      "Why must ADALINE still use the threshold 0.5 to classify after training? (Hint: during training it compared the continuous sum.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "為什麼 ADALINE 訓練完仍要用門檻 0.5 才能分類？（提示：它訓練時比的是連續和。）",
+      "Why must ADALINE still use the threshold 0.5 to classify after training? (Hint: during training it compared the continuous sum.)"
+    ],
+    "self_check": true,
+    "page": 34,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "連續輸出不是類別，分類還要做決策",
+    "title_en": "A continuous score still needs a classification decision",
+    "takeaway": "零點五對應本例零一標籤，不是所有編碼的固定門檻。",
+    "takeaway_en": "A threshold of 0.5 matches this zero–one coding, not every encoding.",
+    "source_anchors": [
+      "小練習#3"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "\\hat y=\\mathbf w^\\top\\mathbf x",
+      "\\hat c=\\mathbf1[\\hat y\\ge0.5]"
+    ],
+    "notes": [
+      "ADALINE訓練平方誤差，輸出不限制在零一之間，甚至可以超過一。分類時另外選門檻；本例0/1標籤取0.5，換編碼或成本可用不同決策。",
+      "ADALINE fits a squared-error score that can lie outside [0,1]. Classification adds a threshold. Here 0.5 matches zero–one labels, but other codings or costs can justify other decisions."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 35,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核1：選出最符合條件的一項",
+    "title_en": "Check 1: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "1. ADALINE 訓練時拿什麼當預測誤差的基準？",
+      "What is the baseline of the prediction error in ADALINE training?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "1. ADALINE 訓練時拿什麼當預測誤差的基準？",
+      "What is the baseline of the prediction error in ADALINE training?"
+    ],
+    "options": [
+      [
+        "套用硬閾值後的二元輸出",
+        "The hard-thresholded binary output"
+      ],
+      [
+        "尚未套活化的加權和",
+        "The continuous weighted sum before thresholding"
+      ],
+      [
+        "經過 sigmoid 後的機率",
+        "The sigmoid probability"
+      ],
+      [
+        "對權重取絕對值",
+        "Absolute weight magnitudes"
+      ]
+    ],
+    "quiz_index": 1,
+    "self_check": true,
+    "page": 36,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核1解析：對照條件逐項判斷",
+    "title_en": "Check 1: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "訓練比較連續加權和與標籤，門檻留到分類；不是sigmoid機率。",
+      "Training compares a continuous weighted sum with the target; thresholding is for classification."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "訓練比較連續加權和與標籤，門檻留到分類；不是sigmoid機率。",
+      "Training compares a continuous weighted sum with the target; thresholding is for classification."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 37,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核2：選出最符合條件的一項",
+    "title_en": "Check 2: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "2. ADALINE 最小化哪一個損失？",
+      "Which loss does ADALINE minimize?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "2. ADALINE 最小化哪一個損失？",
+      "Which loss does ADALINE minimize?"
+    ],
+    "options": [
+      [
+        "交叉熵",
+        "Cross-entropy"
+      ],
+      [
+        "LMS 二次損失",
+        "LMS quadratic loss"
+      ],
+      [
+        "Hinge 損失",
+        "Hinge loss"
+      ],
+      [
+        "KL 散度",
+        "KL divergence"
+      ]
+    ],
+    "quiz_index": 2,
+    "self_check": true,
+    "page": 38,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核2解析：對照條件逐項判斷",
+    "title_en": "Check 2: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "使用本課半平方誤差總和，LMS亦常指逐筆最小均方更新，需對齊尺度。",
+      "The course uses a half squared-error sum; LMS also denotes online mean-square methods, so scaling conventions matter."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "使用本課半平方誤差總和，LMS亦常指逐筆最小均方更新，需對齊尺度。",
+      "The course uses a half squared-error sum; LMS also denotes online mean-square methods, so scaling conventions matter."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 39,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核3：選出最符合條件的一項",
+    "title_en": "Check 3: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "3. 權重的梯度下降更新式？",
+      "The gradient-descent update of a weight?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "3. 權重的梯度下降更新式？",
+      "The gradient-descent update of a weight?"
+    ],
+    "options": [
+      [
+        "$w_j:=w_j+\\eta\\,\\partial e/\\partial w_j$",
+        "$w_j+\\eta\\,\\partial E/\\partial w_j$"
+      ],
+      [
+        "$w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$",
+        "$w_j-\\eta\\,\\partial E/\\partial w_j$"
+      ],
+      [
+        "$w_j:=\\eta\\,\\partial e/\\partial w_j$",
+        "$\\eta\\,\\partial E/\\partial w_j$"
+      ],
+      [
+        "$w_j:=w_j/\\eta$",
+        "$w_j/\\eta$"
+      ]
+    ],
+    "quiz_index": 3,
+    "self_check": true,
+    "page": 40,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核3解析：對照條件逐項判斷",
+    "title_en": "Check 3: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "最小化用減梯度。最大化對數似然可用加梯度，但不是把損失的符號隨意改。",
+      "Minimization subtracts its gradient; likelihood maximization adds its own gradient."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "最小化用減梯度。最大化對數似然可用加梯度，但不是把損失的符號隨意改。",
+      "Minimization subtracts its gradient; likelihood maximization adds its own gradient."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 41,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核4：選出最符合條件的一項",
+    "title_en": "Check 4: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "4. MADALINE 訓練規則的演進，何者正確？",
+      "Which statement on the MADALINE rules is correct?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "4. MADALINE 訓練規則的演進，何者正確？",
+      "Which statement on the MADALINE rules is correct?"
+    ],
+    "options": [
+      [
+        "MRI（1962）只能更新輸入到隱藏層，MRII（1988）才支援兩段連接",
+        "MRI (1962): input–hidden; MRII (1988): both links"
+      ],
+      [
+        "MRI 已能全連接更新",
+        "MRI already updates all links"
+      ],
+      [
+        "MRIII 是最早的規則",
+        "MRIII is the earliest rule"
+      ],
+      [
+        "MRII 不需要隱藏層",
+        "MRII needs no hidden layer"
+      ]
+    ],
+    "quiz_index": 4,
+    "self_check": true,
+    "page": 42,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核4解析：對照條件逐項判斷",
+    "title_en": "Check 4: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "沿用講義MRI1962到MRII1988的簡化範圍註記，不作完整架構或歷史考證。",
+      "Retain the handout’s simplified MRI1962/MRII1988 scope without claiming a full historical survey."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "沿用講義MRI1962到MRII1988的簡化範圍註記，不作完整架構或歷史考證。",
+      "Retain the handout’s simplified MRI1962/MRII1988 scope without claiming a full historical survey."
+    ],
+    "answer": 0,
+    "self_check": true,
+    "page": 43,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核5：選出最符合條件的一項",
+    "title_en": "Check 5: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#5"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "5. 與 LDA 相比，邏輯回歸建模的是？",
+      "Compared with LDA, what does logistic regression model?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "5. 與 LDA 相比，邏輯回歸建模的是？",
+      "Compared with LDA, what does logistic regression model?"
+    ],
+    "options": [
+      [
+        "似然 $P(\\mathbf{x}\\mid y)$",
+        "$P(\\mathbf x\\mid y)$"
+      ],
+      [
+        "直接建模後驗 $P(y\\mid\\mathbf{x})$",
+        "$P(y\\mid\\mathbf x)$"
+      ],
+      [
+        "先驗 $P(y)$",
+        "$P(y)$"
+      ],
+      [
+        "生成模型 $P(\\mathbf{x},y)$",
+        "$P(\\mathbf x,y)$"
+      ]
+    ],
+    "quiz_index": 5,
+    "self_check": true,
+    "page": 44,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核5解析：對照條件逐項判斷",
+    "title_en": "Check 5: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#5"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "直接建模P(y|x)；LDA通常先建模類別條件輸入分布與先驗再求後驗。",
+      "Logistic directly models P(y|x); LDA generally models class-conditional inputs and priors first."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "直接建模P(y|x)；LDA通常先建模類別條件輸入分布與先驗再求後驗。",
+      "Logistic directly models P(y|x); LDA generally models class-conditional inputs and priors first."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 45,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核6：選出最符合條件的一項",
+    "title_en": "Check 6: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#6"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "講義引用的 logistic 早期用途是？",
+      "Which early logistic application is cited in the handout?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "講義引用的 logistic 早期用途是？",
+      "Which early logistic application is cited in the handout?"
+    ],
+    "options": [
+      [
+        "建模人口成長（Verhulst，1845）",
+        "Population growth (Verhulst, 1845)"
+      ],
+      [
+        "影像分類",
+        "Image classification"
+      ],
+      [
+        "矩陣分解",
+        "Matrix factorization"
+      ],
+      [
+        "圖論最短徑",
+        "Shortest paths"
+      ]
+    ],
+    "quiz_index": 6,
+    "self_check": true,
+    "page": 46,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核6解析：對照條件逐項判斷",
+    "title_en": "Check 6: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#6"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "講義引用Verhulst1845人口成長作早期用途，不宣稱它是所有logistic形式的最早出現。",
+      "The handout cites Verhulst1845 population growth as an early use, not the first appearance of every logistic form."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "講義引用Verhulst1845人口成長作早期用途，不宣稱它是所有logistic形式的最早出現。",
+      "The handout cites Verhulst1845 population growth as an early use, not the first appearance of every logistic form."
+    ],
+    "answer": 0,
+    "self_check": true,
+    "page": 47,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核7：選出最符合條件的一項",
+    "title_en": "Check 7: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#7"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "7. 矩陣形式的牛頓更新式？",
+      "The matrix form of the Newton update?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "7. 矩陣形式的牛頓更新式？",
+      "The matrix form of the Newton update?"
+    ],
+    "options": [
+      [
+        "$\\boldsymbol\\beta+(\\mathbf{X}\\mathbf{W}\\mathbf{X}^\\top)^{-1}\\mathbf{X}(\\mathbf{y}-\\mathbf{p})$",
+        "$\\boldsymbol\\beta+(\\mathbf X\\mathbf W\\mathbf X^\\top)^{-1}\\mathbf X(\\mathbf y-\\mathbf p)$"
+      ],
+      [
+        "$\\boldsymbol\\beta+\\mathbf{X}\\mathbf{W}\\mathbf{X}^\\top$",
+        "$\\boldsymbol\\beta+\\mathbf X\\mathbf W\\mathbf X^\\top$"
+      ],
+      [
+        "$\\boldsymbol\\beta-\\mathbf{W}^{-1}\\mathbf{y}$",
+        "$\\boldsymbol\\beta-\\mathbf W^{-1}\\mathbf y$"
+      ],
+      [
+        "$\\boldsymbol\\beta+(\\mathbf{y}-\\mathbf{p})$",
+        "$\\boldsymbol\\beta+(\\mathbf y-\\mathbf p)$"
+      ]
+    ],
+    "quiz_index": 7,
+    "self_check": true,
+    "page": 48,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核7解析：對照條件逐項判斷",
+    "title_en": "Check 7: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#7"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "一般牛頓式beta-H逆g；本例H=-XWX轉置，代入後才成加A逆g。",
+      "The generic Newton step is beta-H inverse g; substituting the negative likelihood Hessian gives plus A inverse g."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "一般牛頓式beta-H逆g；本例H=-XWX轉置，代入後才成加A逆g。",
+      "The generic Newton step is beta-H inverse g; substituting the negative likelihood Hessian gives plus A inverse g."
+    ],
+    "answer": 0,
+    "self_check": true,
+    "page": 49,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核8：選出最符合條件的一項",
+    "title_en": "Check 8: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#8"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "8. 測試階段如何決定類別？",
+      "How is the class decided at test time?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "8. 測試階段如何決定類別？",
+      "How is the class decided at test time?"
+    ],
+    "options": [
+      [
+        "看梯度是否為 0",
+        "Check whether the gradient is zero"
+      ],
+      [
+        "機率是否 $\\ge0.5$",
+        "Compare probability with $0.5$"
+      ],
+      [
+        "直接取權重總和",
+        "Sum the weights"
+      ],
+      [
+        "隨機猜測",
+        "Guess randomly"
+      ]
+    ],
+    "quiz_index": 8,
+    "self_check": true,
+    "page": 50,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核8解析：對照條件逐項判斷",
+    "title_en": "Check 8: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#8"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "本例以p>=0.5判一，門檻可依成本調整，不看梯度零與否來分類。",
+      "This example predicts one at p>=0.5; costs may justify other thresholds. A zero gradient is not a class rule."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "本例以p>=0.5判一，門檻可依成本調整，不看梯度零與否來分類。",
+      "This example predicts one at p>=0.5; costs may justify other thresholds. A zero gradient is not a class rule."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 51,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "review",
+    "title": "重點回顧：把輸入、運算與限制連起來",
+    "title_en": "Review: connect inputs, operations and limitations",
+    "takeaway": "用自己的話重述方法，再檢查例外。",
+    "takeaway_en": "Restate the method, then check exceptions.",
+    "source_anchors": [
+      "重點:一句話重點",
+      "重點:白話說明",
+      "重點:正式定義",
+      "重點:例子",
+      "重點:圖",
+      "本單元重點整理"
+    ],
+    "bridge": "練習與檢核完成後，回到整個單元。",
+    "bridge_en": "After exercises and checks, reconnect the whole unit.",
+    "visual": "條件、核心方法、算例、限制的知識流程",
+    "math": [],
+    "notes": [
+      "ADALINE 用連續的平方誤差，邏輯回歸用 sigmoid 加最大似然，兩者的梯度都是「（標籤 − 預測）× 輸入」，所以能用梯度或牛頓法一步一步學，而 Perceptron 的離散錯誤數做不到。\n\nPerceptron 像老師只說「對」或「錯」；ADALINE 像老師說「差 0.3」，你知道往哪調、調多少。邏輯回歸再進一步，直接說「你給正確答案的機率只有 0.39，太低」。\n\nLMS $e=\\tfrac12\\sum(y_i-\\hat y_i)^2$，更新 $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$；邏輯回歸 $p=\\sigma(\\boldsymbol\\beta^\\top\\mathbf{x})$，$\\ell=\\sum(y_i\\boldsymbol\\beta^\\top\\mathbf{x}_i-\\log(1+e^{\\boldsymbol\\beta^\\top\\mathbf{x}_i}))$，牛頓 $\\boldsymbol\\beta\\leftarrow\\boldsymbol\\beta+(\\mathbf{X}\\mathbf{W}\\mathbf{X}^\\top)^{-1}\\mathbf{X}(\\mathbf{y}-\\mathbf{p})$。\n\nOR 資料從 $\\mathbf{w}=0$ 一步到 $(0.2,0.2,0.3)$，損失 $1.5\\to0.34$，最後收斂到 $(0.5,0.5,0.25)$、損失 $0.125$；一維資料牛頓一步 $\\boldsymbol\\beta=(0,0)\\to(-1.2,0.8)$，對數似然 $-2.7726\\to-2.3526$。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "ADALINE uses a continuous squared error and logistic regression uses a sigmoid with maximum likelihood; both have a gradient of the form \"(label − prediction) × input\", so they can be learned step by step with gradients or Newton's method, which the Perceptron's discrete error count cannot.\n\nThe Perceptron is a teacher who only says \"right\" or \"wrong\"; ADALINE is a teacher who says \"off by 0.3\", so you know which way and how much to adjust. Logistic regression goes further and says \"you gave the right answer only 0.39 probability, too low\".\n\nLMS $e=\\tfrac12\\sum(y_i-\\hat y_i)^2$ with the update $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$; logistic regression $p=\\sigma(\\boldsymbol\\beta^\\top\\mathbf{x})$, $\\ell=\\sum(y_i\\boldsymbol\\beta^\\top\\mathbf{x}_i-\\log(1+e^{\\boldsymbol\\beta^\\top\\mathbf{x}_i}))$, Newton $\\boldsymbol\\beta\\leftarrow\\boldsymbol\\beta+(\\mathbf{X}\\mathbf{W}\\mathbf{X}^\\top)^{-1}\\mathbf{X}(\\mathbf{y}-\\mathbf{p})$.\n\nOn the OR data one step takes $\\mathbf{w}=0$ to $(0.2,0.2,0.3)$ and the loss from $1.5$ to $0.34$, finally converging to $(0.5,0.5,0.25)$ with loss $0.125$; on the one-dimensional data one Newton step takes $\\boldsymbol\\beta=(0,0)$ to $(-1.2,0.8)$ and the log-likelihood from $-2.7726$ to $-2.3526$.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "page": 52,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "scope",
+    "title": "來源與限制：別把特例當成保證",
+    "title_en": "Source and scope: do not turn an example into a guarantee",
+    "takeaway": "原始數字可重現，適用條件也必須保留。",
+    "takeaway_en": "Reproduce the values and preserve their scope.",
+    "source_anchors": [
+      "來源更正與取捨"
+    ],
+    "bridge": "最後核對：哪些是講義例子，哪些是一般結論？",
+    "bridge_en": "Finally: which statements are examples, and which are general claims?",
+    "visual": "來源到重算到條件三個關卡，提醒科學圖與角色比喻不同",
+    "math": [],
+    "notes": [
+      "一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "The generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "page": 53,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "下一步：把局部基函數與無標籤學習接進來",
+    "title_en": "Next: local basis functions and learning without labels",
+    "takeaway": "KP09：RBF 與 SOM 的另一種建模方式。",
+    "takeaway_en": "KP09: alternative models with RBF and SOM.",
+    "source_anchors": [
+      "重點:留給下一個知識點的問題"
+    ],
+    "bridge": "上一頁：標準牛頓步不保證每次改善；需留意可分與矩陣條件。",
+    "bridge_en": "Previously: Check separation and rank; Newton steps may need damping.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "?",
+      "?"
+    ],
+    "notes": [
+      "下一KP以RBF和SOM比較其他建模方式。固定局部基函數、只學輸出層是本課例子的特定設計；一般RBF網路也可以調中心與寬度，不能說所有RBF第一層永遠固定。SOM則以無標籤方式組織輸入。\n\n講義補讀：\n| 題 / Question | A | B | C | D | 提示 / Hint |\n|---|---|---|---|---|---|\n| 1. ADALINE 訓練時拿什麼當預測誤差的基準？ / What is the baseline of the prediction error in ADALINE training? | 套用硬閾值後的二元輸出 | 尚未套活化的加權和 | 經過 sigmoid 後的機率 | 對權重取絕對值 | 看第 1 節。 / Section 1. |\n| 2. ADALINE 最小化哪一個損失？ / Which loss does ADALINE minimize? | 交叉熵 | LMS 二次損失 | Hinge 損失 | KL 散度 | 看公式。 / See the formula. |\n| 3. 權重的梯度下降更新式？ / The gradient-descent update of a weight? | $w_j:=w_j+\\eta\\,\\partial e/\\partial w_j$ | $w_j:=w_j-\\eta\\,\\partial e/\\partial w_j$ | $w_j:=\\eta\\,\\partial e/\\partial w_j$ | $w_j:=w_j/\\eta$ | 要讓損失下降。 / The loss should go down. |\n| 4. MADALINE 訓練規則的演進，何者正確？ / Which statement on the MADALINE rules is correct? | MRI（1962）只能更新輸入到隱藏層，MRII（1988）才支援兩段連接 | MRI 已能全連接更新 | MRIII 是最早的規則 | MRII 不需要隱藏層 | 看年份。 / Look at the years. |\n| 5. 與 LDA 相比，邏輯回歸建模的是？ / Compared with LDA, what does logistic regression model? | 似然 $P(\\mathbf{x}\\mid y)$ | 直接建模後驗 $P(y\\mid\\mathbf{x})$ | 先驗 $P(y)$ | 生成模型 $P(\\mathbf{x},y)$ | 看第 2 節。 / Section 2. |\n| 6. logistic 函數最初的用途？ / What was the logistic function first used for? | 建模人口成長（Verhulst，1845） | 影像分類 | 矩陣分解 | 圖論最短徑 | 看歷史小記。 / The history note. |\n| 7. 矩陣形式的牛頓更新式？ / The matrix form of the Newton update? | $\\boldsymbol\\beta+(\\mathbf{X}\\mathbf{W}\\mathbf{X}^\\top)^{-1}\\mathbf{X}(\\mathbf{y}-\\mathbf{p})$ | $\\boldsymbol\\beta+\\mathbf{X}\\mathbf{W}\\mathbf{X}^\\top$ | $\\boldsymbol\\beta-\\mathbf{W}^{-1}\\mathbf{y}$ | $\\boldsymbol\\beta+(\\mathbf{y}-\\mathbf{p})$ | 注意正負號（見下方更正）。 / Mind the sign (see the correction below). |\n| 8. 測試階段如何決定類別？ / How is the class decided at test time? | 看梯度是否為 0 | 機率是否 $\\ge0.5$ | 直接取權重總和 | 隨機猜測 | 看第 2 節。 / Section 2. |\n\n**留給下一個知識點的問題**：到目前為止，單層模型的第一層都是學出來的權重。如果第一層固定成一組「局部」的基函數，只學第二層，會怎樣？這就是 RBF 網路；另一個完全不用標籤的做法是 SOM。\n\n一般牛頓式beta-H逆g用於尋找極大或極小駐點都相同；對數似然H為負，令A=-H才得到加A逆g。凹性不保證有限MLE或每步改善；完全或準完全分離都要留意。Logistic輸出是連續機率；最大似然不等於最少分類錯誤。",
+      "The next KP considers RBF and SOM. Fixed local basis functions with learned output weights are a specific course example; general RBF networks may also learn centers and widths. SOM organizes inputs without labels.\n\nSource context:\n**Going deeper** (optional): The log-likelihood of logistic regression is concave in $\\boldsymbol\\beta$ (its negative is convex), so Newton's method has no local-optimum problem; but if the data are perfectly separable the likelihood has no finite maximum and $\\|\\boldsymbol\\beta\\|$ grows without bound, so in practice regularization is added.\n\n**Question for the next knowledge point**: So far, the first layer of every single-layer model has used learned weights. What if the first layer is fixed to a set of \"local\" basis functions and only the second layer is learned? That is the RBF network; a different approach that uses no labels at all is the SOM.\n\nThe generic Newton stationary-point step is beta-H inverse g for minima and maxima. With negative likelihood Hessian, A=-H gives plus A inverse g. Concavity alone ensures neither a finite MLE nor improving steps; consider complete/quasi separation. Logistic outputs continuous probabilities; likelihood is not a minimum-error count."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "bridge",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 23,
+    "base_kind": "next",
+    "page": 54,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  }
+]

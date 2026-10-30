@@ -1,0 +1,126 @@
+{
+  "KP02_source": "rerun original numeric script and assertions in isolated new source copy",
+  "KP03_source": "rerun original numeric script and assertions in isolated new source copy",
+  "KP04_source": "rerun original numeric script and assertions in isolated new source copy",
+  "KP05_source": "rerun original numeric script and assertions in isolated new source copy",
+  "KP06_source": "rerun original numeric script and assertions in isolated new source copy",
+  "KP07_source": "rerun original numeric script and assertions in isolated new source copy",
+  "KP08_source": "rerun original numeric script and assertions in isolated new source copy",
+  "KP09_source": "rerun original numeric script and assertions in isolated new source copy",
+  "added_practice": {
+    "kp01": {
+      "sum": 2,
+      "threshold_interval": "1<theta<=2",
+      "not_weights": [
+        -1,
+        0.5
+      ]
+    },
+    "kp02": {
+      "updated_weights": [
+        0,
+        1,
+        -2
+      ],
+      "first_reverse_update_visit": 4
+    },
+    "kp03": {
+      "new_weights": [
+        2,
+        1,
+        -0.5
+      ],
+      "new_score": 1.5,
+      "distance": 1
+    },
+    "kp04": {
+      "AND_weights": [
+        1,
+        1,
+        -1.5
+      ],
+      "XNOR": "inequality contradiction"
+    },
+    "kp05": {
+      "merged_matrix": [
+        3,
+        2
+      ],
+      "xor10": {
+        "s1": 0,
+        "h1": 1,
+        "s2": 0.5,
+        "h2": 1,
+        "s3": 0,
+        "o": 1
+      }
+    },
+    "kp06": {
+      "sigmoid": 0.7310585786300049,
+      "derivative": 0.19661193324148185,
+      "uniform": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "negative_leaky_slope": 0.01
+    },
+    "kp07": {
+      "squared_sum": 41.25,
+      "absolute_sum": 9.5,
+      "huber_terms": [
+        1.5,
+        0.5,
+        0.125,
+        5.5
+      ],
+      "huber_sum": 7.625,
+      "means": [
+        10.3125,
+        2.375,
+        1.90625
+      ],
+      "uniform_ce": 1.0986122886681098,
+      "hinge": 1.8
+    },
+    "kp08": {
+      "prediction": [
+        0.3,
+        0.5,
+        0.5,
+        0.7
+      ],
+      "residual": [
+        -0.3,
+        0.5,
+        0.5,
+        0.30000000000000004
+      ],
+      "gradient": [
+        -0.8,
+        -0.8,
+        -1.0
+      ],
+      "new_weights": [
+        0.28,
+        0.28,
+        0.4
+      ],
+      "new_loss": 0.18319999999999995,
+      "probability": 0.598687660112452
+    },
+    "kp09": {
+      "midpoint_phi": 0.6065306597126334,
+      "midpoint_sum": 1.2130613194252668,
+      "winner_distance": [
+        1,
+        0.4472135954999579
+      ],
+      "winner": 2,
+      "new_weights": [
+        0.9,
+        0.8
+      ]
+    }
+  }
+}

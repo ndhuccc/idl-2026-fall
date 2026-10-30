@@ -1,0 +1,1809 @@
+[
+  {
+    "kind": "base",
+    "title": "先看輸出範圍，再看梯度能否通過。",
+    "title_en": "Check the output range, then the gradient path.",
+    "takeaway": "先看輸出範圍，再看梯度能否通過。",
+    "takeaway_en": "Check the output range, then the gradient path.",
+    "source_anchors": [
+      "學習目標",
+      "符號表"
+    ],
+    "bridge": "承接前置知識：先看本單元要回答什麼。",
+    "bridge_en": "From prerequisites: identify this unit’s central question.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "a",
+      "f",
+      "z",
+      "-3",
+      "0",
+      "3",
+      "-1.3",
+      "0",
+      "3.2",
+      "a",
+      "f(a)",
+      "-3",
+      "0",
+      "3",
+      "-1.3",
+      "0",
+      "3.2",
+      "a",
+      "f(a)",
+      "-3",
+      "0",
+      "3",
+      "-1.3",
+      "0",
+      "3.2",
+      "a",
+      "f(a)"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。先看輸出範圍，再看梯度能否通過。\n\n講義補讀：\n讀完之後，你能把 13 種活化函數分成基礎、S 形、ReLU 家族與跨層四族；能說出 sigmoid、tanh、ReLU 的值域與導數；能手算 softmax；能說明 dying ReLU 以及 Leaky ReLU、PReLU、ELU 如何修補；能為隱藏層與輸出層各選一個。\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。\n\n符號速查：\n$a$: 活化前的加權和（KP05 的 $a_i$）\n$\\sigma(a)$: 活化函數\n$\\sigma'(a)$: 活化函數對 $a$ 的導數\n$\\alpha$: PReLU 與 ELU 的負側參數\n$\\mathbf{a}=(a_1,\\dots,a_m)$: softmax 的整層輸入",
+      "Explain the newly revealed evidence and mascot prompt: Check the output range, then the gradient path.\n\nSource context:\nAfter reading, you can sort the 13 activation functions into the basic, S-shaped, ReLU and cross-layer families; state the range and derivative of sigmoid, tanh and ReLU; compute a softmax by hand; explain dying ReLU and how Leaky ReLU, PReLU and ELU repair it; and pick one for the hidden layers and one for the output layer.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope.\n\nSymbols:\n$a$: the pre-activation sum ($a_i$ of KP05)\n$\\sigma(a)$: the activation function\n$\\sigma'(a)$: derivative of the activation with respect to $a$\n$\\alpha$: the negative-side parameter of PReLU and ELU\n$\\mathbf{a}=(a_1,\\dots,a_m)$: the whole-layer input of softmax"
+    ],
+    "new_terms": [
+      {
+        "symbol": "$a$",
+        "meaning_zh": "活化前的加權和（KP05 的 $a_i$）",
+        "meaning_en": "the pre-activation sum ($a_i$ of KP05)"
+      },
+      {
+        "symbol": "$\\sigma(a)$",
+        "meaning_zh": "活化函數",
+        "meaning_en": "the activation function"
+      },
+      {
+        "symbol": "$\\sigma'(a)$",
+        "meaning_zh": "活化函數對 $a$ 的導數",
+        "meaning_en": "derivative of the activation with respect to $a$"
+      },
+      {
+        "symbol": "$\\alpha$",
+        "meaning_zh": "PReLU 與 ELU 的負側參數",
+        "meaning_en": "the negative-side parameter of PReLU and ELU"
+      },
+      {
+        "symbol": "$\\mathbf{a}=(a_1,\\dots,a_m)$",
+        "meaning_zh": "softmax 的整層輸入",
+        "meaning_en": "the whole-layer input of softmax"
+      }
+    ],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "這次要解決\n哪一個問題？",
+      "bubble_en": "What problem\nare we solving?"
+    },
+    "base_page": 1,
+    "base_kind": "cover",
+    "page": 1,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "13 種函數，先找到各自的家族",
+    "title_en": "Locate all 13 functions in four families",
+    "takeaway": "階梯與 Sign 分開計數；Gaussian 並不是 S 形。",
+    "takeaway_en": "Step and Sign count separately; Gaussian is bell-shaped.",
+    "source_anchors": [
+      "1. 四族一張表"
+    ],
+    "bridge": "上一頁：先看輸出範圍，再看梯度能否通過。",
+    "bridge_en": "Previously: Check the output range, then the gradient path.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "?",
+      "?"
+    ],
+    "notes": [
+      "講義表格十二列中，Binary step與Sign共用一列但算兩種，因此共十三種。Gaussian沿用來源分組位置，但它是鐘形而非S形。「跨層」並非跨不同網路深度計算；Softmax用整個候選向量，Maxout用多個候選分支。\n\n講義補讀：\n選哪一種活化，決定兩件事：輸出的範圍（能不能當機率）與導數的大小（學習時梯度能不能傳回去）。\n\n| 族 | 名稱 | 公式 $\\sigma(a)$ | 值域 | 導數 |\n|---|---|---|---|---|\n| 基礎 | Linear | $a$ | $(-\\infty,\\infty)$ | $1$ |\n| 基礎 | Binary step / Sign | $0$ 或 $1$／$-1$ 或 $+1$ | $\\{0,1\\}$／$\\{-1,+1\\}$ | $0$，在 $0$ 不可導 |\n| 基礎 | Softmax（整層） | $e^{a_i}/\\sum_je^{a_j}$ | $(0,1)$，和為 1 | $\\sigma_i(\\delta_{ij}-\\sigma_j)$ |\n| S 形 | Sigmoid | $1/(1+e^{-a})$ | $(0,1)$ | $\\sigma(1-\\sigma)$ |\n| S 形 | tanh | $(e^a-e^{-a})/(e^a+e^{-a})$ | $(-1,1)$ | $1-\\sigma^2$ |\n| S 形 | Gaussian | $e^{-a^2}$ | $(0,1]$ | $-2a\\,e^{-a^2}$ |\n| ReLU 族 | Softplus | $\\ln(1+e^a)$ | $(0,\\infty)$ | $1/(1+e^{-a})$ |\n| ReLU 族 | ReLU | $\\max(0,a)$ | $[0,\\infty)$ | $a>0$ 為 1，$a<0$ 為 0 |\n| ReLU 族 | Leaky ReLU | $a$ 若 $a\\ge0$，$0.01a$ 若 $a<0$ | $(-\\infty,\\infty)$ | $1$ 或 $0.01$ |\n| ReLU 族 | PReLU | 同上，斜率 $\\alpha$ 可學習 | $(-\\infty,\\infty)$ | $1$ 或 $\\alpha$ |\n| ReLU 族 | ELU | $a$ 若 $a\\ge0$，$\\alpha(e^a-1)$ 若 $a<0$ | $(-\\alpha,\\infty)$ | $1$ 或 $\\alpha e^a$ |\n| 跨層 | Maxout | 多個線性單元的最大值 | $(-\\infty,\\infty)$ | 取到最大者為 1，其餘為 0 |\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "The twelve table rows count thirteen named functions because Binary step and Sign share one row. Gaussian retains its source grouping but is bell-shaped. “Cross-layer” does not mean crossing network depths: Softmax uses a vector and Maxout multiple candidates.\n\nSource context:\nThe choice of activation decides two things: the range of the output (whether it can serve as a probability) and the size of the derivative (whether gradients can flow back during learning).\n\nSoftmax and Maxout look at a whole layer (or several units) together, while the others act point by point. Linear in a hidden layer is the collapse of KP05, so it suits only the output layer of a regression.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "square",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 2,
+    "base_kind": "map",
+    "page": 2,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "Linear 原樣通過輸入",
+    "title_en": "Linear passes the input unchanged",
+    "takeaway": "全線性網路才會合併為一次映射。",
+    "takeaway_en": "An entirely linear network composes into one map.",
+    "source_anchors": [
+      "1. 四族一張表"
+    ],
+    "bridge": "上一頁：階梯與 Sign 分開計數；Gaussian 並不是 S 形。",
+    "bridge_en": "Previously: Step and Sign count separately; Gaussian is bell-shaped.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "3",
+      "-3.3",
+      "0",
+      "3.3",
+      "a",
+      "f(a)",
+      "f(a)=a",
+      "f(a)\\in\\mathbb R",
+      "f^{\\prime}(a)=1"
+    ],
+    "notes": [
+      "單一線性隱藏層可以存在於其他地方仍有非線性的模型；只有全線性活化的網路才整體坍縮為一次仿射映射。回歸的線性輸出適用於無限制實數目標，不是所有回歸任務都必須使用。\n\n講義補讀：\n| 族 | 名稱 | 公式 $\\sigma(a)$ | 值域 | 導數 |\n|---|---|---|---|---|\n| 基礎 | Linear | $a$ | $(-\\infty,\\infty)$ | $1$ |\n| 基礎 | Binary step / Sign | $0$ 或 $1$／$-1$ 或 $+1$ | $\\{0,1\\}$／$\\{-1,+1\\}$ | $0$，在 $0$ 不可導 |\n| 基礎 | Softmax（整層） | $e^{a_i}/\\sum_je^{a_j}$ | $(0,1)$，和為 1 | $\\sigma_i(\\delta_{ij}-\\sigma_j)$ |\n| S 形 | Sigmoid | $1/(1+e^{-a})$ | $(0,1)$ | $\\sigma(1-\\sigma)$ |\n| S 形 | tanh | $(e^a-e^{-a})/(e^a+e^{-a})$ | $(-1,1)$ | $1-\\sigma^2$ |\n| S 形 | Gaussian | $e^{-a^2}$ | $(0,1]$ | $-2a\\,e^{-a^2}$ |\n| ReLU 族 | Softplus | $\\ln(1+e^a)$ | $(0,\\infty)$ | $1/(1+e^{-a})$ |\n| ReLU 族 | ReLU | $\\max(0,a)$ | $[0,\\infty)$ | $a>0$ 為 1，$a<0$ 為 0 |\n| ReLU 族 | Leaky ReLU | $a$ 若 $a\\ge0$，$0.01a$ 若 $a<0$ | $(-\\infty,\\infty)$ | $1$ 或 $0.01$ |\n| ReLU 族 | PReLU | 同上，斜率 $\\alpha$ 可學習 | $(-\\infty,\\infty)$ | $1$ 或 $\\alpha$ |\n| ReLU 族 | ELU | $a$ 若 $a\\ge0$，$\\alpha(e^a-1)$ 若 $a<0$ | $(-\\alpha,\\infty)$ | $1$ 或 $\\alpha e^a$ |\n| 跨層 | Maxout | 多個線性單元的最大值 | $(-\\infty,\\infty)$ | 取到最大者為 1，其餘為 0 |\n\nSoftmax 與 Maxout 要看整層（或多個單元）一起算，其餘逐點作用。Linear 放在隱藏層就是 KP05 的坍縮，只適合回歸的輸出層。\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "A linear hidden layer may coexist with nonlinear layers elsewhere. Only entirely linear activations collapse the network into one affine map. Linear regression outputs suit unrestricted real targets, not every possible regression task.\n\nSource context:\nThe choice of activation decides two things: the range of the output (whether it can serve as a probability) and the size of the derivative (whether gradients can flow back during learning).\n\nSoftmax and Maxout look at a whole layer (or several units) together, while the others act point by point. Linear in a hidden layer is the collapse of KP05, so it suits only the output layer of a regression.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 3,
+    "base_kind": "linear",
+    "page": 3,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "階梯與 Sign：跳得動，梯度卻傳不動",
+    "title_en": "Step and Sign jump, but have flat derivatives",
+    "takeaway": "非零處導數為零；零點不可微。",
+    "takeaway_en": "Derivative zero off zero; undefined at zero.",
+    "source_anchors": [
+      "1. 四族一張表",
+      "4. 怎麼選"
+    ],
+    "bridge": "上一頁：全線性網路才會合併為一次映射。",
+    "bridge_en": "Previously: An entirely linear network composes into one map.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "f(a)=\\mathbf1[a\\ge0]",
+      "f(a)\\in\\{0,1\\}",
+      "0",
+      "1",
+      "0",
+      "f(a)=2\\mathbf1[a\\ge0]-1",
+      "f(a)\\in\\{-1,1\\}",
+      "0",
+      "1",
+      "-1",
+      "0",
+      "a\\ne0:\\ f^{\\prime}(a)=0;\\qquad a=0:\\ \\nexists f^{\\prime}(0)"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。非零處導數為零；零點不可微。\n\n講義補讀：\n選哪一種活化，決定兩件事：輸出的範圍（能不能當機率）與導數的大小（學習時梯度能不能傳回去）。\n\n| 族 | 名稱 | 公式 $\\sigma(a)$ | 值域 | 導數 |\n|---|---|---|---|---|\n| 基礎 | Linear | $a$ | $(-\\infty,\\infty)$ | $1$ |\n| 基礎 | Binary step / Sign | $0$ 或 $1$／$-1$ 或 $+1$ | $\\{0,1\\}$／$\\{-1,+1\\}$ | $0$，在 $0$ 不可導 |\n| 基礎 | Softmax（整層） | $e^{a_i}/\\sum_je^{a_j}$ | $(0,1)$，和為 1 | $\\sigma_i(\\delta_{ij}-\\sigma_j)$ |\n| S 形 | Sigmoid | $1/(1+e^{-a})$ | $(0,1)$ | $\\sigma(1-\\sigma)$ |\n| S 形 | tanh | $(e^a-e^{-a})/(e^a+e^{-a})$ | $(-1,1)$ | $1-\\sigma^2$ |\n| S 形 | Gaussian | $e^{-a^2}$ | $(0,1]$ | $-2a\\,e^{-a^2}$ |\n| ReLU 族 | Softplus | $\\ln(1+e^a)$ | $(0,\\infty)$ | $1/(1+e^{-a})$ |\n| ReLU 族 | ReLU | $\\max(0,a)$ | $[0,\\infty)$ | $a>0$ 為 1，$a<0$ 為 0 |\n| ReLU 族 | Leaky ReLU | $a$ 若 $a\\ge0$，$0.01a$ 若 $a<0$ | $(-\\infty,\\infty)$ | $1$ 或 $0.01$ |\n| ReLU 族 | PReLU | 同上，斜率 $\\alpha$ 可學習 | $(-\\infty,\\infty)$ | $1$ 或 $\\alpha$ |\n| ReLU 族 | ELU | $a$ 若 $a\\ge0$，$\\alpha(e^a-1)$ 若 $a<0$ | $(-\\alpha,\\infty)$ | $1$ 或 $\\alpha e^a$ |\n| 跨層 | Maxout | 多個線性單元的最大值 | $(-\\infty,\\infty)$ | 取到最大者為 1，其餘為 0 |\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Explain the newly revealed evidence and mascot prompt: Derivative zero off zero; undefined at zero.\n\nSource context:\nThe choice of activation decides two things: the range of the output (whether it can serve as a probability) and the size of the derivative (whether gradients can flow back during learning).\n\nSoftmax and Maxout look at a whole layer (or several units) together, while the others act point by point. Linear in a hidden layer is the collapse of KP05, so it suits only the output layer of a regression.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "gate",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 4,
+    "base_kind": "step",
+    "page": 4,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "Softmax 把整組分數變成一份分配",
+    "title_en": "Softmax turns scores into one distribution",
+    "takeaway": "所有分量共用同一個分母。",
+    "takeaway_en": "All components share the same denominator.",
+    "source_anchors": [
+      "2. 基礎與 S 形：Softmax 與梯度消失"
+    ],
+    "bridge": "上一頁：非零處導數為零；零點不可微。",
+    "bridge_en": "Previously: Derivative zero off zero; undefined at zero.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf a",
+      "e^{a_i}",
+      "p_i",
+      "p_i=\\frac{e^{a_i}}{\\sum_{j=1}^{m}e^{a_j}},\\quad 0<p_i<1,\\quad\\sum_i p_i=1"
+    ],
+    "notes": [
+      "Softmax每個輸出介於零與一且整組和一，條件是有限分數與至少兩個類別。輸出是模型的互斥類別機率，不自動保證與真實頻率校準。Sigmoid逐分量運算、沒有共同分母，不等於統計上證明各標籤獨立。\n\n講義補讀：\n**Softmax 算例。** 輸出層 3 顆神經元，加權和 $\\mathbf{a}=(2,1,0)$。先取指數 $e^2=7.389$、$e^1=2.718$、$e^0=1$，總和 $11.107$；再除以總和得 $(0.665,\\,0.245,\\,0.090)$。三個數都在 $(0,1)$，加起來 $0.665+0.245+0.090=1$，所以輸出可以直接讀成「屬於三類的機率」〔程式計算〕。\n\n**S 形與梯度消失。** Sigmoid 在 $a=0$ 輸出 $0.5$，導數 $0.5\\times(1-0.5)=0.25$，這已是它導數的最大值；tanh 在 $a=0$ 導數是 $1$。學習時梯度要一層一層連乘導數往回傳，5 層 sigmoid 最好情況也只剩 $0.25^5\\approx0.00098$，這就是梯度消失〔補充算例，數字由程式驗算；完整推導見第3章 KP06〕。\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "For finite logits and at least two classes, each Softmax output lies between zero and one and their sum is one. These are categorical model probabilities, not a calibration guarantee. Pointwise Sigmoid has no shared denominator; this does not establish statistical label independence.\n\nSource context:\n**A softmax example.** The output layer has 3 neurons with sums $\\mathbf{a}=(2,1,0)$. First take exponentials $e^2=7.389$, $e^1=2.718$, $e^0=1$, with sum $11.107$; then divide by the sum to get $(0.665,\\,0.245,\\,0.090)$. All three lie in $(0,1)$ and add up to $0.665+0.245+0.090=1$, so the output can be read directly as \"probabilities of three classes\" (computed by program).\n\n**S-shapes and vanishing gradients.** The sigmoid outputs $0.5$ at $a=0$ with derivative $0.5\\times(1-0.5)=0.25$, already the maximum of its derivative; the tanh derivative at $a=0$ is $1$. During learning the gradient is multiplied by derivatives layer after layer on its way back, so five sigmoid layers in the best case leave only $0.25^5\\approx0.00098$; this is the vanishing gradient (an added worked example with numbers checked by program; the full derivation is in Chapter 3 KP06).\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 5,
+    "base_kind": "softmax",
+    "page": 5,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "先取指數，再除以同一個總和",
+    "title_en": "Exponentiate, then divide by the total",
+    "takeaway": "以未取位數的中間值計算，最後才近似。",
+    "takeaway_en": "Keep full precision until the final approximation.",
+    "source_anchors": [
+      "2. 基礎與 S 形：Softmax 與梯度消失"
+    ],
+    "bridge": "上一頁：所有分量共用同一個分母。",
+    "bridge_en": "Previously: All components share the same denominator.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\mathbf a=(2,1,0),\\quad S=e^2+e^1+e^0\\approx11.107338",
+      "e^2\\approx7.3891",
+      "e^1\\approx2.7183",
+      "e^0\\approx1.0000",
+      "\\mathbf p=\\frac{(e^2,e^1,e^0)}{S}",
+      "\\approx(0.665,0.245,0.090)"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。以未取位數的中間值計算，最後才近似。\n\n講義補讀：\n**Softmax 算例。** 輸出層 3 顆神經元，加權和 $\\mathbf{a}=(2,1,0)$。先取指數 $e^2=7.389$、$e^1=2.718$、$e^0=1$，總和 $11.107$；再除以總和得 $(0.665,\\,0.245,\\,0.090)$。三個數都在 $(0,1)$，加起來 $0.665+0.245+0.090=1$，所以輸出可以直接讀成「屬於三類的機率」〔程式計算〕。\n\n**S 形與梯度消失。** Sigmoid 在 $a=0$ 輸出 $0.5$，導數 $0.5\\times(1-0.5)=0.25$，這已是它導數的最大值；tanh 在 $a=0$ 導數是 $1$。學習時梯度要一層一層連乘導數往回傳，5 層 sigmoid 最好情況也只剩 $0.25^5\\approx0.00098$，這就是梯度消失〔補充算例，數字由程式驗算；完整推導見第3章 KP06〕。\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Explain the newly revealed evidence and mascot prompt: Keep full precision until the final approximation.\n\nSource context:\n**A softmax example.** The output layer has 3 neurons with sums $\\mathbf{a}=(2,1,0)$. First take exponentials $e^2=7.389$, $e^1=2.718$, $e^0=1$, with sum $11.107$; then divide by the sum to get $(0.665,\\,0.245,\\,0.090)$. All three lie in $(0,1)$ and add up to $0.665+0.245+0.090=1$, so the output can be read directly as \"probabilities of three classes\" (computed by program).\n\n**S-shapes and vanishing gradients.** The sigmoid outputs $0.5$ at $a=0$ with derivative $0.5\\times(1-0.5)=0.25$, already the maximum of its derivative; the tanh derivative at $a=0$ is $1$. During learning the gradient is multiplied by derivatives layer after layer on its way back, so five sigmoid layers in the best case leave only $0.25^5\\approx0.00098$; this is the vanishing gradient (an added worked example with numbers checked by program; the full derivation is in Chapter 3 KP06).\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 6,
+    "base_kind": "softmaxcalc",
+    "page": 6,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "改一個分數，整份分配都跟著改",
+    "title_en": "Changing one score changes the distribution",
+    "takeaway": "Softmax 的導數是矩陣，而不是單一斜率。",
+    "takeaway_en": "The Softmax derivative is a matrix.",
+    "source_anchors": [
+      "1. 四族一張表",
+      "2. 基礎與 S 形：Softmax 與梯度消失"
+    ],
+    "bridge": "上一頁：以未取位數的中間值計算，最後才近似。",
+    "bridge_en": "Previously: Keep full precision until the final approximation.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "3",
+      "0",
+      "0",
+      "1",
+      "a",
+      "f(a)",
+      "\\mathbf a=(a,0,0)",
+      "\\frac{\\partial p_i}{\\partial a_j}=p_i(\\delta_{ij}-p_j)",
+      "i=j:\\quad p_i(1-p_i)",
+      "i\\ne j:\\quad -p_ip_j"
+    ],
+    "notes": [
+      "補充曲線使用分數a、零、零。紫曲線是第二類與第三類各自的機率，它們完全重合，不能將其看成兩類總和。delta是Kronecker符號，i等於j時一，否則零。正對角表示本類分數上升會提高本類機率，負非對角表示其餘類別分配下降。\n\n講義補讀：\n| 族 | 名稱 | 公式 $\\sigma(a)$ | 值域 | 導數 |\n|---|---|---|---|---|\n| 基礎 | Linear | $a$ | $(-\\infty,\\infty)$ | $1$ |\n| 基礎 | Binary step / Sign | $0$ 或 $1$／$-1$ 或 $+1$ | $\\{0,1\\}$／$\\{-1,+1\\}$ | $0$，在 $0$ 不可導 |\n| 基礎 | Softmax（整層） | $e^{a_i}/\\sum_je^{a_j}$ | $(0,1)$，和為 1 | $\\sigma_i(\\delta_{ij}-\\sigma_j)$ |\n| S 形 | Sigmoid | $1/(1+e^{-a})$ | $(0,1)$ | $\\sigma(1-\\sigma)$ |\n| S 形 | tanh | $(e^a-e^{-a})/(e^a+e^{-a})$ | $(-1,1)$ | $1-\\sigma^2$ |\n| S 形 | Gaussian | $e^{-a^2}$ | $(0,1]$ | $-2a\\,e^{-a^2}$ |\n| ReLU 族 | Softplus | $\\ln(1+e^a)$ | $(0,\\infty)$ | $1/(1+e^{-a})$ |\n| ReLU 族 | ReLU | $\\max(0,a)$ | $[0,\\infty)$ | $a>0$ 為 1，$a<0$ 為 0 |\n| ReLU 族 | Leaky ReLU | $a$ 若 $a\\ge0$，$0.01a$ 若 $a<0$ | $(-\\infty,\\infty)$ | $1$ 或 $0.01$ |\n| ReLU 族 | PReLU | 同上，斜率 $\\alpha$ 可學習 | $(-\\infty,\\infty)$ | $1$ 或 $\\alpha$ |\n| ReLU 族 | ELU | $a$ 若 $a\\ge0$，$\\alpha(e^a-1)$ 若 $a<0$ | $(-\\alpha,\\infty)$ | $1$ 或 $\\alpha e^a$ |\n| 跨層 | Maxout | 多個線性單元的最大值 | $(-\\infty,\\infty)$ | 取到最大者為 1，其餘為 0 |\n\nSoftmax 與 Maxout 要看整層（或多個單元）一起算，其餘逐點作用。Linear 放在隱藏層就是 KP05 的坍縮，只適合回歸的輸出層。\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "The added example uses logits a, zero, zero. Purple represents each of the two identical other probabilities, not their combined probability. Kronecker delta is one for i=j and zero otherwise. Diagonal entries are positive; off-diagonal entries are negative.\n\nSource context:\nThe choice of activation decides two things: the range of the output (whether it can serve as a probability) and the size of the derivative (whether gradients can flow back during learning).\n\nSoftmax and Maxout look at a whole layer (or several units) together, while the others act point by point. Linear in a hidden layer is the collapse of KP05, so it suits only the output layer of a regression.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 7,
+    "base_kind": "softmaxjac",
+    "page": 7,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "Sigmoid 把輸入擠進零與一之間",
+    "title_en": "Sigmoid squeezes inputs between zero and one",
+    "takeaway": "兩端飽和，斜率接近零。",
+    "takeaway_en": "Saturation at either end means a near-zero slope.",
+    "source_anchors": [
+      "1. 四族一張表",
+      "2. 基礎與 S 形：Softmax 與梯度消失"
+    ],
+    "bridge": "上一頁：Softmax 的導數是矩陣，而不是單一斜率。",
+    "bridge_en": "Previously: The Softmax derivative is a matrix.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "3",
+      "-0.08",
+      "0",
+      "1.08",
+      "a",
+      "f(a)",
+      "s(a)=\\frac{1}{1+e^{-a}}",
+      "s(a)\\in(0,1)",
+      "s^{\\prime}(a)=s(a)(1-s(a))",
+      "s(0)=\\frac12,\\ s^{\\prime}(0)=\\frac14"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。兩端飽和，斜率接近零。\n\n講義補讀：\n選哪一種活化，決定兩件事：輸出的範圍（能不能當機率）與導數的大小（學習時梯度能不能傳回去）。\n\n| 族 | 名稱 | 公式 $\\sigma(a)$ | 值域 | 導數 |\n|---|---|---|---|---|\n| 基礎 | Linear | $a$ | $(-\\infty,\\infty)$ | $1$ |\n| 基礎 | Binary step / Sign | $0$ 或 $1$／$-1$ 或 $+1$ | $\\{0,1\\}$／$\\{-1,+1\\}$ | $0$，在 $0$ 不可導 |\n| 基礎 | Softmax（整層） | $e^{a_i}/\\sum_je^{a_j}$ | $(0,1)$，和為 1 | $\\sigma_i(\\delta_{ij}-\\sigma_j)$ |\n| S 形 | Sigmoid | $1/(1+e^{-a})$ | $(0,1)$ | $\\sigma(1-\\sigma)$ |\n| S 形 | tanh | $(e^a-e^{-a})/(e^a+e^{-a})$ | $(-1,1)$ | $1-\\sigma^2$ |\n| S 形 | Gaussian | $e^{-a^2}$ | $(0,1]$ | $-2a\\,e^{-a^2}$ |\n| ReLU 族 | Softplus | $\\ln(1+e^a)$ | $(0,\\infty)$ | $1/(1+e^{-a})$ |\n| ReLU 族 | ReLU | $\\max(0,a)$ | $[0,\\infty)$ | $a>0$ 為 1，$a<0$ 為 0 |\n| ReLU 族 | Leaky ReLU | $a$ 若 $a\\ge0$，$0.01a$ 若 $a<0$ | $(-\\infty,\\infty)$ | $1$ 或 $0.01$ |\n| ReLU 族 | PReLU | 同上，斜率 $\\alpha$ 可學習 | $(-\\infty,\\infty)$ | $1$ 或 $\\alpha$ |\n| ReLU 族 | ELU | $a$ 若 $a\\ge0$，$\\alpha(e^a-1)$ 若 $a<0$ | $(-\\alpha,\\infty)$ | $1$ 或 $\\alpha e^a$ |\n| 跨層 | Maxout | 多個線性單元的最大值 | $(-\\infty,\\infty)$ | 取到最大者為 1，其餘為 0 |\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Explain the newly revealed evidence and mascot prompt: Saturation at either end means a near-zero slope.\n\nSource context:\nThe choice of activation decides two things: the range of the output (whether it can serve as a probability) and the size of the derivative (whether gradients can flow back during learning).\n\nSoftmax and Maxout look at a whole layer (or several units) together, while the others act point by point. Linear in a hidden layer is the collapse of KP05, so it suits only the output layer of a regression.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 8,
+    "base_kind": "sigmoid",
+    "page": 8,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "tanh 以零為中心，兩端仍會飽和",
+    "title_en": "tanh is zero-centered but still saturates",
+    "takeaway": "零點斜率為一，不代表整段斜率都為一。",
+    "takeaway_en": "A slope of one at zero does not hold everywhere.",
+    "source_anchors": [
+      "1. 四族一張表",
+      "2. 基礎與 S 形：Softmax 與梯度消失"
+    ],
+    "bridge": "上一頁：兩端飽和，斜率接近零。",
+    "bridge_en": "Previously: Saturation at either end means a near-zero slope.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "3",
+      "-1.2",
+      "0",
+      "1.2",
+      "a",
+      "f(a)",
+      "f(a)=\\frac{e^a-e^{-a}}{e^a+e^{-a}}",
+      "f(a)\\in(-1,1)",
+      "f^{\\prime}(a)=1-f(a)^2",
+      "f(0)=0,\\ f^{\\prime}(0)=1"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。零點斜率為一，不代表整段斜率都為一。\n\n講義補讀：\n選哪一種活化，決定兩件事：輸出的範圍（能不能當機率）與導數的大小（學習時梯度能不能傳回去）。\n\n| 族 | 名稱 | 公式 $\\sigma(a)$ | 值域 | 導數 |\n|---|---|---|---|---|\n| 基礎 | Linear | $a$ | $(-\\infty,\\infty)$ | $1$ |\n| 基礎 | Binary step / Sign | $0$ 或 $1$／$-1$ 或 $+1$ | $\\{0,1\\}$／$\\{-1,+1\\}$ | $0$，在 $0$ 不可導 |\n| 基礎 | Softmax（整層） | $e^{a_i}/\\sum_je^{a_j}$ | $(0,1)$，和為 1 | $\\sigma_i(\\delta_{ij}-\\sigma_j)$ |\n| S 形 | Sigmoid | $1/(1+e^{-a})$ | $(0,1)$ | $\\sigma(1-\\sigma)$ |\n| S 形 | tanh | $(e^a-e^{-a})/(e^a+e^{-a})$ | $(-1,1)$ | $1-\\sigma^2$ |\n| S 形 | Gaussian | $e^{-a^2}$ | $(0,1]$ | $-2a\\,e^{-a^2}$ |\n| ReLU 族 | Softplus | $\\ln(1+e^a)$ | $(0,\\infty)$ | $1/(1+e^{-a})$ |\n| ReLU 族 | ReLU | $\\max(0,a)$ | $[0,\\infty)$ | $a>0$ 為 1，$a<0$ 為 0 |\n| ReLU 族 | Leaky ReLU | $a$ 若 $a\\ge0$，$0.01a$ 若 $a<0$ | $(-\\infty,\\infty)$ | $1$ 或 $0.01$ |\n| ReLU 族 | PReLU | 同上，斜率 $\\alpha$ 可學習 | $(-\\infty,\\infty)$ | $1$ 或 $\\alpha$ |\n| ReLU 族 | ELU | $a$ 若 $a\\ge0$，$\\alpha(e^a-1)$ 若 $a<0$ | $(-\\alpha,\\infty)$ | $1$ 或 $\\alpha e^a$ |\n| 跨層 | Maxout | 多個線性單元的最大值 | $(-\\infty,\\infty)$ | 取到最大者為 1，其餘為 0 |\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Explain the newly revealed evidence and mascot prompt: A slope of one at zero does not hold everywhere.\n\nSource context:\nThe choice of activation decides two things: the range of the output (whether it can serve as a probability) and the size of the derivative (whether gradients can flow back during learning).\n\nSoftmax and Maxout look at a whole layer (or several units) together, while the others act point by point. Linear in a hidden layer is the collapse of KP05, so it suits only the output layer of a regression.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 9,
+    "base_kind": "tanh",
+    "page": 9,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "Gaussian 是鐘形，不是 S 形",
+    "title_en": "Gaussian is bell-shaped, not S-shaped",
+    "takeaway": "左右兩側斜率異號，峰頂斜率為零。",
+    "takeaway_en": "Opposite slope signs; zero slope at the peak.",
+    "source_anchors": [
+      "1. 四族一張表"
+    ],
+    "bridge": "上一頁：零點斜率為一，不代表整段斜率都為一。",
+    "bridge_en": "Previously: A slope of one at zero does not hold everywhere.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "3",
+      "-1",
+      "0",
+      "1.2",
+      "a",
+      "f(a)",
+      "f(a)=e^{-a^2}",
+      "f(a)\\in(0,1]",
+      "f^{\\prime}(a)=-2ae^{-a^2}",
+      "?",
+      "?"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。左右兩側斜率異號，峰頂斜率為零。\n\n講義補讀：\n選哪一種活化，決定兩件事：輸出的範圍（能不能當機率）與導數的大小（學習時梯度能不能傳回去）。\n\n| 族 | 名稱 | 公式 $\\sigma(a)$ | 值域 | 導數 |\n|---|---|---|---|---|\n| 基礎 | Linear | $a$ | $(-\\infty,\\infty)$ | $1$ |\n| 基礎 | Binary step / Sign | $0$ 或 $1$／$-1$ 或 $+1$ | $\\{0,1\\}$／$\\{-1,+1\\}$ | $0$，在 $0$ 不可導 |\n| 基礎 | Softmax（整層） | $e^{a_i}/\\sum_je^{a_j}$ | $(0,1)$，和為 1 | $\\sigma_i(\\delta_{ij}-\\sigma_j)$ |\n| S 形 | Sigmoid | $1/(1+e^{-a})$ | $(0,1)$ | $\\sigma(1-\\sigma)$ |\n| S 形 | tanh | $(e^a-e^{-a})/(e^a+e^{-a})$ | $(-1,1)$ | $1-\\sigma^2$ |\n| S 形 | Gaussian | $e^{-a^2}$ | $(0,1]$ | $-2a\\,e^{-a^2}$ |\n| ReLU 族 | Softplus | $\\ln(1+e^a)$ | $(0,\\infty)$ | $1/(1+e^{-a})$ |\n| ReLU 族 | ReLU | $\\max(0,a)$ | $[0,\\infty)$ | $a>0$ 為 1，$a<0$ 為 0 |\n| ReLU 族 | Leaky ReLU | $a$ 若 $a\\ge0$，$0.01a$ 若 $a<0$ | $(-\\infty,\\infty)$ | $1$ 或 $0.01$ |\n| ReLU 族 | PReLU | 同上，斜率 $\\alpha$ 可學習 | $(-\\infty,\\infty)$ | $1$ 或 $\\alpha$ |\n| ReLU 族 | ELU | $a$ 若 $a\\ge0$，$\\alpha(e^a-1)$ 若 $a<0$ | $(-\\alpha,\\infty)$ | $1$ 或 $\\alpha e^a$ |\n| 跨層 | Maxout | 多個線性單元的最大值 | $(-\\infty,\\infty)$ | 取到最大者為 1，其餘為 0 |\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Explain the newly revealed evidence and mascot prompt: Opposite slope signs; zero slope at the peak.\n\nSource context:\nThe choice of activation decides two things: the range of the output (whether it can serve as a probability) and the size of the derivative (whether gradients can flow back during learning).\n\nSoftmax and Maxout look at a whole layer (or several units) together, while the others act point by point. Linear in a hidden layer is the collapse of KP05, so it suits only the output layer of a regression.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 10,
+    "base_kind": "gaussian",
+    "page": 10,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "五個小斜率連乘，訊號迅速縮小",
+    "title_en": "Five small slope factors shrink the signal",
+    "takeaway": "此處只乘活化導數；完整梯度還包含權重。",
+    "takeaway_en": "Activation factors only; full gradients also include weights.",
+    "source_anchors": [
+      "2. 基礎與 S 形：Softmax 與梯度消失"
+    ],
+    "bridge": "上一頁：左右兩側斜率異號，峰頂斜率為零。",
+    "bridge_en": "Previously: Opposite slope signs; zero slope at the peak.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "\\frac14",
+      "\\frac14",
+      "\\frac14",
+      "\\frac14",
+      "\\frac14",
+      "(\\frac14)^1",
+      "(\\frac14)^2",
+      "(\\frac14)^3",
+      "(\\frac14)^4",
+      "(\\frac14)^5",
+      "\\prod_{k=1}^{5}s^{\\prime}(a_k)\\le\\left(\\frac14\\right)^5=0.0009765625"
+    ],
+    "notes": [
+      "Sigmoid導數最大四分之一，因此五個活化導數因子連乘至多0.0009765625。這不是完整梯度的上界：多層反向傳播還包含權重矩陣與上游梯度。ReLU正側因子一也不保證整體梯度不消失或不爆炸。\n\n講義補讀：\n**Softmax 算例。** 輸出層 3 顆神經元，加權和 $\\mathbf{a}=(2,1,0)$。先取指數 $e^2=7.389$、$e^1=2.718$、$e^0=1$，總和 $11.107$；再除以總和得 $(0.665,\\,0.245,\\,0.090)$。三個數都在 $(0,1)$，加起來 $0.665+0.245+0.090=1$，所以輸出可以直接讀成「屬於三類的機率」〔程式計算〕。\n\n**S 形與梯度消失。** Sigmoid 在 $a=0$ 輸出 $0.5$，導數 $0.5\\times(1-0.5)=0.25$，這已是它導數的最大值；tanh 在 $a=0$ 導數是 $1$。學習時梯度要一層一層連乘導數往回傳，5 層 sigmoid 最好情況也只剩 $0.25^5\\approx0.00098$，這就是梯度消失〔補充算例，數字由程式驗算；完整推導見第3章 KP06〕。\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "The maximum Sigmoid derivative is one quarter, so the product of five activation factors is at most 0.0009765625. This is not a bound on the complete gradient, which also contains weight matrices and upstream gradients. Positive ReLU factors of one do not guarantee against vanishing or exploding gradients.\n\nSource context:\n**A softmax example.** The output layer has 3 neurons with sums $\\mathbf{a}=(2,1,0)$. First take exponentials $e^2=7.389$, $e^1=2.718$, $e^0=1$, with sum $11.107$; then divide by the sum to get $(0.665,\\,0.245,\\,0.090)$. All three lie in $(0,1)$ and add up to $0.665+0.245+0.090=1$, so the output can be read directly as \"probabilities of three classes\" (computed by program).\n\n**S-shapes and vanishing gradients.** The sigmoid outputs $0.5$ at $a=0$ with derivative $0.5\\times(1-0.5)=0.25$, already the maximum of its derivative; the tanh derivative at $a=0$ is $1$. During learning the gradient is multiplied by derivatives layer after layer on its way back, so five sigmoid layers in the best case leave only $0.25^5\\approx0.00098$; this is the vanishing gradient (an added worked example with numbers checked by program; the full derivation is in Chapter 3 KP06).\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "basket",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 11,
+    "base_kind": "gradient",
+    "page": 11,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "ReLU 的正側斜率一直是一",
+    "title_en": "ReLU keeps a slope of one on the positive side",
+    "takeaway": "正側不衰減活化因子；零點仍有折角。",
+    "takeaway_en": "No activation-factor shrinkage on the positive side.",
+    "source_anchors": [
+      "1. 四族一張表",
+      "3. ReLU 家族：導數不縮小，但要防 dying",
+      "4. 怎麼選"
+    ],
+    "bridge": "上一頁：此處只乘活化導數；完整梯度還包含權重。",
+    "bridge_en": "Previously: Activation factors only; full gradients also include weights.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "3",
+      "-0.3",
+      "0",
+      "3.2",
+      "a",
+      "f(a)",
+      "f(a)=\\max(0,a)",
+      "f(a)\\in[0,\\infty)",
+      "a>0:\\ f^{\\prime}=1;\\ a<0:\\ f^{\\prime}=0"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。正側不衰減活化因子；零點仍有折角。\n\n講義補讀：\n選哪一種活化，決定兩件事：輸出的範圍（能不能當機率）與導數的大小（學習時梯度能不能傳回去）。\n\n| 族 | 名稱 | 公式 $\\sigma(a)$ | 值域 | 導數 |\n|---|---|---|---|---|\n| 基礎 | Linear | $a$ | $(-\\infty,\\infty)$ | $1$ |\n| 基礎 | Binary step / Sign | $0$ 或 $1$／$-1$ 或 $+1$ | $\\{0,1\\}$／$\\{-1,+1\\}$ | $0$，在 $0$ 不可導 |\n| 基礎 | Softmax（整層） | $e^{a_i}/\\sum_je^{a_j}$ | $(0,1)$，和為 1 | $\\sigma_i(\\delta_{ij}-\\sigma_j)$ |\n| S 形 | Sigmoid | $1/(1+e^{-a})$ | $(0,1)$ | $\\sigma(1-\\sigma)$ |\n| S 形 | tanh | $(e^a-e^{-a})/(e^a+e^{-a})$ | $(-1,1)$ | $1-\\sigma^2$ |\n| S 形 | Gaussian | $e^{-a^2}$ | $(0,1]$ | $-2a\\,e^{-a^2}$ |\n| ReLU 族 | Softplus | $\\ln(1+e^a)$ | $(0,\\infty)$ | $1/(1+e^{-a})$ |\n| ReLU 族 | ReLU | $\\max(0,a)$ | $[0,\\infty)$ | $a>0$ 為 1，$a<0$ 為 0 |\n| ReLU 族 | Leaky ReLU | $a$ 若 $a\\ge0$，$0.01a$ 若 $a<0$ | $(-\\infty,\\infty)$ | $1$ 或 $0.01$ |\n| ReLU 族 | PReLU | 同上，斜率 $\\alpha$ 可學習 | $(-\\infty,\\infty)$ | $1$ 或 $\\alpha$ |\n| ReLU 族 | ELU | $a$ 若 $a\\ge0$，$\\alpha(e^a-1)$ 若 $a<0$ | $(-\\alpha,\\infty)$ | $1$ 或 $\\alpha e^a$ |\n| 跨層 | Maxout | 多個線性單元的最大值 | $(-\\infty,\\infty)$ | 取到最大者為 1，其餘為 0 |\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Explain the newly revealed evidence and mascot prompt: No activation-factor shrinkage on the positive side.\n\nSource context:\nThe choice of activation decides two things: the range of the output (whether it can serve as a probability) and the size of the derivative (whether gradients can flow back during learning).\n\nSoftmax and Maxout look at a whole layer (or several units) together, while the others act point by point. Linear in a hidden layer is the collapse of KP05, so it suits only the output layer of a regression.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 12,
+    "base_kind": "relu",
+    "page": 12,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "所有相關輸入都落在負側，ReLU 會卡住",
+    "title_en": "A ReLU can stall when all relevant inputs are negative",
+    "takeaway": "該單元的局部導數為零，資料梯度因此受阻。",
+    "takeaway_en": "Zero local derivatives block this unit’s data-gradient path.",
+    "source_anchors": [
+      "3. ReLU 家族：導數不縮小，但要防 dying"
+    ],
+    "bridge": "上一頁：正側不衰減活化因子；零點仍有折角。",
+    "bridge_en": "Previously: No activation-factor shrinkage on the positive side.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "-2",
+      "0",
+      "-1",
+      "0",
+      "\\forall n:\\ a_n<0\\ \\Rightarrow\\ f^{\\prime}(a_n)=0"
+    ],
+    "notes": [
+      "當這個單元對所有相關訓練輸入都在負側，其局部導數為零，普通資料損失經過此單元的梯度受阻。不是一次負輸入就永遠死亡，也不排除動量、正則化或上游分布變動讓狀態改變。Leaky或PReLU非零負斜率保留路徑，但上游梯度或輸入仍可能為零。\n\n講義補讀：\nReLU 是 $\\max(0,a)$：正側導數恆為 1，梯度可以原封不動傳回去，不像 S 形越傳越小；負值歸零，讓許多神經元同時「安靜」（稀疏）。但若某顆神經元的輸入總是負的，導數恆為 0，權重永遠不更新，這就是 **dying ReLU**。Leaky ReLU 在負側保留 $0.01$ 的小斜率；PReLU 把這個斜率變成可學習參數；ELU 與 softplus 把轉折處磨平。取 $a=-2$ 與 $a=2$〔程式計算〕：\n\n**圖說 `lec02-kp06-act-relu-family`**：先看正的一側，四條線幾乎重疊（斜率 1）；再看負的一側，ReLU 是 0，Leaky 略低於 0，ELU 往下走到 $-1$ 附近，softplus 則維持在 0 以上。 / **Caption `lec02-kp06-act-relu-family`:** Look first at the positive side, where the four lines almost overlap (slope 1); then at the negative side: ReLU is 0, Leaky slightly below 0, ELU heads toward $-1$, and softplus stays above 0.\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "If this unit is negative for all relevant training inputs, its zero local derivative blocks the ordinary data-loss gradient through it. One negative input is insufficient; momentum, regularization or changed upstream distributions may alter the state. Nonzero Leaky/PReLU slopes retain a path but do not guarantee an update.\n\nSource context:\nReLU is $\\max(0,a)$: the derivative is exactly 1 on the positive side, so the gradient passes back unchanged, unlike S-shapes that shrink it; negative values are zeroed, so many neurons go quiet at once (sparsity). But if the input of a neuron is always negative, its derivative is always 0 and its weights never update; this is **dying ReLU**. Leaky ReLU keeps a small slope of $0.01$ on the negative side; PReLU turns that slope into a learnable parameter; ELU and softplus smooth the corner. At $a=-2$ and $a=2$ (computed by program):\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 13,
+    "base_kind": "dying",
+    "page": 13,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "Leaky ReLU 留一條很小的負側斜坡",
+    "title_en": "Leaky ReLU leaves a small negative-side slope",
+    "takeaway": "負側斜率固定為 0.01；仍不保證一定有更新。",
+    "takeaway_en": "A fixed negative slope of 0.01 does not ensure an update.",
+    "source_anchors": [
+      "1. 四族一張表",
+      "3. ReLU 家族：導數不縮小，但要防 dying"
+    ],
+    "bridge": "上一頁：該單元的局部導數為零，資料梯度因此受阻。",
+    "bridge_en": "Previously: Zero local derivatives block this unit’s data-gradient path.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "3",
+      "-0.3",
+      "0",
+      "3.2",
+      "a",
+      "f(a)",
+      "a\\ge0:\\ f=a;\\ a<0:\\ f=0.01a",
+      "f(a)\\in\\mathbb R",
+      "a>0:\\ f^{\\prime}=1;\\ a<0:\\ f^{\\prime}=0.01",
+      "0"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。負側斜率固定為 0.01；仍不保證一定有更新。\n\n講義補讀：\n選哪一種活化，決定兩件事：輸出的範圍（能不能當機率）與導數的大小（學習時梯度能不能傳回去）。\n\n| 族 | 名稱 | 公式 $\\sigma(a)$ | 值域 | 導數 |\n|---|---|---|---|---|\n| 基礎 | Linear | $a$ | $(-\\infty,\\infty)$ | $1$ |\n| 基礎 | Binary step / Sign | $0$ 或 $1$／$-1$ 或 $+1$ | $\\{0,1\\}$／$\\{-1,+1\\}$ | $0$，在 $0$ 不可導 |\n| 基礎 | Softmax（整層） | $e^{a_i}/\\sum_je^{a_j}$ | $(0,1)$，和為 1 | $\\sigma_i(\\delta_{ij}-\\sigma_j)$ |\n| S 形 | Sigmoid | $1/(1+e^{-a})$ | $(0,1)$ | $\\sigma(1-\\sigma)$ |\n| S 形 | tanh | $(e^a-e^{-a})/(e^a+e^{-a})$ | $(-1,1)$ | $1-\\sigma^2$ |\n| S 形 | Gaussian | $e^{-a^2}$ | $(0,1]$ | $-2a\\,e^{-a^2}$ |\n| ReLU 族 | Softplus | $\\ln(1+e^a)$ | $(0,\\infty)$ | $1/(1+e^{-a})$ |\n| ReLU 族 | ReLU | $\\max(0,a)$ | $[0,\\infty)$ | $a>0$ 為 1，$a<0$ 為 0 |\n| ReLU 族 | Leaky ReLU | $a$ 若 $a\\ge0$，$0.01a$ 若 $a<0$ | $(-\\infty,\\infty)$ | $1$ 或 $0.01$ |\n| ReLU 族 | PReLU | 同上，斜率 $\\alpha$ 可學習 | $(-\\infty,\\infty)$ | $1$ 或 $\\alpha$ |\n| ReLU 族 | ELU | $a$ 若 $a\\ge0$，$\\alpha(e^a-1)$ 若 $a<0$ | $(-\\alpha,\\infty)$ | $1$ 或 $\\alpha e^a$ |\n| 跨層 | Maxout | 多個線性單元的最大值 | $(-\\infty,\\infty)$ | 取到最大者為 1，其餘為 0 |\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Explain the newly revealed evidence and mascot prompt: A fixed negative slope of 0.01 does not ensure an update.\n\nSource context:\nThe choice of activation decides two things: the range of the output (whether it can serve as a probability) and the size of the derivative (whether gradients can flow back during learning).\n\nSoftmax and Maxout look at a whole layer (or several units) together, while the others act point by point. Linear in a hidden layer is the collapse of KP05, so it suits only the output layer of a regression.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 14,
+    "base_kind": "leaky",
+    "page": 14,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "PReLU 把負側斜率交給訓練",
+    "title_en": "PReLU learns the negative-side slope",
+    "takeaway": "值域為全實數的敘述，需要負側斜率為正。",
+    "takeaway_en": "A full real-valued range requires a positive negative-side slope.",
+    "source_anchors": [
+      "1. 四族一張表",
+      "3. ReLU 家族：導數不縮小，但要防 dying"
+    ],
+    "bridge": "上一頁：負側斜率固定為 0.01；仍不保證一定有更新。",
+    "bridge_en": "Previously: A fixed negative slope of 0.01 does not ensure an update.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "3",
+      "-1.6",
+      "0",
+      "3.2",
+      "a",
+      "f(a)",
+      "a\\ge0:\\ f=a;\\ a<0:\\ f=\\alpha a",
+      "\\alpha>0\\Rightarrow f(a)\\in\\mathbb R",
+      "a>0:\\ f^{\\prime}=1;\\ a<0:\\ f^{\\prime}=\\alpha",
+      "\\alpha=0.01,\\ 0.2,\\ 0.5"
+    ],
+    "notes": [
+      "PReLU正側斜率一，負側斜率alpha由訓練學習。本圖比較三個正參數。alpha大於零才具有全實數值域；alpha等於零退化為ReLU，alpha小於零時兩側輸出都非負。零點一般有折角，只有alpha一時接成直線。\n\n講義補讀：\n選哪一種活化，決定兩件事：輸出的範圍（能不能當機率）與導數的大小（學習時梯度能不能傳回去）。\n\n| 族 | 名稱 | 公式 $\\sigma(a)$ | 值域 | 導數 |\n|---|---|---|---|---|\n| 基礎 | Linear | $a$ | $(-\\infty,\\infty)$ | $1$ |\n| 基礎 | Binary step / Sign | $0$ 或 $1$／$-1$ 或 $+1$ | $\\{0,1\\}$／$\\{-1,+1\\}$ | $0$，在 $0$ 不可導 |\n| 基礎 | Softmax（整層） | $e^{a_i}/\\sum_je^{a_j}$ | $(0,1)$，和為 1 | $\\sigma_i(\\delta_{ij}-\\sigma_j)$ |\n| S 形 | Sigmoid | $1/(1+e^{-a})$ | $(0,1)$ | $\\sigma(1-\\sigma)$ |\n| S 形 | tanh | $(e^a-e^{-a})/(e^a+e^{-a})$ | $(-1,1)$ | $1-\\sigma^2$ |\n| S 形 | Gaussian | $e^{-a^2}$ | $(0,1]$ | $-2a\\,e^{-a^2}$ |\n| ReLU 族 | Softplus | $\\ln(1+e^a)$ | $(0,\\infty)$ | $1/(1+e^{-a})$ |\n| ReLU 族 | ReLU | $\\max(0,a)$ | $[0,\\infty)$ | $a>0$ 為 1，$a<0$ 為 0 |\n| ReLU 族 | Leaky ReLU | $a$ 若 $a\\ge0$，$0.01a$ 若 $a<0$ | $(-\\infty,\\infty)$ | $1$ 或 $0.01$ |\n| ReLU 族 | PReLU | 同上，斜率 $\\alpha$ 可學習 | $(-\\infty,\\infty)$ | $1$ 或 $\\alpha$ |\n| ReLU 族 | ELU | $a$ 若 $a\\ge0$，$\\alpha(e^a-1)$ 若 $a<0$ | $(-\\alpha,\\infty)$ | $1$ 或 $\\alpha e^a$ |\n| 跨層 | Maxout | 多個線性單元的最大值 | $(-\\infty,\\infty)$ | 取到最大者為 1，其餘為 0 |\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "PReLU has positive slope one and a learned negative slope alpha. The curves show three positive parameters. A real-valued full range requires alpha>0. Alpha zero is ReLU; negative alpha makes both sides nonnegative. The kink disappears only when alpha is one.\n\nSource context:\nThe choice of activation decides two things: the range of the output (whether it can serve as a probability) and the size of the derivative (whether gradients can flow back during learning).\n\nSoftmax and Maxout look at a whole layer (or several units) together, while the others act point by point. Linear in a hidden layer is the collapse of KP05, so it suits only the output layer of a regression.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 15,
+    "base_kind": "prelu",
+    "page": 15,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "ELU 在負側彎向一個下限",
+    "title_en": "ELU bends toward a lower limit",
+    "takeaway": "取參數為一，零點的左右斜率才接得上。",
+    "takeaway_en": "With alpha equal to one, the slopes meet at zero.",
+    "source_anchors": [
+      "1. 四族一張表",
+      "3. ReLU 家族：導數不縮小，但要防 dying"
+    ],
+    "bridge": "上一頁：值域為全實數的敘述，需要負側斜率為正。",
+    "bridge_en": "Previously: A full real-valued range requires a positive negative-side slope.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "3",
+      "-1.3",
+      "0",
+      "3.2",
+      "a",
+      "f(a)",
+      "a\\ge0:\\ f=a;\\ a<0:\\ f=\\alpha(e^a-1)",
+      "\\alpha>0:\\ f(a)\\in(-\\alpha,\\infty)",
+      "a>0:\\ f^{\\prime}=1;\\ a<0:\\ f^{\\prime}=\\alpha e^a",
+      "\\alpha=1,\\quad\\lim_{a\\to-\\infty}f(a)=-1",
+      "f^{\\prime}(0^-)=\\alpha,\\ f^{\\prime}(0^+)=1",
+      "0"
+    ],
+    "notes": [
+      "ELU值域負alpha到正無限是alpha正時的結論。負側導數alpha乘exp(a)，零點左導數alpha、右導數一，只有alpha一才在零點可微。本圖用alpha一。下限負一不在有限輸入時到達。\n\n講義補讀：\n| 族 | 名稱 | 公式 $\\sigma(a)$ | 值域 | 導數 |\n|---|---|---|---|---|\n| 基礎 | Linear | $a$ | $(-\\infty,\\infty)$ | $1$ |\n| 基礎 | Binary step / Sign | $0$ 或 $1$／$-1$ 或 $+1$ | $\\{0,1\\}$／$\\{-1,+1\\}$ | $0$，在 $0$ 不可導 |\n| 基礎 | Softmax（整層） | $e^{a_i}/\\sum_je^{a_j}$ | $(0,1)$，和為 1 | $\\sigma_i(\\delta_{ij}-\\sigma_j)$ |\n| S 形 | Sigmoid | $1/(1+e^{-a})$ | $(0,1)$ | $\\sigma(1-\\sigma)$ |\n| S 形 | tanh | $(e^a-e^{-a})/(e^a+e^{-a})$ | $(-1,1)$ | $1-\\sigma^2$ |\n| S 形 | Gaussian | $e^{-a^2}$ | $(0,1]$ | $-2a\\,e^{-a^2}$ |\n| ReLU 族 | Softplus | $\\ln(1+e^a)$ | $(0,\\infty)$ | $1/(1+e^{-a})$ |\n| ReLU 族 | ReLU | $\\max(0,a)$ | $[0,\\infty)$ | $a>0$ 為 1，$a<0$ 為 0 |\n| ReLU 族 | Leaky ReLU | $a$ 若 $a\\ge0$，$0.01a$ 若 $a<0$ | $(-\\infty,\\infty)$ | $1$ 或 $0.01$ |\n| ReLU 族 | PReLU | 同上，斜率 $\\alpha$ 可學習 | $(-\\infty,\\infty)$ | $1$ 或 $\\alpha$ |\n| ReLU 族 | ELU | $a$ 若 $a\\ge0$，$\\alpha(e^a-1)$ 若 $a<0$ | $(-\\alpha,\\infty)$ | $1$ 或 $\\alpha e^a$ |\n| 跨層 | Maxout | 多個線性單元的最大值 | $(-\\infty,\\infty)$ | 取到最大者為 1，其餘為 0 |\n\nSoftmax 與 Maxout 要看整層（或多個單元）一起算，其餘逐點作用。Linear 放在隱藏層就是 KP05 的坍縮，只適合回歸的輸出層。\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "The range (-alpha,infinity) assumes alpha>0. The negative derivative is alpha exp(a). The one-sided derivatives at zero are alpha and one, so differentiability at zero requires alpha=1, used in this plot. The lower limit minus one is not attained at finite input.\n\nSource context:\nThe choice of activation decides two things: the range of the output (whether it can serve as a probability) and the size of the derivative (whether gradients can flow back during learning).\n\nSoftmax and Maxout look at a whole layer (or several units) together, while the others act point by point. Linear in a hidden layer is the collapse of KP05, so it suits only the output layer of a regression.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 16,
+    "base_kind": "elu",
+    "page": 16,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "Softplus 把 ReLU 的折角磨圓",
+    "title_en": "Softplus rounds the ReLU corner",
+    "takeaway": "有限的正輸入，其斜率仍小於一。",
+    "takeaway_en": "At finite positive inputs, its slope is still below one.",
+    "source_anchors": [
+      "1. 四族一張表",
+      "3. ReLU 家族：導數不縮小，但要防 dying"
+    ],
+    "bridge": "上一頁：取參數為一，零點的左右斜率才接得上。",
+    "bridge_en": "Previously: With alpha equal to one, the slopes meet at zero.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "3",
+      "-0.2",
+      "0",
+      "3.3",
+      "a",
+      "f(a)",
+      "f(a)=\\ln(1+e^a)",
+      "f(a)\\in(0,\\infty)",
+      "f^{\\prime}(a)=\\frac{1}{1+e^{-a}}",
+      "0"
+    ],
+    "notes": [
+      "Softplus在有限輸入嚴格為正，導數是Sigmoid，嚴格介於零與一。它平滑近似ReLU，既不是負側恰零，也不是有限正側斜率恰一。\n\n講義補讀：\n選哪一種活化，決定兩件事：輸出的範圍（能不能當機率）與導數的大小（學習時梯度能不能傳回去）。\n\n| 族 | 名稱 | 公式 $\\sigma(a)$ | 值域 | 導數 |\n|---|---|---|---|---|\n| 基礎 | Linear | $a$ | $(-\\infty,\\infty)$ | $1$ |\n| 基礎 | Binary step / Sign | $0$ 或 $1$／$-1$ 或 $+1$ | $\\{0,1\\}$／$\\{-1,+1\\}$ | $0$，在 $0$ 不可導 |\n| 基礎 | Softmax（整層） | $e^{a_i}/\\sum_je^{a_j}$ | $(0,1)$，和為 1 | $\\sigma_i(\\delta_{ij}-\\sigma_j)$ |\n| S 形 | Sigmoid | $1/(1+e^{-a})$ | $(0,1)$ | $\\sigma(1-\\sigma)$ |\n| S 形 | tanh | $(e^a-e^{-a})/(e^a+e^{-a})$ | $(-1,1)$ | $1-\\sigma^2$ |\n| S 形 | Gaussian | $e^{-a^2}$ | $(0,1]$ | $-2a\\,e^{-a^2}$ |\n| ReLU 族 | Softplus | $\\ln(1+e^a)$ | $(0,\\infty)$ | $1/(1+e^{-a})$ |\n| ReLU 族 | ReLU | $\\max(0,a)$ | $[0,\\infty)$ | $a>0$ 為 1，$a<0$ 為 0 |\n| ReLU 族 | Leaky ReLU | $a$ 若 $a\\ge0$，$0.01a$ 若 $a<0$ | $(-\\infty,\\infty)$ | $1$ 或 $0.01$ |\n| ReLU 族 | PReLU | 同上，斜率 $\\alpha$ 可學習 | $(-\\infty,\\infty)$ | $1$ 或 $\\alpha$ |\n| ReLU 族 | ELU | $a$ 若 $a\\ge0$，$\\alpha(e^a-1)$ 若 $a<0$ | $(-\\alpha,\\infty)$ | $1$ 或 $\\alpha e^a$ |\n| 跨層 | Maxout | 多個線性單元的最大值 | $(-\\infty,\\infty)$ | 取到最大者為 1，其餘為 0 |\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Softplus is strictly positive at finite input. Its derivative is Sigmoid, strictly between zero and one. It smoothly approximates ReLU without equaling zero on the negative side or having a slope of exactly one at finite positive inputs.\n\nSource context:\nThe choice of activation decides two things: the range of the output (whether it can serve as a probability) and the size of the derivative (whether gradients can flow back during learning).\n\nSoftmax and Maxout look at a whole layer (or several units) together, while the others act point by point. Linear in a hidden layer is the collapse of KP05, so it suits only the output layer of a regression.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 17,
+    "base_kind": "softplus",
+    "page": 17,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "負二輸入：四個函數走出不同路線",
+    "title_en": "At minus two, four functions take different paths",
+    "takeaway": "高度表示輸出；旁邊另列局部斜率。",
+    "takeaway_en": "Height shows output; local slopes are listed separately.",
+    "source_anchors": [
+      "3. ReLU 家族：導數不縮小，但要防 dying"
+    ],
+    "bridge": "上一頁：有限的正輸入，其斜率仍小於一。",
+    "bridge_en": "Previously: At finite positive inputs, its slope is still below one.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "3",
+      "-1.3",
+      "0",
+      "3.2",
+      "a",
+      "f(a)",
+      "a=-2",
+      "\\max(0,-2)\\approx0.000",
+      "f^{\\prime}=0\\approx0.000",
+      "0.01(-2)\\approx-0.020",
+      "f^{\\prime}=0.01\\approx0.010",
+      "e^{-2}-1\\approx-0.865",
+      "f^{\\prime}=e^{-2}\\approx0.135",
+      "\\ln(1+e^{-2})\\approx0.127",
+      "f^{\\prime}=\\frac{1}{1+e^{2}}\\approx0.119"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。高度表示輸出；旁邊另列局部斜率。\n\n講義補讀：\nReLU 是 $\\max(0,a)$：正側導數恆為 1，梯度可以原封不動傳回去，不像 S 形越傳越小；負值歸零，讓許多神經元同時「安靜」（稀疏）。但若某顆神經元的輸入總是負的，導數恆為 0，權重永遠不更新，這就是 **dying ReLU**。Leaky ReLU 在負側保留 $0.01$ 的小斜率；PReLU 把這個斜率變成可學習參數；ELU 與 softplus 把轉折處磨平。取 $a=-2$ 與 $a=2$〔程式計算〕：\n\n**圖說 `lec02-kp06-act-relu-family`**：先看正的一側，四條線幾乎重疊（斜率 1）；再看負的一側，ReLU 是 0，Leaky 略低於 0，ELU 往下走到 $-1$ 附近，softplus 則維持在 0 以上。 / **Caption `lec02-kp06-act-relu-family`:** Look first at the positive side, where the four lines almost overlap (slope 1); then at the negative side: ReLU is 0, Leaky slightly below 0, ELU heads toward $-1$, and softplus stays above 0.\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Explain the newly revealed evidence and mascot prompt: Height shows output; local slopes are listed separately.\n\nSource context:\nReLU is $\\max(0,a)$: the derivative is exactly 1 on the positive side, so the gradient passes back unchanged, unlike S-shapes that shrink it; negative values are zeroed, so many neurons go quiet at once (sparsity). But if the input of a neuron is always negative, its derivative is always 0 and its weights never update; this is **dying ReLU**. Leaky ReLU keeps a small slope of $0.01$ on the negative side; PReLU turns that slope into a learnable parameter; ELU and softplus smooth the corner. At $a=-2$ and $a=2$ (computed by program):\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 18,
+    "base_kind": "minus",
+    "page": 18,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "正二輸入：Softplus 還沒等同 ReLU",
+    "title_en": "At plus two, Softplus is still different",
+    "takeaway": "ReLU、Leaky、ELU 同值同斜率；Softplus 只是接近。",
+    "takeaway_en": "ReLU, Leaky and ELU agree here; Softplus only approaches them.",
+    "source_anchors": [
+      "3. ReLU 家族：導數不縮小，但要防 dying"
+    ],
+    "bridge": "上一頁：高度表示輸出；旁邊另列局部斜率。",
+    "bridge_en": "Previously: Height shows output; local slopes are listed separately.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "1",
+      "3",
+      "0.8",
+      "3.2",
+      "a",
+      "f(a)",
+      "a=2",
+      "\\max(0,2)\\approx2.000",
+      "f^{\\prime}=1\\approx1.000",
+      "2\\approx2.000",
+      "f^{\\prime}=1\\approx1.000",
+      "2\\approx2.000",
+      "f^{\\prime}=1\\approx1.000",
+      "\\ln(1+e^{2})\\approx2.127",
+      "f^{\\prime}=\\frac{1}{1+e^{-2}}\\approx0.881"
+    ],
+    "notes": [
+      "在正二處ReLU、Leaky與alpha一的ELU同為二、導數一；Softplus為ln(1+exp(2))，導數為Sigmoid(2)，有限正值下不等於一。數字只在最後取到三位小數。曲線中前三條在正側重合，並未漏畫。\n\n講義補讀：\nReLU 是 $\\max(0,a)$：正側導數恆為 1，梯度可以原封不動傳回去，不像 S 形越傳越小；負值歸零，讓許多神經元同時「安靜」（稀疏）。但若某顆神經元的輸入總是負的，導數恆為 0，權重永遠不更新，這就是 **dying ReLU**。Leaky ReLU 在負側保留 $0.01$ 的小斜率；PReLU 把這個斜率變成可學習參數；ELU 與 softplus 把轉折處磨平。取 $a=-2$ 與 $a=2$〔程式計算〕：\n\n**圖說 `lec02-kp06-act-relu-family`**：先看正的一側，四條線幾乎重疊（斜率 1）；再看負的一側，ReLU 是 0，Leaky 略低於 0，ELU 往下走到 $-1$ 附近，softplus 則維持在 0 以上。 / **Caption `lec02-kp06-act-relu-family`:** Look first at the positive side, where the four lines almost overlap (slope 1); then at the negative side: ReLU is 0, Leaky slightly below 0, ELU heads toward $-1$, and softplus stays above 0.\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "At plus two ReLU, Leaky and alpha-one ELU all output two with derivative one. Softplus is ln(1+exp(2)), with derivative Sigmoid(2), below one at finite input. Round only the final display to three decimals. The first three positive-side curves overlap exactly.\n\nSource context:\nReLU is $\\max(0,a)$: the derivative is exactly 1 on the positive side, so the gradient passes back unchanged, unlike S-shapes that shrink it; negative values are zeroed, so many neurons go quiet at once (sparsity). But if the input of a neuron is always negative, its derivative is always 0 and its weights never update; this is **dying ReLU**. Leaky ReLU keeps a small slope of $0.01$ on the negative side; PReLU turns that slope into a learnable parameter; ELU and softplus smooth the corner. At $a=-2$ and $a=2$ (computed by program):\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 19,
+    "base_kind": "plus",
+    "page": 19,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "Maxout 讓多條仿射分支競爭",
+    "title_en": "Maxout selects among affine branches",
+    "takeaway": "導數對候選值與對輸入不同；平手處需小心。",
+    "takeaway_en": "Candidate derivatives differ from input derivatives; beware ties.",
+    "source_anchors": [
+      "1. 四族一張表",
+      "4. 怎麼選"
+    ],
+    "bridge": "上一頁：ReLU、Leaky、ELU 同值同斜率；Softplus 只是接近。",
+    "bridge_en": "Previously: ReLU, Leaky and ELU agree here; Softplus only approaches them.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "-3",
+      "0",
+      "3",
+      "-3.2",
+      "0",
+      "3.2",
+      "a",
+      "f(a)",
+      "f(\\mathbf x)=\\max_j(\\mathbf w_j^\\top\\mathbf x+b_j)",
+      "\\max(a,-a)=|a|\\in[0,\\infty)",
+      "\\frac{\\partial f}{\\partial a_j}=\\mathbf1[j=j^\\ast]",
+      "\\nabla_{\\mathbf x}f=\\mathbf w_{j^\\ast}",
+      "?",
+      "?"
+    ],
+    "notes": [
+      "候選a_j等於w_j轉置x加b_j。唯一贏家j星時，對候選的偏導是贏家一其餘零，但對原始輸入的梯度是贏家的權重向量。本圖補充例max(a,-a)為絕對值，值域非負，說明固定Maxout的值域不能一概寫全實數；平手點通常可能不可微。\n\n講義補讀：\n選哪一種活化，決定兩件事：輸出的範圍（能不能當機率）與導數的大小（學習時梯度能不能傳回去）。\n\n| 族 | 名稱 | 公式 $\\sigma(a)$ | 值域 | 導數 |\n|---|---|---|---|---|\n| 基礎 | Linear | $a$ | $(-\\infty,\\infty)$ | $1$ |\n| 基礎 | Binary step / Sign | $0$ 或 $1$／$-1$ 或 $+1$ | $\\{0,1\\}$／$\\{-1,+1\\}$ | $0$，在 $0$ 不可導 |\n| 基礎 | Softmax（整層） | $e^{a_i}/\\sum_je^{a_j}$ | $(0,1)$，和為 1 | $\\sigma_i(\\delta_{ij}-\\sigma_j)$ |\n| S 形 | Sigmoid | $1/(1+e^{-a})$ | $(0,1)$ | $\\sigma(1-\\sigma)$ |\n| S 形 | tanh | $(e^a-e^{-a})/(e^a+e^{-a})$ | $(-1,1)$ | $1-\\sigma^2$ |\n| S 形 | Gaussian | $e^{-a^2}$ | $(0,1]$ | $-2a\\,e^{-a^2}$ |\n| ReLU 族 | Softplus | $\\ln(1+e^a)$ | $(0,\\infty)$ | $1/(1+e^{-a})$ |\n| ReLU 族 | ReLU | $\\max(0,a)$ | $[0,\\infty)$ | $a>0$ 為 1，$a<0$ 為 0 |\n| ReLU 族 | Leaky ReLU | $a$ 若 $a\\ge0$，$0.01a$ 若 $a<0$ | $(-\\infty,\\infty)$ | $1$ 或 $0.01$ |\n| ReLU 族 | PReLU | 同上，斜率 $\\alpha$ 可學習 | $(-\\infty,\\infty)$ | $1$ 或 $\\alpha$ |\n| ReLU 族 | ELU | $a$ 若 $a\\ge0$，$\\alpha(e^a-1)$ 若 $a<0$ | $(-\\alpha,\\infty)$ | $1$ 或 $\\alpha e^a$ |\n| 跨層 | Maxout | 多個線性單元的最大值 | $(-\\infty,\\infty)$ | 取到最大者為 1，其餘為 0 |\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Candidate a_j is w_j transpose x plus b_j. For a unique winner, candidate derivatives are one for the winner and zero otherwise; the input gradient is the winner’s weight vector. The added absolute-value example has a nonnegative range, refuting a universal full-real range for fixed Maxout models. Ties may be nondifferentiable.\n\nSource context:\nThe choice of activation decides two things: the range of the output (whether it can serve as a probability) and the size of the derivative (whether gradients can flow back during learning).\n\nSoftmax and Maxout look at a whole layer (or several units) together, while the others act point by point. Linear in a hidden layer is the collapse of KP05, so it suits only the output layer of a regression.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 20,
+    "base_kind": "maxout",
+    "page": 20,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "隱藏層先試 ReLU 家族，再觀察問題",
+    "title_en": "Start hidden layers with ReLU, then diagnose",
+    "takeaway": "ReLU 是常用起點，{color=#b24b52}不是{/color}所有問題的保證。",
+    "takeaway_en": "ReLU is a common start, {color=#b24b52}not{/color} a universal guarantee.",
+    "source_anchors": [
+      "4. 怎麼選"
+    ],
+    "bridge": "上一頁：導數對候選值與對輸入不同；平手處需小心。",
+    "bridge_en": "Previously: Candidate derivatives differ from input derivatives; beware ties.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。這是常用起點，不是所有問題的保證。\n\n講義補讀：\n隱藏層先試 ReLU 家族，怕 dying ReLU 就換 Leaky ReLU 或 PReLU；輸出層看任務：回歸用 Linear，二元分類用 Sigmoid，多類別互斥分類用 Softmax。表中的導數都是「在可導處」：ReLU、Leaky ReLU 與 PReLU 在 $a=0$ 不可導，實作上約定一個值（通常取 0 或 1）。若一個樣本可同時屬於多類，改用每個輸出各自的 sigmoid，而不是 softmax。\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Explain the newly revealed evidence and mascot prompt: A common starting point, not a universal guarantee.\n\nSource context:\nTry the ReLU family first in hidden layers, and switch to Leaky ReLU or PReLU if dying ReLU is a worry; choose the output layer by task: Linear for regression, Sigmoid for binary classification, Softmax for mutually exclusive multi-class classification. All derivatives in the table hold \"where differentiable\": ReLU, Leaky ReLU and PReLU are not differentiable at $a=0$, and in practice a value is fixed by convention (usually 0 or 1). If a sample can belong to several classes at once, use an individual sigmoid per output instead of softmax.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "gate",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 21,
+    "base_kind": "hidden",
+    "page": 21,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "輸出活化由預測任務決定",
+    "title_en": "The prediction task determines the output activation",
+    "takeaway": "互斥多類別用 Softmax；值域本身不保證機率校準。",
+    "takeaway_en": "Use Softmax for exclusive classes; range alone does not ensure calibration.",
+    "source_anchors": [
+      "4. 怎麼選"
+    ],
+    "bridge": "上一頁：ReLU 是常用起點，不是所有問題的保證。",
+    "bridge_en": "Previously: ReLU is a common start, not a universal guarantee.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "0",
+      "1"
+    ],
+    "notes": [
+      "無限制實數回歸可用Linear、二元分類可用Sigmoid，互斥多類別用Softmax。多標籤問題若用多個Sigmoid是額外任務設定，與互斥分類不同；本頁不展開。輸出值域位於零一間不是已校準的證明。\n\n講義補讀：\n隱藏層先試 ReLU 家族，怕 dying ReLU 就換 Leaky ReLU 或 PReLU；輸出層看任務：回歸用 Linear，二元分類用 Sigmoid，多類別互斥分類用 Softmax。表中的導數都是「在可導處」：ReLU、Leaky ReLU 與 PReLU 在 $a=0$ 不可導，實作上約定一個值（通常取 0 或 1）。若一個樣本可同時屬於多類，改用每個輸出各自的 sigmoid，而不是 softmax。\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Linear suits unrestricted real targets, Sigmoid binary classification and Softmax exclusive multiclass classification. Multilabel tasks use a different setup and are not developed here. An output in (0,1) alone does not prove calibrated probabilities.\n\nSource context:\nTry the ReLU family first in hidden layers, and switch to Leaky ReLU or PReLU if dying ReLU is a worry; choose the output layer by task: Linear for regression, Sigmoid for binary classification, Softmax for mutually exclusive multi-class classification. All derivatives in the table hold \"where differentiable\": ReLU, Leaky ReLU and PReLU are not differentiable at $a=0$, and in practice a value is fixed by convention (usually 0 or 1). If a sample can belong to several classes at once, use an individual sigmoid per output instead of softmax.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "gate",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 22,
+    "base_kind": "output",
+    "page": 22,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "Sigmoid 與 Softplus 的導數接得起來",
+    "title_en": "Sigmoid and Softplus derivatives connect",
+    "takeaway": "一個導數是自己乘補數；另一個導數就是 Sigmoid。",
+    "takeaway_en": "One uses itself and its complement; the other yields Sigmoid.",
+    "source_anchors": [
+      "本單元重點整理"
+    ],
+    "bridge": "上一頁：互斥多類別用 Softmax；值域本身不保證機率校準。",
+    "bridge_en": "Previously: Use Softmax for exclusive classes; range alone does not ensure calibration.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "s^{\\prime}(a)=\\frac{e^{-a}}{(1+e^{-a})^2}",
+      "=\\frac{1}{1+e^{-a}}\\frac{e^{-a}}{1+e^{-a}}",
+      "=s(a)(1-s(a))",
+      "-3",
+      "0",
+      "3",
+      "0",
+      "0",
+      "3.3",
+      "a",
+      "f(a)",
+      "\\frac{d}{da}\\ln(1+e^a)=\\frac{e^a}{1+e^a}=s(a)"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。一個導數是自己乘補數；另一個導數就是 Sigmoid。\n\n講義補讀：\n- 「ReLU 處處可導，所以最安全」——不對，它在 $a=0$ 不可導，而且負側導數為 0，可能讓神經元死掉。\n- 「sigmoid 與 softmax 是同一回事」——不是：sigmoid 對單一個數，輸出彼此獨立；softmax 對整層，輸出加起來為 1。\n\n**想深入**（選讀）：Sigmoid 的導數可由 $\\sigma=(1+e^{-a})^{-1}$ 直接求得：$\\sigma'=e^{-a}(1+e^{-a})^{-2}=\\sigma\\cdot\\frac{e^{-a}}{1+e^{-a}}=\\sigma(1-\\sigma)$。Softplus 的導數正好是 sigmoid，所以 softplus 是「ReLU 的光滑版」，它的導數是「階梯的光滑版」。\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Explain the newly revealed evidence and mascot prompt: One uses itself and its complement; the other yields Sigmoid.\n\nSource context:\n**One-sentence summary**: Activation functions fall into four families by range and derivative; prefer the ReLU family, whose derivative does not shrink, in hidden layers, and choose Linear, Sigmoid or Softmax for the output layer by task.\n\n- \"ReLU is differentiable everywhere, so it is the safest.\" No: it is not differentiable at $a=0$, and its zero derivative on the negative side can kill a neuron.\n- \"Sigmoid and softmax are the same.\" No: sigmoid acts on one number and its outputs are independent; softmax acts on a whole layer and its outputs sum to 1.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 23,
+    "base_kind": "derive",
+    "page": 23,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "concept",
+    "title": "再深一層：把條件與主張接起來",
+    "title_en": "Go deeper: connect assumptions and claims",
+    "takeaway": "選讀內容也要分清來源敘述與適用條件。",
+    "takeaway_en": "Separate the optional claim from its assumptions.",
+    "source_anchors": [
+      "想深入"
+    ],
+    "bridge": "主線走完後，再看講義的選讀內容。",
+    "bridge_en": "After the main route, revisit the optional material.",
+    "visual": "原生流程連接條件、方法、結論，完整推理在導讀",
+    "math": [
+      "\\sigma=(1+e^{-a})^{-1}",
+      "\\sigma'=e^{-a}(1+e^{-a})^{-2}=\\sigma\\cdot\\frac{e^{-a}}{1+e^{-a}}=\\sigma(1-\\sigma)"
+    ],
+    "notes": [
+      "Sigmoid 的導數可由 $\\sigma=(1+e^{-a})^{-1}$ 直接求得：$\\sigma'=e^{-a}(1+e^{-a})^{-2}=\\sigma\\cdot\\frac{e^{-a}}{1+e^{-a}}=\\sigma(1-\\sigma)$。Softplus 的導數正好是 sigmoid，所以 softplus 是「ReLU 的光滑版」，它的導數是「階梯的光滑版」。\n\n本稿釐清：ReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "The derivative of the sigmoid follows directly from $\\sigma=(1+e^{-a})^{-1}$: $\\sigma'=e^{-a}(1+e^{-a})^{-2}=\\sigma\\cdot\\frac{e^{-a}}{1+e^{-a}}=\\sigma(1-\\sigma)$. The derivative of softplus is exactly the sigmoid, so softplus is a \"smooth ReLU\" and its derivative a \"smooth step\".\n\nClarification: ReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "answer_text": [
+      "Sigmoid 的導數可由 $\\sigma=(1+e^{-a})^{-1}$ 直接求得：$\\sigma'=e^{-a}(1+e^{-a})^{-2}=\\sigma\\cdot\\frac{e^{-a}}{1+e^{-a}}=\\sigma(1-\\sigma)$。Softplus 的導數正好是 sigmoid，所以 softplus 是「ReLU 的光滑版」，它的導數是「階梯的光滑版」。",
+      "The derivative of the sigmoid follows directly from $\\sigma=(1+e^{-a})^{-1}$: $\\sigma'=e^{-a}(1+e^{-a})^{-2}=\\sigma\\cdot\\frac{e^{-a}}{1+e^{-a}}=\\sigma(1-\\sigma)$. The derivative of softplus is exactly the sigmoid, so softplus is a \"smooth ReLU\" and its derivative a \"smooth step\"."
+    ],
+    "page": 24,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "迷思1：這個說法成立嗎？",
+    "title_en": "Misconception 1: does the claim hold?",
+    "takeaway": "先寫下你的判斷與條件，再翻頁核對。",
+    "takeaway_en": "Write your judgment and conditions before checking.",
+    "source_anchors": [
+      "常見迷思#1"
+    ],
+    "bridge": "主線有了，試著辨認一個容易混淆的說法。",
+    "bridge_en": "Use the main ideas to examine a tempting claim.",
+    "visual": "中立問題與兩個待核對分支",
+    "math": [],
+    "notes": [
+      "「ReLU 處處可導，所以最安全」",
+      "ReLU is differentiable everywhere, so it is the safest."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "「ReLU 處處可導，所以最安全」",
+      "ReLU is differentiable everywhere, so it is the safest."
+    ],
+    "self_check": true,
+    "page": 25,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "explain",
+    "title": "迷思1解析：條件不能省略",
+    "title_en": "Misconception 1: keep the conditions",
+    "takeaway": "先把適用範圍說清楚，才判斷結論。",
+    "takeaway_en": "State the scope before accepting the conclusion.",
+    "source_anchors": [
+      "常見迷思#1"
+    ],
+    "bridge": "核對上一頁：先問是哪個模型、哪個條件。",
+    "bridge_en": "Check the previous page: which model and which assumptions?",
+    "visual": "條件到推理到正確結論，角色提醒例外",
+    "math": [],
+    "notes": [
+      "不對，它在 $a=0$ 不可導，而且負側導數為 0，可能讓神經元死掉。\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "No: it is not differentiable at $a=0$, and its zero derivative on the negative side can kill a neuron.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "不對，它在 $a=0$ 不可導，而且負側導數為 0，可能讓神經元死掉。",
+      "No: it is not differentiable at $a=0$, and its zero derivative on the negative side can kill a neuron."
+    ],
+    "self_check": true,
+    "page": 26,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "迷思2：這個說法成立嗎？",
+    "title_en": "Misconception 2: does the claim hold?",
+    "takeaway": "先寫下你的判斷與條件，再翻頁核對。",
+    "takeaway_en": "Write your judgment and conditions before checking.",
+    "source_anchors": [
+      "常見迷思#2"
+    ],
+    "bridge": "主線有了，試著辨認一個容易混淆的說法。",
+    "bridge_en": "Use the main ideas to examine a tempting claim.",
+    "visual": "中立問題與兩個待核對分支",
+    "math": [],
+    "notes": [
+      "「sigmoid 與 softmax 是同一回事」",
+      "Sigmoid and softmax are the same."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "「sigmoid 與 softmax 是同一回事」",
+      "Sigmoid and softmax are the same."
+    ],
+    "self_check": true,
+    "page": 27,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "explain",
+    "title": "迷思2解析：條件不能省略",
+    "title_en": "Misconception 2: keep the conditions",
+    "takeaway": "先把適用範圍說清楚，才判斷結論。",
+    "takeaway_en": "State the scope before accepting the conclusion.",
+    "source_anchors": [
+      "常見迷思#2"
+    ],
+    "bridge": "核對上一頁：先問是哪個模型、哪個條件。",
+    "bridge_en": "Check the previous page: which model and which assumptions?",
+    "visual": "條件到推理到正確結論，角色提醒例外",
+    "math": [],
+    "notes": [
+      "不是：sigmoid 對單一個數，輸出彼此獨立；softmax 對整層，輸出加起來為 1。\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "No: sigmoid acts on one number and its outputs are independent; softmax acts on a whole layer and its outputs sum to 1.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "不是：sigmoid 對單一個數，輸出彼此獨立；softmax 對整層，輸出加起來為 1。",
+      "No: sigmoid acts on one number and its outputs are independent; softmax acts on a whole layer and its outputs sum to 1."
+    ],
+    "self_check": true,
+    "page": 28,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習1：先獨立完成，再翻頁",
+    "title_en": "Practice 1: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#1"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "算 sigmoid 在 $a=1$ 的輸出與導數。（提示：先算 $\\sigma(1)=1/(1+e^{-1})$，再用 $\\sigma(1-\\sigma)$。）",
+      "Compute the output and derivative of the sigmoid at $a=1$. (Hint: compute $\\sigma(1)=1/(1+e^{-1})$ first, then use $\\sigma(1-\\sigma)$.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "算 sigmoid 在 $a=1$ 的輸出與導數。（提示：先算 $\\sigma(1)=1/(1+e^{-1})$，再用 $\\sigma(1-\\sigma)$。）",
+      "Compute the output and derivative of the sigmoid at $a=1$. (Hint: compute $\\sigma(1)=1/(1+e^{-1})$ first, then use $\\sigma(1-\\sigma)$.)"
+    ],
+    "self_check": true,
+    "page": 29,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "Sigmoid 在一的值約零點七三一，導數約零點一九七",
+    "title_en": "At one, sigmoid is about 0.731 and its derivative about 0.197",
+    "takeaway": "中間值保留完整精度，最後才取小數。",
+    "takeaway_en": "Keep full intermediate precision and round only at the end.",
+    "source_anchors": [
+      "小練習#1",
+      "解題示範"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "\\sigma(1)=\\frac1{1+e^{-1}}\\approx0.731058579",
+      "\\sigma\\prime(1)=\\sigma(1)(1-\\sigma(1))\\approx0.196611933",
+      "0.196611933<0.25"
+    ],
+    "notes": [
+      "先算sigmoid再用同一個完整值求導數。來源把0.3679與0.7311當中間值是四捨五入展示，這裡不把它們當精確常數。導數低於零處的最大值四分之一。",
+      "Compute the sigmoid and then use that full value in its derivative. Rounded source decimals are displays, not exact intermediate constants. The derivative is below the maximum one quarter."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 30,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習2：先獨立完成，再翻頁",
+    "title_en": "Practice 2: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "對 $\\mathbf{a}=(1,1,1)$ 做 softmax，結果是什麼？（提示：三個指數相同。）",
+      "Apply softmax to $\\mathbf{a}=(1,1,1)$. What is the result? (Hint: the three exponentials are equal.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "對 $\\mathbf{a}=(1,1,1)$ 做 softmax，結果是什麼？（提示：三個指數相同。）",
+      "Apply softmax to $\\mathbf{a}=(1,1,1)$. What is the result? (Hint: the three exponentials are equal.)"
+    ],
+    "self_check": true,
+    "page": 31,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "相同分數經 Softmax，得到均勻三分布",
+    "title_en": "Equal logits give a uniform three-class softmax",
+    "takeaway": "共同平移分數，不會改變 Softmax。",
+    "takeaway_en": "A common logit shift does not change softmax.",
+    "source_anchors": [
+      "小練習#2"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "p_j=\\frac{e^1}{e^1+e^1+e^1}=\\frac13",
+      "\\mathbf p=(1/3,1/3,1/3),\\quad\\sum_jp_j=1"
+    ],
+    "notes": [
+      "三個分子相同、分母是同一數的三倍，所以每個機率三分之一。這不是三個獨立sigmoid，也不是每個輸出都等於一。",
+      "Each numerator is the same and the denominator is three times it, giving one third per class. These are not independent sigmoids and the outputs are not all one."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 32,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "question",
+    "title": "練習3：先獨立完成，再翻頁",
+    "title_en": "Practice 3: solve it before turning the page",
+    "takeaway": "先列已知、公式與條件，不要跳過中間步驟。",
+    "takeaway_en": "List givens, formulas and conditions; keep intermediate steps.",
+    "source_anchors": [
+      "小練習#3"
+    ],
+    "bridge": "把剛才的方法換成自己的手算。",
+    "bridge_en": "Now apply the method independently.",
+    "visual": "完整原題與提示，不指示答案",
+    "math": [],
+    "notes": [
+      "某顆神經元的輸入對所有訓練資料都是負的，用 ReLU 會怎樣？換成 Leaky ReLU 會怎樣？（提示：看導數。）",
+      "A neuron's input is negative for all training data. What happens with ReLU, and what with Leaky ReLU? (Hint: look at the derivative.)"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "某顆神經元的輸入對所有訓練資料都是負的，用 ReLU 會怎樣？換成 Leaky ReLU 會怎樣？（提示：看導數。）",
+      "A neuron's input is negative for all training data. What happens with ReLU, and what with Leaky ReLU? (Hint: look at the derivative.)"
+    ],
+    "self_check": true,
+    "page": 33,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "calculation",
+    "title": "ReLU 的負側擋住梯度，Leaky 留下一條小斜率",
+    "title_en": "ReLU blocks the negative-side gradient; Leaky leaves a slope",
+    "takeaway": "Leaky 提供非零局部導數，不保證整網路永不梯度消失。",
+    "takeaway_en": "A nonzero local derivative is not a network-wide gradient guarantee.",
+    "source_anchors": [
+      "小練習#3"
+    ],
+    "bridge": "核對上一頁：先算，再解釋方向或條件。",
+    "bridge_en": "Check the previous page: calculate, then explain the direction or conditions.",
+    "visual": "三步算式配對原生標記與連接線，概念題用條件推理流程",
+    "math": [
+      "a<0:\\quad f_{\\rm ReLU}(a)=0,\\quad f\\prime_{\\rm ReLU}(a)=0",
+      "f_{\\rm Leaky}(a)=\\alpha a,\\quad f\\prime_{\\rm Leaky}(a)=\\alpha,\\quad\\alpha=0.01"
+    ],
+    "notes": [
+      "若此單元對全部樣本都在負側，普通鏈式梯度經ReLU會歸零。Leaky保留0.01的斜率，但其他層、上游梯度或資料問題仍可使更新很小。正則化或其他機制也可能更新參數，不能無條件說任何情況下權重永遠不變。",
+      "If every example is on the negative side, the ordinary gradient through ReLU vanishes. Leaky keeps a slope of 0.01, but other layers and upstream gradients can still make updates tiny. Other mechanisms, such as regularization, may also update parameters."
+    ],
+    "new_terms": [],
+    "numbers": [
+      "added_practice"
+    ],
+    "mascot": {
+      "mood": "think",
+      "prop": "steps",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "self_check": true,
+    "page": 34,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核1：選出最符合條件的一項",
+    "title_en": "Check 1: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "1. 為何 ReLU 被視為深度學習的里程碑？",
+      "Why is ReLU a milestone?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "1. 為何 ReLU 被視為深度學習的里程碑？",
+      "Why is ReLU a milestone?"
+    ],
+    "options": [
+      [
+        "值域 $[-1,1]$ 且零中心",
+        "Range $[-1,1]$ and zero-centred"
+      ],
+      [
+        "正值段導數恆為 1 避免梯度消失，並歸零負值帶來稀疏",
+        "Derivative one on the positive side and zero negative outputs"
+      ],
+      [
+        "輸出可當機率",
+        "Its output is automatically a probability"
+      ],
+      [
+        "負區間有非零斜率",
+        "A nonzero negative-side derivative"
+      ]
+    ],
+    "quiz_index": 1,
+    "self_check": true,
+    "page": 35,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核1解析：對照條件逐項判斷",
+    "title_en": "Check 1: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#1"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "ReLU正側局部導數一不逐層縮小，負側歸零帶稀疏；仍不能保證整網路無梯度消失。",
+      "The positive-side derivative one avoids that local shrinkage and negative outputs become zero, but network-wide gradients are not guaranteed."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "ReLU正側局部導數一不逐層縮小，負側歸零帶稀疏；仍不能保證整網路無梯度消失。",
+      "The positive-side derivative one avoids that local shrinkage and negative outputs become zero, but network-wide gradients are not guaranteed."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 36,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核2：選出最符合條件的一項",
+    "title_en": "Check 2: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "2. 哪一種是「跨層」而非逐點作用、輸出可視為多類機率分布？",
+      "Which acts across a layer and gives a distribution?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "2. 哪一種是「跨層」而非逐點作用、輸出可視為多類機率分布？",
+      "Which acts across a layer and gives a distribution?"
+    ],
+    "options": [
+      [
+        "ReLU",
+        "ReLU"
+      ],
+      [
+        "maxout",
+        "maxout"
+      ],
+      [
+        "softmax",
+        "softmax"
+      ],
+      [
+        "tanh",
+        "tanh"
+      ]
+    ],
+    "quiz_index": 2,
+    "self_check": true,
+    "page": 37,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核2解析：對照條件逐項判斷",
+    "title_en": "Check 2: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#2"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "Softmax跨指定類別軸共同正規化；逐點sigmoid、tanh、ReLU不同。",
+      "Softmax jointly normalizes along the class axis, unlike pointwise sigmoid, tanh or ReLU."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "Softmax跨指定類別軸共同正規化；逐點sigmoid、tanh、ReLU不同。",
+      "Softmax jointly normalizes along the class axis, unlike pointwise sigmoid, tanh or ReLU."
+    ],
+    "answer": 2,
+    "self_check": true,
+    "page": 38,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核3：選出最符合條件的一項",
+    "title_en": "Check 3: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "3. 「dying ReLU」指的是？",
+      "What is \"dying ReLU\"?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "3. 「dying ReLU」指的是？",
+      "What is \"dying ReLU\"?"
+    ],
+    "options": [
+      [
+        "輸出太大而爆炸",
+        "Its output always explodes"
+      ],
+      [
+        "負區間導數為 0、權重不再更新而死掉",
+        "Zero negative-side derivative can deactivate the unit"
+      ],
+      [
+        "無法處理正數輸入",
+        "It cannot process positive inputs"
+      ],
+      [
+        "計算太慢",
+        "It is too slow"
+      ]
+    ],
+    "quiz_index": 3,
+    "self_check": true,
+    "page": 39,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核3解析：對照條件逐項判斷",
+    "title_en": "Check 3: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#3"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "負區間普通反傳梯度為零可能使單元失活；不代表任何正則化或共享路徑都不能改參數。",
+      "Zero negative-side gradients can deactivate the unit; other mechanisms may still affect parameters."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "負區間普通反傳梯度為零可能使單元失活；不代表任何正則化或共享路徑都不能改參數。",
+      "Zero negative-side gradients can deactivate the unit; other mechanisms may still affect parameters."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 40,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quiz",
+    "title": "檢核4：選出最符合條件的一項",
+    "title_en": "Check 4: choose the best supported option",
+    "takeaway": "選項樣式相同；先作答，再看後頁解析。",
+    "takeaway_en": "Choices have equal styling; answer before reading the explanation.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "檢核概念：答案之外，還要能說出理由。",
+    "bridge_en": "Check understanding: justify the choice, not just its letter.",
+    "visual": "四選項同色等尺寸，不以角色或圖示洩漏答案",
+    "math": [],
+    "notes": [
+      "4. PReLU 與 Leaky ReLU 的主要差別？",
+      "How do PReLU and Leaky ReLU differ?"
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "question": [
+      "4. PReLU 與 Leaky ReLU 的主要差別？",
+      "How do PReLU and Leaky ReLU differ?"
+    ],
+    "options": [
+      [
+        "值域不同",
+        "Different ranges only"
+      ],
+      [
+        "PReLU 的負區間斜率 $\\alpha$ 可學習，Leaky 固定 0.01",
+        "PReLU learns the negative slope; Leaky fixes it"
+      ],
+      [
+        "PReLU 只能用在輸出層",
+        "PReLU only works at the output"
+      ],
+      [
+        "完全相同",
+        "They are identical"
+      ]
+    ],
+    "quiz_index": 4,
+    "self_check": true,
+    "page": 41,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "quizanswer",
+    "title": "檢核4解析：對照條件逐項判斷",
+    "title_en": "Check 4: justify the choice from its conditions",
+    "takeaway": "答對之外，也要知道其他選項錯在哪裡。",
+    "takeaway_en": "Explain both the supported option and why the alternatives fail.",
+    "source_anchors": [
+      "自我檢核#4"
+    ],
+    "bridge": "核對上一頁：把選項放回講義條件。",
+    "bridge_en": "Check the previous choices against the handout’s assumptions.",
+    "visual": "正解／更正標記連到三段理由，完整排除說明在導讀",
+    "math": [],
+    "notes": [
+      "PReLU的負側斜率可學，Leaky通常固定；0.01是本課例值，不是唯一合法固定值。",
+      "PReLU learns the negative slope; Leaky usually fixes it. The course’s 0.01 is an example, not the only valid slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "cards",
+      "bubble": "先查條件，\n再核對每一步。",
+      "bubble_en": "Check the scope.\nVerify each step."
+    },
+    "answer_text": [
+      "PReLU的負側斜率可學，Leaky通常固定；0.01是本課例值，不是唯一合法固定值。",
+      "PReLU learns the negative slope; Leaky usually fixes it. The course’s 0.01 is an example, not the only valid slope."
+    ],
+    "answer": 1,
+    "self_check": true,
+    "page": 42,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "review",
+    "title": "重點回顧：把輸入、運算與限制連起來",
+    "title_en": "Review: connect inputs, operations and limitations",
+    "takeaway": "用自己的話重述方法，再檢查例外。",
+    "takeaway_en": "Restate the method, then check exceptions.",
+    "source_anchors": [
+      "重點:一句話重點",
+      "重點:白話說明",
+      "重點:正式定義",
+      "重點:例子",
+      "重點:圖",
+      "本單元重點整理"
+    ],
+    "bridge": "練習與檢核完成後，回到整個單元。",
+    "bridge_en": "After exercises and checks, reconnect the whole unit.",
+    "visual": "條件、核心方法、算例、限制的知識流程",
+    "math": [],
+    "notes": [
+      "活化函數依值域與導數分四族；隱藏層優先用導數不縮小的 ReLU 家族，輸出層依任務選 Linear、Sigmoid 或 Softmax。\n\n每顆神經元門口有一個「閘門」把加權和轉成輸出。階梯是硬開關；S 形是慢慢開、開到底就不再增加的水龍頭；ReLU 是「負的全擋掉，正的原樣通過」。閘門的形狀決定訊號與學習用的回饋能不能順利通過。\n\n見第 1 節的表；softmax $\\sigma_i(\\mathbf{a})=e^{a_i}/\\sum_je^{a_j}$；ReLU $\\max(0,a)$；Leaky ReLU 負側斜率 $0.01$。\n\nsoftmax$(2,1,0)=(0.665,0.245,0.090)$；$a=-2$ 時 ReLU、Leaky、ELU 的導數是 $0$、$0.01$、$0.135$。\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Activation functions fall into four families by range and derivative; prefer the ReLU family, whose derivative does not shrink, in hidden layers, and choose Linear, Sigmoid or Softmax for the output layer by task.\n\nThere is a \"gate\" at the door of every neuron that turns the weighted sum into an output. The step is a hard switch; S-shapes are a tap that opens slowly and stops increasing when fully open; ReLU \"blocks everything negative and lets positives pass unchanged\". The shape of the gate decides whether signals, and the feedback used for learning, can get through.\n\nSee the table of section 1; softmax $\\sigma_i(\\mathbf{a})=e^{a_i}/\\sum_je^{a_j}$; ReLU $\\max(0,a)$; Leaky ReLU with negative slope $0.01$.\n\nsoftmax$(2,1,0)=(0.665,0.245,0.090)$; at $a=-2$ the derivatives of ReLU, Leaky and ELU are $0$, $0.01$ and $0.135$.\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "page": 43,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "scope",
+    "title": "來源與限制：別把特例當成保證",
+    "title_en": "Source and scope: do not turn an example into a guarantee",
+    "takeaway": "原始數字可重現，適用條件也必須保留。",
+    "takeaway_en": "Reproduce the values and preserve their scope.",
+    "source_anchors": [
+      "來源更正與取捨"
+    ],
+    "bridge": "最後核對：哪些是講義例子，哪些是一般結論？",
+    "bridge_en": "Finally: which statements are examples, and which are general claims?",
+    "visual": "來源到重算到條件三個關卡，提醒科學圖與角色比喻不同",
+    "math": [],
+    "notes": [
+      "ReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "ReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "ruler",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "page": 44,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  },
+  {
+    "kind": "base",
+    "title": "有了輸出，下一步要衡量錯多少",
+    "title_en": "Next, measure how far the output misses",
+    "takeaway": "KP07：把預測與目標接成損失函數。",
+    "takeaway_en": "KP07 connects predictions and targets through a loss function.",
+    "source_anchors": [
+      "重點:留給下一個知識點的問題"
+    ],
+    "bridge": "上一頁：一個導數是自己乘補數；另一個導數就是 Sigmoid。",
+    "bridge_en": "Previously: One uses itself and its complement; the other yields Sigmoid.",
+    "visual": "沿用已核對原生科學圖與精算位置，補導學角色和完整導讀",
+    "math": [
+      "L"
+    ],
+    "notes": [
+      "先確認圖中的輸入、方向與條件。KP07：把預測與目標接成損失函數。\n\n講義補讀：\n| 題 / Question | A | B | C | D | 提示 / Hint |\n|---|---|---|---|---|---|\n| 1. 為何 ReLU 被視為深度學習的里程碑？ / Why is ReLU a milestone? | 值域 $[-1,1]$ 且零中心 | 正值段導數恆為 1 避免梯度消失，並歸零負值帶來稀疏 | 輸出可當機率 | 負區間有非零斜率 | 看第 3 節。 / Section 3. |\n| 2. 哪一種是「跨層」而非逐點作用、輸出可視為多類機率分布？ / Which acts across a layer and gives a distribution? | ReLU | maxout | softmax | tanh | 看第 2 節。 / Section 2. |\n| 3. 「dying ReLU」指的是？ / What is \"dying ReLU\"? | 輸出太大而爆炸 | 負區間導數為 0、權重不再更新而死掉 | 無法處理正數輸入 | 計算太慢 | 看導數。 / Look at the derivative. |\n| 4. PReLU 與 Leaky ReLU 的主要差別？ / How do PReLU and Leaky ReLU differ? | 值域不同 | PReLU 的負區間斜率 $\\alpha$ 可學習，Leaky 固定 0.01 | PReLU 只能用在輸出層 | 完全相同 | 看符號表。 / See the symbol table. |\n\n**留給下一個知識點的問題**：網路輸出了一個結果，我們要拿它和正確答案比，並把「差多少」變成一個數，才能知道往哪個方向調權重。這個數該怎麼定義？\n\nReLU在零不可微，正側導數一只避免局部縮小，不保證全網路無梯度消失。Softmax是聯合正規化；maxout是多個仿射分數的最大值；固定負斜率0.01只是本課例。",
+      "Explain the newly revealed evidence and mascot prompt: KP07 connects predictions and targets through a loss function.\n\nSource context:\n**Plain explanation**: There is a \"gate\" at the door of every neuron that turns the weighted sum into an output. The step is a hard switch; S-shapes are a tap that opens slowly and stops increasing when fully open; ReLU \"blocks everything negative and lets positives pass unchanged\". The shape of the gate decides whether signals, and the feedback used for learning, can get through.\n\n**Question for the next knowledge point**: The network gives a result, and we must compare it with the right answer and turn \"how far off\" into one number before we know which way to adjust the weights. How should that number be defined?\n\nReLU is nondifferentiable at zero; its positive derivative does not guarantee network-wide gradients. Softmax jointly normalizes, maxout maximizes affine responses, and 0.01 is an example fixed negative slope."
+    ],
+    "new_terms": [],
+    "numbers": [],
+    "mascot": {
+      "mood": "think",
+      "prop": "bridge",
+      "bubble": "先看條件，\n你會怎麼判斷？",
+      "bubble_en": "Check conditions.\nWhat do you expect?"
+    },
+    "base_page": 24,
+    "base_kind": "next",
+    "page": 45,
+    "note": "舊版已核對的原生圖重用，新增導學稿、承接與題解；本次未改上游教材。"
+  }
+]

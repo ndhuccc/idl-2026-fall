@@ -1,0 +1,262 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP03 Signed labels and the update rule",
+  "source_section": "單元主張",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "coding",
+  "title": "Signed labels require a signed output",
+  "source_section": "符號表、§1",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "four",
+  "title": "Equal signs give zero; opposite signs give plus or minus two",
+  "source_section": "§1",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "algebra",
+  "title": "On a mistake, the error is twice the label",
+  "source_section": "§1",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "rule",
+  "title": "Absorb the factor two into the learning rate",
+  "source_section": "§1",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "normal",
+  "title": "The weight vector is perpendicular to the boundary",
+  "source_section": "§2",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "distance",
+  "title": "Divide the score by the weight norm to obtain distance",
+  "source_section": "§2",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "labeldistance",
+  "title": "Multiply by the label to test the correct side",
+  "source_section": "§2",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "tie",
+  "title": "A negative point on the boundary is wrong even at zero distance",
+  "source_section": "§2邊界釐清",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "distancesA",
+  "title": "The origin is correct, but the upper-left point is not",
+  "source_section": "§3距離",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "distancesB",
+  "title": "The lower-right point is wrong; the upper-right is correct",
+  "source_section": "§3距離",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "loss",
+  "title": "The loss sums the negative scores of misclassified points",
+  "source_section": "§2、來源更正",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "gradient",
+  "title": "Descending the loss adds label times input",
+  "source_section": "§2",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "descent",
+  "title": "Subtracting the negative gradient gives the algebraic rule",
+  "source_section": "§2",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "numeric_update",
+  "title": "How one mistake changes the weights and bias",
+  "source_section": "§3一次更新",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "numeric_score",
+  "title": "The update moves this point from a negative to a positive score",
+  "source_section": "§3一次更新",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "trace",
+  "title": "Half the rate reproduces every KP02 weight update",
+  "source_section": "§3軌跡",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "gate",
+  "title": "Open the update gate only for a mistake",
+  "source_section": "重點整理、迷思",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 19,
+  "kind": "next",
+  "title": "Two routes give one rule, but can one line separate every dataset?",
+  "source_section": "留給下一知識點問題",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 20,
+  "kind": "practice1",
+  "title": "Practice: update the other misclassified point",
+  "source_section": "小練習1",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 21,
+  "kind": "practice2",
+  "title": "Practice: how far is the origin from this boundary?",
+  "source_section": "小練習2",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 22,
+  "kind": "practice3",
+  "title": "Practice: why can the error not be plus or minus one?",
+  "source_section": "小練習3",
+  "first_step": 64,
+  "final_step": 66,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 23,
+  "kind": "quiz1",
+  "title": "Self-check: which values can a sign output take?",
+  "source_section": "自我檢核1",
+  "first_step": 67,
+  "final_step": 69,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 24,
+  "kind": "quiz2",
+  "title": "Self-check: how does the update simplify on a mistake?",
+  "source_section": "自我檢核2",
+  "first_step": 70,
+  "final_step": 72,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 25,
+  "kind": "quiz3",
+  "title": "Self-check: why use a label-weighted score?",
+  "source_section": "自我檢核3〔原題釐清〕",
+  "first_step": 73,
+  "final_step": 75,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 26,
+  "kind": "quiz4",
+  "title": "Self-check: how do the two derivations yield the same update?",
+  "source_section": "自我檢核4〔原題釐清〕",
+  "first_step": 76,
+  "final_step": 78,
+  "beats": 3,
+  "extension": true
+ }
+]

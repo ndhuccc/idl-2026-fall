@@ -1,0 +1,312 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP09 RBF and SOM",
+  "source_section": "前言與目標",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "local",
+  "title": "A Gaussian responds most near its centre",
+  "source_section": "§1 高斯基函數",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "fixed",
+  "title": "Set centres and widths, then fix the features",
+  "source_section": "§1 RBF流程",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "linear",
+  "title": "Nonlinear features, linear output weights",
+  "source_section": "§1 輸出式",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "matrix",
+  "title": "Each column represents one observation",
+  "source_section": "§1 矩陣符號",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "solve",
+  "title": "Fixed features give normal equations",
+  "source_section": "§1 最小二乘",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "xorinput",
+  "title": "XOR: four points without a linear separator",
+  "source_section": "§1 XOR與來源取捨",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "xordist",
+  "title": "Square the distances, then exponentiate",
+  "source_section": "§1 XOR算例",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "xorfeatures",
+  "title": "Different inputs can share a feature point",
+  "source_section": "§1 XOR表與圖",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "bias",
+  "title": "This exact XOR fit needs a bias",
+  "source_section": "§1 XOR、來源取捨",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "xorweights",
+  "title": "Full precision gives the exact zero–one fit",
+  "source_section": "§1 XOR最小二乘",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "xorfit",
+  "title": "Verify all four outputs using the same fit",
+  "source_section": "§1 XOR輸出",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "xorboundary",
+  "title": "A line suffices in feature space",
+  "source_section": "§1 XOR分界圖",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "width",
+  "title": "Very broad bases can become hard to distinguish",
+  "source_section": "選讀、來源取捨",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "som",
+  "title": "A SOM learns prototypes, not class names",
+  "source_section": "§2 SOM介紹",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "twospaces",
+  "title": "Find the winner in data space; neighbours on the grid",
+  "source_section": "§2 拓撲與鄰域",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "winner",
+  "title": "Three distances select this winner",
+  "source_section": "§2 手算一步",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "update",
+  "title": "The winner and its left neighbour both move",
+  "source_section": "§2 手算鄰域更新",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 19,
+  "kind": "rule",
+  "title": "Keep the neighbourhood condition beside the update",
+  "source_section": "§2 五步訓練",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 20,
+  "kind": "schedule",
+  "title": "Shrink the learning rate and neighbourhood gradually",
+  "source_section": "§2 衰減、來源取捨",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 21,
+  "kind": "gaussian",
+  "title": "The experiment uses a Gaussian neighbourhood",
+  "source_section": "SOM圖產圖程式",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 22,
+  "kind": "grid",
+  "title": "Reproduce 4,000 updates of the expanding grid",
+  "source_section": "SOM圖與產圖程式",
+  "first_step": 64,
+  "final_step": 66,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 23,
+  "kind": "compare",
+  "title": "RBF versus SOM: what stays fixed and what moves?",
+  "source_section": "重點整理與常見迷思",
+  "first_step": 67,
+  "final_step": 69,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 24,
+  "kind": "next",
+  "title": "Next: what can one hidden layer represent?",
+  "source_section": "留給下一知識點的問題",
+  "first_step": 70,
+  "final_step": 72,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 25,
+  "kind": "practice1",
+  "title": "Practice 1: Gaussian features of the midpoint?",
+  "source_section": "小練習1",
+  "first_step": 73,
+  "final_step": 75,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 26,
+  "kind": "practice2",
+  "title": "Practice 2: select and update the winner",
+  "source_section": "小練習2",
+  "first_step": 76,
+  "final_step": 78,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 27,
+  "kind": "practice3",
+  "title": "Practice 3: why can the output layer be solved at once?",
+  "source_section": "小練習3",
+  "first_step": 79,
+  "final_step": 81,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 28,
+  "kind": "quiz1",
+  "title": "Check 1: how are centres and widths set?",
+  "source_section": "自我檢核1",
+  "first_step": 82,
+  "final_step": 84,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 29,
+  "kind": "quiz2",
+  "title": "Check 2: what replaces the inverse when singular?",
+  "source_section": "自我檢核2",
+  "first_step": 85,
+  "final_step": 87,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 30,
+  "kind": "quiz3",
+  "title": "Check 3: how does a SOM define its winner?",
+  "source_section": "自我檢核3",
+  "first_step": 88,
+  "final_step": 90,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 31,
+  "kind": "quiz4",
+  "title": "Check 4: which neurons are updated?",
+  "source_section": "自我檢核4",
+  "first_step": 91,
+  "final_step": 93,
+  "beats": 3,
+  "extension": true
+ }
+]

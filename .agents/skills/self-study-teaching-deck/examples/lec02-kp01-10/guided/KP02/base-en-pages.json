@@ -1,0 +1,272 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP02 Update only when wrong",
+  "source_section": "§1",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "supervised",
+  "title": "Labels tell the Perceptron how to change",
+  "source_section": "§1",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "bias",
+  "title": "Add a constant input to learn the bias too",
+  "source_section": "符號表",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "loop",
+  "title": "For each sample, predict before comparing",
+  "source_section": "§1",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "errors",
+  "title": "Three errors select three actions",
+  "source_section": "§2",
+  "first_step": 13,
+  "final_step": 14,
+  "beats": 2,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "rule",
+  "title": "Error times input gives each weight correction",
+  "source_section": "§2、重點整理",
+  "first_step": 15,
+  "final_step": 17,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "direction",
+  "title": "One update moves this sample in the right direction",
+  "source_section": "§2",
+  "first_step": 18,
+  "final_step": 20,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "dataset",
+  "title": "Learn OR from zeros in a fixed order",
+  "source_section": "§3〔補充〕",
+  "first_step": 21,
+  "final_step": 23,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "update1",
+  "title": "Update 1: Lower the bias to silence the origin",
+  "source_section": "§3〔補充〕",
+  "first_step": 24,
+  "final_step": 26,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "update2",
+  "title": "Update 2: Raise the second weight and the bias",
+  "source_section": "§3〔補充〕",
+  "first_step": 27,
+  "final_step": 29,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "update3",
+  "title": "Update 3: The origin is wrong again: lower the bias",
+  "source_section": "§3〔補充〕",
+  "first_step": 30,
+  "final_step": 32,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "update4",
+  "title": "Update 4: Raise the first weight and the bias",
+  "source_section": "§3〔補充〕",
+  "first_step": 33,
+  "final_step": 35,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "update5",
+  "title": "Update 5: Lower the bias once more to separate all four",
+  "source_section": "§3〔補充〕",
+  "first_step": 36,
+  "final_step": 38,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "boundaries",
+  "title": "After three passes, the line separates all four",
+  "source_section": "§3、lec02-kp02-or-training",
+  "first_step": 39,
+  "final_step": 40,
+  "beats": 2,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "stop",
+  "title": "Stop only after a complete pass without mistakes",
+  "source_section": "§3、§4",
+  "first_step": 41,
+  "final_step": 43,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "interference",
+  "title": "Another sample can spoil a corrected point",
+  "source_section": "重點整理、迷思",
+  "first_step": 44,
+  "final_step": 45,
+  "beats": 2,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "separable",
+  "title": "Finite convergence needs linearly separable data",
+  "source_section": "§4〔補充〕",
+  "first_step": 46,
+  "final_step": 47,
+  "beats": 2,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "rate",
+  "title": "From zero, a positive learning rate only scales the weights",
+  "source_section": "§4〔補充〕",
+  "first_step": 48,
+  "final_step": 50,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 19,
+  "kind": "batch",
+  "title": "A batch sums the corrections before one update",
+  "source_section": "§2",
+  "first_step": 51,
+  "final_step": 53,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 20,
+  "kind": "next",
+  "title": "Next, signed labels will reveal the geometry",
+  "source_section": "留給下一知識點問題",
+  "first_step": 54,
+  "final_step": 55,
+  "beats": 2,
+  "extension": false
+ },
+ {
+  "page": 21,
+  "kind": "practice1",
+  "title": "Practice: does this sample need an update?",
+  "source_section": "小練習1",
+  "first_step": 56,
+  "final_step": 57,
+  "beats": 2,
+  "extension": true
+ },
+ {
+  "page": 22,
+  "kind": "practice2",
+  "title": "Practice: which sample updates first in a new order?",
+  "source_section": "小練習2",
+  "first_step": 58,
+  "final_step": 59,
+  "beats": 2,
+  "extension": true
+ },
+ {
+  "page": 23,
+  "kind": "practice3",
+  "title": "Practice: why does doubling the rate preserve predictions?",
+  "source_section": "小練習3",
+  "first_step": 60,
+  "final_step": 61,
+  "beats": 2,
+  "extension": true
+ },
+ {
+  "page": 24,
+  "kind": "quiz1",
+  "title": "Self-check: who proposed the Perceptron in 1958?",
+  "source_section": "自我檢核1",
+  "first_step": 62,
+  "final_step": 63,
+  "beats": 2,
+  "extension": true
+ },
+ {
+  "page": 25,
+  "kind": "quiz2",
+  "title": "Self-check: how does this differ from Hebbian learning?",
+  "source_section": "自我檢核2",
+  "first_step": 64,
+  "final_step": 65,
+  "beats": 2,
+  "extension": true
+ },
+ {
+  "page": 26,
+  "kind": "quiz3",
+  "title": "Self-check: what happens to weights after a correct guess?",
+  "source_section": "自我檢核3",
+  "first_step": 66,
+  "final_step": 67,
+  "beats": 2,
+  "extension": true
+ },
+ {
+  "page": 27,
+  "kind": "quiz4",
+  "title": "Self-check: how does a batch become a single-sample update?",
+  "source_section": "自我檢核4",
+  "first_step": 68,
+  "final_step": 69,
+  "beats": 2,
+  "extension": true
+ }
+]

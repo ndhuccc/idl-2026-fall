@@ -1,0 +1,292 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP07 Loss functions",
+  "source_section": "前言",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "residual",
+  "title": "Subtract the target to obtain a residual",
+  "source_section": "符號表、§1",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "squared",
+  "title": "Squaring amplifies the large residual",
+  "source_section": "§1",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "absolute",
+  "title": "Absolute error grows linearly with the miss",
+  "source_section": "§1",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "huber",
+  "title": "Huber is quadratic nearby and linear farther away",
+  "source_section": "§1",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "huberexample",
+  "title": "Huber assigns 9.5 to a residual of ten",
+  "source_section": "§1",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "summean",
+  "title": "Sum and mean differ by the batch size",
+  "source_section": "§1 表格釐清",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "outlier",
+  "title": "Use shares to see how much the outlier dominates",
+  "source_section": "§1",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "curves",
+  "title": "Three rulers respond differently to large errors",
+  "source_section": "§1 圖",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "crossentropy",
+  "title": "Cross-entropy penalizes low true-class probability",
+  "source_section": "§2",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "cecalc",
+  "title": "The same prediction has different losses for different targets",
+  "source_section": "§2 例",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "binary",
+  "title": "Binary cross-entropy includes both outcomes",
+  "source_section": "§2、選讀、檢核4釐清",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "kl",
+  "title": "KL compares target and predicted distributions",
+  "source_section": "§2",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "klcalc",
+  "title": "Compute every KL term before adding",
+  "source_section": "§2 算例",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "relation",
+  "title": "For fixed targets, cross-entropy and KL differ by a constant",
+  "source_section": "§2、來源更正",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "hinge",
+  "title": "Hinge asks for a score margin, beyond a correct sign",
+  "source_section": "§3 圖",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "hingecalc",
+  "title": "Three scores: safe, too close, and wrong",
+  "source_section": "§3 例",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "margin",
+  "title": "A score margin is not a geometric distance",
+  "source_section": "§3、來源更正補充",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 19,
+  "kind": "join",
+  "title": "Huber joins values and slopes at both thresholds",
+  "source_section": "選讀推導",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 20,
+  "kind": "choose",
+  "title": "Choose a loss after identifying the task",
+  "source_section": "重點整理",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 21,
+  "kind": "myths",
+  "title": "Read a low loss with its data and ruler",
+  "source_section": "常見迷思",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 22,
+  "kind": "next",
+  "title": "Next: learn a linear unit through squared error",
+  "source_section": "銜接KP08",
+  "first_step": 64,
+  "final_step": 66,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 23,
+  "kind": "practice1",
+  "title": "Practice 1: use three rulers on new residuals",
+  "source_section": "練習1",
+  "first_step": 67,
+  "final_step": 69,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 24,
+  "kind": "practice2",
+  "title": "Practice 2: equal scores, then cross-entropy",
+  "source_section": "練習2",
+  "first_step": 70,
+  "final_step": 72,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 25,
+  "kind": "practice3",
+  "title": "Practice 3: a negative label meets a positive score",
+  "source_section": "練習3",
+  "first_step": 73,
+  "final_step": 75,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 26,
+  "kind": "quiz1",
+  "title": "Check 1: a main drawback of squared error",
+  "source_section": "小測驗1",
+  "first_step": 76,
+  "final_step": 78,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 27,
+  "kind": "quiz2",
+  "title": "Check 2: what does the Huber threshold control?",
+  "source_section": "小測驗2",
+  "first_step": 79,
+  "final_step": 81,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 28,
+  "kind": "quiz3",
+  "title": "Check 3: a distribution loss for soft targets",
+  "source_section": "小測驗3",
+  "first_step": 82,
+  "final_step": 84,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 29,
+  "kind": "quiz4",
+  "title": "Check 4: probability conditions for cross-entropy",
+  "source_section": "小測驗4 原題釐清",
+  "first_step": 85,
+  "final_step": 87,
+  "beats": 3,
+  "extension": true
+ }
+]

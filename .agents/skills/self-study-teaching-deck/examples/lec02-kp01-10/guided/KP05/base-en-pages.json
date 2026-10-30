@@ -1,0 +1,242 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP05 Multilayer networks and nonlinearity",
+  "source_section": "單元主張",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "roles",
+  "title": "Input receives data; hidden layers transform it",
+  "source_section": "§1釐清",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "dense",
+  "title": "Dense describes connections; feedforward describes direction",
+  "source_section": "§1",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "neuron",
+  "title": "Each neuron sums first, then activates",
+  "source_section": "§1符號",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "layer",
+  "title": "A matrix computes a layer; dimensions must agree",
+  "source_section": "§1矩陣約定釐清",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "gates",
+  "title": "OR and NAND feed an AND gate",
+  "source_section": "§2補充手工權重",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "case00",
+  "title": "For two zeros, OR blocks the final AND",
+  "source_section": "§2表格第1列",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "case01",
+  "title": "With only the second input on, both hidden gates fire",
+  "source_section": "§2表格第2列",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "case10",
+  "title": "With only the first input on, XOR still outputs one",
+  "source_section": "§2表格第3列",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "case11",
+  "title": "With both inputs on, NAND blocks the output",
+  "source_section": "§2表格第4列",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "features",
+  "title": "The hidden layer turns XOR into separable features",
+  "source_section": "§2座標轉換",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "constant",
+  "title": "Remove the steps and these weights cancel",
+  "source_section": "§3特例",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "affine",
+  "title": "Two affine layers merge into one affine map",
+  "source_section": "§3一般含偏置",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "depth",
+  "title": "More all-linear layers still form one linear map",
+  "source_section": "§3一般多層",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "experiment",
+  "title": "The same weights give different contours after changing activation",
+  "source_section": "§3圖程式實驗",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "learning",
+  "title": "Representing XOR differs from learning its weights",
+  "source_section": "迷思、選讀",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "next",
+  "title": "A step makes decisions but offers no useful gradient",
+  "source_section": "留給KP06問題",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "practice1",
+  "title": "Practice: recompute the full forward pass for one-zero",
+  "source_section": "練習1",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 19,
+  "kind": "practice2",
+  "title": "Practice: which single matrix replaces the pair?",
+  "source_section": "練習2",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 20,
+  "kind": "practice3",
+  "title": "Practice: why do ten identity layers add no expressive power?",
+  "source_section": "練習3",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 21,
+  "kind": "quiz1",
+  "title": "Self-check: what direction does feedforward describe?",
+  "source_section": "自我檢核1",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 22,
+  "kind": "quiz2",
+  "title": "Self-check: which convention must be checked when counting layers?",
+  "source_section": "自我檢核2原題釐清",
+  "first_step": 64,
+  "final_step": 66,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 23,
+  "kind": "quiz3",
+  "title": "Self-check: what is a bias-free all-linear network equivalent to?",
+  "source_section": "自我檢核3條件釐清",
+  "first_step": 67,
+  "final_step": 69,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 24,
+  "kind": "quiz4",
+  "title": "Self-check: why is nonlinearity needed to represent XOR?",
+  "source_section": "自我檢核4",
+  "first_step": 70,
+  "final_step": 72,
+  "beats": 3,
+  "extension": true
+ }
+]

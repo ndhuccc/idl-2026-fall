@@ -1,0 +1,218 @@
+[
+  {
+    "page": 1,
+    "kind": "cover",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "單元主張",
+    "claim": "接成多層之後，非線性才讓表示力增加。",
+    "visual": "用雙輸入、兩隱藏、一輸出的原生connector網路串起兩層；與可合併的純線性流水線對照，旋轉貼紙標「關鍵：非線性」。",
+    "extension": false
+  },
+  {
+    "page": 2,
+    "kind": "roles",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§1釐清",
+    "claim": "第一個隱藏層直接看輸入；隱藏不是看不見資料。",
+    "visual": "畫2-2-1網路，三種角色分色；第一hidden由raw input直連；不宣稱hidden看不到原始資料或完全無監督訊號。",
+    "extension": false
+  },
+  {
+    "page": 3,
+    "kind": "dense",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§1",
+    "claim": "這個兩路、兩路、一路網路，共六條權重連線。",
+    "visual": "2x2輸入到隱藏4條，加2x1到輸出2條；完整式2·2+2·1=6，所有連線native，沒有回圈；不畫偏置節點，明示bias另計。",
+    "extension": false
+  },
+  {
+    "page": 4,
+    "kind": "neuron",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§1符號",
+    "claim": "加權和與活化輸出，是前後兩步。",
+    "visual": "前層z進入sum，再進sigma到zi；完整ai=sum_l w_il z_l+bi、zi=sigma(ai)，b顯式列出，不混偏置併入。",
+    "extension": false
+  },
+  {
+    "page": 5,
+    "kind": "layer",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§1矩陣約定釐清",
+    "claim": "矩陣每列對應一個輸出；輸入輸出都用欄向量。",
+    "visual": "用A_k=W_k^T對應原講義，zk=sigma(Ak zprev+bk)；A大小m×n，zprev n×1，b與znew m×1。以2輸入3輸出示意，A 3×2與向量尺寸可視化。",
+    "extension": false
+  },
+  {
+    "page": 6,
+    "kind": "gates",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§2補充手工權重",
+    "claim": "這組手工權重，讓兩層網路能表示 XOR。",
+    "visual": "完整2-2-1 native網路，所有6權重1/−1正確；bias OR−1 NAND+1.5 AND−2。f(s)=1當s>=0否則0。s1=x1+x2−1、s2=−x1−x2+1.5、s3=h1+h2−2。標補充：手工權重非訓練。",
+    "extension": false
+  },
+  {
+    "page": 7,
+    "kind": "case00",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§2表格第1列",
+    "claim": "三次加權與活化，輸出得到零。",
+    "visual": "x=(0,0)，三步完整代入s1=0+0−1=−1,h1=f(−1)=0；s2=−0−0+1.5=1.5,h2=f(1.5)=1；s3=0+1−2=−1,o=f(−1)=0。原生流程加燈號，不只結果。",
+    "extension": false
+  },
+  {
+    "page": 8,
+    "kind": "case01",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§2表格第2列",
+    "claim": "零分也輸出一，這個約定很重要。",
+    "visual": "x=(0,1)，s1=0+1−1=0,h1=f(0)=1；s2=−0−1+1.5=.5,h2=f(.5)=1；s3=1+1−2=0,o=f(0)=1。零分標星形或光暈，提醒>=0。",
+    "extension": false
+  },
+  {
+    "page": 9,
+    "kind": "case10",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§2表格第3列",
+    "claim": "交換兩個輸入，這組對稱權重給同一結果。",
+    "visual": "x=(1,0)，s1=1+0−1=0,h1=1；s2=−1−0+1.5=.5,h2=1；s3=1+1−2=0,o=1。仍保留每次f代入，來源主線算例，延伸練習要求自行重算不再附解。",
+    "extension": false
+  },
+  {
+    "page": 10,
+    "kind": "case11",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§2表格第4列",
+    "claim": "OR 亮還不夠，NAND 必須也亮。",
+    "visual": "x=(1,1)，s1=1+1−1=1,h1=f(1)=1；s2=−1−1+1.5=−.5,h2=f(−.5)=0；s3=1+0−2=−1,o=f(−1)=0。",
+    "extension": false
+  },
+  {
+    "page": 11,
+    "kind": "features",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§2座標轉換",
+    "claim": "兩個正類輸入，合到同一個隱藏座標。",
+    "visual": "左XOR四點，右特徵座標h1,h2：00→01、01/10→11（標兩筆疊合）、11→10。右AND邊界h1+h2=2，線上輸出1，positive只在11；不用虛構第四個特徵點。所有對應關係native connector或各自標記。",
+    "extension": false
+  },
+  {
+    "page": 12,
+    "kind": "constant",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§3特例",
+    "claim": "這個特例是常數；不是所有線性網路都為常數。",
+    "visual": "完整y=(x1+x2−1)+(−x1−x2+1.5)−2=−1.5，兩路反向等量線段相消；A1=[[1,1],[-1,-1]],A2=[1,1], A2A1=[0,0]。偏置單獨合成−1+1.5−2=−1.5。",
+    "extension": false
+  },
+  {
+    "page": 13,
+    "kind": "affine",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§3一般含偏置",
+    "claim": "偏置會一起合併，不能只乘權重矩陣。",
+    "visual": "完整h=A1x+b1；y=A2h+b2；y=(A2A1)x+(A2b1+b2)，兩層原生pipeline轉成一層，標輸入輸出維度，不宣稱一般常數。",
+    "extension": false
+  },
+  {
+    "page": 14,
+    "kind": "depth",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§3一般多層",
+    "claim": "沒有偏置時，矩陣連乘就是合併規則。",
+    "visual": "A3 A2 A1 x=Vx，V=A3A2A1；三個線性節點原生connector串接，第三拍換單節點等價，先三層退場部分提示但核心公式保持。明示本頁不含bias，含bias看前頁。",
+    "extension": false
+  },
+  {
+    "page": 15,
+    "kind": "experiment",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "§3圖程式實驗",
+    "claim": "固定種子與權重，差別只在兩個隱藏層的活化。",
+    "visual": "rng2，維度2→4→3→1，無bias，output線性。依原程式300×300網格及1e−9等值門檻，畫identity與ReLU原程式保留>40點的等值線；折線超200點時分段。明示數值等值線、不保證四區；不把整片零輸出誤當普通零線。",
+    "extension": false
+  },
+  {
+    "page": 16,
+    "kind": "learning",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "迷思、選讀",
+    "claim": "非線性提供可能性，不保證一定學得會。",
+    "visual": "兩張工作台：手工旋鈕→正確XOR；空白權重→訓練問號，沒有把forwardnetwork冒充learningalgorithm。教材補充標記保留，第三章backprop指向備註。",
+    "extension": false
+  },
+  {
+    "page": 17,
+    "kind": "next",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "留給KP06問題",
+    "claim": "下一個 KP：選擇可用來學習的非線性活化。",
+    "visual": "精確階梯s0上下兩段，s≠0導數0，s=0不可微；右一個activation問號，原生connector引向KP06。不要說所有ReLU處處可微。",
+    "extension": false
+  },
+  {
+    "page": 18,
+    "kind": "practice1",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "練習1",
+    "claim": "提示：先算兩個隱藏輸出，再算最後輸出。",
+    "visual": "保留x=(1,0)，s1,h1,s2,h2,s3,o問號與三組公式，不在本延伸頁或備註重複答案。",
+    "extension": true
+  },
+  {
+    "page": 19,
+    "kind": "practice2",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "練習2",
+    "claim": "提示：先做矩陣乘法，別把順序反過來。",
+    "visual": "原題A1=[[1,0],[1,1]]、A2=(1,2)，y=A2A1x；原生3節點flow，合併矩陣問號。只給提示，不提供乘積。",
+    "extension": true
+  },
+  {
+    "page": 20,
+    "kind": "practice3",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "練習3",
+    "claim": "提示：十個矩陣連乘的結果仍是什麼？",
+    "visual": "用一排折疊式矩陣積與合併問號，保留十層但用省略號表示中間，不宣稱十個實際畫點；明示概念示意。",
+    "extension": true
+  },
+  {
+    "page": 21,
+    "kind": "quiz1",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "自我檢核1",
+    "claim": "提示：回想剛才連線的方向。",
+    "visual": "保留四選項：回饋前層、只向前不回頭、只有一層、隨意連線。各選項平等圖示；不標答案。",
+    "extension": true
+  },
+  {
+    "page": 22,
+    "kind": "quiz2",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "自我檢核2原題釐清",
+    "claim": "提示：輸入層的角色與是否計入總數，要分開。",
+    "visual": "原題四選項沒有合理正解且把input誤稱hidden；明示修訂題意。選項A是否計入輸入層、B輸入層就是隱藏層、C所有文獻數法相同、D輸入層一定最後。保留檢核目的不附答案。",
+    "extension": true
+  },
+  {
+    "page": 23,
+    "kind": "quiz3",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "自我檢核3條件釐清",
+    "claim": "提示：將每一層的矩陣依序相乘。",
+    "visual": "保留四選項：非線性模型、一次線性映射、指數複雜、無法訓練；題幹加無偏置，避免affine與linear混稱。",
+    "extension": true
+  },
+  {
+    "page": 24,
+    "kind": "quiz4",
+    "source": "https://github.com/ndhuccc/idl-2026-fall/blob/5a6e17c42083153c62d4dcce1673d86eba8d9469/lectures/lec02-kp05-mlp-and-nonlinearity.md",
+    "section": "自我檢核4",
+    "claim": "提示：如果把活化全換成恆等，會怎樣？",
+    "visual": "保留更多hidden、nonlinear、較大學習率、較小批次四選項，圖示同等權重不洩答案；不把必要條件誤當充分或訓練保證。",
+    "extension": true
+  }
+]

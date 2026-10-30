@@ -1,0 +1,66 @@
+{
+  "source_grid_points": 4001,
+  "sigmoid_k": 2000,
+  "N_means": "number of cells; N-1 transition sigmoids plus constant bias, or N hidden units when representing the constant by a constant unit",
+  "N": [
+    3,
+    5,
+    10,
+    20,
+    40,
+    80
+  ],
+  "sampled_max_errors": [
+    0.8660254037844388,
+    0.5877852522924731,
+    0.3090169943749475,
+    0.15643446504023087,
+    0.07845909572784494,
+    0.03925981576015605
+  ],
+  "endpoint_errors": [
+    0.8660254037844386,
+    0.5877852522924731,
+    0.3090169943749474,
+    0.15643446504023087,
+    0.07845909572784494,
+    0.03925981576015573
+  ],
+  "ideal_staircase_lipschitz_bound": [
+    1.0471975511965976,
+    0.6283185307179586,
+    0.3141592653589793,
+    0.15707963267948966,
+    0.07853981633974483,
+    0.039269908169872414
+  ],
+  "N320_sampled_error": 0.00985521603993534,
+  "practice1": {
+    "midpoints": [
+      0.125,
+      0.375,
+      0.625,
+      0.875
+    ],
+    "jumps": [
+      0.25,
+      0.25,
+      0.25
+    ],
+    "thresholds": [
+      0.25,
+      0.5,
+      0.75
+    ],
+    "ideal_value_at_point6": 0.625,
+    "ideal_max_error": 0.125
+  },
+  "practice2": {
+    "strict_ideal_bound_N_min": 63
+  },
+  "limitations": [
+    "Finite sigmoid sums are smooth, not exactly cellwise constant.",
+    "A maximum on 4001 samples is not a certified supremum.",
+    "pi/N bounds the ideal midpoint staircase, not automatically every finite-k approximation."
+  ]
+}

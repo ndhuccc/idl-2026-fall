@@ -1,0 +1,342 @@
+[
+ {
+  "page": 1,
+  "kind": "cover",
+  "title": "KP08 ADALINE and logistic regression",
+  "source_section": "前言、目標",
+  "first_step": 1,
+  "final_step": 3,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 2,
+  "kind": "train",
+  "title": "ADALINE trains before applying a hard threshold",
+  "source_section": "§1",
+  "first_step": 4,
+  "final_step": 6,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 3,
+  "kind": "lms",
+  "title": "The squared-error gradient retains error magnitude",
+  "source_section": "§1 LMS定義",
+  "first_step": 7,
+  "final_step": 9,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 4,
+  "kind": "ordata",
+  "title": "Start with all four OR observations",
+  "source_section": "§1 OR算例",
+  "first_step": 10,
+  "final_step": 12,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 5,
+  "kind": "orgrad",
+  "title": "Multiply residuals by inputs, then sum the batch",
+  "source_section": "§1 OR第一步",
+  "first_step": 13,
+  "final_step": 15,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 6,
+  "kind": "orupdate",
+  "title": "Subtracting negative gradients increases the parameters",
+  "source_section": "§1 OR第一步",
+  "first_step": 16,
+  "final_step": 18,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 7,
+  "kind": "orloss",
+  "title": "Recompute predictions and loss after the update",
+  "source_section": "§1 OR第一步",
+  "first_step": 19,
+  "final_step": 21,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 8,
+  "kind": "orlimit",
+  "title": "Least squares classifies OR correctly with nonzero loss",
+  "source_section": "§1 OR極限",
+  "first_step": 22,
+  "final_step": 24,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 9,
+  "kind": "orboundary",
+  "title": "The two boundaries differ in this OR example",
+  "source_section": "§1 原圖左",
+  "first_step": 25,
+  "final_step": 27,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 10,
+  "kind": "ortrace",
+  "title": "This batch loss decreases with the chosen step size",
+  "source_section": "§1 原圖右",
+  "first_step": 28,
+  "final_step": 30,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 11,
+  "kind": "madaline",
+  "title": "MADALINE explored weight updates across layers",
+  "source_section": "§1 MADALINE",
+  "first_step": 31,
+  "final_step": 33,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 12,
+  "kind": "logistic",
+  "title": "Logistic regression turns a linear score into a probability",
+  "source_section": "§2 模型、歷史",
+  "first_step": 34,
+  "final_step": 36,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 13,
+  "kind": "likelihood",
+  "title": "Maximum likelihood matches binary cross-entropy minimization",
+  "source_section": "§2 似然",
+  "first_step": 37,
+  "final_step": 39,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 14,
+  "kind": "compare",
+  "title": "Both update directions use target minus prediction",
+  "source_section": "§1–2 梯度比較",
+  "first_step": 40,
+  "final_step": 42,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 15,
+  "kind": "hessian",
+  "title": "Log-likelihood is concave; its negative is convex",
+  "source_section": "§2 g與H",
+  "first_step": 43,
+  "final_step": 45,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 16,
+  "kind": "newton",
+  "title": "Substituting the negative Hessian yields this plus sign",
+  "source_section": "§2 牛頓方向、更正",
+  "first_step": 46,
+  "final_step": 48,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 17,
+  "kind": "newtondata",
+  "title": "Start interleaved one-dimensional data at probability one half",
+  "source_section": "§2 牛頓手算",
+  "first_step": 49,
+  "final_step": 51,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 18,
+  "kind": "newtongrad",
+  "title": "Residuals give the gradient; curvature gives its scaling",
+  "source_section": "§2 牛頓手算",
+  "first_step": 52,
+  "final_step": 54,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 19,
+  "kind": "newtonstep",
+  "title": "The first Newton step gives a negative intercept and positive slope",
+  "source_section": "§2 牛頓手算",
+  "first_step": 55,
+  "final_step": 57,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 20,
+  "kind": "newtontrace",
+  "title": "Two steps nearly reach the final Sigmoid curve",
+  "source_section": "§2 原圖與數值",
+  "first_step": 58,
+  "final_step": 60,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 21,
+  "kind": "outcome",
+  "title": "Maximum likelihood need not minimize classification errors",
+  "source_section": "§2 收斂結果釐清",
+  "first_step": 61,
+  "final_step": 63,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 22,
+  "kind": "limits",
+  "title": "Concavity has limits: separable data may lack a finite optimum",
+  "source_section": "選讀、迷思",
+  "first_step": 64,
+  "final_step": 66,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 23,
+  "kind": "next",
+  "title": "Next: local basis functions and learning without labels",
+  "source_section": "銜接KP09",
+  "first_step": 67,
+  "final_step": 69,
+  "beats": 3,
+  "extension": false
+ },
+ {
+  "page": 24,
+  "kind": "practice1",
+  "title": "Practice 1: compute the next ADALINE step",
+  "source_section": "練習1",
+  "first_step": 70,
+  "final_step": 72,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 25,
+  "kind": "practice2",
+  "title": "Practice 2: predict with the first Newton parameters",
+  "source_section": "練習2",
+  "first_step": 73,
+  "final_step": 75,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 26,
+  "kind": "practice3",
+  "title": "Practice 3: why is a class threshold still needed?",
+  "source_section": "練習3",
+  "first_step": 76,
+  "final_step": 78,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 27,
+  "kind": "quiz1",
+  "title": "Check 1: Which output does ADALINE use in training?",
+  "source_section": "小測驗1",
+  "first_step": 79,
+  "final_step": 81,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 28,
+  "kind": "quiz2",
+  "title": "Check 2: Which objective does ADALINE minimize?",
+  "source_section": "小測驗2",
+  "first_step": 82,
+  "final_step": 84,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 29,
+  "kind": "quiz3",
+  "title": "Check 3: Which direction defines gradient descent?",
+  "source_section": "小測驗3",
+  "first_step": 85,
+  "final_step": 87,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 30,
+  "kind": "quiz4",
+  "title": "Check 4: How did MADALINE rules develop?",
+  "source_section": "小測驗4",
+  "first_step": 88,
+  "final_step": 90,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 31,
+  "kind": "quiz5",
+  "title": "Check 5: What does logistic regression model directly?",
+  "source_section": "小測驗5",
+  "first_step": 91,
+  "final_step": 93,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 32,
+  "kind": "quiz6",
+  "title": "Check 6: What was an early use of the logistic curve?",
+  "source_section": "小測驗6",
+  "first_step": 94,
+  "final_step": 96,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 33,
+  "kind": "quiz7",
+  "title": "Check 7: Which Newton expression matches this notation?",
+  "source_section": "小測驗7",
+  "first_step": 97,
+  "final_step": 99,
+  "beats": 3,
+  "extension": true
+ },
+ {
+  "page": 34,
+  "kind": "quiz8",
+  "title": "Check 8: How is a default class decision made from probability?",
+  "source_section": "小測驗8",
+  "first_step": 100,
+  "final_step": 102,
+  "beats": 3,
+  "extension": true
+ }
+]

@@ -1,0 +1,186 @@
+{
+  "repository": "ndhuccc/idl-2026-fall",
+  "commit": "7762bd27c70e10761e0a9a1755a8dc0038d63321",
+  "files": [
+    {
+      "path": ".agents/skills/image-to-jbd-page/README.md",
+      "sha": "80781ad11086e0bccb18bf1033a3d9f38f1cd147"
+    },
+    {
+      "path": ".agents/skills/image-to-jbd-page/SKILL.md",
+      "sha": "5c5e1f1b118f64943b6456c5692f3c82f50a8e2a"
+    },
+    {
+      "path": ".agents/skills/image-to-jbd-page/agents/openai.yaml",
+      "sha": "87a5b9ad2d1fa0689ad310409a8e4aa1009212d3"
+    },
+    {
+      "path": ".agents/skills/image-to-jbd-page/assets/icon.svg",
+      "sha": "4c3163aa85e15ed80114f93a9a2b140a53012c44"
+    },
+    {
+      "path": ".agents/skills/image-to-jbd-page/docs/AI_AGENT_FILE_FORMAT_SPEC.md",
+      "sha": "528a52845fac3f8bd92dcea1c5c3f02a05e9e7e0"
+    },
+    {
+      "path": ".agents/skills/image-to-jbd-page/examples/example_page.py",
+      "sha": "935c5f047d66326f9aab16c805bf1c95142cf6f2"
+    },
+    {
+      "path": ".agents/skills/image-to-jbd-page/tests/test_regressions.py",
+      "sha": "52a84b332545d674065b8e4732cb59501505df43"
+    },
+    {
+      "path": ".agents/skills/image-to-jbd-page/tools/compare.py",
+      "sha": "cfc8a3baca0585f751afcd9dfe961228465da037"
+    },
+    {
+      "path": ".agents/skills/image-to-jbd-page/tools/deckkit/nativefig.py",
+      "sha": "60646a7bc604184a05e1e629077e9fdc895aee35"
+    },
+    {
+      "path": ".agents/skills/image-to-jbd-page/tools/insert_page.py",
+      "sha": "a7dc9acce38565b817cbcf03e5bc6f18743976ca"
+    },
+    {
+      "path": ".agents/skills/image-to-jbd-page/tools/jbd_page.py",
+      "sha": "ccd3de9d4f6fdfeedb2a4eb146335ea9e5c6f004"
+    },
+    {
+      "path": ".agents/skills/image-to-jbd-page/tools/measure.py",
+      "sha": "6edf42289f7f8d35a8f0b15f7dfb4c8c5d67dc62"
+    },
+    {
+      "path": ".agents/skills/image-to-jbd-page/tools/new_deck.py",
+      "sha": "1cab7e8ef579f05977578a7ac44fccbd4acf57f7"
+    },
+    {
+      "path": ".agents/skills/image-to-jbd-page/tools/preview_deck.py",
+      "sha": "a93554c82ccdac5fc8ad6d67b437be55939db337"
+    },
+    {
+      "path": ".agents/skills/page-to-teaching-diagram/SKILL.md",
+      "sha": "adb1c05b03a7f79f7af8e7d05e0bd6b25a1f2444"
+    },
+    {
+      "path": ".agents/skills/page-to-teaching-diagram/agents/openai.yaml",
+      "sha": "77b33c42e301a989cbe5f10084bd38f8d71006e4"
+    },
+    {
+      "path": ".agents/skills/page-to-teaching-diagram/assets/icon.svg",
+      "sha": "2468028d1ed0fc8009b1fc45e7bb027adaf0d079"
+    },
+    {
+      "path": ".agents/skills/page-to-teaching-diagram/references/examples.md",
+      "sha": "7cc056198bf464351ce6c59c33fe31e602f595fc"
+    },
+    {
+      "path": ".agents/skills/page-to-teaching-diagram/references/jbd-native-elements.md",
+      "sha": "ed8e9756506a5191b916a44174417110c5403eee"
+    },
+    {
+      "path": ".agents/skills/page-to-teaching-diagram/references/prompt-template.md",
+      "sha": "a1b8855e0da0582ed2f4ccd6a0af51b5118a1938"
+    },
+    {
+      "path": ".agents/skills/prompt-to-jbd-page/SKILL.md",
+      "sha": "19337119cbd9bb2563e7dc0f22f6d2664ca23774"
+    },
+    {
+      "path": ".agents/skills/prompt-to-jbd-page/references/feature-catalog.md",
+      "sha": "49ddba42e2d5cf986e6eefc3009980576f6c53a5"
+    },
+    {
+      "path": ".agents/skills/prompt-to-jbd-page/tools/check_deck_quality.py",
+      "sha": "74639ce7985c8a99e8439ecb663df35af1569b06"
+    },
+    {
+      "path": ".agents/skills/slides-to-html/SKILL.md",
+      "sha": "909973f1c12bdb06b3ef6c07ccdd3238038bd1ce"
+    },
+    {
+      "path": ".agents/skills/slides-to-html/package-lock.json",
+      "sha": "60cc6ab63c2015bd164f68f4451bfd6e3b5a111f"
+    },
+    {
+      "path": ".agents/skills/slides-to-html/package.json",
+      "sha": "98c1def22c23881f3cf410c5b9abc6b2b1a66f98"
+    },
+    {
+      "path": ".agents/skills/slides-to-html/scripts/check_html.mjs",
+      "sha": "f371b49dcc196bbae85befd7f43ad6f7ad1f1f02"
+    },
+    {
+      "path": ".agents/skills/slides-to-html/scripts/jbd_to_html.mjs",
+      "sha": "9a388252cec120ac0c343889d1cf5c2887d8e4d3"
+    },
+    {
+      "path": "scripts/check_slides.py",
+      "sha": "668841ca70e85b59028026634317d76bc40e5b18"
+    }
+  ],
+  "discovered_skills": [
+    ".agents/skills/assignment-design/SKILL.md",
+    ".agents/skills/assignment-grading/SKILL.md",
+    ".agents/skills/assignment-quiz/SKILL.md",
+    ".agents/skills/bloom-exam-designer/SKILL.md",
+    ".agents/skills/diagram-design/SKILL.md",
+    ".agents/skills/image-to-jbd-page/SKILL.md",
+    ".agents/skills/page-to-teaching-diagram/SKILL.md",
+    ".agents/skills/prompt-to-jbd-page/SKILL.md",
+    ".agents/skills/slides-to-four-panel-comics/SKILL.md",
+    ".agents/skills/slides-to-html/SKILL.md",
+    ".agents/skills/textbook-lecture-notes/SKILL.md",
+    ".agents/skills/view-from-text-v2/SKILL.md",
+    ".agents/skills/view-from-text-v3/SKILL.md",
+    ".agents/skills/view-from-text/SKILL.md"
+  ],
+  "sources": [
+    {
+      "path": "AGENTS.md",
+      "sha": "cb55b3293d1e723e3c56f431ca55ae938bb5bdc4"
+    },
+    {
+      "path": "COURSE_STATE.md",
+      "sha": "10dba06466b9a7b6788809459f39ebe367ce5d32"
+    },
+    {
+      "path": "lectures/lec02-kp10-universal-approximation.md",
+      "sha": "dd9c8128e28f14d7eedaaf5db2f2cdc4f47b2af2"
+    },
+    {
+      "path": "assets/figures/src/lec02-kp0810-figures.py",
+      "sha": "ef5f0a3058d3eda68ae6bc3de88e362f5cba5d8c"
+    }
+  ],
+  "self_study_skill_files": [
+    {
+      "path": ".agents/skills/self-study-teaching-deck/SKILL.md",
+      "sha": "c1b1d9ccfab9472bf2ac493434edde5bfd91df4e"
+    },
+    {
+      "path": ".agents/skills/self-study-teaching-deck/references/page-spec.md",
+      "sha": "fbd344a97ba34340b653d291943754b3d96a955a"
+    },
+    {
+      "path": ".agents/skills/self-study-teaching-deck/references/self-study-checklist.md",
+      "sha": "3b093c485ea004a657b1e4b69e0615334db81d68"
+    },
+    {
+      "path": ".agents/skills/self-study-teaching-deck/styles/diagram.md",
+      "sha": "5766bb99c47d7719c74cb3ccfe7cb1d58d81c8d4"
+    },
+    {
+      "path": ".agents/skills/self-study-teaching-deck/styles/guided.md",
+      "sha": "fa709a95506591f9cbb74616c46dbd9c6566a082"
+    },
+    {
+      "path": ".agents/skills/self-study-teaching-deck/tools/check_coverage.py",
+      "sha": "6e9652770489aa7f02c21c6a299574e58679af0e"
+    },
+    {
+      "path": ".agents/skills/self-study-teaching-deck/tools/check_style.py",
+      "sha": "e604c10a0ca32372bad1dd2191ef4f8a0b069513"
+    }
+  ]
+}
