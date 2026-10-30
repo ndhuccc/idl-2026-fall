@@ -300,9 +300,10 @@ gh workflow run deploy-site.yml                                    # 第一次�
 - 要沿用舊內容:用 `git clone` 取得舊 Repo,把 `lectures/`、`labs/`、`assignments/` 等複製到新 Repo,再更新日期與主題。
 
 ### 5.11 投影片(JianBauDau JSON、PPTX、PDF、HTML)
-- **預設技能與先問的規定(老師 2026-10-30 決定)**:製作投影片預設用 `page-to-teaching-diagram`(品質門檻:圖解優先、一頁一個重點、5 秒內讀懂),再以 `prompt-to-jbd-page` 做成原生 `.jbd.json`;只有老師特別指定時才改用 `view-from-text-v3`。老師一提出要製作簡報,**先用白話說明兩者差別,再問是否採用預設**,不要直接開工:
-  - `page-to-teaching-diagram`(預設):把頁面內容畫成給初學者看的示意圖解,圖解優先;直接做成可編輯的原生節點,數字由程式重算;適合概念多、要靠圖說明的單元。
-  - `view-from-text-v3`:把一段講義文字做成簡報,先規劃頁面、用 HTML 設計資訊圖再轉成原生節點,稽核後傳截圖,老師說「發佈」才寫入;適合文字為主、要逐頁確認版面的單元。
+- **預設技能與先問的規定(老師 2026-10-30 決定,同日改為新技能)**:製作投影片預設用 `self-study-teaching-deck`(以學生可自主閱讀為核心:頁數依講義內容決定、不設上下限,並以覆蓋完整度檢查確保講義內容都有頁;提供「圖解版」「導學版」兩種風格),再以 `prompt-to-jbd-page` 的流程做成原生 `.jbd.json`。`page-to-teaching-diagram`(舊預設)與 `view-from-text-v3` 保留作備援,只有老師特別指定時才用。老師一提出要製作簡報,**先用白話說明兩種風格的差別,再問用哪一種**(建議導學版,老師可改),不要直接開工:
+  - 圖解版:一頁一概念,圖就是解釋,版面乾淨、不放吉祥物;適合複習、公式與數據多的單元。
+  - 導學版:吉祥物陪著讀,每頁有提問對話框與承接小標,像有人陪讀;適合第一次接觸的概念與自主學習。
+  - 兩種風格共用同一份頁面規格與檢查工具(`tools/check_coverage.py`、`tools/check_style.py`);範例見該技能的 `examples/lec02-kp07/`。
 - 問:這週的投影片是哪一種格式?是 JianBauDau 編輯器匯出的 JSON,還是 PPTX、PDF 或 HTML?
 - 若由 agent 產生投影片:先確認**教材程度**(預設承襲該講義的程度,見 `.agents/skills/LEVELS.md`)。
 - 作法:依 `slides/FORMATS.md` 命名為 `lecNN.<格式>`(JSON 為 `lecNN.jbd.json`),放進 `slides/`。同一週可以放多種格式。
