@@ -4,6 +4,7 @@
 
 ## 2026 秋季
 
+- 2026-10-30 — [更新] 第3週 KP00–KP16 簡報依新版流程重做(預設技能 page-to-teaching-diagram,老師已確認;KP00 全章地圖 6 頁、KP01–KP16 各 6–7 頁示意圖,每頁逐步出現、原生連接線,中文與英文各一份,共 34 份):`slides/lec03-kp00…kp16-*.jbd.json` 取代舊版,新增 `-en.jbd.json`;梯度下降、動量、反向傳播、SGD、AdaGrad、RMSProp/Adam、SAM、ASAM 等數字由程式重算並 assert;建頁腳本與共用元件 `lec03_kit.py` 存於 `.agents/skills/view-from-text-v3/examples/`。
 - 2026-10-30 — [新增] 第6週 KP06「平移等變」講義(中英對照、大學部、三張圖)與中英文簡報各 13 頁(原生圖解、逐步出現、原生連接線);`schedule.md` 第 6 週列加入連結。講義用二維數字例驗證兩條路徑相同,並補上局部連接層、步幅 2、旋轉與 ReLU 的例子;更正來源:「平移等價性」改稱「平移等變」,並補上步幅 1 與只比較有定義位置的條件。
 
 - 2026-10-30 — [更新] 第2週 KP00–KP10 簡報依新版流程重做(預設技能 page-to-teaching-diagram,老師已確認;KP00 全章地圖 6 頁、KP01–KP10 各 8 頁示意圖,每頁逐步出現、原生連接線,中文與英文各一份,共 22 份):`slides/lec02-kp00…kp10-*.jbd.json` 取代舊版,新增 `-en.jbd.json`;數字(手算表、損失、牛頓法、誤差表等)由程式重算並 assert;建頁腳本存於 `.agents/skills/view-from-text-v3/examples/lec02_kpNN_pages.py`,`lec01_kit.py` 新增「講者備註空白時以該步驟新出現的文字補上」。

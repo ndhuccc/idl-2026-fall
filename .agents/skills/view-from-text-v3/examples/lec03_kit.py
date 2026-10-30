@@ -53,7 +53,7 @@ def axes(g, x0, y0, w, h, xr, yr, zero=True):
     return ux, uy
 
 def curve(g, ux, uy, fn, col, xr, yr, sw=5, n=80, dash=False):
-    pts = []
+    pts = []; n = min(n, 190)
     for i in range(n + 1):
         a = xr[0] + (xr[1] - xr[0]) * i / n; v = fn(a); pts.append((ux(a), uy(min(max(v, yr[0]), yr[1]))))
     g.line(pts, col, sw=sw, dash=dash, z=5)
