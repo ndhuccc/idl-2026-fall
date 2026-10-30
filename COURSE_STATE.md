@@ -41,6 +41,7 @@
 
 ## 決策與異動紀錄
 
+- 2026-10-30 17:55 — 老師決定:製作簡報預設用 `page-to-teaching-diagram`,指定時才用 `view-from-text-v3`,且要求做簡報時先說明差別並問是否採用預設。已寫入 `AGENTS.md` §5.11。
 - 2026-10-30 17:49 — 老師說「重做KP00全章地圖」後說「推送」:第1週 KP00 全章地圖簡報重做為 6 頁(中英各一份)並取代舊檔;`lec01_kit.py` 新增 `link()` 原生連接線(KP01–KP10 重建結果不變)。`check_slides.py` 無 FAIL,預覽溢出 0。第1週 KP00–KP10 簡報至此全部依新版流程完成。未完成:尚未檢視線上網站與轉出的 HTML;品質檢查仍有「活潑效果」類警告(與 KP02–KP10 相同)。
 - 2026-10-30 13:20 — 老師說「推送」:第1週 KP02–KP10 簡報(中英各一份,共 18 份)依新版流程重做並取代 `slides/` 舊版中文檔、新增 `-en`;建頁腳本 `lec01_kit.py`(合併新版輔助函式、KaTeX 符號後處理)、`build_kp.py`、`lec01_kpNN_{nums,pages}.py` 與頁面清單存於 `.agents/skills/view-from-text-v3/examples/`。`check_slides.py` 無 FAIL(KP06 的「疑似學號」警告為機率小數,非個資),預覽溢出 0,KP01/KP06 以新腳本重建與已提交檔位元相同。未完成:KP00 全章地圖仍為舊版;KP02–KP10 的圖解提示詞未事先寫檔;尚未檢視線上網站與轉出的 HTML。
 - 2026-10-30 09:55 — 老師說「推送」並要求繼續做其他 KP:第1週 KP01 簡報依新版流程(page-to-teaching-diagram 品質門檻 + prompt-to-jbd-page 課堂簡報流程)重做為 9 頁示意圖(中英各一份),取代舊版 `lec01-kp01-*.jbd.json`,新增英文版。數字由程式重算並 assert;稽核 `check_deck_quality.py` 與 `check_slides.py` 無 FAIL,預覽溢出 0。其餘 KP02–KP10 依序重做中(舊版仍在 `slides/`,尚未取代)。
