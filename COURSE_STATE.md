@@ -231,3 +231,4 @@
 - 2026-10-30 22:00 — 老師說「把第6週的講義和簡報先完成」:KP08「偵測器與池化」講義(中英對照、大學部、兩張圖)與導學版簡報 46 頁(中英各一份)完成並推送;`audit_lecture.py` FAIL 0、`check_coverage` 26/26、`check_style --style guided` 通過、`check_slides` 無 FAIL。更正來源:右上塊中位數 5.5 應為 4.5。接著 KP09、KP10、KP02、全章地圖。
 - 2026-10-30 22:50 — 第 6 週 KP09「池化的局部不變與下採樣」講義(中英對照、大學部、兩張圖)與導學版簡報 42 頁(中英各一份)完成並推送;`audit_lecture.py` FAIL 0、`check_coverage` 27/27、`check_style --style guided` 通過、`check_slides` 無 FAIL。同時修正 KP08 推送時 `schedule.md` 簡報欄的一處連結格式錯誤。接著 KP10、KP02、全章地圖。
 - 2026-10-30 23:40 — 第 6 週 KP10「無限強先驗、動態池化與全域平均池化」講義(中英對照、大學部、兩張圖)與導學版簡報 45 頁(中英各一份)完成並推送;`audit_lecture.py` FAIL 0、`check_coverage` 27/27、`check_style --style guided` 通過。接著 KP02、全章地圖。
+- 2026-10-30 23:59 — 第 6 週 KP02「LeNet 與典型 CNN 骨架」(自主學習)講義(中英對照、大學部、兩張圖)與導學版簡報 45 頁(中英各一份)完成並推送;`audit_lecture.py` FAIL 0、`check_coverage` 27/27、`check_style --style guided` 通過。更正來源:前四層約 3,000/全連接 57,000+ 改為逐層算出 2,616/59,134(95.8%)、池化參數 12/32 與平均池化矛盾。接著全章地圖 KP00。
