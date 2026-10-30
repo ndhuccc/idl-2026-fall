@@ -1,0 +1,425 @@
+[
+ {
+  "page": 1,
+  "title": "KP07 損失函數",
+  "takeaway": "把預測和目標的差異，變成可最小化的分數。",
+  "source_anchors": [
+   "學習目標"
+  ],
+  "visual": "預測與目標兩節點匯入損失菱形，再到標量L；靶心與偏離點",
+  "math": []
+ },
+ {
+  "page": 2,
+  "title": "先把預測減掉目標，得到殘差",
+  "takeaway": "正負表示方向；懲罰方式由損失函數決定。",
+  "source_anchors": [
+   "符號表",
+   "1. 回歸：MSE、MAE、Huber"
+  ],
+  "visual": "四個實數線標出目標0與預測1,1,1,10；原生connector表示相減",
+  "math": [
+   "e_i=f_o(\\mathbf x_i)-y_i",
+   "\\mathbf e=(1,1,1,10)"
+  ],
+  "bridge": "上一頁說要量「錯多少」,第一步是算預測與目標的差。"
+ },
+ {
+  "page": 3,
+  "title": "平方會放大那一筆大殘差",
+  "takeaway": "四筆平方誤差總和為 103；這裡尚未取平均。",
+  "source_anchors": [
+   "1. 回歸：MSE、MAE、Huber"
+  ],
+  "visual": "四個依面積1,1,1,100的正方形，邊長依|e|，旁附完整算式",
+  "math": [
+   "L_{\\rm sq,sum}=\\sum_{i=1}^{b}e_i^2",
+   "1^2+1^2+1^2+10^2=103"
+  ],
+  "bridge": "有了殘差,第一把尺:先平方再加總。"
+ },
+ {
+  "page": 4,
+  "title": "絕對值只按殘差大小線性計罰",
+  "takeaway": "四筆絕對誤差總和為 13。",
+  "source_anchors": [
+   "1. 回歸：MSE、MAE、Huber"
+  ],
+  "visual": "四條依長度1,1,1,10的誤差尺，保留四筆身份與完整算式",
+  "math": [
+   "L_{\\rm abs,sum}=\\sum_{i=1}^{b}|e_i|",
+   "|1|+|1|+|1|+|10|=13"
+  ],
+  "bridge": "第二把尺:不平方,直接取絕對值再加總。"
+ },
+ {
+  "page": 5,
+  "title": "Huber 在近處平方、遠處改走直線",
+  "takeaway": "門檻為正；本例取門檻一。",
+  "source_anchors": [
+   "1. 回歸：MSE、MAE、Huber"
+  ],
+  "visual": "精算Huber曲線，中央|e|<=1半透明帶，兩側直線，完整兩段式",
+  "math": [
+   "|e|\\le\\delta:\\ h_\\delta(e)=\\frac12e^2",
+   "|e|>\\delta:\\ h_\\delta(e)=\\delta(|e|-\\frac12\\delta)",
+   "\\delta>0"
+  ],
+  "bridge": "平方太凶、絕對值太寬容,Huber 把兩者接起來。"
+ },
+ {
+  "page": 6,
+  "title": "同一筆殘差十，Huber 計為九點五",
+  "takeaway": "四筆 Huber 損失總和為 11。",
+  "source_anchors": [
+   "1. 回歸：MSE、MAE、Huber"
+  ],
+  "visual": "四條依0.5,0.5,0.5,9.5長度的分段長條，列代入公式",
+  "math": [
+   "\\delta=1",
+   "h_1(1)=\\frac12(1)^2=\\frac12,\\quad h_1(10)=1(10-\\frac12)=9.5",
+   "\\frac12+\\frac12+\\frac12+9.5=11"
+  ],
+  "bridge": "套用 Huber 的兩段公式到同一組殘差。"
+ },
+ {
+  "page": 7,
+  "title": "加總與平均，差一個批次大小",
+  "takeaway": "同一批資料要先對齊計算約定。",
+  "source_anchors": [
+   "1. 回歸：MSE、MAE、Huber"
+  ],
+  "visual": "103/4=25.75,13/4=3.25,11/4=2.75三條加總到平均流程，分母完整",
+  "math": [
+   "\\mathrm{MSE}=\\frac{103}{4}=25.75",
+   "\\mathrm{MAE}=\\frac{13}{4}=3.25",
+   "\\bar h=\\frac{11}{4}=2.75"
+  ],
+  "bridge": "三把尺的總和各是多少?先釐清加總與平均。"
+ },
+ {
+  "page": 8,
+  "title": "看占比，才知道大殘差支配了多少",
+  "takeaway": "此例的占比：平方最大，絕對值最小。",
+  "source_anchors": [
+   "1. 回歸：MSE、MAE、Huber"
+  ],
+  "visual": "三條各自正規化堆疊長條，三筆小殘差與離群值精算比例100/103,10/13,9.5/11",
+  "math": [
+   "\\frac{100}{103}\\approx97.09\\%",
+   "\\frac{10}{13}\\approx76.92\\%",
+   "\\frac{9.5}{11}\\approx86.36\\%"
+  ],
+  "bridge": "光看總和不夠,要看離群值占了幾成。"
+ },
+ {
+  "page": 9,
+  "title": "三把尺，對大誤差的反應不同",
+  "takeaway": "曲線比較成長方式，不把不同損失值當成同一把尺。",
+  "source_anchors": [
+   "1. 回歸：MSE、MAE、Huber",
+   "重點:圖"
+  ],
+  "visual": "按來源e[-3,3]三函數精確曲線，同軸；MSE紅、MAE藍、Huber綠虛線",
+  "math": [
+   "e^2",
+   "|e|",
+   "h_1(e)"
+  ],
+  "bridge": "把三把尺畫在同一個座標,看對大誤差的反應。"
+ },
+ {
+  "page": 10,
+  "title": "交叉熵會重罰給正解很小的機率",
+  "takeaway": "單一正確類別時，只取那一類的負對數。",
+  "source_anchors": [
+   "2. 分類：交叉熵與 KL 散度"
+  ],
+  "visual": "精確-ln(p)曲線p .02..1，右側批次CE完整雙和與onehot簡化；標ln為自然對數",
+  "math": [
+   "L_{\\rm CE}=-\\sum_{i=1}^{b}\\sum_{l=1}^{c}y_{il}\\ln p_{il}",
+   "\\ell=-\\ln p_{\\rm true}",
+   "\\sum_l p_l=1"
+  ],
+  "bridge": "回歸量距離;分類改量「給正解多少機率」。"
+ },
+ {
+  "page": 11,
+  "title": "同一個預測，正解換了損失也會換",
+  "takeaway": "沿用 KP06 的完整 Softmax 值，最後才取位數。",
+  "source_anchors": [
+   "2. 分類：交叉熵與 KL 散度"
+  ],
+  "visual": "三類機率分段長條配三個真值候選，負對數結果0.408,1.408,2.408；每項保留算式",
+  "math": [
+   "\\mathbf a=(2,1,0),\\quad S=e^2+e+1",
+   "\\mathbf p=(e^2,e,1)/S",
+   "-\\ln(e^2/S)\\approx0.408",
+   "-\\ln(e/S)\\approx1.408",
+   "-\\ln(1/S)\\approx2.408"
+  ],
+  "bridge": "用 KP06 的 Softmax 輸出,算正解不同時的交叉熵。"
+ },
+ {
+  "page": 12,
+  "title": "二元交叉熵要把兩種結果都寫進來",
+  "takeaway": "一個機率配它的補數；不用讓單一輸出和為一。",
+  "source_anchors": [
+   "2. 分類：交叉熵與 KL 散度",
+   "自我檢核#4"
+  ],
+  "visual": "p與1-p互補長條，y0或1分支指向完整BCE式；函式API可接logits說明放備註",
+  "math": [
+   "\\ell=-y\\ln p-(1-y)\\ln(1-p)",
+   "y\\in\\{0,1\\},\\quad0<p<1"
+  ],
+  "bridge": "兩類問題的交叉熵怎麼寫?把兩種結果都寫進來。",
+  "note": "二元交叉熵的完整式是補充說明(講義只提 sigmoid 用於二元輸出,並在自我檢核 4 要求條件);算式與 §2 的交叉熵一致。"
+ },
+ {
+  "page": 13,
+  "title": "KL 衡量目標分布與預測分布的差異",
+  "takeaway": "方向不能交換；目標有機率的位置，預測也要有。",
+  "source_anchors": [
+   "2. 分類：交叉熵與 KL 散度"
+  ],
+  "visual": "目標y與預測p三組配對機率柱狀圖，KL完整求和、方向箭頭及支撐條件",
+  "math": [
+   "D_{\\rm KL}(\\mathbf y\\Vert\\mathbf p)=\\sum_l y_l\\ln\\frac{y_l}{p_l}",
+   "\\sum_l y_l=\\sum_l p_l=1",
+   "y_l>0\\Rightarrow p_l>0"
+  ],
+  "bridge": "目標本身是一份機率分布時,改用 KL 散度。"
+ },
+ {
+  "page": 14,
+  "title": "兩個很接近的分布，KL 仍要逐項相加",
+  "takeaway": "個別項可以負；總 KL 才必定非負。",
+  "source_anchors": [
+   "2. 分類：交叉熵與 KL 散度"
+  ],
+  "visual": "三項y ln(y/p)有正有負，依實算值signed bar，完整代入三項和約0.005787",
+  "math": [
+   "\\mathbf y=(0.7,0.2,0.1)",
+   "\\sum_l y_l\\ln(y_l/p_l)\\approx0.005787"
+  ],
+  "bridge": "用具體數字逐項算 KL。"
+ },
+ {
+  "page": 15,
+  "title": "固定目標時，交叉熵與 KL 只差常數",
+  "takeaway": "目標是 one-hot 時，熵為零，兩者相同。",
+  "source_anchors": [
+   "2. 分類：交叉熵與 KL 散度",
+   "來源更正與取捨"
+  ],
+  "visual": "CE長條分解成H(y)與KL精確比例，配identity完整公式；onehot零熵式",
+  "math": [
+   "H(\\mathbf y,\\mathbf p)=H(\\mathbf y)+D_{\\rm KL}(\\mathbf y\\Vert\\mathbf p)",
+   "H(\\mathbf y)=-\\sum_l y_l\\ln y_l",
+   "\\mathbf y=(1,0,0)\\Rightarrow H(\\mathbf y)=0"
+  ],
+  "bridge": "交叉熵與 KL 有什麼關係?"
+ },
+ {
+  "page": 16,
+  "title": "Hinge 不只求分對，還要留出分數餘裕",
+  "takeaway": "零損失需要標籤乘分數至少達到門檻。",
+  "source_anchors": [
+   "3. Hinge：分對了但離邊界太近，也要罰",
+   "重點:圖"
+  ],
+  "visual": "來源signedscore[-2,3]hinge與0-1精確曲線，0..1正確但受罰半透明帶",
+  "math": [
+   "\\ell=\\max(0,m-yf_o),\\quad m=1",
+   "y\\in\\{-1,+1\\},\\quad yf_o\\ge m\\Rightarrow\\ell=0"
+  ],
+  "bridge": "第三種分類尺:Hinge,連分對但太近也要罰。"
+ },
+ {
+  "page": 17,
+  "title": "三個分數：安全、太近、分錯",
+  "takeaway": "先算標籤乘分數，再代入 Hinge。",
+  "source_anchors": [
+   "3. Hinge：分對了但離邊界太近，也要罰"
+  ],
+  "visual": "三點1.5,.3,-.5按真實橫軸位置連到曲線，右側三條完整max公式得0,.7,1.5",
+  "math": [
+   "y=+1,\\quad m=1",
+   "\\max(0,1-1.5)=0",
+   "\\max(0,1-0.3)=0.7",
+   "\\max(0,1-(-0.5))=1.5"
+  ],
+  "bridge": "用三個分數代入 Hinge。"
+ },
+ {
+  "page": 18,
+  "title": "分數餘裕不是幾何距離",
+  "takeaway": "同時放大權重與偏置，邊界不變，分數卻改變。",
+  "source_anchors": [
+   "3. Hinge：分對了但離邊界太近，也要罰",
+   "來源更正與取捨"
+  ],
+  "visual": "相同邊界及同點圖，s和2s兩個分數尺對照；distance=s/||w||，非實驗",
+  "math": [
+   "s=\\mathbf w^\\top\\mathbf x+b",
+   "d=\\frac{s}{\\|\\mathbf w\\|_2}",
+   "(\\mathbf w,b)\\mapsto(2\\mathbf w,2b):\\ s\\mapsto2s,\\ d\\mapsto d"
+  ],
+  "bridge": "Hinge 的「餘裕」到底是不是距離?",
+  "note": "「分數餘裕不是幾何距離」是補充說明,用來對應來源更正「$yf_o\\ge m$」,不改變講義結論。"
+ },
+ {
+  "page": 19,
+  "title": "Huber 在兩個接點都接得上斜率",
+  "takeaway": "一次導數連續；二次導數仍有切換。",
+  "source_anchors": [
+   "想深入"
+  ],
+  "visual": "Huber原曲線與兩接點星標；左右接點值半delta²、斜率±delta完整對照",
+  "math": [
+   "h_\\delta(\\pm\\delta)=\\frac12\\delta^2",
+   "h_\\delta^{\\prime}(+\\delta)=+\\delta",
+   "h_\\delta^{\\prime}(-\\delta)=-\\delta"
+  ],
+  "bridge": "(選讀)回頭看 Huber:兩段在接點接得平順嗎?"
+ },
+ {
+  "page": 20,
+  "title": "先認清任務，再挑對損失",
+  "takeaway": "實數、互斥類別、軟分布與分數間隔，需要不同的尺。",
+  "source_anchors": [
+   "本單元重點整理",
+   "重點:一句話重點",
+   "重點:白話說明",
+   "重點:正式定義",
+   "重點:例子"
+  ],
+  "visual": "任務決策樹到MSE/MAE/Huber、CE、KL、Hinge，原生連接線",
+  "math": [],
+  "bridge": "六種損失都看過了,整理成一張選擇表。"
+ },
+ {
+  "page": 21,
+  "title": "小損失的意義，要連資料與尺一起看",
+  "takeaway": "訓練低損失不保證泛化；不同損失不直接比高低。",
+  "source_anchors": [
+   "常見迷思#1",
+   "常見迷思#2"
+  ],
+  "visual": "訓練與未見資料兩種考卷進同一損失尺；另一旁不同單位尺有不等可比警示",
+  "math": [],
+  "bridge": "最後澄清兩個常見迷思。",
+  "self_check": true
+ },
+ {
+  "page": 22,
+  "title": "下一步：用平方誤差學出一個線性單元",
+  "takeaway": "KP08：ADALINE 把連續誤差接到權重更新。",
+  "source_anchors": [
+   "重點:留給下一個知識點的問題"
+  ],
+  "visual": "0-1階梯對比平方曲線，ADALINE線性預測接平方損失與更新的流程",
+  "math": [
+   "\\ell=(f_o-y)^2"
+  ],
+  "bridge": "損失有了,下一步:怎麼讓它變小?"
+ },
+ {
+  "page": 23,
+  "title": "練習一：換一批殘差，再用三把尺",
+  "takeaway": "提示：Huber 先判斷每一筆落在哪一段。",
+  "source_anchors": [
+   "小練習#1",
+   "解題示範"
+  ],
+  "visual": "四個殘差2,-1,.5,6的signed bars，三個總和問號，不給答案",
+  "math": [
+   "\\mathbf e=(2,-1,0.5,6),\\quad\\delta=1"
+  ],
+  "bridge": "自己試試:換一組殘差,用三把尺。",
+  "self_check": true
+ },
+ {
+  "page": 24,
+  "title": "練習二：三個分數相同，交叉熵是多少",
+  "takeaway": "提示：先求 Softmax，再找正解的負對數。",
+  "source_anchors": [
+   "小練習#2"
+  ],
+  "visual": "三個0經exp到三個同樣問號分配，再接-ln(p)未知，不給1/3與ln3",
+  "math": [
+   "\\mathbf a=(0,0,0),\\quad\\ell=-\\ln p_{\\rm true}=?"
+  ],
+  "bridge": "自己試試:分類的交叉熵。",
+  "self_check": true,
+  "note": "參考答案為補充(講義只給提示),數值由程式驗算。"
+ },
+ {
+  "page": 25,
+  "title": "練習三：負標籤遇到正分數",
+  "takeaway": "提示：先乘標籤，判斷正負，再計損失。",
+  "source_anchors": [
+   "小練習#3"
+  ],
+  "visual": "y=-1與f=.8兩節點相乘入Hinge未知，保留max(0,1-yf)定義",
+  "math": [
+   "y=-1,\\quad f_o=0.8,\\quad\\ell=\\max(0,1-yf_o)=?"
+  ],
+  "bridge": "自己試試:Hinge 遇到負標籤。",
+  "self_check": true,
+  "note": "參考答案為補充(講義只給提示),數值由程式驗算。"
+ },
+ {
+  "page": 26,
+  "title": "自我檢核一：平方誤差的主要弱點",
+  "takeaway": "提示：想想大殘差在總和中的占比。",
+  "source_anchors": [
+   "自我檢核#1"
+  ],
+  "visual": "四選項等樣式，曲線與尺各對應敘述，不標答案",
+  "math": [],
+  "bridge": "自我檢核:想想看,再對照提示。",
+  "self_check": true,
+  "note": "參考答案依講義內容推得;講義原文不附答案,老師可決定是否保留。"
+ },
+ {
+  "page": 27,
+  "title": "自我檢核二：Huber 的門檻控制什麼",
+  "takeaway": "提示：找出公式在哪裡換段。",
+  "source_anchors": [
+   "自我檢核#2"
+  ],
+  "visual": "四個等樣式候選，門檻虛線、學習率旋鈕與分類數量示意",
+  "math": [],
+  "bridge": "自我檢核:Huber 的 $\\delta$。",
+  "self_check": true,
+  "note": "參考答案依講義內容推得;講義原文不附答案,老師可決定是否保留。"
+ },
+ {
+  "page": 28,
+  "title": "自我檢核三：軟標籤適合哪種分布損失",
+  "takeaway": "提示：目標本身是一份機率分布。",
+  "source_anchors": [
+   "自我檢核#3"
+  ],
+  "visual": "Hinge,MSE,KL,MAE四個候選等色簡圖，不標正解",
+  "math": [],
+  "bridge": "自我檢核:軟標籤用哪個損失。",
+  "self_check": true,
+  "note": "參考答案依講義內容推得;講義原文不附答案,老師可決定是否保留。"
+ },
+ {
+  "page": 29,
+  "title": "自我檢核四：交叉熵的機率條件",
+  "takeaway": "提示：分清互斥多類別與二元的寫法。",
+  "source_anchors": [
+   "自我檢核#4"
+  ],
+  "visual": "四選項同樣式，完整選項分清vectorprob與scalar p complementary，不給答案",
+  "math": [],
+  "bridge": "自我檢核:交叉熵對輸出層的要求。",
+  "self_check": true,
+  "note": "參考答案依講義內容推得;講義原文不附答案,老師可決定是否保留。"
+ }
+]

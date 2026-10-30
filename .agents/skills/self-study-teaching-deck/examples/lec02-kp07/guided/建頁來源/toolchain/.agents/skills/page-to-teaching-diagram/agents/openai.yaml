@@ -1,0 +1,13 @@
+interface:
+  display_name: 頁面內容轉教學示意圖
+  short_description: 將目前頁面轉成易讀教學圖解，無生圖工具時輸出完整可用的提示詞
+  default_prompt: 使用 $page-to-teaching-diagram，按照目前頁面內容製作示意圖解；沒有生圖工具時，請輸出完整繪圖提示詞。
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true
