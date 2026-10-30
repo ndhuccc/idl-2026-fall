@@ -26,9 +26,9 @@
 ## 網頁版(HTML)自動產生
 
 課程網站建置時,會把 `slides/` 第一層的每份 `.jbd.json` 自動轉成單一檔案、可離線開啟的 HTML,
-投影片下載頁**只提供 HTML**(網站不發佈 `.jbd.json`,也不放 JianBauDau 播放器連結);學生用瀏覽器就能看。
-`.jbd.json` 仍留在 Repo 當來源檔,轉出的 HTML 只存在網站,**不提交進 Git**。
-若某份簡報沒有網頁版(轉換失敗,或建置環境沒有 Node.js),下載頁才會退回提供該份的 JSON 與播放器連結,避免出現壞連結。
+投影片下載頁**同時提供 HTML 與 JBD(`.jbd.json`)的下載連結**,並附 JianBauDau 播放器的下載連結;學生用瀏覽器就能看,要編輯再用 JBD。
+`.jbd.json` 在 Repo 內是來源檔,轉出的 HTML 只存在網站,**不提交進 Git**。
+若某份簡報沒有網頁版(轉換失敗,或建置環境沒有 Node.js),該列只會有 JBD 連結,避免出現壞連結。
 
 - 轉換器是專案技能 `.agents/skills/slides-to-html/`(需要 Node.js;`deploy-site` 工作流程已安裝)。操作、規則與驗證見該技能的 `SKILL.md`。
 - 已有同名手作 `lecNN.html` 的簡報不會被覆蓋;子資料夾(例如 `slides/comics/`)不轉 HTML,其中的 `.jbd.json` 也不發佈到網站。

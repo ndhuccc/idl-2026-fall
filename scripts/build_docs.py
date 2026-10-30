@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import json
 import re
 import shutil
 import subprocess
@@ -147,12 +148,11 @@ def copy_content(stage: Path) -> int:
                 shutil.copyfile(src, dest)
                 count += 1
     generated = generate_html_slides(stage)
-    # 網站只提供 HTML:已有網頁版的簡報不發佈 .jbd.json(來源檔仍在 Repo);子資料夾內不列入下載頁的 .jbd.json 也不發佈。
-    # 沒有網頁版的簡報(例如轉換失敗或缺少 Node.js)才保留 JSON,避免下載頁出現壞連結。
+    # 下載頁同時提供 HTML 網頁版與 .jbd.json 可編輯檔;子資料夾內不列入下載頁的 .jbd.json 不發佈。
     slides_stage = stage / "slides"
     if slides_stage.exists():
         for js in list(slides_stage.rglob("*.jbd.json")):
-            if js.parent != slides_stage or js.with_name(js.name[: -len(".jbd.json")] + ".html").exists():
+            if js.parent != slides_stage:
                 js.unlink()
                 count -= 1
     count += len(generated) + write_slides_index(stage, generated)
@@ -219,6 +219,18 @@ def english_title(stem: str) -> str:
         if line.startswith("# "):
             return re.sub(r"^KP\d{2}\s+", "", line[2:].strip())
     return ""
+
+
+def deck_english_title(stem: str) -> str:
+    """英文版簡報(slides/<stem>-en.jbd.json)的標題,去掉「KPNN 」前綴;沒有則回傳空字串。"""
+    p = ROOT / "slides" / f"{stem}-en.jbd.json"
+    if not p.exists():
+        return ""
+    try:
+        title = json.loads(p.read_text(encoding="utf-8")).get("metadata", {}).get("title", "")
+    except (OSError, ValueError):
+        return ""
+    return re.sub(r"^KP\d{2}\s+", "", str(title).strip())
 
 
 def slide_label(stem: str, kp_labels: dict[str, str]) -> tuple[str, str]:
@@ -294,20 +306,15 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
         else:
             others.append(p.name)
 
-    # 已有網頁版(HTML)的簡報,下載頁只列 HTML;沒有網頁版的才列 JSON(此時才需要播放器)。
-    for lec in weeks:
-        for slug, items in weeks[lec].items():
-            if any(f == "html" for f, _ in items):
-                weeks[lec][slug] = [t for t in items if t[0] != "jbd.json"]
     has_json = any(f == "jbd.json" for w in weeks.values() for items in w.values() for f, _ in items)
 
     lines = ["# 投影片下載(Slides)", "",
-             "每週的投影片以 **HTML 網頁版**提供:單一檔案、不需安裝任何軟體,用瀏覽器開啟即可,也能離線觀看"
-             "(←→ 或空白鍵換頁,F 全螢幕,N 顯示講者備註)。PPTX、PDF 可直接用一般軟體開啟。"
-             + (" 少數尚無網頁版的簡報才提供 JianBauDau 格式,需用 JianBauDau 播放器開啟。" if has_json else ""), "",
+             "每週的投影片提供兩種下載:**HTML 網頁版**(單一檔案、不需安裝任何軟體,用瀏覽器開啟即可,也能離線觀看;"
+             "←→ 或空白鍵換頁,F 全螢幕,N 顯示講者備註),以及 **JBD**(JianBauDau 原生檔 `.jbd.json`,"
+             "用 JianBauDau 播放器開啟或繼續編輯)。PPTX、PDF 可直接用一般軟體開啟。", "",
              "同一週可以有多份教材:沒有後綴的是該週正課,"
              "有後綴的(例如 `lec02-parameter-estimation`)是補充或自主學習教材。", ""]
-    if has_json:  # 只有存在 JSON 下載時才需要播放器
+    if has_json:  # 有 JBD 檔可下載時,一併提供播放器
         lines += ["## JianBauDau 播放器", "",
                   f"- [下載 JianBauDau 播放器 1.0.3(Windows,.exe)]({PLAYER_URL})",
                   "- 開啟方式:執行播放器後按 Ctrl+O 選擇 `.jbd.json` 檔,或把檔案拖進視窗。",
@@ -329,11 +336,14 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
                 return lab[1] if lab[0] else "~~" + stem
 
             def cell(items: list[tuple[str, str]]) -> str:
-                return " · ".join(f"[{SLIDE_SHORT.get(f, f)}]({n})" for f, n in sorted(items, key=lambda t: t[0])) or "—"
+                return " · ".join(
+                    f'<a href="{n}" download>JBD</a>' if f == "jbd.json" else f"[{SLIDE_SHORT.get(f, f)}]({n})"
+                    for f, n in sorted(items, key=lambda t: t[0])) or "—"
 
             for stem in sorted((x for x in weeks[wk] if x not in en_stems), key=order):
                 label = slide_label(stem, kp_labels)[0] or ("本週正課" if re.fullmatch(r"lec\d{2}", stem) else stem)
-                en_title = english_title(stem[: -len("-with-comics")] if stem.endswith("-with-comics") else stem)
+                core_stem = stem[: -len("-with-comics")] if stem.endswith("-with-comics") else stem
+                en_title = english_title(core_stem) or deck_english_title(core_stem)
                 if en_title:
                     label += "<br>" + en_title + ("(Comics)" if stem.endswith("-with-comics") else "")
                 en_items = weeks[wk].get(en_of.get(stem, "\0"), [])
