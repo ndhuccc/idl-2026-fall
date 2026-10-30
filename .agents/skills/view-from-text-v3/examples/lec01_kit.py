@@ -1,0 +1,87 @@
+"""KP01 圖解共用:Page 代理(記錄 beat)、吉祥物、星形、組檔。"""
+import sys, json, math, copy
+import os
+IMG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "image-to-jbd-page", "tools")
+sys.path.insert(0, IMG)
+from jbd_page import Page
+import new_deck
+
+BG, CARD, INK, MUTED = "#f8fafc", "#ffffff", "#1f2937", "#475569"
+BLUE, BLUEL = "#1d4ed8", "#dbeafe"; ORG, ORGL = "#c2410c", "#ffedd5"; GRN, GRNL = "#15803d", "#dcfce7"
+RED, REDL = "#b91c1c", "#fee2e2"; PUR, PURL = "#6d28d9", "#ede9fe"; BAN = "#1e3a8a"; GOLD = "#f59e0b"; GRAY = "#94a3b8"
+
+class PG:
+    """Wrap Page: every node created while beat=k is tagged k (0 = always visible)."""
+    def __init__(self):
+        self.P = Page(src_w=1280, src_h=720, prefix="k1"); self.beat = 0; self.tags = []; self.notes = {}
+    def __getattr__(self, name):
+        f = getattr(self.P, name)
+        if not callable(f): return f
+        def w(*a, **k):
+            n0 = len(self.P.nodes); r = f(*a, **k)
+            self.tags += [self.beat] * (len(self.P.nodes) - n0); return r
+        return w
+
+def star(P, cx, cy, R, fill, z=6, stroke="transparent", sw=0):
+    pts = []
+    for i in range(10):
+        r = R if i % 2 == 0 else R * 0.45; a = -math.pi / 2 + i * math.pi / 5
+        pts.append((cx + r * math.cos(a), cy + r * math.sin(a)))
+    return P.poly(pts, fill=fill, stroke=stroke, sw=sw, z=z)
+
+def tick(P, x, y, s, color=GRN, z=6):
+    return P.line([(x, y + 0.55 * s), (x + 0.35 * s, y + s), (x + s, y)], color, sw=max(3, s * 0.18), z=z)
+
+def cross(P, x, y, s, color=RED, z=6):
+    P.line([(x, y), (x + s, y + s)], color, sw=max(3, s * 0.18), z=z); P.line([(x + s, y), (x, y + s)], color, sw=max(3, s * 0.18), z=z)
+
+def mascot(P, x, y, s, mood="proud", z=5):
+    """Robot 'little model'. (x, y) = top-left of the head; s = scale. Width about 130*s, height about 230*s."""
+    X = lambda v: x + v * s; Y = lambda v: y + v * s
+    P.line([(X(60), Y(0)), (X(60), Y(-26))], BLUE, sw=4 * s + 1, z=z)
+    P.ellipse(X(60), Y(-30), 9 * s, fill=GOLD if mood == "proud" else ORG, z=z)
+    P.rect(X(0), Y(0), 120 * s, 100 * s, fill=BLUEL, stroke=BLUE, sw=4 * s + 1, radius=26 * s, z=z)
+    P.rect(X(14), Y(22), 92 * s, 52 * s, fill=CARD, stroke=BLUE, sw=2, radius=16 * s, z=z + 1)
+    if mood == "proud":
+        P.ellipse(X(38), Y(46), 9 * s, fill=INK, z=z + 2); P.ellipse(X(82), Y(46), 9 * s, fill=INK, z=z + 2)
+        P.ellipse(X(41), Y(42), 3 * s, fill=CARD, z=z + 3); P.ellipse(X(85), Y(42), 3 * s, fill=CARD, z=z + 3)
+        P.line([(X(40), Y(64)), (X(60), Y(74)), (X(80), Y(64))], INK, sw=3 * s + 1, smooth=True, z=z + 2)
+        P.ellipse(X(24), Y(62), 6 * s, fill="#fda4af", z=z + 2); P.ellipse(X(96), Y(62), 6 * s, fill="#fda4af", z=z + 2)
+    else:
+        P.ellipse(X(38), Y(46), 8 * s, fill=INK, z=z + 2); P.ellipse(X(82), Y(46), 11 * s, fill=INK, z=z + 2)
+        P.line([(X(26), Y(32)), (X(48), Y(28))], INK, sw=3 * s + 1, z=z + 2)
+        P.line([(X(40), Y(66)), (X(50), Y(60)), (X(60), Y(66)), (X(70), Y(60)), (X(80), Y(66))], INK, sw=3 * s + 1, smooth=True, z=z + 2)
+        P.poly([(X(112), Y(18)), (X(122), Y(40)), (X(112), Y(46)), (X(102), Y(40))], fill="#38bdf8", z=z + 2)
+    P.rect(X(14), Y(106), 92 * s, 78 * s, fill=CARD, stroke=BLUE, sw=4 * s + 1, radius=20 * s, z=z)
+    P.ellipse(X(60), Y(145), 14 * s, fill=PURL, stroke=PUR, sw=2, z=z + 1)
+    if mood == "proud":
+        P.line([(X(14), Y(124)), (X(-20), Y(96))], BLUE, sw=7 * s + 1, z=z); P.line([(X(106), Y(124)), (X(140), Y(96))], BLUE, sw=7 * s + 1, z=z)
+        star(P, X(150), Y(80), 14 * s + 4, GOLD, z=z)
+    else:
+        P.line([(X(14), Y(130)), (X(-14), Y(158))], BLUE, sw=7 * s + 1, z=z); P.line([(X(106), Y(130)), (X(134), Y(158))], BLUE, sw=7 * s + 1, z=z)
+    P.rect(X(26), Y(188), 28 * s, 30 * s, fill=BLUE, radius=8 * s, z=z); P.rect(X(66), Y(188), 28 * s, 30 * s, fill=BLUE, radius=8 * s, z=z)
+
+def build_deck(pages, title, label0, lang, out):
+    """pages = [(PG, title_label, notes{beat: text})]; write deck: page i at x = i * 1440 inside scene-u01."""
+    d = new_deck.make(title, name=title)
+    d["nodes"]["frame-u01"]["name"] = title; d["nodes"]["frame-u01"]["text"] = title
+    d["scenes"]["scene-root"]["name"] = title; d["scenes"]["scene-u01"]["name"] = title
+    d["steps"][0]["label"] = label0
+    sc = d["scenes"]["scene-u01"]; order = 1; N = len(pages)
+    for i, (pg, lab, notes) in enumerate(pages):
+        ox = i * 1440; ids = {}
+        for j, (n, b) in enumerate(zip(copy.deepcopy(pg.P.nodes), pg.tags)):
+            if n["type"] == "text" and "$" in n["text"] and n["height"] <= 48:      # KaTeX line boxes are a few px taller than the font size
+                n["height"] = round(n["height"] + 8, 2); n["transform"]["y"] = round(n["transform"]["y"] - 4, 2)
+                fs = n["style"]["fontSize"]; n["style"]["lineHeight"] = round(n["height"] / fs, 3) if n["style"]["lineHeight"] and n["style"]["lineHeight"] * fs >= n["height"] - 12 else n["style"]["lineHeight"]
+            n["id"] = f"k1p{i+1}-{j+1}"; n["sceneId"] = "scene-u01"; n["transform"]["x"] = round(n["transform"]["x"] + ox, 2)
+            if b > 0: n["initiallyHidden"] = True
+            d["nodes"][n["id"]] = n; sc["nodeIds"].append(n["id"]); ids.setdefault(b, []).append(n["id"])
+        cam = {"kind": "scene-point", "sceneId": "scene-u01", "point": {"x": ox + 640, "y": 360.0}, "zoom": 1.0, "referenceViewport": {"width": 1280, "height": 720}}
+        d["steps"].append({"id": f"scene-u01-step-p{i+1}", "order": order, "label": f"{lab} · {i+1}/{N}", "durationMs": 900, "holdMs": 500, "easing": "smooth", "target": cam, "speakerNotes": notes.get(0, "")}); order += 1
+        for b in sorted(k for k in ids if k > 0):
+            d["steps"].append({"id": f"scene-u01-p{i+1}b{b}", "order": order, "label": f"{lab} · {i+1}/{N} ({b})", "durationMs": 900, "holdMs": 500, "easing": "smooth", "target": cam,
+                               "reveal": {"timing": "after-camera", "enter": [{"nodeId": nid, "effect": "fade", "delayMs": 0, "durationMs": 450} for nid in ids[b]], "exitNodeIds": []},
+                               "speakerNotes": notes.get(b, "")}); order += 1
+    json.dump(d, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    return d

@@ -4,6 +4,8 @@
 
 ## 2026 秋季
 
+- 2026-10-30 — [更新] 第1週 KP01 簡報依新版流程重做(9 頁示意圖、每頁逐步出現,中文與英文各一份):`slides/lec01-kp01-model-selection-framework.jbd.json` 取代舊版,新增 `-en.jbd.json`;建頁腳本與圖解提示詞存於 `.agents/skills/view-from-text-v3/examples/lec01_*`。
+
 - 2026-10-30 — [更新] 技能整理:把「課堂簡報製作流程與版面經驗」與檢查工具 `check_deck_quality.py` 從 page-to-teaching-diagram 搬到 prompt-to-jbd-page(原生簡報頁的細節歸原生簡報技能);page-to-teaching-diagram 只留圖解本身的規則,並留一行指向 prompt-to-jbd-page。
 
 - 2026-10-30 — [更新] 技能 page-to-teaching-diagram 新增「課堂簡報製作流程與版面經驗」(一次一個 KP、標題頁用 KP 短標題、逐步出現與講者備註、比喻畫成圖、數字出處、公式框與吉祥物的版面注意、中英檔名規則、送出前檢查),並新增檢查工具 `tools/check_deck_quality.py`(標題、圖層遮蓋、每頁圖形主元件數)。
