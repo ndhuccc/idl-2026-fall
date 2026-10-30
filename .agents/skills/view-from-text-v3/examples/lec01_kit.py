@@ -13,7 +13,7 @@ RED, REDL = "#b91c1c", "#fee2e2"; PUR, PURL = "#6d28d9", "#ede9fe"; BAN = "#1e3a
 class PG:
     """Wrap Page: every node created while beat=k is tagged k (0 = always visible)."""
     def __init__(self):
-        self.P = Page(src_w=1280, src_h=720, prefix="k1"); self.beat = 0; self.tags = []; self.notes = {}
+        self.P = Page(src_w=1280, src_h=720, prefix="k1"); self.beat = 0; self.tags = []; self.notes = {}; self.links = []
     def __getattr__(self, name):
         f = getattr(self.P, name)
         if not callable(f): return f
@@ -21,6 +21,13 @@ class PG:
             n0 = len(self.P.nodes); r = f(*a, **k)
             self.tags += [self.beat] * (len(self.P.nodes) - n0); return r
         return w
+
+    def mark(self):
+        """Index the next created node will have (use it to name a shape for link())."""
+        return len(self.P.nodes)
+    def link(self, a, b, ha, hb, color=GRAY, sw=4):
+        """Native connector from node index a (hook ha) to node index b (hook hb); hooks 0-15 run clockwise from the top (4 right, 8 bottom, 12 left)."""
+        self.links.append((a, b, ha, hb, color, sw, self.beat))
 
 def star(P, cx, cy, R, fill, z=6, stroke="transparent", sw=0):
     pts = []
@@ -80,6 +87,13 @@ def build_deck(pages, title, label0, lang, out):
             n["id"] = f"k1p{i+1}-{j+1}"; n["sceneId"] = "scene-u01"; n["transform"]["x"] = round(n["transform"]["x"] + ox, 2)
             if b > 0: n["initiallyHidden"] = True
             d["nodes"][n["id"]] = n; sc["nodeIds"].append(n["id"]); ids.setdefault(b, []).append(n["id"])
+        for ci, (a_, b2, ha, hb, col, sw, bt) in enumerate(pg.links):
+            cid = f"k1p{i+1}-c{ci + 1}"
+            d["nodes"][cid] = {"id": cid, "type": "connector", "name": "connector", "sceneId": "scene-u01", "transform": {"x": ox, "y": 0, "scaleX": 1, "scaleY": 1, "rotation": 0}, "width": 1, "height": 1, "zIndex": 20, "locked": False,
+                               "style": {"fill": "transparent", "stroke": col, "textColor": INK, "fontSize": 16, "radius": 0, "borderWidth": sw}, "text": "",
+                               "connector": {"sourceNodeId": f"k1p{i+1}-{a_+1}", "sourceHook": ha, "targetNodeId": f"k1p{i+1}-{b2+1}", "targetHook": hb, "curve": False, "direction": "forward", "arrowSize": "medium"}}
+            if bt > 0: d["nodes"][cid]["initiallyHidden"] = True
+            sc["nodeIds"].append(cid); ids.setdefault(bt, []).append(cid)
         cam = {"kind": "scene-point", "sceneId": "scene-u01", "point": {"x": ox + 640, "y": 360.0}, "zoom": 1.0, "referenceViewport": {"width": 1280, "height": 720}}
         d["steps"].append({"id": f"scene-u01-step-p{i+1}", "order": order, "label": f"{lab} · {i+1}/{N}", "durationMs": 900, "holdMs": 500, "easing": "smooth", "target": cam, "speakerNotes": notes.get(0, "")}); order += 1
         for b in sorted(k for k in ids if k > 0):

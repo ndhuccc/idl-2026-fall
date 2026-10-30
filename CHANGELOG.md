@@ -13,6 +13,7 @@
 - 2026-10-30 — [更新] 技能 prompt-to-jbd-page 新增兩項稽核:第 9 項「活潑元素」(每頁至少 3 種效果、全份至少一個旋轉貼紙或印章)與第 10 項「reveal 逐步出現」(隱藏節點都被揭示一次、節點與場景一致、每頁至少 2 個 beat、reveal 步驟都有講者備註);`tools/check_deck_quality.py` 同步實作。第4週 KP01–KP12 以新稽核跑過,結構無 FAIL,另有少數頁面的警告(圖形元件或 beat 不足)。
 
 - 2026-10-30 — [更新] 第1週 KP01 簡報依新版流程重做(9 頁示意圖、每頁逐步出現,中文與英文各一份):`slides/lec01-kp01-model-selection-framework.jbd.json` 取代舊版,新增 `-en.jbd.json`;建頁腳本與圖解提示詞存於 `.agents/skills/view-from-text-v3/examples/lec01_*`。
+- 2026-10-30 — [更新] 第1週 KP00 全章地圖簡報依新版流程重做(6 頁:全章問題、十單元路線圖、時間分配、任務分岔、方法與歷史、學完能做到,每頁逐步出現,原生連接線,中英各一份):`slides/lec01-kp00-chapter-map.jbd.json` 取代舊版,新增 `-en.jbd.json`;建頁腳本 `lec01_kp00_pages.py`,`lec01_kit.py` 新增原生連接線功能。
 - 2026-10-30 — [更新] 第1週 KP02–KP10 簡報依新版流程重做(各 8–10 頁示意圖、每頁逐步出現,中文與英文各一份,共 18 份):`slides/lec01-kp02…kp10-*.jbd.json` 取代舊版,新增 `-en.jbd.json`;數字由 `lec01_kpNN_nums.py` 重算並 assert,建頁腳本與頁面清單存於 `.agents/skills/view-from-text-v3/examples/lec01_*`(各 KP 的圖解提示詞未事先寫成檔,頁面清單事後整理於 `lec01_kp02-10_page_list.md`)。KP00 全章地圖未重做。
 
 - 2026-10-30 — [更新] 技能整理:把「課堂簡報製作流程與版面經驗」與檢查工具 `check_deck_quality.py` 從 page-to-teaching-diagram 搬到 prompt-to-jbd-page(原生簡報頁的細節歸原生簡報技能);page-to-teaching-diagram 只留圖解本身的規則,並留一行指向 prompt-to-jbd-page。
