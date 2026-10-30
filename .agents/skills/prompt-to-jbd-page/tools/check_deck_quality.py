@@ -16,7 +16,11 @@ Usage:  python3 check_deck_quality.py deck.jbd.json [--min-figures 4] [--page-wi
   6. feature coverage (see references/feature-catalog.md): the deck should use native connectors, in-page camera moves, inline
      text formatting, reveal exit, multi-stop gradients, fill opacity, and other JianBauDau features; reports which of the
      catalog's feature groups are used / missing and warns below --min-features groups.
-Exit code 1 if check 1, 2 or 5 (reveal structure) fails; checks 3 and 4 only warn (exit 0) unless --strict.
+  7. native connectors: connectors are counted as figure elements; the deck should use at least --min-connectors of them, and
+     hand-drawn arrows (a polyline with a small triangle arrowhead at its end) are listed so flow pages can be converted.
+  8. bubbles and text boxes: every white speech/thought bubble must hold a non-empty text node above it and that text must be
+     revealed in the same step as the bubble; text nodes with empty text and nodes sticking out of the 720 px page are reported.
+Exit code 1 if check 1, 2, 5 (reveal structure) or 8 (empty or out-of-sync bubble) fails; checks 3, 4, 7 and the rest of 8 only warn (exit 0) unless --strict.
 """
 import argparse, collections, json, re, sys
 
@@ -30,7 +34,7 @@ def alpha(c):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("deck"); ap.add_argument("--min-figures", type=int, default=4)
-    ap.add_argument("--page-width", type=int, default=1280); ap.add_argument("--min-lively", type=int, default=3); ap.add_argument("--min-beats", type=int, default=2); ap.add_argument("--min-features", type=int, default=9); ap.add_argument("--strict", action="store_true")
+    ap.add_argument("--page-width", type=int, default=1280); ap.add_argument("--min-lively", type=int, default=3); ap.add_argument("--min-beats", type=int, default=2); ap.add_argument("--min-features", type=int, default=9); ap.add_argument("--min-connectors", type=int, default=4); ap.add_argument("--strict", action="store_true")
     a = ap.parse_args(); d = json.load(open(a.deck, encoding="utf-8")); bad = 0
     steps = sorted(d["steps"], key=lambda s: s["order"])
     first = (steps[0].get("label") or "").strip() if steps else ""
@@ -49,6 +53,10 @@ def main():
     for n in d["nodes"].values():
         if n["sceneId"] == d["rootSceneId"] or n["type"] == "connector": continue
         pages[(n["sceneId"], page_of(n["sceneId"], n["transform"]["x"] + n["width"] / 2))].append(n)
+    conn_per_page = collections.Counter()
+    for c_ in (n for n in d["nodes"].values() if n["type"] == "connector"):
+        src = d["nodes"].get((c_.get("connector") or {}).get("sourceNodeId"))
+        if src and src["sceneId"] != d["rootSceneId"]: conn_per_page[(src["sceneId"], page_of(src["sceneId"], src["transform"]["x"] + src["width"] / 2))] += 1
     z_bad = []
     for key, ns in pages.items():
         fills = [n for n in ns if n["type"] == "shape" and alpha(n["style"].get("fill")) >= 0.9 and n.get("shapeKind") != "polyline"]
@@ -67,6 +75,7 @@ def main():
         ns = pages[key]
         if len(ns) < 8: continue          # stray decoration outside the page columns
         fig = sum(1 for n in ns if n["type"] == "shape" and (n.get("shapeKind") in ("star", "polygon", "polyline", "triangle", "diamond") or (n.get("shapeKind") == "ellipse" and n["width"] > 14)))
+        fig += conn_per_page.get(key, 0)
         if fig < a.min_figures: low.append((key[1] + 1, fig))
     print(("WARN  pages with fewer than %d figure elements (page, count): %s" % (a.min_figures, low)) if low else "ok    every page has enough figure elements")
     if low and a.strict: bad += 1
@@ -141,5 +150,54 @@ def main():
     if len(used) < a.min_features:
         print("WARN  fewer than %d feature groups used (see references/feature-catalog.md)" % a.min_features)
         if a.strict: bad += 1
+    # ---- 7. native connectors
+    nconn = sum(1 for n in N if n["type"] == "connector")
+    tri = [n for n in N if n["type"] == "shape" and n.get("shapeKind") in ("triangle", "arrow", "polygon") and n["width"] <= 30 and n["height"] <= 30]
+    hand = 0
+    for p_ in (n for n in N if n["type"] == "shape" and n.get("shapeKind") == "polyline"):
+        x0, y0 = p_["transform"]["x"], p_["transform"]["y"]
+        if any(t_["sceneId"] == p_["sceneId"] and x0 - 20 <= t_["transform"]["x"] + t_["width"] / 2 <= x0 + p_["width"] + 20 and y0 - 20 <= t_["transform"]["y"] + t_["height"] / 2 <= y0 + p_["height"] + 20 for t_ in tri): hand += 1
+    print("info  native connectors: %d; hand-drawn arrows (polyline + small triangle head): %d" % (nconn, hand))
+    if nconn < a.min_connectors:
+        print("WARN  fewer than %d native connectors: draw flows, causes and correspondences with connector nodes (feature-catalog.md)" % a.min_connectors)
+        if a.strict: bad += 1
+    if hand: print("WARN  %d hand-drawn arrows: convert flow-like ones to native connectors" % hand)
+    # ---- 8. bubbles, empty texts, page bounds
+    when = {}
+    for s_ in steps:
+        for e in (s_.get("reveal") or {}).get("enter", []): when[e["nodeId"]] = s_["order"]
+    bub = []; small = []
+    def est_h(m):    # conservative text height: CJK 1.15 em, Latin 0.65 em per character, line height 1.3
+        fs_ = m["style"].get("fontSize", 16); L = 0
+        for ln in (m.get("text") or "").split("\n"):
+            L += max(1, -(-int(sum(fs_ * 1.15 if ord(c) > 255 else fs_ * 0.65 for c in ln.replace("$", ""))) // max(1, int(m["width"] - 8))))
+        return L * fs_ * 1.3
+    for n in N:
+        st = n.get("style", {}); t = n["transform"]
+        if n["type"] == "shape" and st.get("radius", 0) >= 16 and str(st.get("fill", "")).lower() == "#ffffff" and st.get("shadowColor") and 60 < n["width"] < 700 and 30 < n["height"] < 200:
+            ins = [m for m in N if m["type"] == "text" and m["sceneId"] == n["sceneId"] and m["zIndex"] > n["zIndex"] and (m.get("text") or "").strip() and t["x"] - 12 <= m["transform"]["x"] and m["transform"]["x"] + m["width"] <= t["x"] + n["width"] + 12 and t["y"] - 12 <= m["transform"]["y"] and m["transform"]["y"] + m["height"] <= t["y"] + n["height"] + 12]
+            if not ins: bub.append(("empty bubble", n["id"], round(t["x"]), round(t["y"])))
+            elif len(ins) == 1 and "$" not in ins[0]["text"] and est_h(ins[0]) + 20 > n["height"]: small.append((n["id"], round(n["height"]), round(max(est_h(m) for m in ins) + 26)))
+            elif any(when.get(m["id"]) != when.get(n["id"]) for m in ins): bub.append(("text revealed in a different step than its bubble", n["id"]))
+    if bub: bad += 1; print("FAIL  bubble problems:", bub[:8])
+    else: print("ok    every white bubble holds text revealed with it")
+    print(("WARN  %d bubbles too small for their text (id, height, needed): %s" % (len(small), small[:6])) if small else "ok    every bubble is large enough for its text")
+    if small and a.strict: bad += 1
+    # thought clouds: three white ellipses (zIndex 7, bordered) + text (zIndex 12) 8 ids later; the text must fit the cloud
+    cloud_small = []
+    for m in N:
+        if m["type"] != "text" or m["zIndex"] != 12: continue
+        mt = re.match(r"(.*-)(\d+)$", m["id"])
+        if not mt: continue
+        outs = [d["nodes"].get(mt.group(1) + str(int(mt.group(2)) - 8 + i)) for i in range(3)]
+        if all(o and o.get("shapeKind") == "ellipse" and o["zIndex"] == 7 and o["style"].get("borderWidth", 0) > 0 for o in outs):
+            top = min(o["transform"]["y"] for o in outs); hh = max(o["transform"]["y"] + o["height"] for o in outs) - top
+            if est_h(m) + 14 > hh * 0.6 + 8: cloud_small.append((m["id"], round(hh), round(est_h(m) / 0.6 + 14)))
+    print(("WARN  %d thought clouds too small for their text (id, height, needed): %s" % (len(cloud_small), cloud_small[:6])) if cloud_small else "ok    every thought cloud is large enough for its text")
+    if cloud_small and a.strict: bad += 1
+    empty = [n["id"] for n in N if n["type"] == "text" and not (n.get("text") or "").strip()]
+    print(("WARN  %d text nodes with empty text (a missing caption?): %s" % (len(empty), empty[:6])) if empty else "ok    no empty text nodes")
+    out = [n["id"] for n in N if n["type"] != "connector" and n["zIndex"] > 0 and (n["transform"]["y"] < -4 or n["transform"]["y"] + n["height"] > 724) and n["height"] < 700]
+    print(("WARN  %d nodes stick out of the 720 px page: %s" % (len(out), out[:6])) if out else "ok    nothing sticks out of the page")
     sys.exit(1 if bad else 0)
 main()
