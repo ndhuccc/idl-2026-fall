@@ -1,5 +1,5 @@
 """KP01 圖解共用:Page 代理(記錄 beat)、吉祥物、星形、組檔。"""
-import sys, json, math, copy
+import sys, json, math, copy, re
 import os
 IMG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "image-to-jbd-page", "tools")
 sys.path.insert(0, IMG)
@@ -71,6 +71,9 @@ def build_deck(pages, title, label0, lang, out):
     for i, (pg, lab, notes) in enumerate(pages):
         ox = i * 1440; ids = {}
         for j, (n, b) in enumerate(zip(copy.deepcopy(pg.P.nodes), pg.tags)):
+            if n["type"] == "text" and ("×" in n["text"] or "→" in n["text"]):      # math symbols belong in KaTeX
+                segs = re.split(r"(\$[^$]*\$)", n["text"])
+                n["text"] = "".join(sg if sg.startswith("$") else sg.replace("×", "$\\times$").replace("→", "$\\to$") for sg in segs)
             if n["type"] == "text" and "$" in n["text"] and n["height"] <= 48:      # KaTeX line boxes are a few px taller than the font size
                 n["height"] = round(n["height"] + 8, 2); n["transform"]["y"] = round(n["transform"]["y"] - 4, 2)
                 fs = n["style"]["fontSize"]; n["style"]["lineHeight"] = round(n["height"] / fs, 3) if n["style"]["lineHeight"] and n["style"]["lineHeight"] * fs >= n["height"] - 12 else n["style"]["lineHeight"]
@@ -85,3 +88,40 @@ def build_deck(pages, title, label0, lang, out):
                                "speakerNotes": notes.get(b, "")}); order += 1
     json.dump(d, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     return d
+
+
+# ---------------------------------------------------------------- shared page parts (all KP decks)
+def new_page(n, N, kp, title):
+    g = PG()
+    g.rect(0, 0, 1280, 720, fill=BG, z=0)
+    g.text(50, 22, 1010, 72, title, size=36, color=INK, bold=True, vcenter=True, z=8)
+    g.text(1060, 36, 170, 30, f"{kp} · {n}/{N}", size=18, color=MUTED, align="right", z=8)
+    return g
+
+def banner(g, s):
+    g.rect(50, 640, 1180, 60, fill=BAN, radius=14, z=3, shadowColor="rgba(30,58,138,0.35)", shadowBlur=12, shadowOffsetY=4)
+    g.text(70, 640, 1140, 60, s, size=24, color="#ffffff", bold=True, align="center", vcenter=True, z=8)
+
+def pill(g, x, y, w, s, fill, color="#ffffff", size=18):
+    g.rect(x, y, w, 30, fill=fill, radius=15, z=6); g.text(x, y, w, 30, s, size=size, color=color, bold=True, align="center", vcenter=True, z=8)
+
+def card(g, x, y, w, h, color=GRAY, sw=3, fill=CARD):
+    g.rect(x, y, w, h, fill=fill, stroke=color, sw=sw, radius=16, z=1, shadowColor="rgba(15,23,42,0.12)", shadowBlur=14, shadowOffsetY=4)
+
+def head(g, x, y, w, s, color, size=22):
+    g.text(x, y, w, 44, s, size=size, color=color, bold=True, vcenter=True, z=8)
+
+def brackets(g, x, y, w, h, color=INK, sw=4, z=5):
+    """Matrix brackets [ ] around the box."""
+    g.line([(x + 12, y), (x, y), (x, y + h), (x + 12, y + h)], color, sw=sw, z=z); g.line([(x + w - 12, y), (x + w, y), (x + w, y + h), (x + w - 12, y + h)], color, sw=sw, z=z)
+
+def arrow(g, a, b, color=GRAY, sw=5, head=18, z=6, dash=False):
+    g.line([a, b], color, sw=sw, arrow="end", head=head, z=z, dash=dash)
+
+def run(make, out, kp_zh, kp_en, stem):
+    os.makedirs(out, exist_ok=True)
+    for lang in ("zh", "en"):
+        ps = make(lang)
+        for g, _, _ in ps: g.P.check()
+        t = kp_zh if lang == "zh" else kp_en
+        build_deck(ps, t, t, lang, f"{out}/{stem}{'' if lang == 'zh' else '-en'}.jbd.json")
