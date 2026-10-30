@@ -13,12 +13,13 @@
     "KP01-KP09": "guided",
     "KP10": "diagram"
   },
-  "reviewed_deck_bytes_unchanged": true,
+  "reviewed_deck_bytes_unchanged": false,
   "warnings": "自學備註刻意公開；疑似學號均為數學小數。品質啟發式警告保留於原檢查記錄。",
   "unperformed": [
     "JianBauDau App import",
     "PDF export"
   ],
   "generated_html_smoke_decks": 20,
-  "preserved_snapshot_whitespace": "git diff --check 對複製的上游工具快照回報原有檔尾空行及一處行尾空白；保留逐檔來源核對，不改寫工具快照。"
+  "preserved_snapshot_whitespace": "git diff --check 對複製的上游工具快照回報原有檔尾空行及一處行尾空白；保留逐檔來源核對，不改寫工具快照。",
+  "post_publication_fix": "KP10 英文版只將 metadata.title 的 ASCII 表格分隔符改為破折號；nodes、steps 與所有頁面內容不變。修正下載頁漏列連結。"
 }

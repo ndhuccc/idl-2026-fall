@@ -255,7 +255,7 @@ def draw(p):
 
 def build(lang):
  global P,LANG,SECOND
- LANG=lang;K.LANG=lang;title=tr('KP10 萬有逼近定理｜圖解自學版','KP10 Universal approximation | Diagram self-study')
+ LANG=lang;K.LANG=lang;title=tr('KP10 萬有逼近定理｜圖解自學版','KP10 Universal approximation — Diagram self-study')
  d=K.make(title,title,'kp10');sid='scene-kp10';now=datetime.datetime.now(datetime.timezone.utc).isoformat();d['metadata'].update(createdAt=now,updatedAt=now)
  manifests=[]
  for i,p in enumerate(PAGES):

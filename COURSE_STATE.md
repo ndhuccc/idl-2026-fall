@@ -41,6 +41,9 @@
 
 ## 決策與異動紀錄
 
+- 2026-10-30 — 老師回報 KP10 簡報從缺。查明原生檔存在，但 metadata.title 的英文標題含半形直線，網站下載頁未跳脫該字元，導致 Markdown 表格多出欄位並丟棄下載連結。只修正 KP10 英文標題及建頁來源為破折號，保留全部 nodes／steps；重建網站並驗證 KP10 列含四個下載連結。
+
+
 - 2026-10-30 22:04 — 老師核准「將第二章的簡報推送到github」：更新第二章 KP01–KP09 為 self-study-teaching-deck 導學版（頁數依序 34、41、40、35、38、45、44、54、45），KP10 為先前指定的圖解版（45 頁），中英文各 421 個內容頁；每頁三拍、每拍自學導讀，題目後接解析。原生檔保存於 slides/，第二週進度表補齊簡報連結；可重製來源、提示詞、證據表與數值／畫面檢查紀錄保存於 .agents/skills/self-study-teaching-deck/examples/lec02-kp01-10/。網站沿用既有自動轉 HTML 流程，不提交離線 HTML 與審閱 ZIP。講義與全章地圖未更動。
 
 - 2026-10-30 — 依老師要求調整網站「投影片下載」頁:(1) 每份簡報同時提供 HTML 與 JBD(`.jbd.json`,`<a download>`)連結,網站改為發佈第一層的 `.jbd.json`(原先有 HTML 就不發佈);(2) 頁首固定附 JianBauDau 播放器 1.0.3 下載連結;(3) KP 標題中英並呈,英文標題取自各份 `-en.jbd.json` 的標題(沒有英文版簡報的列仍只有中文)。修改 `scripts/build_docs.py` 與 `slides/FORMATS.md`。本機建置無 ERROR(本機沒有 Node.js,HTML 欄要等 deploy-site 發佈後才會出現)。
