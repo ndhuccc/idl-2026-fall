@@ -168,7 +168,7 @@ SLIDE_FORMATS = {
 
 
 # JianBauDau 播放器(Windows 執行檔)的下載位置。換版時改這一行即可。
-PLAYER_URL = "https://github.com/ndhuccc/IDL115/releases/download/player-v1.0.3/JianBauDau-Player-1.0.3.exe"
+PLAYER_URL = "https://github.com/ndhuccc/IDL115/releases/download/player-v1.0.4/JianBauDau-Player-1.0.4.exe"
 
 
 SLIDE_SHORT = {"jbd.json": "JianBauDau", "pptx": "PowerPoint", "pdf": "PDF", "html": "HTML"}
@@ -316,7 +316,7 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
              "有後綴的(例如 `lec02-parameter-estimation`)是補充或自主學習教材。", ""]
     if has_json:  # 有 JBD 檔可下載時,一併提供播放器
         lines += ["## JianBauDau 播放器", "",
-                  f"- [下載 JianBauDau 播放器 1.0.3(Windows,.exe)]({PLAYER_URL})",
+                  f"- [下載 JianBauDau 播放器 1.0.4(Windows,.exe)]({PLAYER_URL})",
                   "- 開啟方式:執行播放器後按 Ctrl+O 選擇 `.jbd.json` 檔,或把檔案拖進視窗。",
                   "- 第一次執行時 Windows 可能出現安全性提示,請確認下載來源是本頁連結。", ""]
     if not weeks and not others:

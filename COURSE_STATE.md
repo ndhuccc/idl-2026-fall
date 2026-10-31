@@ -41,6 +41,7 @@
 
 ## 決策與異動紀錄
 
+- 2026-10-31 — 依老師要求,JianBauDau 播放器下載連結改為 1.0.4(`ndhuccc/IDL115` 的 `player-v1.0.4`,已確認兩個安裝檔可下載):`scripts/build_docs.py` 的 `PLAYER_URL`、投影片下載頁顯示版本與 `slides/FORMATS.md` 同步更新。
 - 2026-10-30 — 老師回報 KP10 簡報從缺。查明原生檔存在，但 metadata.title 的英文標題含半形直線，網站下載頁未跳脫該字元，導致 Markdown 表格多出欄位並丟棄下載連結。只修正 KP10 英文標題及建頁來源為破折號，保留全部 nodes／steps；重建網站並驗證 KP10 列含四個下載連結。
 
 
