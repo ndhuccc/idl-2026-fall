@@ -12,6 +12,10 @@ This is the first knowledge point (KP01) of Week 7, "Convolutional neural networ
 
 The prerequisites are the backpropagation and gradient descent of Week 3, the activation functions of Week 2 (ReLU, tanh) and two basic rules of variance (a refresher box is below). Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp01-figures.py`, so you can recompute it yourself.
 
+[下載本單元投影片](../slides/lec07-kp01-weight-initialization.jbd.json)
+
+[Download the slides of this unit (English)](../slides/lec07-kp01-weight-initialization-en.jbd.json)
+
 ## KP01 權重初始化（Weight initialization）
 
 ### 學習目標（Learning objectives）
