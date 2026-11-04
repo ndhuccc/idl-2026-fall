@@ -4,6 +4,7 @@
 
 ## 2026 秋季
 
+- 2026-11-04 — [新增] 第7週 KP02 ImageNet 與 AlexNet講義(中英對照、大學部):ILSVRC 與 top-1／top-5、AlexNet 八層與兩張 GPU、逐層權重個數(全連接占 96.2%)、LRN 與重疊池化、softmax 損失(指出來源式 (8) 應為 −log P)、兩張圖與可重算程式;`schedule.md` 第 7 週列加入連結。來源 CCC-LNS IDL_115 第 4 章;簡報待做。
 - 2026-11-04 — [新增] 第7週 KP01「權重初始化」講義(中英對照、大學部):隨機與對稱、逐層訊號大小實驗、隨機投影與 JL 引理、Xavier 與 He、PCA 初始化;三張圖與可重算程式 `assets/figures/src/lec07-kp01-figures.py`;`schedule.md` 第 7 週列改為實際內容並加入講義連結。來源 CCC-LNS IDL_115 第 4 章 KP11;簡報待做,第 7 週其餘 KP 待做。
 - 2026-10-31 — [更新] 簡報下載頁的 JianBauDau 播放器下載連結改為 1.0.5
 - 2026-10-31 — [更新] 簡報下載頁的 JianBauDau 播放器下載連結改為 1.0.4
