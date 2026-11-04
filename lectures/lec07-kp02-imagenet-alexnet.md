@@ -42,9 +42,9 @@ Indices start at $0$, the formulas have no bias and the numbers of weights do no
 
 **ImageNet** is a very large image database: about $15$ million labelled high-resolution images in about $22{,}000$ object categories. The images were collected from the web and labelled one by one by people through Amazon Mechanical Turk.
 
-**ILSVRC**（ImageNet 大規模視覺辨識挑戰）自 $2010$ 年起每年舉辦，是影像分類與物件偵測的指標基準。它用的是 ImageNet 的精選子集：約 $120$ 萬張影像、$1000$ 類，每類約 $1000$ 張，影像是 RGB，解析度 $224\times224$。算一下：$1000$ 類乘上每類約 $1000$ 張，是 $10^{6}$ 的量級，與 $120$ 萬相符。
+**ILSVRC**（ImageNet 大規模視覺辨識挑戰）自 $2010$ 年起每年舉辦，是影像分類與物件偵測的指標基準。它用的是 ImageNet 的精選子集：約 $120$ 萬張影像、$1000$ 類，每類約 $1000$ 張，影像是 RGB，解析度 $224\times224$（來源的說法；原圖大小不一，這應是縮放、裁切後送進網路的大小 `[補充]`）。算一下：$1000$ 類乘上每類約 $1000$ 張，是 $10^{6}$ 的量級，與 $120$ 萬相符。
 
-**ILSVRC** (the ImageNet Large Scale Visual Recognition Challenge) has been held every year since $2010$ and is the benchmark for image classification and object detection. It uses a chosen subset of ImageNet: about $1.2$ million images in $1000$ categories, about $1000$ per category, in RGB at a resolution of $224\times224$. A quick check: $1000$ categories times about $1000$ images each is of the order $10^{6}$, consistent with $1.2$ million.
+**ILSVRC** (the ImageNet Large Scale Visual Recognition Challenge) has been held every year since $2010$ and is the benchmark for image classification and object detection. It uses a chosen subset of ImageNet: about $1.2$ million images in $1000$ categories, about $1000$ per category, in RGB at a resolution of $224\times224$ (the source's wording; the original images differ in size and this should be the size after resizing and cropping that enters the network `[Added]`). A quick check: $1000$ categories times about $1000$ images each is of the order $10^{6}$, consistent with $1.2$ million.
 
 競賽的成績用**錯誤率**表示，有兩種。**top-1 錯誤率**：模型給分數最高的那一類，不是真實類別的比例。**top-5 錯誤率**：分數最高的前五類裡，**沒有**真實類別的比例。top-5 比較寬鬆，因為一張圖裡常有好幾種東西，猜五次只要有一次猜中就算對 `[補充]`。例如測 $1000$ 張圖，top-5 錯誤率 $17.0\%$ 就是有 $170$ 張圖的真實類別沒有出現在前五名 `[補充]`。
 
@@ -90,9 +90,9 @@ A GPU of that time had about $3$ GB of memory and could not hold the whole netwo
 | 7 | fully connected | $4096$ neurons | | |
 | 8 | fully connected | $1000$ neurons | | one per class, with softmax |
 
-除了最後一層用 softmax 做 $1000$ 類分類，其餘層都用 ReLU，實務上收斂比較快。全網路約 $6000$ 萬個參數、$65$ 萬個神經元。ILSVRC $2010$ 的錯誤率是 top-1 $37.5\%$、top-5 $17.0\%$。
+除了最後一層用 softmax 做 $1000$ 類分類，其餘層都用 ReLU，實務上收斂比較快。全網路約 $6000$ 萬個參數、$65$ 萬個神經元。ILSVRC $2010$ 的錯誤率是 top-1 $37.5\%$、top-5 $17.0\%$。注意這是 $2010$ 年資料上的結果，不是 $2012$ 年奪冠的成績；$2012$ 年的數字來源沒有給。
 
-Apart from the last layer, which uses softmax for the $1000$-way classification, all layers use ReLU, which in practice converges faster. The whole network has about $60$ million parameters and $650$ thousand neurons. The error rates on ILSVRC $2010$ are $37.5\%$ for top-1 and $17.0\%$ for top-5.
+Apart from the last layer, which uses softmax for the $1000$-way classification, all layers use ReLU, which in practice converges faster. The whole network has about $60$ million parameters and $650$ thousand neurons. The error rates on ILSVRC $2010$ are $37.5\%$ for top-1 and $17.0\%$ for top-5. Note that these are results on the $2010$ data and not the score of the $2012$ win; the source gives no number for $2012$.
 
 來源沒有給特徵圖的邊長。用第6週 KP07 的公式 $\lfloor(n+2p-k)/s\rfloor+1$ 可以推 `[補充]`：輸入 $227$，第 $1$ 層（核 $11$、步幅 $4$、不補邊）得 $55$；池化（窗 $3$、步幅 $2$）得 $27$；第 $2$ 層（核 $5$、補邊 $2$）仍是 $27$；池化得 $13$；第 $3$、$4$、$5$ 層（核 $3$、補邊 $1$）都是 $13$；最後一次池化得 $6$。所以第 $5$ 層之後是 $6\times6\times256=9216$ 個數，送進第 6 層。
 
@@ -114,9 +114,9 @@ The fully connected layers depend on the number of inputs. Layer $6$: $9216\time
 
 ![八根長條的對數刻度長條圖，各層的權重個數：conv1 34,848、conv2 307,200、conv3 884,736、conv4 663,552、conv5 442,368 用藍色；fc6 37,748,736、fc7 16,777,216、fc8 4,096,000 用紅色。標示五層卷積共 2,332,704（3.8%），三層全連接共 58,621,952（96.2%）](../assets/figures/lec07-kp02-params.png)
 
-**圖說 `lec07-kp02-params`**〔功能：一目了然〕：先看藍色的五根：卷積層每層在 $10^{5}$ 到 $10^{6}$ 之間。再看紅色的三根：全連接層高出一到兩個數量級，光 `fc6` 就有 $3774$ 萬。注意縱軸是對數刻度，高度的差距其實比看起來大。最後看兩個標示：卷積只占 $3.8\%$，全連接占 $96.2\%$。
+**圖說 `lec07-kp02-params`**〔功能：一目了然〕：先看藍色的五根：第 $1$ 層約 $3.5\times10^{4}$，其餘四層在 $3\times10^{5}$ 到 $9\times10^{5}$ 之間。再看紅色的三根：全連接層高出一到兩個數量級，光 `fc6` 就有 $3774$ 萬。注意縱軸是對數刻度，高度的差距其實比看起來大。最後看兩個標示：卷積只占 $3.8\%$，全連接占 $96.2\%$。
 
-**Caption `lec07-kp02-params`** [Function: seeing it at a glance]: First look at the five blue bars: each convolutional layer lies between $10^{5}$ and $10^{6}$. Then look at the three red bars: the fully connected layers are one to two orders of magnitude higher, and `fc6` alone has $37.74$ million. Note that the vertical axis is logarithmic, so the real differences in height are larger than they look. Finally look at the two labels: convolution takes only $3.8\%$ and the fully connected layers take $96.2\%$.
+**Caption `lec07-kp02-params`** [Function: seeing it at a glance]: First look at the five blue bars: layer $1$ has about $3.5\times10^{4}$ and the other four lie between $3\times10^{5}$ and $9\times10^{5}$. Then look at the three red bars: the fully connected layers are one to two orders of magnitude higher, and `fc6` alone has $37.74$ million. Note that the vertical axis is logarithmic, so the real differences in height are larger than they look. Finally look at the two labels: convolution takes only $3.8\%$ and the fully connected layers take $96.2\%$.
 
 這個比例和第6週 LeNet 一樣：參數的絕大部分在最後的全連接層，卷積層用共享的小核，參數很少。第6週 KP10 說的全域平均池化，就是針對這個問題。神經元的個數則相反，主要在前面的卷積層：第 $1$ 層就有 $55\times55\times96=290{,}400$ 個，全網路約 $6.6\times10^{5}$，與來源的約 $65$ 萬同一個量級 `[補充]`。
 

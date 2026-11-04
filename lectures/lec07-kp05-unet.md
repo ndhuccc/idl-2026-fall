@@ -143,9 +143,9 @@ The last feature map has $c$ channels, one per class, followed by softmax. So ev
 
 The loss is the **cross-entropy**, because segmentation is pixel-wise classification. The loss of one pixel is $-\log\mathbb{P}_{p}$, where $\mathbb{P}_{p}$ is the probability the pixel gets for its true class; it is averaged over the image. Look at a small example `[Added]`: a $2\times2$ image whose four pixels have true-class probabilities $0.7,\,0.5,\,0.9,\,0.2$. The four pixel losses are $0.357,\,0.693,\,0.105,\,1.609$ and the average is $0.691$. The pixel with probability $0.2$ is most wrong and has the largest loss.
 
-原作在 Caffe 上訓練。生醫影像的圖塊很大，所以批量只用 $1$；動量取 $0.9$，和 VGG 相同（KP03）。U-Net 之後有許多變體，例如把 U 改成 Y 形的 Y-Net。
+原作在 Caffe 上訓練。生醫影像的圖塊很大，所以批量只用 $1$；來源說動量取 $0.9$、與 VGG 相同（KP03）；但 U-Net 原論文寫的是 $0.99$ `[補充]`，這裡以原論文為準提醒讀者。另外，原作的損失還加了一張邊界權重圖，讓相鄰細胞之間的細縫更受重視 `[補充]`；本講義只講逐畫素的交叉熵。U-Net 之後有許多變體，例如把 U 改成 Y 形的 Y-Net。
 
-The original work was trained in Caffe. Biomedical image tiles are large, so the batch size was only $1$; the momentum was $0.9$, the same as for VGG (KP03). Many variants followed U-Net, for example Y-Net, which turns the U into a Y.
+The original work was trained in Caffe. Biomedical image tiles are large, so the batch size was only $1$; the source says the momentum was $0.9$, the same as for VGG (KP03), but the original U-Net paper gives $0.99$ `[Added]`, and this note points to the paper. The original loss also adds a border weight map that gives more weight to the thin gaps between touching cells `[Added]`; this note covers only the pixel-wise cross-entropy. Many variants followed U-Net, for example Y-Net, which turns the U into a Y.
 
 ### 本單元重點整理（KP05 summary）
 
@@ -305,7 +305,7 @@ The four questions of the source are kept with all options; the source page mark
    - C. 因為 max pooling 的 stride 必須是 3
    - D. 因為輸出通道數必須是 1000
 
-3. U-Net 擴張路徑用來放大特徵圖的運算是？（見圖 17）
+3. U-Net 擴張路徑用來放大特徵圖的運算是？（見 `lec07-kp05-transpose`）
    - A. 再做一次 stride 2 的 max pooling
    - B. $2\times2$ 反卷積／轉置卷積（deconvolution / transpose conv）
    - C. 把影像複製四次
@@ -329,7 +329,7 @@ The four questions of the source are kept with all options; the source page mark
    - C. Because the stride of max pooling must be 3
    - D. Because the number of output channels must be 1000
 
-3. Which operation does the expansive path of U-Net use to enlarge the feature map? (see Figure 17)
+3. Which operation does the expansive path of U-Net use to enlarge the feature map? (see `lec07-kp05-transpose`)
    - A. Another max pooling with stride 2
    - B. A $2\times2$ deconvolution / transpose convolution
    - C. Copying the image four times
@@ -368,13 +368,13 @@ This note is rewritten from KP15 of CCC-LNS IDL_115 Chapter 4 (web lecture); Cha
 - 來源說原始 U-Net 用不補邊的卷積、跳接前要裁切，同時又說「輸出與輸入空間尺寸相同」。兩句話互相矛盾：不補邊時輸出比輸入小（$572\to388$）。本講義用不補邊版本算出 $572\to388$，並說明輸出與輸入同尺寸需要補邊的現代實作，這是對來源的更正。
 - 來源沒有給通道數、輸入尺寸或參數量。本講義補上通道 $64$ 到 $1024$、輸入 $572$ 的尺寸鏈、各層的裁切量與權重總數 $31{,}023{,}808$，都由程式算出，標示 `[補充]`。
 - 來源提到轉置卷積的圖 17，本講義改用自己算的 $2\times2$ 小例子，並加上全 $1$ 核的練習。
-- 來源說批量為 $1$、動量 $0.9$ 並說與 VGG 相同；本講義保留。來源說原作在 Caffe 上訓練，保留。
+- 來源說批量為 $1$、動量 $0.9$ 並說與 VGG 相同。據原論文，動量其實是 $0.99$，本講義在正文提醒並標示 `[補充]`；批量 $1$ 保留。來源說原作在 Caffe 上訓練，保留。
 - 取捨：來源的小測驗四題原題保留，補上答案與解析（來源頁面沒有標答案）。圖 16（U-Net 架構）不採用，改用本講義自己的架構圖。
 
 - The source says the original U-Net uses unpadded convolutions and crops before the skip connection, and also says "the output has the same spatial size as the input". The two statements contradict each other: without padding the output is smaller than the input ($572\to388$). This note computes $572\to388$ for the unpadded version and explains that the same size needs the padded modern implementations, which is a correction of the source.
 - The source gives no numbers of channels, input size or parameters. This note adds the channels $64$ to $1024$, the size chain for input $572$, the crop of each level and the total number of weights $31{,}023{,}808$, all computed by the program and marked `[Added]`.
 - The source mentions Figure 17 of the transposed convolution; this note uses its own computed $2\times2$ example and adds an exercise with the all-ones kernel.
-- The source says the batch size is $1$ and the momentum $0.9$, the same as for VGG; this note keeps it. The source says the original work was trained in Caffe, kept.
+- The source says the batch size is $1$ and the momentum $0.9$, the same as for VGG. According to the original paper the momentum is actually $0.99$; this note points this out in the text, marked `[Added]`, and keeps the batch size $1$. The source says the original work was trained in Caffe, kept.
 - Choices: the four quiz questions of the source are kept as asked, with answers and explanations added (the source page marks no answers). Figure 16 (the U-Net architecture) is not used; this note's own architecture figure replaces it.
 
 ### 術語對照（Terminology）

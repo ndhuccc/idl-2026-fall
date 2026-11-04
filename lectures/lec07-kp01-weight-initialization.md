@@ -87,9 +87,9 @@ Common error: thinking that initialization just means "give it any starting poin
 
 Is random enough? No, the size matters too. Weights can be drawn from a Gaussian (bell-shaped) or a uniform distribution, with standard deviation written $\sigma$. The most direct way to see the effect of $\sigma$ is to pass a signal through the network layer by layer and measure how large each layer's output is.
 
-本節的實驗 `[補充]`：$10$ 層全連接，每層寬度 $n=100$，沒有偏置，權重都從標準差 $\sigma$ 的高斯抽出。輸入是 $1000$ 筆標準常態的隨機數。用均方根 $\mathrm{rms}(x)=\sqrt{\text{平方的平均}}$ 量每層輸出的大小，輸入的 $\mathrm{rms}$ 約為 $1$。
+本節的實驗 `[補充]`：$10$ 層全連接，每層寬度 $n=100$，沒有偏置，權重都從標準差 $\sigma$ 的高斯抽出。輸入是 $1000$ 筆標準常態的隨機數（ReLU 實驗用；tanh 實驗的輸入改成標準差 $0.1$，讓 tanh 一開始落在近似直線的範圍）。用均方根 $\mathrm{rms}(x)=\sqrt{\text{平方的平均}}$ 量每層輸出的大小，輸入的 $\mathrm{rms}$ 約為 $1$。
 
-The experiment of this section `[Added]`: $10$ fully connected layers, each of width $n=100$, no bias, all weights drawn from a Gaussian with standard deviation $\sigma$. The input is $1000$ standard-normal random vectors. The size of each layer's output is measured by the root mean square $\mathrm{rms}(x)=\sqrt{\text{mean of squares}}$, and the input has $\mathrm{rms}$ about $1$.
+The experiment of this section `[Added]`: $10$ fully connected layers, each of width $n=100$, no bias, all weights drawn from a Gaussian with standard deviation $\sigma$. The input is $1000$ standard-normal random vectors (for the ReLU experiment; the tanh experiment uses inputs with standard deviation $0.1$ so that tanh starts in its nearly linear range). The size of each layer's output is measured by the root mean square $\mathrm{rms}(x)=\sqrt{\text{mean of squares}}$, and the input has $\mathrm{rms}$ about $1$.
 
 先看 ReLU。$\sigma=0.01$ 時，第 $1$ 層輸出的 $\mathrm{rms}$ 是 $0.0705$，第 $5$ 層是 $2.1\times10^{-6}$，第 $10$ 層是 $3.9\times10^{-12}$：訊號縮到幾乎為零。$\sigma=1$ 時反過來：第 $1$ 層 $7.05$，第 $5$ 層 $2.1\times10^{4}$，第 $10$ 層 $3.9\times10^{8}$：訊號爆開。
 
@@ -97,9 +97,9 @@ Look at ReLU first. With $\sigma=0.01$ the $\mathrm{rms}$ of layer $1$ is $0.070
 
 ![兩張半對數折線圖：左邊是 ReLU 網路，橫軸是層數 0 到 10，縱軸是輸出的均方根（對數刻度）。標準差 0.01 的紅線從 1 一路掉到 3.9 乘 10 的負 12 次方；標準差 1 的金色線一路升到 3.9 乘 10 的 8 次方；標準差 0.1（Xavier）的藍線緩慢下降到 0.039；標準差根號 2/n（He）的綠線停在 1 附近。右邊是 tanh 網路：紅線掉到 10 的負 11 次方；金色線在第 2 層後貼在約 0.96；藍線（Xavier）停在 0.1 附近](../assets/figures/lec07-kp01-signal.png)
 
-**圖說 `lec07-kp01-signal`**〔功能：一目了然〕：先看左圖兩端的線：紅線一路往下掉，金色線一路往上衝，兩條都離開了「約 $1$」的合理範圍。再看中間的綠線：它貼著 $1$ 不動，這是 He 初始化的結果（第 4 節）。最後看右圖：tanh 的紅線同樣掉到 $10^{-11}$，金色線不是爆開而是貼在約 $0.96$，因為 tanh 的輸出被壓在 $-1$ 到 $1$ 之間，卡在平的部分。
+**圖說 `lec07-kp01-signal`**〔功能：一目了然〕：先看左圖兩端的線：紅線一路往下掉，金色線一路往上衝，兩條都離開了「約 $1$」的合理範圍。再看中間的綠線：它貼著 $1$ 不動，這是 He 初始化的結果（第 4 節）。最後看右圖（tanh 的輸入標準差是 $0.1$）：tanh 的紅線同樣掉到 $10^{-11}$，金色線不是爆開而是貼在約 $0.96$，因為 tanh 的輸出被壓在 $-1$ 到 $1$ 之間，卡在平的部分。
 
-**Caption `lec07-kp01-signal`** [Function: seeing it at a glance]: First look at the two ends of the left plot: the red line keeps falling and the gold line keeps climbing, and both leave the reasonable range of "about $1$". Then look at the green line in the middle: it stays at $1$, the result of He initialization (Section 4). Finally look at the right plot: the red tanh line also falls to $10^{-11}$, while the gold line does not blow up but sticks at about $0.96$, because the output of tanh is squeezed between $-1$ and $1$ and sits on the flat part.
+**Caption `lec07-kp01-signal`** [Function: seeing it at a glance]: First look at the two ends of the left plot: the red line keeps falling and the gold line keeps climbing, and both leave the reasonable range of "about $1$". Then look at the green line in the middle: it stays at $1$, the result of He initialization (Section 4). Finally look at the right plot (the input of tanh has standard deviation $0.1$): the red tanh line also falls to $10^{-11}$, while the gold line does not blow up but sticks at about $0.96$, because the output of tanh is squeezed between $-1$ and $1$ and sits on the flat part.
 
 為什麼是這樣？看一層。每個輸出是 $n$ 個輸入的加權和，權重各自獨立、平均 $0$，由變異數的兩條規則，加權和的變異數是 $n\,\sigma^{2}$ 乘上輸入的平方平均。ReLU 把負的一半砍成 $0$，平方的平均剩一半。所以一層 ReLU 之後，$\mathrm{rms}$ 乘上
 
@@ -131,6 +131,10 @@ Johnson–Lindenstrauss（JL）引理給了正面的答案：把 $d$ 維空間�
 
 The Johnson–Lindenstrauss (JL) lemma gives a positive answer: take $N$ points in $d$ dimensions and project them to $k$ dimensions with a random matrix; as long as $k$ is large enough, the distance between any two points changes only by a bounded small fraction, with high probability. It is usually written as: every squared distance changes by no more than a factor $1\pm\varepsilon$, and the needed $k$ is of the order $\ln N/\varepsilon^{2}$ `[Added]`. Each number of the projection matrix is Gaussian with mean $0$ and variance $1/k$, so that distances do not become larger or smaller as a whole.
 
+引理講的是距離平方；實驗量的是距離本身，距離平方變動 $1\pm\varepsilon$ 倍，距離約變動 $1\pm\varepsilon/2$ 倍 `[補充]`。
+
+The lemma is about squared distances; the experiment measures the distances themselves, and a squared distance changing by a factor $1\pm\varepsilon$ means a distance changing by about $1\pm\varepsilon/2$ `[Added]`.
+
 用一個實驗看 `[補充]`：取 $50$ 個點，每個點在 $d=1000$ 維，共有 $1225$ 對距離。投影到 $k=10,\,50,\,100,\,400$ 維，看最差的一對距離變動了百分之幾。結果是 $69\%$、$30\%$、$24\%$、$13\%$：維度愈高，最差的誤差愈小。
 
 Look at an experiment `[Added]`: take $50$ points in $d=1000$ dimensions, which makes $1225$ pairwise distances. Project them to $k=10,\,50,\,100,\,400$ dimensions and see by what percentage the worst pair of distances changed. The result is $69\%$, $30\%$, $24\%$, $13\%$: the higher the dimension, the smaller the worst error.
@@ -151,9 +155,9 @@ Common error: thinking that JL guarantees the training result of the whole netwo
 
 ### 4. 顧變異數：Xavier 與 He（Looking after the variance: Xavier and He）
 
-目標很清楚：讓各層的訊號大小前後差不多。上一節已經推出一層 ReLU 的倍率是 $\sqrt{n/2}\,\sigma$。要讓倍率等於 $1$，解出 $\sigma$：
+目標很清楚：讓各層的訊號大小前後差不多。第 2 節已經推出一層 ReLU 的倍率是 $\sqrt{n/2}\,\sigma$。要讓倍率等於 $1$，解出 $\sigma$：
 
-The goal is clear: keep the signal about the same size from layer to layer. The previous section derived that the factor of one ReLU layer is $\sqrt{n/2}\,\sigma$. Setting the factor equal to $1$ and solving for $\sigma$:
+The goal is clear: keep the signal about the same size from layer to layer. Section 2 derived that the factor of one ReLU layer is $\sqrt{n/2}\,\sigma$. Setting the factor equal to $1$ and solving for $\sigma$:
 
 $$
 \sigma_{\mathrm{He}}=\sqrt{\frac{2}{n_{\mathrm{in}}}} \qquad\text{（ReLU）}.
@@ -289,7 +293,7 @@ The three figures and the numbers in the text all come from the same program: `l
 2. 輸入層接隱藏層，$n_{\mathrm{in}}=784$、$n_{\mathrm{out}}=100$。算 Xavier 與 He 的標準差。
 3. `[補充]` $10$ 層 ReLU 網路，寬 $n=100$，權重標準差 $\sigma=0.05$。每層的倍率是多少？十層後 $\mathrm{rms}$ 變成原來的幾倍？這是消失還是爆開？
 4. `[補充]` 在第 3 節的實驗中，要讓最大的相對距離誤差低於 $0.15$，四個維度（$10,50,100,400$）裡哪些可以？
-5. `[補充]` 回到第 1 節的小網路，若兩個隱藏神經元的輸入權重改成 $(0.5,0.5)$ 與 $(0.3,0.7)$，它們的梯度還會一樣嗎？最簡單的避免對稱的辦法是什麼？
+5. `[補充]` 回到第 1 節的小網路，若兩個隱藏神經元的輸入權重改成 $(0.5,0.5)$ 與 $(0.3,0.7)$（輸出權重仍都是 $0.5$），這一步裡輸出權重的梯度一樣嗎？更新之後，兩個神經元的輸入權重梯度下一步還會一樣嗎？最簡單的避免對稱的辦法是什麼？
 
 **Practice**:
 
@@ -297,7 +301,7 @@ The three figures and the numbers in the text all come from the same program: `l
 2. An input layer feeds a hidden layer with $n_{\mathrm{in}}=784$ and $n_{\mathrm{out}}=100$. Compute the Xavier and He standard deviations.
 3. `[Added]` A $10$-layer ReLU network of width $n=100$ has weight standard deviation $\sigma=0.05$. What is the factor per layer? By what factor does the $\mathrm{rms}$ change after ten layers? Is this vanishing or exploding?
 4. `[Added]` In the experiment of Section 3, which of the four dimensions ($10,50,100,400$) bring the largest relative distance error below $0.15$?
-5. `[Added]` Back to the small network of Section 1: if the input weights of the two hidden neurons are changed to $(0.5,0.5)$ and $(0.3,0.7)$, are their gradients still equal? What is the simplest way to avoid the symmetry?
+5. `[Added]` Back to the small network of Section 1: if the input weights of the two hidden neurons are changed to $(0.5,0.5)$ and $(0.3,0.7)$ (the output weights stay $0.5$), are the gradients of the output weights equal in this step? After the update, will the input-weight gradients of the two neurons still be equal at the next step? What is the simplest way to avoid the symmetry?
 
 **第 1 題解答** `[補充]`：
 
@@ -315,13 +319,13 @@ The three figures and the numbers in the text all come from the same program: `l
 
 1. Xavier：$\sqrt{2/(784+100)}=\sqrt{2/884}=0.0476$。
 2. He：$\sqrt{2/784}=0.0505$。
-3. 扇入與扇出差很多時，兩者也差得少：$0.0476$ 與 $0.0505$。
+3. 這組數字剛好很接近：$0.0476$ 與 $0.0505$；Xavier 的分母是 $n_{\mathrm{in}}+n_{\mathrm{out}}=884$，He 的分母是 $n_{\mathrm{in}}=784$，兩者差得不多。
 
 **Solution to question 2** `[Added]`:
 
 1. Xavier: $\sqrt{2/(784+100)}=\sqrt{2/884}=0.0476$.
 2. He: $\sqrt{2/784}=0.0505$.
-3. Even when the fan-in and fan-out differ a lot the two stay close: $0.0476$ and $0.0505$.
+3. For these numbers the two happen to be close, $0.0476$ and $0.0505$: the denominator of Xavier is $n_{\mathrm{in}}+n_{\mathrm{out}}=884$ and that of He is $n_{\mathrm{in}}=784$, not very different.
 
 **第 3 題解答** `[補充]`：
 
@@ -349,14 +353,16 @@ The three figures and the numbers in the text all come from the same program: `l
 
 **第 5 題解答** `[補充]`：
 
-1. 第一個神經元的輸入是 $0.5\times1+0.5\times2=1.5$，第二個是 $0.3\times1+0.7\times2=1.7$，兩個輸出不同，梯度也就不再一樣。
-2. 兩個神經元不再是拷貝，各自往不同的方向學。
+1. 第一個神經元的輸入是 $0.5\times1+0.5\times2=1.5$，第二個是 $0.3\times1+0.7\times2=1.7$，輸出 $y=0.5\times1.5+0.5\times1.7=1.6$，誤差 $-1.4$。
+2. 這一步輸出權重的梯度是 $-1.4\times1.5=-2.1$ 與 $-1.4\times1.7=-2.38$，不一樣；而兩個神經元輸入權重的梯度仍然相同，都是 $-1.4\times0.5\times(1,2)=(-0.7,-1.4)$，因為輸出權重仍都是 $0.5$。
+3. 更新後兩個輸出權重變得不同，下一步輸入權重的梯度才跟著分歧：兩個神經元不再是拷貝，各自往不同的方向學。
 3. 最簡單的辦法是：每個權重都用隨機數，並依第 4 節定標準差。
 
 **Solution to question 5** `[Added]`:
 
-1. The input of the first neuron is $0.5\times1+0.5\times2=1.5$ and that of the second is $0.3\times1+0.7\times2=1.7$, so the two outputs differ and so do the gradients.
-2. The two neurons are no longer copies, and each learns in a different direction.
+1. The input of the first neuron is $0.5\times1+0.5\times2=1.5$ and that of the second is $0.3\times1+0.7\times2=1.7$; the output is $y=0.5\times1.5+0.5\times1.7=1.6$ and the error is $-1.4$.
+2. In this step the gradients of the output weights are $-1.4\times1.5=-2.1$ and $-1.4\times1.7=-2.38$, which differ; the input-weight gradients of the two neurons are still equal, $-1.4\times0.5\times(1,2)=(-0.7,-1.4)$, because the output weights are still both $0.5$.
+3. After the update the two output weights differ, and only then do the input-weight gradients diverge at the next step: the two neurons are no longer copies and each learns in a different direction.
 3. The simplest way is to draw every weight at random with a standard deviation set as in Section 4.
 
 ### 小測驗（Quiz，來源原題）

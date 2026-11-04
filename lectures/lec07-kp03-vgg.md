@@ -102,9 +102,9 @@ The division of labour becomes very clean: **convolutions only extract features 
 
 After the convolutions come three fully connected layers, $4096\to4096\to1000$, where the final $1000$ corresponds to the $1000$ classes of ILSVRC. Hidden layers use ReLU and the output layer uses softmax. Most VGG versions **do not use** local response normalization (LRN), because in experiments LRN did not help on ILSVRC. This contrasts with the AlexNet of KP02: AlexNet used LRN in layers $1$ and $2$ and VGG dropped it.
 
-來源沒有給卷積層的層數，說它依版本而異。為了算數字，取最常被引用的 **VGG-16**：$13$ 層卷積加 $3$ 層全連接，共 $16$ 層 `[補充]`。卷積的通道數依序是 $64,64\,|\,128,128\,|\,256,256,256\,|\,512,512,512\,|\,512,512,512$，每段之後一次池化；全連接層的輸入是 $7\times7\times512$ 個數。
+來源沒有給卷積層的層數，說它依版本而異。為了算數字，取最常被引用的 **VGG-16**：$13$ 層卷積加 $3$ 層全連接，共 $16$ 層 `[補充]`。VGG-16 的卷積全是 $3\times3$，沒有 $1\times1$ `[補充]`。卷積的通道數依序是 $64,64\,|\,128,128\,|\,256,256,256\,|\,512,512,512\,|\,512,512,512$，每段之後一次池化；全連接層的輸入是 $7\times7\times512$ 個數。
 
-The source gives no number of convolutional layers and says it depends on the version. To compute numbers take the most frequently cited **VGG-16**: $13$ convolutional layers plus $3$ fully connected layers, $16$ layers in all `[Added]`. The channels of the convolutions are $64,64\,|\,128,128\,|\,256,256,256\,|\,512,512,512\,|\,512,512,512$, with one pooling after each group; the input of the fully connected layers is $7\times7\times512$ numbers.
+The source gives no number of convolutional layers and says it depends on the version. To compute numbers take the most frequently cited **VGG-16**: $13$ convolutional layers plus $3$ fully connected layers, $16$ layers in all `[Added]`. All convolutions of VGG-16 are $3\times3$ and there is no $1\times1$ `[Added]`. The channels of the convolutions are $64,64\,|\,128,128\,|\,256,256,256\,|\,512,512,512\,|\,512,512,512$, with one pooling after each group; the input of the fully connected layers is $7\times7\times512$ numbers.
 
 每一層的權重個數是 $3\times3\times C_{\mathrm{in}}\times C_{\mathrm{out}}$。第 $1$ 層：$9\times3\times64=1{,}728$。第 $2$ 層：$9\times64\times64=36{,}864$。最大的卷積層是 $512\to512$，每層 $9\times512\times512=2{,}359{,}296$。$13$ 層卷積合計 $14{,}710{,}464$。全連接：$7\times7\times512\times4096=102{,}760{,}448$、$4096\times4096=16{,}777{,}216$、$4096\times1000=4{,}096{,}000$，合計 $123{,}633{,}664$。
 

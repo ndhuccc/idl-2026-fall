@@ -98,9 +98,9 @@ $$
 
 The extra $1$ comes from the shortcut. The derivative of a residual block is "a small number plus $1$" rather than a possibly very small number. When many blocks are stacked, the derivatives of the blocks are multiplied together.
 
-用數字看 `[補充]`（導數是假設的，不是量出來的）。普通的層，若每層的導數是 $0.5$，二十層後是 $0.5^{20}=9.5\times10^{-7}$，梯度幾乎消失；每層是 $0.8$，也只剩 $0.8^{20}=0.0115$。殘差塊，若 $\partial\mathcal{F}/\partial x$ 只是 $\pm0.05$，每塊的導數是 $1.05$ 或 $0.95$，二十塊後是 $1.05^{20}=2.653$ 或 $0.95^{20}=0.358$，都還在 $1$ 附近。
+用數字看 `[補充]`（導數是假設的，不是量出來的）。普通的層，若每層的導數是 $0.5$，二十層後是 $0.5^{20}=9.5\times10^{-7}$，梯度幾乎消失；每層是 $0.8$，也只剩 $0.8^{20}=0.0115$。殘差塊，若 $\partial\mathcal{F}/\partial x$ 只是 $\pm0.05$，每塊的導數是 $1.05$ 或 $0.95$，二十塊後是 $1.05^{20}=2.653$ 或 $0.95^{20}=0.358$，與 $1$ 同一個數量級，沒有消失也沒有爆開。
 
-Look at numbers `[Added]` (the derivatives are assumed, not measured). For ordinary layers, if each layer has a derivative of $0.5$ then after twenty layers it is $0.5^{20}=9.5\times10^{-7}$ and the gradient has almost vanished; with $0.8$ per layer only $0.8^{20}=0.0115$ is left. For residual blocks, if $\partial\mathcal{F}/\partial x$ is only $\pm0.05$ the derivative of each block is $1.05$ or $0.95$, and after twenty blocks it is $1.05^{20}=2.653$ or $0.95^{20}=0.358$, still around $1$.
+Look at numbers `[Added]` (the derivatives are assumed, not measured). For ordinary layers, if each layer has a derivative of $0.5$ then after twenty layers it is $0.5^{20}=9.5\times10^{-7}$ and the gradient has almost vanished; with $0.8$ per layer only $0.8^{20}=0.0115$ is left. For residual blocks, if $\partial\mathcal{F}/\partial x$ is only $\pm0.05$ the derivative of each block is $1.05$ or $0.95$, and after twenty blocks it is $1.05^{20}=2.653$ or $0.95^{20}=0.358$, of the same order of magnitude as $1$, neither vanishing nor exploding.
 
 ![半對數折線圖：橫軸是深度 0 到 20，縱軸是從輸出到輸入的導數。紅線是每層導數 0.5 的普通層，從 1 一路降到 9.5 乘 10 的負 7 次方；金色線是每層 0.8，降到 0.0115；藍線是每塊 0.95 的殘差塊，降到 0.358；綠線是每塊 1.05 的殘差塊，升到 2.653](../assets/figures/lec07-kp06-depth.png)
 
@@ -126,9 +126,13 @@ ResNet 依層數命名：**ResNet-18、34、50、101**，數字就是網路的�
 
 ResNet is named by its number of layers: **ResNet-18, 34, 50, 101**, where the number is the number of layers of the network. The more layers, the stronger but also the slower and the more memory-hungry. For laptop-level tasks ResNet-18 is often enough.
 
-在實務與研究裡，ResNet（或 LeNet 這類標準 CNN）常被當成**骨幹**（backbone）：直接拿來抽特徵，研究的精力放在別的地方，例如新的損失函數。這也是為什麼要熟悉這些經典架構：它們是後來許多模型的底。
+較深的 $50$、$101$ 層版本常把主路改成 $1\times1$、$3\times3$、$1\times1$ 三層的「瓶頸塊」，先降維再還原，與 KP04 的降維同一個想法 `[補充]`；來源沒有細講。
 
-In practice and research, ResNet (or a standard CNN like LeNet) is often used as a **backbone**: taken directly to extract features while the research effort goes elsewhere, for example into new loss functions. This is also why these classic architectures are worth knowing: they are the foundation of many later models.
+The deeper $50$- and $101$-layer versions often change the main path to a "bottleneck block" of $1\times1$, $3\times3$, $1\times1$ layers, reducing and then restoring the channels, the same idea as the reduction of KP04 `[Added]`; the source does not go into detail.
+
+在實務與研究裡，ResNet（或其他標準 CNN；來源舉 LeNet 為例）常被當成**骨幹**（backbone）：直接拿來抽特徵，研究的精力放在別的地方，例如新的損失函數。這也是為什麼要熟悉這些經典架構：它們是後來許多模型的底。
+
+In practice and research, ResNet (or another standard CNN; the source gives LeNet as an example) is often used as a **backbone**: taken directly to extract features while the research effort goes elsewhere, for example into new loss functions. This is also why these classic architectures are worth knowing: they are the foundation of many later models.
 
 ### 本單元重點整理（KP06 summary）
 
@@ -317,6 +321,7 @@ Of the four questions of this section of the source, the first two belong to thi
 This note is rewritten from the first half of KP16 of CCC-LNS IDL_115 Chapter 4 (web lecture); Chapter 4 of that material covers Weeks 6 and 7 of this course. The source was accessed on 2026-11-04. Content that the source does not contain is marked `[Added]` where it appears.
 
 - 來源說「梯度較容易回到淺層，減輕梯度消失」，沒有給推導。本講義補上 $\partial\mathcal{H}/\partial x=\partial\mathcal{F}/\partial x+1$ 的推導與導數連乘的數字例；例子中的每層導數是**假設值**，不是量出來的，已標示。
+- 式 (9)、(10) 的編號沿用來源。
 - 來源只說「超過約 $20$ 層」，沒有說明退化與過擬合的區別。本講義補上：退化是訓練準確率下降，不是過擬合。
 - 來源沒有說殘差塊主路用幾層卷積，也沒有說形狀不同時怎麼辦。本講義用兩層 $3\times3$ 做例子，並補上形狀不同時用 $1\times1$ 卷積的說明，標示 `[補充]`。
 - 來源的互動示範（$x=1.0$、$\mathcal{F}=0.5$、$\mathcal{H}=1.5$；$\mathcal{F}=0$ 時 $\mathcal{H}=x$）保留，放進圖與文中。
@@ -324,6 +329,7 @@ This note is rewritten from the first half of KP16 of CCC-LNS IDL_115 Chapter 4 
 - 取捨：來源的小測驗本節四題，前兩題放在這個單元，原題與全部選項保留，補上答案與解析（來源頁面沒有標答案）。圖 18、19 不採用，改用本講義自己的方塊圖與折線圖。
 
 - The source says "the gradient reaches the shallow layers more easily, easing the vanishing gradient", without a derivation. This note adds the derivation of $\partial\mathcal{H}/\partial x=\partial\mathcal{F}/\partial x+1$ and a numerical example of the product of derivatives; the per-layer derivatives in the example are **assumed values**, not measured, and are marked.
+- The numbering of formulas (9) and (10) follows the source.
 - The source says only "beyond about $20$ layers" and does not explain the difference between degradation and overfitting. This note adds: degradation is a fall in the training accuracy and not overfitting.
 - The source does not say how many convolutional layers the main path of a residual block has, nor what to do when the shapes differ. This note uses two $3\times3$ layers as an example and adds the explanation of a $1\times1$ convolution when the shapes differ, marked `[Added]`.
 - The source's interactive demo ($x=1.0$, $\mathcal{F}=0.5$, $\mathcal{H}=1.5$; $\mathcal{H}=x$ when $\mathcal{F}=0$) is kept, in the figure and the text.

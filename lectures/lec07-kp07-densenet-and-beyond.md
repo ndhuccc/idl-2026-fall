@@ -32,9 +32,9 @@ After reading, you can describe how a dense block is wired and compute the numbe
 | $k$ | 成長率：每層卷積產出的特徵圖個數 | growth rate: the number of feature maps each convolution produces |
 | $\alpha,\beta,\gamma,\phi$ | 複合縮放的深度、寬度、解析度倍率與總係數 | depth, width and resolution factors of compound scaling and the overall coefficient |
 
-本講義的指標一律從 $0$ 開始數，公式不含偏置，權重個數也不含偏置，與第6週相同。
+本講義的指標一律從 $0$ 開始數（$x_0$ 是塊的輸入），但密集塊裡的層編號 $\ell$ 從 $1$ 算起；公式不含偏置，權重個數也不含偏置，與第6週相同。小寫的 $l$ 是層數，$\ell$ 是第幾層。
 
-Indices start at $0$, the formulas have no bias and the numbers of weights do not count biases, as in Week 6.
+Indices start at $0$ ($x_0$ is the input of the block), but the layer number $\ell$ in a dense block counts from $1$; the formulas have no bias and the numbers of weights do not count biases, as in Week 6. The plain $l$ is the number of layers and $\ell$ is the index of a layer.
 
 ### 1. DenseNet：每一層連到後面所有層（DenseNet: every layer connects to all later layers）
 
@@ -82,9 +82,9 @@ $$
 x_{\ell}=\mathcal{F}_{\ell}\bigl(\bigl[x_{0},\,x_{1},\,\ldots,\,x_{\ell-1}\bigr]^{\top}\bigr) \tag{12}
 $$
 
-對通道數的影響不同：加法要求兩邊形狀相同，相加後通道數不變；串接是把通道疊起來，通道數愈接愈多。在密集塊裡，$\mathcal{F}_\ell$ 通常是批次正規化加 $3\times3$ 卷積加 ReLU（也可能含池化）。
+對通道數的影響不同：加法要求兩邊形狀相同，相加後通道數不變；串接是把通道疊起來，通道數愈接愈多。在密集塊裡，$\mathcal{F}_\ell$ 通常是批次正規化加 $3\times3$ 卷積加 ReLU（來源還說也可能含池化；但同一個密集塊裡特徵圖邊長必須相同才能串接，所以池化其實放在過渡層 `[補充]`）。DenseNet 原論文的順序是批次正規化、ReLU、卷積 `[補充]`。另外注意：這裡的 $\ell$ 數的是一層運算，KP06 式 (11) 的 $\ell$ 對應的是一個殘差塊（兩層卷積）`[補充]`。
 
-The effect on the number of channels differs: addition requires the two sides to have the same shape and leaves the number of channels unchanged; concatenation stacks the channels and the number grows. In a dense block $\mathcal{F}_\ell$ is usually batch normalization plus a $3\times3$ convolution plus ReLU (possibly with pooling).
+The effect on the number of channels differs: addition requires the two sides to have the same shape and leaves the number of channels unchanged; concatenation stacks the channels and the number grows. In a dense block $\mathcal{F}_\ell$ is usually batch normalization plus a $3\times3$ convolution plus ReLU (the source adds that it may include pooling, but inside one dense block the feature maps must have the same side to be concatenated, so pooling is actually in the transition layers `[Added]`). The order in the original DenseNet paper is batch normalization, ReLU, convolution `[Added]`. Note also that $\ell$ here counts one layer's operation, whereas the $\ell$ of formula (11) in KP06 corresponds to one residual block (two convolutional layers) `[Added]`.
 
 ### 3. 成長率與過渡層（The growth rate and the transition layer）
 
@@ -154,9 +154,9 @@ Every architecture of this week answers the question left by the previous one:
 | KP06 | ResNet | residual learning and the identity shortcut | what if all earlier layers are connected? |
 | KP07 | DenseNet etc. | concatenation, feature reuse; compound scaling; a modernized CNN | attention models |
 
-表中的權重個數是本週各單元由核大小與層設定算出的（不含偏置）；Inception、ResNet、DenseNet 的整網參數量來源沒有給，這裡不列。
+表中的權重個數是本週各單元由核大小與層設定算出的（不含偏置）；U-Net 是「輸入 $1$ 個通道、輸出 $2$ 類」的設定，AlexNet 與 VGG-16 是 $1000$ 類，三者不宜直接比較高低；Inception、ResNet、DenseNet 的整網參數量來源沒有給，這裡不列。
 
-The numbers of weights in the table were computed in the units of this week from kernel sizes and layer settings (without biases); the whole-network parameter counts of Inception, ResNet and DenseNet are not given by the source and are not listed here.
+The numbers of weights in the table were computed in the units of this week from kernel sizes and layer settings (without biases); U-Net is the setting with "$1$ input channel and $2$ output classes" while AlexNet and VGG-16 have $1000$ classes, so the three should not be compared directly; the whole-network parameter counts of Inception, ResNet and DenseNet are not given by the source and are not listed here.
 
 **本章（卷積神經網路）的結論**，依來源整理：
 

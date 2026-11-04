@@ -57,9 +57,9 @@ How do we decide whether a layer should use $1\times1$, $3\times3$ or $5\times5$
 
 Why different sizes? In shallow layers the related neurons often cluster into a small spatial blob, which a $1\times1$ convolution handles well; only when the related range is wider are larger kernels needed. So each size of kernel is responsible for one range. To join the outputs the paths must have the same side, so padding keeps the size under convolution `[Added]`.
 
-各層裡 $1\times1$、$3\times3$、$5\times5$ 的比例不固定：愈靠近輸出，特徵愈抽象，需要更大的感受野，所以較深的層配置較多的 $3\times3$ 與 $5\times5$。早期模組只允許小核；原文指出 $5\times5$ 等大核昂貴、參數多。
+各層裡 $1\times1$、$3\times3$、$5\times5$ 的比例不固定：愈靠近輸出，特徵愈抽象，需要更大的感受野，所以較深的層配置較多的 $3\times3$ 與 $5\times5$。早期模組用的都是小核（最大是 $5\times5$）；來源指出 $5\times5$ 等較大的核昂貴、參數多。
 
-The proportions of $1\times1$, $3\times3$ and $5\times5$ are not fixed across layers: the closer to the output, the more abstract the features and the larger the receptive field needed, so deeper layers have more $3\times3$ and $5\times5$. The early module allows only small kernels; the original text points out that large kernels such as $5\times5$ are expensive and have many parameters.
+The proportions of $1\times1$, $3\times3$ and $5\times5$ are not fixed across layers: the closer to the output, the more abstract the features and the larger the receptive field needed, so deeper layers have more $3\times3$ and $5\times5$. The early module uses only small kernels (at most $5\times5$); the source points out that the larger kernels such as $5\times5$ are expensive and have many parameters.
 
 ### 3. 1×1 卷積在做什麼（What a 1×1 convolution does）
 
@@ -101,9 +101,9 @@ The source gives no numbers of channels. To compute how much the reduction saves
 
 First the $5\times5$ path. Using $32$ kernels of $5\times5$ **directly** on $192$ channels costs $28\times28\times32\times25\times192=120{,}422{,}400$ multiply-adds. With **reduction first**: the $1\times1$ takes $192$ down to $16$ at $28\times28\times16\times192=2{,}408{,}448$; then the $5\times5$ costs $28\times28\times32\times25\times16=10{,}035{,}200$; together $12{,}443{,}648$. That is $120{,}422{,}400/12{,}443{,}648=9.68$ times fewer, about a tenth.
 
-整個模組：早期做法（沒有降維，池化那條保留全部 $192$ 個通道）合計 $303{,}464{,}448$ 次乘加，輸出 $64+128+32+192=416$ 個通道。最終做法合計 $128{,}049{,}152$ 次乘加，輸出 $64+128+32+32=256$ 個通道。計算量是 $2.37$ 倍之差，輸出通道也少了 $160$ 個。
+整個模組：早期做法（沒有降維，池化那條保留全部 $192$ 個通道）合計 $303{,}464{,}448$ 次乘加，輸出 $64+128+32+192=416$ 個通道。最終做法合計 $128{,}049{,}152$ 次乘加，輸出 $64+128+32+32=256$ 個通道。早期做法的計算量是最終做法的 $2.37$ 倍，輸出通道也少了 $160$ 個。
 
-The whole module: the early way (no reduction, the pooling path keeping all $192$ channels) costs $303{,}464{,}448$ multiply-adds in total and outputs $64+128+32+192=416$ channels. The final way costs $128{,}049{,}152$ in total and outputs $64+128+32+32=256$ channels. The computation differs by a factor of $2.37$ and the output has $160$ fewer channels.
+The whole module: the early way (no reduction, the pooling path keeping all $192$ channels) costs $303{,}464{,}448$ multiply-adds in total and outputs $64+128+32+192=416$ channels. The final way costs $128{,}049{,}152$ in total and outputs $64+128+32+32=256$ channels. The computation of the early way is $2.37$ times that of the final way, and the output has $160$ fewer channels.
 
 | 路徑 | 早期（乘加） | 最終（乘加，含降維） |
 |---|---|---|
@@ -227,13 +227,13 @@ Both figures and the numbers in the text come from the same program: `lec07-kp04
 
 1. 直接：$3\times3\times192\times128=221{,}184$。
 2. 先降維：$1\times1\times192\times96=18{,}432$，再 $3\times3\times96\times128=110{,}592$，合計 $129{,}024$。
-3. 少了 $221{,}184-129{,}024=92{,}160$ 個，是直接做的 $58.3\%$。
+3. 少了 $221{,}184-129{,}024=92{,}160$ 個；降維後的權重只有直接做的 $129{,}024/221{,}184=58.3\%$。
 
 **Solution to question 2** `[Added]`:
 
 1. Directly: $3\times3\times192\times128=221{,}184$.
 2. With reduction: $1\times1\times192\times96=18{,}432$, then $3\times3\times96\times128=110{,}592$, together $129{,}024$.
-3. That is $221{,}184-129{,}024=92{,}160$ fewer, $58.3\%$ of the direct way.
+3. That is $221{,}184-129{,}024=92{,}160$ fewer; the weights with reduction are only $129{,}024/221{,}184=58.3\%$ of the direct way.
 
 **第 3 題解答** `[補充]`：
 
@@ -277,7 +277,7 @@ Both figures and the numbers in the text come from the same program: `lec07-kp04
 
 The four questions of the source are kept with all options. The source page marks the answers, and the explanations below follow the source's answers.
 
-1. 最終版 Inception 模組（Fig. 14）相對早期設計（Fig. 13）多了什麼？
+1. 最終版 Inception 模組相對早期設計多了什麼？
    - A. 把所有核改成 $7\times7$
    - B. 在 $3\times3$、$5\times5$ 之前以及 pooling 之後加入 $1\times1$ 降維
    - C. 拿掉所有 $1\times1$
@@ -289,7 +289,7 @@ The four questions of the source are kept with all options. The source page mark
    - C. 取代 softmax
    - D. 強制使用 LRN
 
-3. 關於 GoogLeNet（Fig. 15），下列何者正確？
+3. 關於 GoogLeNet，下列何者正確？
    - A. 輸入 $224\times224\times3$ 先減 RGB 均值；以堆疊 Inception 為骨幹；卷積用 ReLU
    - B. 輸入必須是 $32\times32$ 灰階
    - C. 全程不用 ReLU、改用 LRN
@@ -301,7 +301,7 @@ The four questions of the source are kept with all options. The source page mark
    - C. $1\times1$ 在深層被禁止
    - D. max pooling 只能接在輸出層
 
-1. What does the final Inception module (Fig. 14) have in addition to the early design (Fig. 13)?
+1. What does the final Inception module have in addition to the early design?
    - A. All kernels changed to $7\times7$
    - B. $1\times1$ reductions before the $3\times3$ and $5\times5$ and after the pooling
    - C. All $1\times1$ removed
@@ -313,7 +313,7 @@ The four questions of the source are kept with all options. The source page mark
    - C. To replace softmax
    - D. To force the use of LRN
 
-3. Which statement about GoogLeNet (Fig. 15) is correct?
+3. Which statement about GoogLeNet is correct?
    - A. The $224\times224\times3$ input first has the RGB mean subtracted; stacked Inception modules form the backbone; convolutions use ReLU
    - B. The input must be a $32\times32$ grayscale image
    - C. No ReLU at all, LRN is used instead
