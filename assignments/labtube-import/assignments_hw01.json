@@ -7,7 +7,7 @@
       "title": "Backpropagation：兩層與三層 MLP 的函數逼近與雙螺旋分類",
       "unit": "反向傳播與梯度下降 Backpropagation & Gradient Descent",
       "opens_at": "2026-10-19 00:00",
-      "due_at": "2026-11-09 23:59",
+      "due_at": "2026-11-16 23:59",
       "rubric_max": 100,
       "rubric_url": "https://ndhuccc.github.io/idl-2026-fall/assignments/hw01/",
       "details": {
@@ -18,7 +18,7 @@
           },
           {
             "title": "學習目標",
-            "body": "完成後你能：\n\n1. 說明 MLP 的前向傳播、鏈鎖律與反向傳播，並自行推導矩陣梯度（對應 [MLP](https://ndhuccc.github.io/idl-2026-fall/lectures/lec02-kp05-mlp-and-nonlinearity/) 與 [反向傳播](https://ndhuccc.github.io/idl-2026-fall/lectures/lec03-kp06-backpropagation/)）。\n2. 以 NumPy 實作可設定一個或兩個隱藏層的 MLP，不依賴自動微分；以有限差分檢驗梯度。\n3. 對兩變數非線性回歸與二維雙螺旋分類進行可重現實驗，比較兩層、三層網路的訓練結果（對應 [損失函數](https://ndhuccc.github.io/idl-2026-fall/lectures/lec02-kp07-loss-functions/) 與 [mini-batch](https://ndhuccc.github.io/idl-2026-fall/lectures/lec03-kp08-mini-batch-and-epoch/)）。\n4. 以圖表與數據分析模型容量、超參數與泛化表現，說明自己的設計選擇。"
+            "body": "> 2026-11-05 更新：截止時間延後一週至 2026-11-16 23:59。\n\n完成後你能：\n\n1. 說明 MLP 的前向傳播、鏈鎖律與反向傳播，並自行推導矩陣梯度（對應 [MLP](https://ndhuccc.github.io/idl-2026-fall/lectures/lec02-kp05-mlp-and-nonlinearity/) 與 [反向傳播](https://ndhuccc.github.io/idl-2026-fall/lectures/lec03-kp06-backpropagation/)）。\n2. 以 NumPy 實作可設定一個或兩個隱藏層的 MLP，不依賴自動微分；以有限差分檢驗梯度。\n3. 對兩變數非線性回歸與二維雙螺旋分類進行可重現實驗，比較兩層、三層網路的訓練結果（對應 [損失函數](https://ndhuccc.github.io/idl-2026-fall/lectures/lec02-kp07-loss-functions/) 與 [mini-batch](https://ndhuccc.github.io/idl-2026-fall/lectures/lec03-kp08-mini-batch-and-epoch/)）。\n4. 以圖表與數據分析模型容量、超參數與泛化表現，說明自己的設計選擇。"
           },
           {
             "title": "背景與先備知識",
