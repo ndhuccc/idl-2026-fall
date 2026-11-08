@@ -41,6 +41,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-11-08 08:47（Asia/Taipei）— 更正:`README.md` 是網站首頁(學生看得到),老師決定中央工廠＋配送的說明只放在 `AGENTS.md` §5.11,已從 `README.md` 移除該段。
+
 - 2026-11-08 08:31（Asia/Taipei）— 老師決定:講義與簡報改由 jbd-maker 中央工廠製作,確認無誤後再配送到本課程。本 repo 製作類技能已停用(`image-to-jbd-page`、`prompt-to-jbd-page`、`self-study-teaching-deck`、`view-from-text`、`-v2`、`-v3`:加 `DISABLED.md` 並在 `SKILL.md` 的 `description` 標示,未刪檔);`AGENTS.md` §5.11 與 `README.md` 改寫為新流程;檢查腳本(`check_slides.py`、`slides-to-html`、`build_docs.py`)照舊使用。`.github/workflows/v3-portability.yml` 仍引用 `view-from-text-v3`,本次未改,是否移除待老師決定。`textbook-lecture-notes`、`diagram-design`、`page-to-teaching-diagram`、`slides-to-four-panel-comics` 本次未動。
 
 - 2026-11-05 — HW 01 截止由 2026-11-09 23:59 延後一週至 2026-11-16 23:59（台北時間）。已改 `assignments/hw01/README.md`（頁首註記）、`assignments/labtube-import/assignments_hw01.json`（`due_at` 與說明文字，由 `build_labtube_import.py` 重新產生）、`schedule.md`、`syllabus.md`、`CHANGELOG.md`。評分標準未改。HW 02（第 8→11 週）、HW 03（第 12→15 週）不是依 HW 01 的確切日期往後推，故週次維持不變。

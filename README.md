@@ -50,9 +50,6 @@
 | [`FAQ.md`](FAQ.md)、[`glossary.md`](glossary.md) | 常見問題、術語表 |
 | [`CHANGELOG.md`](CHANGELOG.md) | 學期中異動紀錄 |
 
-<!-- jbd-maker:central-factory -->
-## 講義與簡報的製作流程(給老師與 AI agent)
-
 本課程的講義與簡報**不在本 repo 製作**,而是由中央工廠專案 [`ndhuccc/jbd-maker`](https://github.com/ndhuccc/jbd-maker) 製作與驗收;老師確認無誤後,才配送到本 repo 的 `slides/`(簡報)、`lectures/`(講義)與 `assets/figures/`(圖)。本 repo 內製作類技能已停用;檢查腳本(`scripts/check_slides.py` 等)與網站建置照舊。細節見 [`AGENTS.md`](AGENTS.md) §5.11。
 
 ## 快速開始
