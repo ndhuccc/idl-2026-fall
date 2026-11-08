@@ -1,6 +1,6 @@
 ---
 name: page-to-teaching-diagram
-description: Convert the current webpage, HTML slide, screenshot, or supplied page text into a source-faithful beginner-friendly teaching diagram. Trigger for 按照頁面內容繪製示意圖解, 網頁轉圖解, 教學示意圖, or diagram-generation prompts from a page. Support direct image generation/editing when available and complete portable prompts when unavailable. Use with any subject and any AI agent; do not require a particular browser or image provider.
+description: 【已停用：製作講義與簡報改由 jbd-maker 中央工廠負責，請勿使用本技能；見 DISABLED.md】 Convert the current webpage, HTML slide, screenshot, or supplied page text into a source-faithful beginner-friendly teaching diagram. Trigger for 按照頁面內容繪製示意圖解, 網頁轉圖解, 教學示意圖, or diagram-generation prompts from a page. Support direct image generation/editing when available and complete portable prompts when unavailable. Use with any subject and any AI agent; do not require a particular browser or image provider.
 ---
 
 # 頁面內容轉教學示意圖

@@ -1,6 +1,6 @@
 ---
 name: slides-to-four-panel-comics
-description: Read a presentation, extract every core concept, generate one accurate, cute and readable 16:9 2×2 four-panel comic per concept, and insert each comic immediately after its corresponding content page without spatial overlaps. Use for 簡報四格漫畫、核心內容漫畫、漫畫插入次頁, or adding explanatory comic slides to JianBauDau .jbd.json and other editable slide formats. Portable instructions for any AI agent; includes a validated JBD schema-v3 insertion utility.
+description: 【已停用：製作講義與簡報改由 jbd-maker 中央工廠負責，請勿使用本技能；見 DISABLED.md】 Read a presentation, extract every core concept, generate one accurate, cute and readable 16:9 2×2 four-panel comic per concept, and insert each comic immediately after its corresponding content page without spatial overlaps. Use for 簡報四格漫畫、核心內容漫畫、漫畫插入次頁, or adding explanatory comic slides to JianBauDau .jbd.json and other editable slide formats. Portable instructions for any AI agent; includes a validated JBD schema-v3 insertion utility.
 ---
 
 # Core concepts to four-panel comics

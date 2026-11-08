@@ -41,6 +41,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-11-08 09:10（Asia/Taipei）— 老師決定:`textbook-lecture-notes`、`diagram-design`、`page-to-teaching-diagram`、`slides-to-four-panel-comics` 轉入 jbd-maker 中央工廠(jbd-maker 原本沒有同名技能,未覆蓋任何既有技能;兩個課程 repo 的這四個技能內容相同)。本 repo 內這四個技能已停用(加 `DISABLED.md`,未刪檔);`AGENTS.md` §5.1 改為講義由 jbd-maker 的 SOP-10 製作、確認後配送。`.github/workflows/v3-portability.yml` 維持現狀。
+
 - 2026-11-08 08:47（Asia/Taipei）— 更正:`README.md` 是網站首頁(學生看得到),老師決定中央工廠＋配送的說明只放在 `AGENTS.md` §5.11,已從 `README.md` 移除該段。
 
 - 2026-11-08 08:31（Asia/Taipei）— 老師決定:講義與簡報改由 jbd-maker 中央工廠製作,確認無誤後再配送到本課程。本 repo 製作類技能已停用(`image-to-jbd-page`、`prompt-to-jbd-page`、`self-study-teaching-deck`、`view-from-text`、`-v2`、`-v3`:加 `DISABLED.md` 並在 `SKILL.md` 的 `description` 標示,未刪檔);`AGENTS.md` §5.11 與 `README.md` 改寫為新流程;檢查腳本(`check_slides.py`、`slides-to-html`、`build_docs.py`)照舊使用。`.github/workflows/v3-portability.yml` 仍引用 `view-from-text-v3`,本次未改,是否移除待老師決定。`textbook-lecture-notes`、`diagram-design`、`page-to-teaching-diagram`、`slides-to-four-panel-comics` 本次未動。

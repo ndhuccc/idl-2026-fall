@@ -236,7 +236,7 @@ gh workflow run deploy-site.yml                                    # 第一次�
 ### 5.1 新增或更新某週講義
 - 問:第幾週?主題?要列出哪些重點?有現成的資料(文字、PDF)嗎?
 - **教材程度**:先問「這份教材給誰讀?」(一般大眾、高中生、大學生、研究生、專業人員;預設研究生),依 `.agents/skills/LEVELS.md` 決定寫多深;講義與投影片用同一個程度。
-- 作法:若老師提供教科書章節(PDF、貼上的文本或網址),依 `.agents/skills/textbook-lecture-notes/SKILL.md` 製作**繁體中文與英文對照**的講義(知識點萃取、高中可讀的白話撰寫、公式範例、示意圖與公式圖)。
+- 作法:若老師提供教科書章節(PDF、貼上的文本或網址),(2026-11-08 起講義也由 jbd-maker 製作,本 repo 內 `textbook-lecture-notes` 已停用;確認無誤後配送到 `lectures/`、`assets/figures/`)依 jbd-maker 的 `textbook-lecture-notes` 技能(SOP-10)製作**繁體中文與英文對照**的講義(知識點萃取、高中可讀的白話撰寫、公式範例、示意圖與公式圖)。
   沒有章節文本時,在 `lectures/` 新增 `lecNN.md`(NN 為兩位數週次);格式照 `lectures/lec01.md`:開頭有週次、對應實作、學習目標。
   數學式用 `$...$`(行內)與 `$$...$$`(區塊);圖片放 `assets/figures/` 並用相對路徑引用。
 - 同步:`schedule.md` 該週的「講義」欄加連結,並依 §5.12 讓進度表反映實際講義內容。

@@ -1,6 +1,6 @@
 ---
 name: textbook-lecture-notes
-description: Turn a textbook chapter (a PDF, pasted text, or a URL the user gives) into lecture notes at a teaching level the user picks (public, high school, undergraduate, graduate or professional; default graduate, written in plain language readable by a high-school student), in bilingual Traditional Chinese and English, with worked examples for formulas and abstract ideas, AI-generated infographic requests, Matplotlib figures for geometric, functional, or statistical content, and KaTeX formula images when a formula must sit inside an image. Use when the user provides a textbook chapter as a PDF, pasted text, or URL and asks for 講義, lecture notes, 教材, or 示意圖 for a course in this repository.
+description: 【已停用：製作講義與簡報改由 jbd-maker 中央工廠負責，請勿使用本技能；見 DISABLED.md】 Turn a textbook chapter (a PDF, pasted text, or a URL the user gives) into lecture notes at a teaching level the user picks (public, high school, undergraduate, graduate or professional; default graduate, written in plain language readable by a high-school student), in bilingual Traditional Chinese and English, with worked examples for formulas and abstract ideas, AI-generated infographic requests, Matplotlib figures for geometric, functional, or statistical content, and KaTeX formula images when a formula must sit inside an image. Use when the user provides a textbook chapter as a PDF, pasted text, or URL and asks for 講義, lecture notes, 教材, or 示意圖 for a course in this repository.
 ---
 
 # textbook-lecture-notes
