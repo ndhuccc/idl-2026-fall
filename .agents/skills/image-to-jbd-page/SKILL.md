@@ -1,6 +1,6 @@
 ---
 name: image-to-jbd-page
-description: 把一張圖片(投影片截圖、資訊圖、示意圖)精準復現成 JianBauDau 原生簡報頁(.jbd.json 的 shape / text / polygon / polyline 節點,不是嵌入圖片)。使用時機:使用者給一張圖並說「轉成原生簡報」「做成一頁簡報」「用原生節點重畫」,或要把某頁加入/取代現有 JianBauDau 簡報的某一頁。若輸入只是提示詞或頁面規格(沒有圖),改用 prompt-to-jbd-page。
+description: 【已停用：製作講義與簡報改由 jbd-maker 中央工廠負責，請勿使用本技能；見 DISABLED.md】 把一張圖片(投影片截圖、資訊圖、示意圖)精準復現成 JianBauDau 原生簡報頁(.jbd.json 的 shape / text / polygon / polyline 節點,不是嵌入圖片)。使用時機:使用者給一張圖並說「轉成原生簡報」「做成一頁簡報」「用原生節點重畫」,或要把某頁加入/取代現有 JianBauDau 簡報的某一頁。若輸入只是提示詞或頁面規格(沒有圖),改用 prompt-to-jbd-page。
 ---
 
 # image-to-jbd-page:圖片 → JianBauDau 原生頁

@@ -1,6 +1,6 @@
 ---
 name: self-study-teaching-deck
-description: 把一份講義(一個 KP)做成「學生可自主閱讀學習」的 JianBauDau 原生簡報,提供「圖解版」與「導學版」兩種風格,並用規格檔與檢查工具讓不同 agent 產出一致。使用時機:老師要做教學簡報、要求圖解、或說「做第 N 週簡報」。本技能是 page-to-teaching-diagram 的試行替代版;技能確定後才問風格。
+description: 【已停用：製作講義與簡報改由 jbd-maker 中央工廠負責，請勿使用本技能；見 DISABLED.md】 把一份講義(一個 KP)做成「學生可自主閱讀學習」的 JianBauDau 原生簡報,提供「圖解版」與「導學版」兩種風格,並用規格檔與檢查工具讓不同 agent 產出一致。使用時機:老師要做教學簡報、要求圖解、或說「做第 N 週簡報」。本技能是 page-to-teaching-diagram 的試行替代版;技能確定後才問風格。
 ---
 
 # 自學導向教學簡報(圖解版 / 導學版)

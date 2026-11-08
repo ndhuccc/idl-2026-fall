@@ -300,14 +300,16 @@ gh workflow run deploy-site.yml                                    # 第一次�
 - 要沿用舊內容:用 `git clone` 取得舊 Repo,把 `lectures/`、`labs/`、`assignments/` 等複製到新 Repo,再更新日期與主題。
 
 ### 5.11 投影片(JianBauDau JSON、PPTX、PDF、HTML)
-- **預設技能與先問的規定(老師 2026-10-30 決定,同日改為新技能)**:製作投影片預設用 `self-study-teaching-deck`(以學生可自主閱讀為核心:頁數依講義內容決定、不設上下限,並以覆蓋完整度檢查確保講義內容都有頁;提供「圖解版」「導學版」兩種風格),再以 `prompt-to-jbd-page` 的流程做成原生 `.jbd.json`。`page-to-teaching-diagram`(舊預設)與 `view-from-text-v3` 保留作備援,只有老師特別指定時才用。老師一提出要製作簡報,**先用白話說明兩種風格的差別,再問用哪一種**(建議導學版,老師可改),不要直接開工:
-  - 圖解版:一頁一概念,圖就是解釋,版面乾淨、不放吉祥物;適合複習、公式與數據多的單元。
-  - 導學版:吉祥物陪著讀,每頁有提問對話框與承接小標,像有人陪讀;適合第一次接觸的概念與自主學習。
-  - 兩種風格共用同一份頁面規格與檢查工具(`tools/check_coverage.py`、`tools/check_style.py`);範例見該技能的 `examples/lec02-kp07/`。
+<!-- jbd-maker:central-factory -->
+- **講義與簡報由 jbd-maker 中央工廠製作,本課程 repo 不再製作(2026-11-08 老師決定)**:
+  - 製作講義與簡報、配音、影片,一律在 `ndhuccc/jbd-maker` 專案用它的技能完成(新製作預設 `expert-first-teaching-deck`)。本 repo 的 `.agents/skills/` 中,製作類技能(`image-to-jbd-page`、`prompt-to-jbd-page`、`self-study-teaching-deck`、`view-from-text`、`view-from-text-v2`、`view-from-text-v3`)**已停用**,不要使用,也不要把 jbd-maker 的技能複製進來。
+  - 老師在 jbd-maker 確認成品「無誤」之後,才把它**配送**到本 repo:簡報放 `slides/`、講義放 `lectures/`、講義的圖放 `assets/figures/`。老師沒有明確確認,不要放入。
+  - 配送由 jbd-maker 的 `scripts/deliver_to_course.py` 執行(預設只預覽;確認後才複製;不推送)。它會先跑本 repo 的 `scripts/check_slides.py`,有 FAIL 就停止;並在 `COURSE_STATE.md` 最上方記一筆。推送前仍照本手冊「寫入前複述、老師說好」的規則。
+  - 本 repo 已有同名檔時,先問老師要取代還是並存(新檔名),不要直接覆蓋。
+  - 本 repo 的檢查與建置腳本照舊使用:`scripts/check_slides.py`、`slides-to-html`、`build_docs.py`、`sync_nav.py`。
+  - 配送後仍要依 §5.12 更新週次進度表與連結。
 - 問:這週的投影片是哪一種格式?是 JianBauDau 編輯器匯出的 JSON,還是 PPTX、PDF 或 HTML?
-- 若由 agent 產生投影片:先確認**教材程度**(預設承襲該講義的程度,見 `.agents/skills/LEVELS.md`)。
 - 作法:依 `slides/FORMATS.md` 命名為 `lecNN.<格式>`(JSON 為 `lecNN.jbd.json`),放進 `slides/`。同一週可以放多種格式。
-- 若老師採用或指定 `view-from-text-v3`,要從講義產生 JianBauDau 投影片草稿(完整 `lecNN.jbd.json`),依 `.agents/skills/view-from-text-v3/SKILL.md`(先規劃頁面,用 HTML 設計資訊圖再轉成原生節點,稽核後傳中英文截圖,老師說「發佈」才寫入;可用整頁排版、透明度、漸層、陰影、多邊形與曲線路徑;`view-from-text` 與 `view-from-text-v2` 為舊版,僅作備援)。產出後仍須執行下方的 `check_slides.py` 檢查,並請老師在 JianBauDau 中逐頁確認排版。
 - 若是 JianBauDau JSON,執行 `python3 scripts/check_slides.py`。**FAIL 必須修正**(例如匯入用的 page spec、孤兒節點、`asset:` 伺服器參照);**WARN 請逐項告知老師確認**(講者備註、電子郵件、疑似學號、檔案大小)。
 - 提醒老師:課程網站是公開網址,`slides/` 內的檔案不需登入即可下載;講者備註會一起給學生。
 - 同步:`schedule.md` 或 `lectures/lecNN.md` 的投影片連結(依 §5.12,連結要指向實際存在的檔案);網站下載頁由 `build_docs.py` 自動產生,不需手動維護。

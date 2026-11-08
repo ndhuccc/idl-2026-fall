@@ -1,6 +1,6 @@
 ---
 name: view-from-text-v3
-description: Turn a lecture into a JianBauDau deck of native-node information graphics. Plan pages first, design freely in HTML/CSS/SVG with KaTeX, convert to native nodes, audit, get the teacher's confirmation, and publish within the selected course. Data charts can use the v2 layout library.
+description: 【已停用：製作講義與簡報改由 jbd-maker 中央工廠負責，請勿使用本技能；見 DISABLED.md】 Turn a lecture into a JianBauDau deck of native-node information graphics. Plan pages first, design freely in HTML/CSS/SVG with KaTeX, convert to native nodes, audit, get the teacher's confirmation, and publish within the selected course. Data charts can use the v2 layout library.
 ---
 
 # view-from-text-v3：依目前課程製作簡報

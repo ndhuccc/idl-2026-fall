@@ -41,6 +41,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-11-08 08:31（Asia/Taipei）— 老師決定:講義與簡報改由 jbd-maker 中央工廠製作,確認無誤後再配送到本課程。本 repo 製作類技能已停用(`image-to-jbd-page`、`prompt-to-jbd-page`、`self-study-teaching-deck`、`view-from-text`、`-v2`、`-v3`:加 `DISABLED.md` 並在 `SKILL.md` 的 `description` 標示,未刪檔);`AGENTS.md` §5.11 與 `README.md` 改寫為新流程;檢查腳本(`check_slides.py`、`slides-to-html`、`build_docs.py`)照舊使用。`.github/workflows/v3-portability.yml` 仍引用 `view-from-text-v3`,本次未改,是否移除待老師決定。`textbook-lecture-notes`、`diagram-design`、`page-to-teaching-diagram`、`slides-to-four-panel-comics` 本次未動。
+
 - 2026-11-05 — HW 01 截止由 2026-11-09 23:59 延後一週至 2026-11-16 23:59（台北時間）。已改 `assignments/hw01/README.md`（頁首註記）、`assignments/labtube-import/assignments_hw01.json`（`due_at` 與說明文字，由 `build_labtube_import.py` 重新產生）、`schedule.md`、`syllabus.md`、`CHANGELOG.md`。評分標準未改。HW 02（第 8→11 週）、HW 03（第 12→15 週）不是依 HW 01 的確切日期往後推，故週次維持不變。
 
 - 2026-11-03 — HW 01 評分標準允許級距之間的整數（新 PR、不合併）：推導正確性可給 0–40、實驗與圖表可給 0–35、重現性可給 0–25 的任何整數。表內優／可／待加強（40／28／10、35／25／10）改為參考點；作品落在兩個等級描述之間時給中間整數（例如實驗與圖表介於優與可之間可給 30）。等級描述與滿分未改。重現性公式未改：四捨五入( (環境與追溯 + 提交紀錄 + AI 四欄完成比例) ÷ 3 × 25 )，0.5 進位。環境與追溯、提交紀錄仍為優 1／差一點 0.5／不足 0，AI 四欄仍為完成比例。完全沒繳交該面向仍為 0。`assignments/hw01/README.md` 與 LabTube 匯入檔同步。其他作業的標準三級配分未改。

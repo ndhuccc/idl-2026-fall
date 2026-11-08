@@ -1,6 +1,6 @@
 ---
 name: view-from-text
-description: Turn a lecture note (lectures/lecNN.md) or pasted text into a complete JianBauDau slide deck saved as slides/lecNN.jbd.json in this course repo. Use when the user asks for 投影片, slides, JianBauDau, 把講義做成投影片, or lecNN.jbd.json.
+description: 【已停用：製作講義與簡報改由 jbd-maker 中央工廠負責，請勿使用本技能；見 DISABLED.md】 Turn a lecture note (lectures/lecNN.md) or pasted text into a complete JianBauDau slide deck saved as slides/lecNN.jbd.json in this course repo. Use when the user asks for 投影片, slides, JianBauDau, 把講義做成投影片, or lecNN.jbd.json.
 ---
 
 # view-from-text(課程版)
