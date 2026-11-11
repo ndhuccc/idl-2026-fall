@@ -41,6 +41,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-11-11 13:11（Asia/Taipei）— 老師指示「不用修正，我想放棄推送你這版本，保留原來版本」：撤回第6週 KP04–KP10 v2 有聲簡報發布（4c0d5a4），恢復原簡報、七份講義的投影片入口與第6週進度表。以新增還原提交保留歷史；不繼續本輪下載頁修改或補發 KP01–KP03。
+
 - 2026-11-11 10:08（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 7 份成品配送到本課程：slides/lec06-kp04-discrete-conv-cross-correlation-ef-zh-voiced-v2.jbd.json、slides/lec06-kp05-sparse-connectivity-parameter-sharing-ef-zh-voiced-v2.jbd.json、slides/lec06-kp06-translation-equivariance-ef-zh-voiced-v2.jbd.json、slides/lec06-kp07-stride-channels-padding-output-size-ef-zh-voiced-v2.jbd.json、slides/lec06-kp08-detector-and-pooling-ef-zh-voiced-v2.jbd.json、slides/lec06-kp09-pooling-invariance-downsampling-ef-zh-voiced-v2.jbd.json、slides/lec06-kp10-infinitely-strong-prior-gap-ef-zh-voiced-v2.jbd.json。來源任務 `course-publish-kp04-kp10`（確認：使用者於 2026-11-11 在本對話明確指示「提交並推送這些講義和簡報到課程網站中」）；以新檔名保留既有版本，七份對應講義與進度表已連到新版。課程 check_slides 無 FAIL（七項教學旁白備註提醒），網站嚴格建置通過；七份 HTML 共 3078 個節點，格式／圖片／公式／外部請求錯誤皆為 0，縮字 0。配音檔正文與前階段相同，共 496 段；人工發音抽聽未執行。提交與部署結果由工廠任務配送紀錄追蹤。
 
 - 2026-11-08 09:10（Asia/Taipei）— 老師決定:`textbook-lecture-notes`、`diagram-design`、`page-to-teaching-diagram`、`slides-to-four-panel-comics` 轉入 jbd-maker 中央工廠(jbd-maker 原本沒有同名技能,未覆蓋任何既有技能;兩個課程 repo 的這四個技能內容相同)。本 repo 內這四個技能已停用(加 `DISABLED.md`,未刪檔);`AGENTS.md` §5.1 改為講義由 jbd-maker 的 SOP-10 製作、確認後配送。`.github/workflows/v3-portability.yml` 維持現狀。

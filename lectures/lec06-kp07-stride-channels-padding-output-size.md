@@ -12,7 +12,7 @@ This is the seventh knowledge point (KP07) of Week 6, "Convolution and pooling".
 
 The prerequisites are the valid output $d-f+1$ of KP04, the counts of weights and multiply-adds of KP05, and the stride example of KP06. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp07-figures.py` and can be recomputed.
 
-[下載本單元投影片（中文版 v2，含逐步配音）](../slides/lec06-kp07-stride-channels-padding-output-size-ef-zh-voiced-v2.jbd.json)
+[下載本單元投影片](../slides/lec06-kp07-stride-channels-padding-output-size.jbd.json)
 
 [Download the slides of this unit (English)](../slides/lec06-kp07-stride-channels-padding-output-size-en.jbd.json)
 

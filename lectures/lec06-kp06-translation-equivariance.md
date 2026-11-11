@@ -12,7 +12,7 @@ This is the sixth knowledge point (KP06) of Week 6, "Convolution and pooling". K
 
 The prerequisites are the sliding multiply-and-add $s[t]=\sum_m x[t+m]\,w[m]$ of KP04, the parameter sharing of KP05, and the shift example of KP01. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp06-figures.py` and can be recomputed.
 
-[下載本單元投影片（中文版 v2，含逐步配音）](../slides/lec06-kp06-translation-equivariance-ef-zh-voiced-v2.jbd.json)
+[下載本單元投影片](../slides/lec06-kp06-translation-equivariance.jbd.json)
 
 [Download the slides of this unit (English)](../slides/lec06-kp06-translation-equivariance-en.jbd.json)
 

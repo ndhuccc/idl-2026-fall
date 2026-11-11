@@ -16,7 +16,7 @@ The only prerequisites are the sliding window of KP03 and the backpropagation of
 
 The text is rewritten from KP04 of CCC-LNS IDL_115 Chapter 4; Chapter 4 of that material is Week 6 of this course. The source was accessed on 2026-10-27. Content that the source does not contain is marked `[Added]` where it appears.
 
-[下載本單元投影片（中文版 v2，含逐步配音）](../slides/lec06-kp04-discrete-conv-cross-correlation-ef-zh-voiced-v2.jbd.json)
+[下載本單元投影片](../slides/lec06-kp04-discrete-conv-cross-correlation.jbd.json)
 
 [Download the slides of this unit (English)](../slides/lec06-kp04-discrete-conv-cross-correlation-en.jbd.json)
 

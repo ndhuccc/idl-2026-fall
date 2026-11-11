@@ -12,7 +12,7 @@ This is the fifth knowledge point (KP05) of Week 6, "Convolution and pooling". K
 
 The prerequisites are the first introduction of sparse connectivity and parameter sharing in KP01, the 1-D sliding multiply-and-add $s[t]=\sum_m x[t+m]\,w[m]$ of KP04, and the fully connected layer of Week 2. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp05-figures.py` and can be recomputed.
 
-[下載本單元投影片（中文版 v2，含逐步配音）](../slides/lec06-kp05-sparse-connectivity-parameter-sharing-ef-zh-voiced-v2.jbd.json)
+[下載本單元投影片](../slides/lec06-kp05-sparse-connectivity-parameter-sharing.jbd.json)
 
 [Download the slides of this unit (English)](../slides/lec06-kp05-sparse-connectivity-parameter-sharing-en.jbd.json)
 
