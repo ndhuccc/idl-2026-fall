@@ -6,7 +6,7 @@
 
 This is the tenth knowledge point (KP10) of Week 4, "Regularization and overfitting". It picks up the question KP09 left open: $\ell_2$ and $\ell_1$ both limit the model by **changing the objective**, so can we get a similar regularization without changing the objective at all, just by training fewer steps? It assumes the training and validation error curves of KP05 and the $\ell_2$ shrinkage and weight decay of KP08; every symbol is defined when it first appears and every number can be recomputed. The text is rewritten from the KP15 main text and professor's guide of CCC-LNS Chapter 5 and shortened for undergraduates (results and numerical examples only, no derivations) (accessed on 2026-10-20); content that the source does not contain is marked `[Added]`.
 
-[下載本單元投影片](../slides/lec04-kp10-early-stopping.jbd.json) · [資訊圖表版投影片](../slides/lec04-kp10-early-stopping-infographic.jbd.json)
+[下載本單元投影片](../slides/lec04-kp10-early-stopping-infographic.jbd.json)
 
 ## KP10 早停法（Early stopping）
 
