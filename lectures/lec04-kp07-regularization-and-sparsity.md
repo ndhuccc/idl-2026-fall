@@ -6,7 +6,7 @@
 
 This is the seventh knowledge point (KP07) of Chapter 4. It picks up the question KP06 left open: cross-validation can only pick among ready-made candidates, so can we press the complexity down directly inside the objective while training? It assumes the overfitting of KP05, the cross-validation of KP06 and single-variable differentiation; every symbol is defined when it first appears and every number can be recomputed. The text is rewritten from the KP11 main text and professor's guide of CCC-LNS Chapter 5 (accessed on 2026-10-20); content that the source does not contain is marked `[Added]`.
 
-[下載本單元投影片](../slides/lec04-kp07-regularization-and-sparsity.jbd.json)
+[下載本單元投影片（KP07–KP09 合併版）](../slides/lec04-kp07-09-regularization-infographic.jbd.json)
 
 ## KP07 正則化與稀疏性（Regularization and sparsity）
 

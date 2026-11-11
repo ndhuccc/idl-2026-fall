@@ -6,7 +6,7 @@
 
 This is the eighth knowledge point (KP08) of Week 4, "Regularization and overfitting". It picks up the question KP07 left open: in a problem with many parameters, does an $\ell_2$ penalty shrink every parameter by the same factor? It assumes $\tilde J=J+\alpha\Omega$ of KP07 and single-variable differentiation. Every symbol is defined when it first appears and every number can be recomputed. The content is taken from the main text and professor's guide of CCC-LNS Chapter 5, KP12 and KP14 (accessed on 2026-10-20) and shortened for undergraduates (the matrix and eigendecomposition derivations are removed); everything not in the source is marked `[Added]`.
 
-[下載本單元投影片](../slides/lec04-kp08-l2-regularization-shrinkage.jbd.json)
+[下載本單元投影片（KP07–KP09 合併版）](../slides/lec04-kp07-09-regularization-infographic.jbd.json)
 
 ## KP08 L2 正則化與權重衰減（L2 regularization and weight decay）
 

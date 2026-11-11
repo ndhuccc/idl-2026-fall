@@ -6,7 +6,7 @@
 
 This is the ninth knowledge point (KP09) of Chapter 4. It picks up the question KP08 left open: every shrink factor of $\ell_2$ is above $0$ and never produces an exact zero, so what if we want a sparse solution? It assumes $\ell_0$, $\ell_1$, $\ell_2$ and sparsity from KP07, the shrinkage of KP08, and single-variable differentiation (the absolute value is not differentiable at $0$, so a subgradient is used). The content is taken from CCC-LNS Chapter 5, KP09 main text and the professor's guide, read on 2026-10-20; everything not in the source is marked `[Added]`.
 
-[下載本單元投影片](../slides/lec04-kp09-l1-regularization-soft-threshold.jbd.json)
+[下載本單元投影片（KP07–KP09 合併版）](../slides/lec04-kp07-09-regularization-infographic.jbd.json)
 
 ## KP09 L1 正則化與軟閾值（L1 regularization and the soft threshold）
 
