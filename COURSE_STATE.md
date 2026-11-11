@@ -41,6 +41,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-11-11 18:35（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 7 份成品配送到本課程：slides/lec06-kp04-discrete-conv-cross-correlation.jbd.json、slides/lec06-kp05-sparse-connectivity-parameter-sharing.jbd.json、slides/lec06-kp06-translation-equivariance.jbd.json、slides/lec06-kp07-stride-channels-padding-output-size.jbd.json、slides/lec06-kp08-detector-and-pooling.jbd.json、slides/lec06-kp09-pooling-invariance-downsampling.jbd.json、slides/lec06-kp10-infinitely-strong-prior-gap.jbd.json。來源任務 `kp04-kp10-ef131`（確認：使用者 2026-11-11 在對話中要求「配送第 6 週 KP01–KP10 到課程網站」，並在選項中確認：取代中文同名檔（-en 不動）、講者備註與 9 位數權重個數可公開、複製提交並推送）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-11 18:35（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 3 份成品配送到本課程：slides/lec06-kp01-cnn-vs-flatten-mlp.jbd.json、slides/lec06-kp02-lenet-cnn-skeleton.jbd.json、slides/lec06-kp03-conv-layer-three-stages.jbd.json。來源任務 `kp01-kp03-ef132`（確認：使用者 2026-11-11 在對話中要求「配送第 6 週 KP01–KP10 到課程網站」，並在選項中確認：取代中文同名檔（-en 不動）、講者備註與 9 位數權重個數可公開、複製提交並推送）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
 - 2026-11-11 13:11（Asia/Taipei）— 老師指示「不用修正，我想放棄推送你這版本，保留原來版本」：撤回第6週 KP04–KP10 v2 有聲簡報發布（4c0d5a4），恢復原簡報、七份講義的投影片入口與第6週進度表。以新增還原提交保留歷史；不繼續本輪下載頁修改或補發 KP01–KP03。
