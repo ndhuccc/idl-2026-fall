@@ -12,7 +12,7 @@ This is the last knowledge point (KP10) of Week 6, "Convolution and pooling", an
 
 The prerequisites are the sparse connectivity of KP01 and KP05, the weight decay (L1 and L2 regularization) of Week 4, and the pooling of KP08–KP09. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp10-figures.py`, so you can recompute it yourself.
 
-[下載本單元投影片](../slides/lec06-kp10-infinitely-strong-prior-gap.jbd.json)
+[下載本單元投影片（中文版 v2，含逐步配音）](../slides/lec06-kp10-infinitely-strong-prior-gap-ef-zh-voiced-v2.jbd.json)
 
 [Download the slides of this unit (English)](../slides/lec06-kp10-infinitely-strong-prior-gap-en.jbd.json)
 

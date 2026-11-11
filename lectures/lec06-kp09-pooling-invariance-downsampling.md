@@ -12,7 +12,7 @@ This is the ninth knowledge point (KP09) of Week 6, "Convolution and pooling". K
 
 The prerequisites are the translation equivariance of KP06, the output-side formula of KP07 and the max pooling of KP08. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp09-figures.py`, so you can recompute it yourself.
 
-[下載本單元投影片](../slides/lec06-kp09-pooling-invariance-downsampling.jbd.json)
+[下載本單元投影片（中文版 v2，含逐步配音）](../slides/lec06-kp09-pooling-invariance-downsampling-ef-zh-voiced-v2.jbd.json)
 
 [Download the slides of this unit (English)](../slides/lec06-kp09-pooling-invariance-downsampling-en.jbd.json)
 
