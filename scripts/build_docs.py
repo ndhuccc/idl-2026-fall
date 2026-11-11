@@ -190,8 +190,14 @@ def schedule_kp_labels() -> dict[str, str]:
     p = ROOT / "schedule.md"
     if not p.exists():
         return {}
+    text = p.read_text(encoding="utf-8")
     pat = re.compile(r"\[(KP\d{2} [^\]]+)\]\(lectures/([^)#]+)\.md\)")
-    return {m.group(2): m.group(1) for m in pat.finditer(p.read_text(encoding="utf-8"))}
+    out = {m.group(2): m.group(1) for m in pat.finditer(text)}
+    # 沒有對應講義的簡報(例如跨 KP 合併版)改用投影片欄的連結文字;講義的標題優先。
+    deck = re.compile(r"\[(KP\d{2}[^\]]*)\]\(slides/([^)#/]+)\.jbd\.json\)")
+    for m in deck.finditer(text):
+        out.setdefault(m.group(2), m.group(1))
+    return out
 
 
 def schedule_weeks() -> dict[str, int]:

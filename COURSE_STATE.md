@@ -41,6 +41,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-11-12 05:56（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec04-kp07-09-regularization-infographic.jbd.json。來源任務 `kp07-09-infographic`（確認：使用者 2026-11-11 於對話指示配送到第四週投影片下載頁，並選擇『取代：只留合併版』）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-11 18:35（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 7 份成品配送到本課程：slides/lec06-kp04-discrete-conv-cross-correlation.jbd.json、slides/lec06-kp05-sparse-connectivity-parameter-sharing.jbd.json、slides/lec06-kp06-translation-equivariance.jbd.json、slides/lec06-kp07-stride-channels-padding-output-size.jbd.json、slides/lec06-kp08-detector-and-pooling.jbd.json、slides/lec06-kp09-pooling-invariance-downsampling.jbd.json、slides/lec06-kp10-infinitely-strong-prior-gap.jbd.json。來源任務 `kp04-kp10-ef131`（確認：使用者 2026-11-11 在對話中要求「配送第 6 週 KP01–KP10 到課程網站」，並在選項中確認：取代中文同名檔（-en 不動）、講者備註與 9 位數權重個數可公開、複製提交並推送）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
 - 2026-11-11 18:35（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 3 份成品配送到本課程：slides/lec06-kp01-cnn-vs-flatten-mlp.jbd.json、slides/lec06-kp02-lenet-cnn-skeleton.jbd.json、slides/lec06-kp03-conv-layer-three-stages.jbd.json。來源任務 `kp01-kp03-ef132`（確認：使用者 2026-11-11 在對話中要求「配送第 6 週 KP01–KP10 到課程網站」，並在選項中確認：取代中文同名檔（-en 不動）、講者備註與 9 位數權重個數可公開、複製提交並推送）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
