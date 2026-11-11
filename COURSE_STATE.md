@@ -41,6 +41,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-11-12 06:22（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec04-kp10-early-stopping-infographic.jbd.json。來源任務 `kp10-infographics`（確認：使用者於本對話明確要求：把簡報推送到 IDL-2026-FALL 的 GitHub 課程 repo）；以資訊圖表版新檔名並存；第四週進度表及KP10講義已加入入口。12頁教學備註僅有學習任務及來源，可隨成品公開。課程檢查0 FAIL；修正版僅移除未使用外層畫框，12頁內容節點與畫面不變。提交、同步與網站部署結果記於jbd-maker配送紀錄。
+
 - 2026-11-12 05:56（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec04-kp07-09-regularization-infographic.jbd.json。來源任務 `kp07-09-infographic`（確認：使用者 2026-11-11 於對話指示配送到第四週投影片下載頁，並選擇『取代：只留合併版』）；已於提交 5f0e585 推送。同次依使用者選擇「取代：只留合併版」移除 `slides/` 的第 4 週 KP07、KP08、KP09 舊簡報共 6 份（中、英文各 3 份），`schedule.md` 第 4 週投影片欄的三個連結合併為一個；講義 `lectures/lec04-kp07～kp09-*.md` 當時依指示不動；之後依使用者要求，只把三份講義第 9 行「下載本單元投影片」連結改指向合併版，其餘內容不動。`scripts/build_docs.py` 的下載頁標籤增加後備：沒有對應講義的簡報改用 `schedule.md` 投影片欄的「KPNN…」連結文字。
 
 - 2026-11-11 18:35（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 7 份成品配送到本課程：slides/lec06-kp04-discrete-conv-cross-correlation.jbd.json、slides/lec06-kp05-sparse-connectivity-parameter-sharing.jbd.json、slides/lec06-kp06-translation-equivariance.jbd.json、slides/lec06-kp07-stride-channels-padding-output-size.jbd.json、slides/lec06-kp08-detector-and-pooling.jbd.json、slides/lec06-kp09-pooling-invariance-downsampling.jbd.json、slides/lec06-kp10-infinitely-strong-prior-gap.jbd.json。來源任務 `kp04-kp10-ef131`（確認：使用者 2026-11-11 在對話中要求「配送第 6 週 KP01–KP10 到課程網站」，並在選項中確認：取代中文同名檔（-en 不動）、講者備註與 9 位數權重個數可公開、複製提交並推送）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
