@@ -41,6 +41,10 @@
 
 ## 決策與異動紀錄
 
+- 2026-11-12 21:10（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec04-kp05-overfitting-underfitting-generalization.jbd.json。來源任務 `kp05-highlight-voiceover`（確認：使用者 2026-11-13 於對話確認：第 4 週配音版全部上架，取代原本的無聲版（講者備註＝旁白逐字稿，可公開））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
+- 2026-11-12 21:10（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 9 份成品配送到本課程：slides/lec04-kp01-data-splits-and-cheating.jbd.json、slides/lec04-kp02-bias-variance-mse.jbd.json、slides/lec04-kp03-true-model-and-noise-floor.jbd.json、slides/lec04-kp04-test-error-decomposition.jbd.json、slides/lec04-kp06-cross-validation.jbd.json、slides/lec04-kp10-early-stopping.jbd.json、slides/lec04-kp11-dropout.jbd.json、slides/lec04-kp12-batch-normalization.jbd.json、slides/lec04-kp07-09-regularization-infographic.jbd.json。來源任務 `highlight-voiceover-kps`（確認：使用者 2026-11-13 於對話確認：第 4 週配音版全部上架，取代原本的無聲版（講者備註＝旁白逐字稿，可公開））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-12 12:15（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec04-kp10-early-stopping.jbd.json。來源任務 `kp10-zh-fix`（確認：使用者 2026-11-12 於對話中回覆「好，換上去」）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
 - 2026-11-12 12:11（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec04-kp10-early-stopping-en.jbd.json。來源任務 `kp10-infographic-en`（確認：使用者 2026-11-12 於對話中回覆「好，上架」）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
