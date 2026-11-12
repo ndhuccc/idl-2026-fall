@@ -41,6 +41,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-11-12 — 依老師要求，投影片下載頁更新為 JianBauDau Player 1.0.6（`ndhuccc/IDL115` 的 `player-v1.0.6`），同時提供免安裝版與安裝版；同步 `scripts/build_docs.py`、`slides/FORMATS.md` 與異動紀錄。兩個公開下載均已實際下載並核對 SHA-256；本機網站建置及產出的下載連結檢查通過。執行檔來源與測試紀錄見 Release 的 `build-report.json`。
+
 - 2026-11-12 11:41（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 9 份成品配送到本課程：slides/lec04-kp01-data-splits-and-cheating-en.jbd.json、slides/lec04-kp02-bias-variance-mse-en.jbd.json、slides/lec04-kp03-true-model-and-noise-floor-en.jbd.json、slides/lec04-kp04-test-error-decomposition-en.jbd.json、slides/lec04-kp05-overfitting-underfitting-generalization-en.jbd.json、slides/lec04-kp06-cross-validation-en.jbd.json、slides/lec04-kp07-09-regularization-infographic-en.jbd.json、slides/lec04-kp11-dropout-en.jbd.json、slides/lec04-kp12-batch-normalization-en.jbd.json。來源任務 `infographic-en`（確認：使用者 2026-11-12 於對話中回覆「好，上架」）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
 - 2026-11-12 09:36（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 6 份成品配送到本課程：slides/lec04-kp01-data-splits-and-cheating.jbd.json、slides/lec04-kp02-bias-variance-mse.jbd.json、slides/lec04-kp03-true-model-and-noise-floor.jbd.json、slides/lec04-kp04-test-error-decomposition.jbd.json、slides/lec04-kp05-overfitting-underfitting-generalization.jbd.json、slides/lec04-kp06-cross-validation.jbd.json。來源任務 `kp01-06-infographic`（確認：使用者 2026-11-12 於對話說「簡報上架，取代舊版、刪掉英文版」）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。 依老師指示「取代舊版、刪掉英文版」：同名檔改為資訊圖表版，並移除 KP01–KP06 的 6 份 `-en.jbd.json`；`schedule.md` 與講義連結指向的檔名不變，不需修改。

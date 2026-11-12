@@ -39,9 +39,11 @@
 ## 播放器下載
 
 網站的投影片下載頁預設只提供 HTML,不放播放器連結;只有某份簡報退回提供 JSON 時,才會附上 JianBauDau 播放器(Windows 執行檔)連結:
-<https://github.com/ndhuccc/IDL115/releases/download/player-v1.0.5/JianBauDau-Player-1.0.5.exe>
 
-換新版時,修改 `scripts/build_docs.py` 的 `PLAYER_URL`。
+- [1.0.6 免安裝版](https://github.com/ndhuccc/IDL115/releases/download/player-v1.0.6/JianBauDau-Player-1.0.6.exe)
+- [1.0.6 安裝版](https://github.com/ndhuccc/IDL115/releases/download/player-v1.0.6/JianBauDau-Player-Setup-1.0.6.exe)
+
+換新版時,同步修改 `scripts/build_docs.py` 的 `PLAYER_URL`、`PLAYER_SETUP_URL` 與下載頁顯示版本。
 
 ## 老師的流程
 
