@@ -41,6 +41,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-11-13 14:52（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec08-kp08-bidirectional-and-elmo.jbd.json。來源任務 `kp08-explanatory-voiceover`（確認：使用者 2026-11-14 於對話中說「上架」（KP08 infographic-maker 1.4.0 配音版，取代網站上的 KP08））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-13 13:29（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec08-kp07-lstm-variants-gru-mgu.jbd.json。來源任務 `kp07-explanatory-voiceover`（確認：使用者 2026-11-14 於對話中說「上架」（KP07 infographic-maker 1.4.0 配音版，取代網站上的 KP07））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
 - 2026-11-13 12:05（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec08-kp06-lstm-gates-and-cec.jbd.json。來源任務 `kp06-explanatory-voiceover`（確認：使用者 2026-11-13 於對話中說「上架」（KP06 infographic-maker 1.4.0 配音版，取代網站上的 KP06））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
