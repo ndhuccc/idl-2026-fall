@@ -12,7 +12,7 @@ This is the second knowledge point (KP02) of Week 7, "Convolutional neural netwo
 
 The prerequisites are the LeNet skeleton of Week 6 KP02 (convolution, pooling, fully connected), the output-size formula of KP07, the softmax of Week 2 and the initialization of KP01. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp02-figures.py`, so you can recompute it yourself.
 
-[下載本單元投影片](../slides/lec07-kp02-imagenet-alexnet.jbd.json)
+[下載本單元投影片](../slides/lec07-kp02-imagenet-alexnet-infographic-voiced.jbd.json)
 
 [Download the slides of this unit (English)](../slides/lec07-kp02-imagenet-alexnet-en.jbd.json)
 

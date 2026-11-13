@@ -348,7 +348,21 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
                     f'<a href="{n}" download>JBD</a>' if f == "jbd.json" else f"[{SLIDE_SHORT.get(f, f)}]({n})"
                     for f, n in sorted(items, key=lambda t: t[0])) or "—"
 
-            for stem in sorted((x for x in weeks[wk] if x not in en_stems), key=order):
+            # 只有英文版、沒有對應中文版的 -en 檔(例如中文版已移除):名稱取自中文 stem 的標題,檔案放 English 欄。
+            en_only = {st for st in weeks[wk] if st.endswith("-en") and st not in en_stems}
+
+            def order_all(stem: str) -> str:
+                return order(stem[: -len("-en")]) + "~" if stem in en_only else order(stem)
+
+            for stem in sorted((x for x in weeks[wk] if x not in en_stems), key=order_all):
+                if stem in en_only:
+                    base = stem[: -len("-en")]
+                    label = slide_label(base, kp_labels)[0] or stem
+                    en_title = english_title(base) or deck_english_title(base)
+                    if en_title:
+                        label += "<br>" + en_title
+                    lines.append(f"    | {label} | — | {cell(weeks[wk][stem])} |")
+                    continue
                 label = slide_label(stem, kp_labels)[0] or ("本週正課" if re.fullmatch(r"lec\d{2}", stem) else stem)
                 core_stem = stem[: -len("-with-comics")] if stem.endswith("-with-comics") else stem
                 en_title = english_title(core_stem) or deck_english_title(core_stem)

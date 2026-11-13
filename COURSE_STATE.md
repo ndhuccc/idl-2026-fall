@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-13 18:34（Asia/Taipei）— 老師要求第 7 週每個 KP 只保留圖解配音版：移除 KP01–KP07 的中文導學版 7 份（slides/lec07-kpNN-*.jbd.json）；英文導學版（-en）與中英文圖解配音版保留（老師選擇只刪中文導學版）。schedule.md 第 7 週與 7 份講義的中文投影片連結改指向圖解配音版。scripts/build_docs.py 小改（老師同意）：只有英文版、沒有中文配對的 -en 簡報，在下載頁以「KPNN 標題＋英文標題」為名、放在 English 欄。
+
 
 - 2026-11-13 18:26（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec08-kp01-sequence-and-rnn-sharing.jbd.json。來源任務 `kp01-explanatory-voiceover`（確認：使用者 2026-11-14 在對話中說「上架」（KP01 1.4.0 版配音簡報））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 

@@ -12,7 +12,7 @@ This is the fourth knowledge point (KP04) of Week 7, "Convolutional neural netwo
 
 The prerequisites are the channels and output size of Week 6 KP07, the stacks of small kernels and numbers of weights of KP03, and the AlexNet and VGG of KP02 and KP03. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp04-figures.py`, so you can recompute it yourself.
 
-[下載本單元投影片](../slides/lec07-kp04-inception-googlenet.jbd.json)
+[下載本單元投影片](../slides/lec07-kp04-inception-googlenet-infographic-voiced.jbd.json)
 
 [Download the slides of this unit (English)](../slides/lec07-kp04-inception-googlenet-en.jbd.json)
 

@@ -12,7 +12,7 @@ This is the sixth knowledge point (KP06) of Week 7, "Convolutional neural networ
 
 The prerequisites are the backpropagation and chain rule of Week 3, the VGG of KP03 and the signal size of KP01. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp06-figures.py`, so you can recompute it yourself.
 
-[下載本單元投影片](../slides/lec07-kp06-resnet-residual-learning.jbd.json)
+[下載本單元投影片](../slides/lec07-kp06-resnet-residual-learning-infographic-voiced.jbd.json)
 
 [Download the slides of this unit (English)](../slides/lec07-kp06-resnet-residual-learning-en.jbd.json)
 

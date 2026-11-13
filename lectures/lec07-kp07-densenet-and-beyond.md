@@ -12,7 +12,7 @@ This is the last knowledge point (KP07) of Week 7, "Convolutional neural network
 
 The prerequisites are the residual block and formulas (9) and (10) of KP06, the concatenation of KP04, the batch normalization of Week 4 and the average pooling of Week 6 KP08. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp07-figures.py`, so you can recompute it yourself.
 
-[下載本單元投影片](../slides/lec07-kp07-densenet-and-beyond.jbd.json)
+[下載本單元投影片](../slides/lec07-kp07-densenet-and-beyond-infographic-voiced.jbd.json)
 
 [Download the slides of this unit (English)](../slides/lec07-kp07-densenet-and-beyond-en.jbd.json)
 

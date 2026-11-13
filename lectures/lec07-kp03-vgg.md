@@ -12,7 +12,7 @@ This is the third knowledge point (KP03) of Week 7, "Convolutional neural networ
 
 The prerequisites are the stride, padding and output-size formula of Week 6 KP07, the max pooling of KP08, the momentum of Week 3, the L2 weight decay of Week 4 and the AlexNet of KP02. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp03-figures.py`, so you can recompute it yourself.
 
-[下載本單元投影片](../slides/lec07-kp03-vgg.jbd.json)
+[下載本單元投影片](../slides/lec07-kp03-vgg-infographic-voiced.jbd.json)
 
 [Download the slides of this unit (English)](../slides/lec07-kp03-vgg-en.jbd.json)
 
