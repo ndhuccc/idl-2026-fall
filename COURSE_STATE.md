@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-14 07:50（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 21 份成品配送到本課程：lectures/lec11-kp01-transformer-overview.md、lectures/lec11-kp02-positional-encoding.md、lectures/lec11-kp03-multi-head-attention.md、lectures/lec11-kp04-residual-layernorm-ffn.md、lectures/lec11-kp05-decoder.md、lectures/lec11-kp06-why-no-rnn.md、lectures/lec11-kp07-efficient-attention.md、assets/figures/lec11-kp01-architecture.png、assets/figures/lec11-kp01-permutation.png、assets/figures/lec11-kp02-pe-waves.png、assets/figures/lec11-kp02-relative-offset.png、assets/figures/lec11-kp03-heads-vs-single.png、assets/figures/lec11-kp03-mha-shapes.png、assets/figures/lec11-kp04-ln-vs-bn.png、assets/figures/lec11-kp04-residual-gradient.png、assets/figures/lec11-kp05-causal-mask.png、assets/figures/lec11-kp05-temperature.png、assets/figures/lec11-kp06-cost-vs-n.png、assets/figures/lec11-kp06-path-length.png、assets/figures/lec11-kp07-random-features.png、assets/figures/lec11-kp07-sparse-patterns.png。來源任務 `transformer-lecture-notes`（確認：使用者 2026-11-14 在對話中說「上架」（第 11 週 KP01–KP07 講義））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-14 05:22（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec10-kp06-attention-vision-speech.jbd.json。來源任務 `kp06-explanatory-voiceover`（確認：使用者 2026-11-14 在對話中說「上架」（第 10 週 KP06 圖解配音簡報））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
 - 2026-11-14 05:07（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec10-kp05-self-attention.jbd.json。來源任務 `kp05-explanatory-voiceover`（確認：使用者 2026-11-14 在對話中說「上架」（第 10 週 KP05 圖解配音簡報））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
