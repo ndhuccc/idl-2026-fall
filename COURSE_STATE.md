@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-13 20:49（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec10-kp02-seq2seq-context-bottleneck.jbd.json。來源任務 `kp02-explanatory-voiceover`（確認：使用者 2026-11-14 在對話中說「上架」（第 10 週 KP02 圖解配音簡報））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-13 20:05（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec10-kp01-attention-dynamic-weighting.jbd.json。來源任務 `kp01-explanatory-voiceover`（確認：使用者 2026-11-14 在對話中說「上架」（第 10 週 KP01 1.4.0 版配音簡報））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
 - 2026-11-13 19:20（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 18 份成品配送到本課程：lectures/lec10-kp01-attention-dynamic-weighting.md、lectures/lec10-kp02-seq2seq-context-bottleneck.md、lectures/lec10-kp03-seq2seq-with-attention.md、lectures/lec10-kp04-query-key-value.md、lectures/lec10-kp05-self-attention.md、lectures/lec10-kp06-attention-vision-speech.md、assets/figures/lec10-kp01-softmax-sharpness.png、assets/figures/lec10-kp01-weighted-average.png、assets/figures/lec10-kp02-early-words-fade.png、assets/figures/lec10-kp02-seq2seq-bottleneck.png、assets/figures/lec10-kp03-alignment-matrix.png、assets/figures/lec10-kp03-one-step.png、assets/figures/lec10-kp04-hard-vs-soft.png、assets/figures/lec10-kp04-similarity-measures.png、assets/figures/lec10-kp05-scaling.png、assets/figures/lec10-kp05-three-word-attention.png、assets/figures/lec10-kp06-channel-attention.png、assets/figures/lec10-kp06-spatial-attention.png。來源任務 `self-attention-lecture-notes`（確認：使用者 2026-11-14 在對話中說「上架」（第 10 週 KP01–KP06 講義））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
