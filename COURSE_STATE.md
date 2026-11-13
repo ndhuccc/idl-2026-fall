@@ -41,6 +41,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-11-13 08:31（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec08-kp06-lstm-gates-and-cec.jbd.json。來源任務 `kp06-cell-diagram-voiceover`（確認：使用者 2026-11-13 看過新第 3 頁與配音預覽影片後說「上架」（取代現有 KP06 配音版））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-13 06:37（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 7 份成品配送到本課程：slides/lec08-kp02-bptt-state-gradient.jbd.json、slides/lec08-kp03-bptt-weight-update.jbd.json、slides/lec08-kp04-vanishing-exploding-gradients.jbd.json、slides/lec08-kp05-early-remedies-leaky-esn.jbd.json、slides/lec08-kp06-lstm-gates-and-cec.jbd.json、slides/lec08-kp07-lstm-variants-gru-mgu.jbd.json、slides/lec08-kp08-bidirectional-and-elmo.jbd.json。來源任務 `highlight-voiceover-kps`（確認：使用者 2026-11-13 看過 KP02–KP08 預覽影片後說「上架」（取代無聲版））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
 - 2026-11-13 02:40（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec08-kp01-sequence-and-rnn-sharing.jbd.json。來源任務 `highlight-voiceover-kps`（確認：使用者 2026-11-13 看過 KP01 試做影片後說「上架」（取代無聲版，先前已選定））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
