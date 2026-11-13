@@ -14,7 +14,7 @@ The prerequisites are the backpropagation and chain rule of Week 3, the VGG of K
 
 [下載本單元投影片](../slides/lec07-kp06-resnet-residual-learning-infographic-voiced.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec07-kp06-resnet-residual-learning-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec07-kp06-resnet-residual-learning-infographic-voiced-en.jbd.json)
 
 ## KP06 ResNet，殘差學習（ResNet: residual learning）
 

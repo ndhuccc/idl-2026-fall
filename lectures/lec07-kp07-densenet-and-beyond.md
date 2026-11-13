@@ -14,7 +14,7 @@ The prerequisites are the residual block and formulas (9) and (10) of KP06, the 
 
 [下載本單元投影片](../slides/lec07-kp07-densenet-and-beyond-infographic-voiced.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec07-kp07-densenet-and-beyond-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec07-kp07-densenet-and-beyond-infographic-voiced-en.jbd.json)
 
 ## KP07 DenseNet、後續架構與本章回顧（DenseNet, later architectures and a review of the chapter）
 

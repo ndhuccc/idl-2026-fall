@@ -14,7 +14,7 @@ The prerequisites are the output-size formula and padding of Week 6 KP07, the ma
 
 [下載本單元投影片](../slides/lec07-kp05-unet-infographic-voiced.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec07-kp05-unet-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec07-kp05-unet-infographic-voiced-en.jbd.json)
 
 ## KP05 U-Net，收縮、擴張與跳接（U-Net: contraction, expansion and skip connections）
 

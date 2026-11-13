@@ -14,7 +14,7 @@ The prerequisites are the LeNet skeleton of Week 6 KP02 (convolution, pooling, f
 
 [下載本單元投影片](../slides/lec07-kp02-imagenet-alexnet-infographic-voiced.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec07-kp02-imagenet-alexnet-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec07-kp02-imagenet-alexnet-infographic-voiced-en.jbd.json)
 
 ## KP02 ImageNet、ILSVRC 與 AlexNet（ImageNet, ILSVRC and AlexNet）
 

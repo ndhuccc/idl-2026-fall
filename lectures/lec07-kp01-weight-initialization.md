@@ -14,7 +14,7 @@ The prerequisites are the backpropagation and gradient descent of Week 3, the ac
 
 [下載本單元投影片](../slides/lec07-kp01-weight-initialization-infographic-voiced.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec07-kp01-weight-initialization-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec07-kp01-weight-initialization-infographic-voiced-en.jbd.json)
 
 ## KP01 權重初始化（Weight initialization）
 

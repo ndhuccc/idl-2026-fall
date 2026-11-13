@@ -14,7 +14,7 @@ The prerequisites are the stride, padding and output-size formula of Week 6 KP07
 
 [下載本單元投影片](../slides/lec07-kp03-vgg-infographic-voiced.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec07-kp03-vgg-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec07-kp03-vgg-infographic-voiced-en.jbd.json)
 
 ## KP03 VGG，用 3×3 小核堆出深度（VGG: depth from stacks of 3×3 kernels）
 

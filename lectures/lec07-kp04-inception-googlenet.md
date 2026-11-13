@@ -14,7 +14,7 @@ The prerequisites are the channels and output size of Week 6 KP07, the stacks of
 
 [下載本單元投影片](../slides/lec07-kp04-inception-googlenet-infographic-voiced.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec07-kp04-inception-googlenet-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec07-kp04-inception-googlenet-infographic-voiced-en.jbd.json)
 
 ## KP04 Inception 與 GoogLeNet，多尺度並列與 1×1 降維（Inception and GoogLeNet: multi-scale branches and 1×1 reduction）
 
