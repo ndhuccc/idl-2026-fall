@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-13 19:20（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 18 份成品配送到本課程：lectures/lec10-kp01-attention-dynamic-weighting.md、lectures/lec10-kp02-seq2seq-context-bottleneck.md、lectures/lec10-kp03-seq2seq-with-attention.md、lectures/lec10-kp04-query-key-value.md、lectures/lec10-kp05-self-attention.md、lectures/lec10-kp06-attention-vision-speech.md、assets/figures/lec10-kp01-softmax-sharpness.png、assets/figures/lec10-kp01-weighted-average.png、assets/figures/lec10-kp02-early-words-fade.png、assets/figures/lec10-kp02-seq2seq-bottleneck.png、assets/figures/lec10-kp03-alignment-matrix.png、assets/figures/lec10-kp03-one-step.png、assets/figures/lec10-kp04-hard-vs-soft.png、assets/figures/lec10-kp04-similarity-measures.png、assets/figures/lec10-kp05-scaling.png、assets/figures/lec10-kp05-three-word-attention.png、assets/figures/lec10-kp06-channel-attention.png、assets/figures/lec10-kp06-spatial-attention.png。來源任務 `self-attention-lecture-notes`（確認：使用者 2026-11-14 在對話中說「上架」（第 10 週 KP01–KP06 講義））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-13 18:39（Asia/Taipei）— 老師要求移除第 7 週英文導學版：刪除 KP01–KP07 的 slides/lec07-kpNN-*-en.jbd.json 共 7 份；7 份講義的英文投影片連結改指向英文圖解配音版（-infographic-voiced-en）。第 7 週中英文現在都只有圖解配音版。
 
 - 2026-11-13 18:34（Asia/Taipei）— 老師要求第 7 週每個 KP 只保留圖解配音版：移除 KP01–KP07 的中文導學版 7 份（slides/lec07-kpNN-*.jbd.json）；英文導學版（-en）與中英文圖解配音版保留（老師選擇只刪中文導學版）。schedule.md 第 7 週與 7 份講義的中文投影片連結改指向圖解配音版。scripts/build_docs.py 小改（老師同意）：只有英文版、沒有中文配對的 -en 簡報，在下載頁以「KPNN 標題＋英文標題」為名、放在 English 欄。
