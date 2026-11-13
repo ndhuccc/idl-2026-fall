@@ -41,6 +41,8 @@
 
 ## 決策與異動紀錄
 
+- 2026-11-13 17:58（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec08-kp02-bptt-state-gradient.jbd.json。來源任務 `kp02-explanatory-voiceover`（確認：使用者 2026-11-14 在對話中說「上架」（KP02 1.4.0 版配音簡報））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-13 16:48（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec08-kp03-bptt-weight-update.jbd.json。來源任務 `kp03-explanatory-voiceover`（確認：使用者 2026-11-14 在對話中說「上架」（KP03 1.4.0 版配音簡報））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
 - 2026-11-13 15:40（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec08-kp05-early-remedies-leaky-esn.jbd.json。來源任務 `kp05-explanatory-voiceover`（確認：使用者 2026-11-14 於對話中說「上架」（KP05 infographic-maker 1.4.0 配音版，取代網站上的 KP05））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
