@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-14 14:55（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec12-kp01-autoencoder.jbd.json。來源任務 `kp01-explanatory-voiceover`（確認：使用者 2026-11-14 在對話中說「上架」（第 12 週 KP01 1.4.0 版配音簡報））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-14 14:28（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 23 份成品配送到本課程：lectures/lec12-kp01-autoencoder.md、lectures/lec12-kp02-latent-posterior.md、lectures/lec12-kp03-elbo.md、lectures/lec12-kp04-em.md、lectures/lec12-kp05-vae-architecture.md、lectures/lec12-kp06-vae-training.md、lectures/lec12-kp07-test-variants.md、assets/figures/lec12-kp01-latent-holes.png、assets/figures/lec12-kp01-linear-bottleneck.png、assets/figures/lec12-kp02-bayes-posterior.png、assets/figures/lec12-kp02-best-gaussian.png、assets/figures/lec12-kp03-elbo-gap.png、assets/figures/lec12-kp03-elbo-terms.png、assets/figures/lec12-kp04-em-fit.png、assets/figures/lec12-kp04-em-stairs.png、assets/figures/lec12-kp05-architecture.png、assets/figures/lec12-kp05-latent-coverage.png、assets/figures/lec12-kp06-mc-estimates.png、assets/figures/lec12-kp06-reparameterization.png、assets/figures/lec12-kp06-training-curves.png、assets/figures/lec12-kp07-beta-sweep.png、assets/figures/lec12-kp07-blur.png、assets/figures/lec12-kp07-test-phase.png。來源任務 `vae-lecture-notes`（確認：使用者 2026-11-14 在對話中說「上架」（第 12 週 KP01–KP07 講義））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
 - 2026-11-14 11:48（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec11-kp07-efficient-attention.jbd.json。來源任務 `kp07-explanatory-voiceover`（確認：使用者 2026-11-14 在對話中說「上架」（第 11 週 KP07 1.4.0 版配音簡報））；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
