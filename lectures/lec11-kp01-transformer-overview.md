@@ -97,9 +97,9 @@ Example (the source's Transformer-Base settings): $d_{\text{model}}=512$, $h=8$ 
 | Middle layer of the feed-forward network | $4\times2048$ |
 | Output of one layer $\mathbf{Z}_1$ | $4\times512$ |
 
-一層有多少參數？`[補充]` 多頭注意力有 $4$ 個 $512\times512$ 的矩陣（查詢、鍵、值與最後的輸出投影）加上偏差，共 $4\times(512\times512+512)=1050624$ 個；$8$ 個頭各用其中 $64$ 行，合起來剛好是一個 $512\times512$ 矩陣。前饋網路是 $512\to2048\to512$，共 $(512\times2048+2048)+(2048\times512+512)=2099712$ 個。兩個層正規化各有 $512$ 個縮放與 $512$ 個平移參數，共 $1024$ 個。一層合計 $3152384$ 個，大約 $315$ 萬，其中前饋網路占三分之二（$0.6661$）。
+一層有多少參數？`[補充]` 多頭注意力有 $4$ 個 $512\times512$ 的矩陣（查詢、鍵、值與最後的輸出投影）加上偏差，共 $4\times(512\times512+512)=1050624$ 個；$8$ 個頭各用其中 $64$ 行，合起來剛好是一個 $512\times512$ 矩陣。前饋網路是 $512\to2048\to512$，共 $(512\times2048+2048)+(2048\times512+512)=2099712$ 個。兩個層正規化各有 $512$ 個縮放與 $512$ 個平移參數，各 $1024$ 個，共 $2048$ 個。一層合計 $3152384$ 個，大約 $315$ 萬，其中前饋網路占三分之二（$0.6661$）。
 
-How many parameters does one layer have? `[Added]` Multi-head attention has $4$ matrices of size $512\times512$ (query, key, value and the final output projection) plus biases, $4\times(512\times512+512)=1050624$ in total; the $8$ heads each use $64$ columns of them, which together make exactly one $512\times512$ matrix. The feed-forward network goes $512\to2048\to512$, giving $(512\times2048+2048)+(2048\times512+512)=2099712$. The two layer normalizations each have $512$ scale and $512$ shift parameters, $1024$ in all. One layer totals $3152384$, about $3.15$ million, and the feed-forward network is two thirds of it ($0.6661$).
+How many parameters does one layer have? `[Added]` Multi-head attention has $4$ matrices of size $512\times512$ (query, key, value and the final output projection) plus biases, $4\times(512\times512+512)=1050624$ in total; the $8$ heads each use $64$ columns of them, which together make exactly one $512\times512$ matrix. The feed-forward network goes $512\to2048\to512$, giving $(512\times2048+2048)+(2048\times512+512)=2099712$. The two layer normalizations each have $512$ scale and $512$ shift parameters, $1024$ each and $2048$ in all. One layer totals $3152384$, about $3.15$ million, and the feed-forward network is two thirds of it ($0.6661$).
 
 常見錯誤：以為 $N$ 層共用同一組參數。它們只是**結構**相同；每一層都有自己的一組權重，$6$ 層編碼器就有 $6\times3152384=18914304$ 個參數。再加上 $6$ 層解碼器約 $2522$ 萬、共用的詞嵌入 $37000\times512$ 約 $1894$ 萬，合計約 $6308$ 萬，和論文報告的約 $6500$ 萬同一量級 `[補充]`。
 
