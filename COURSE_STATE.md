@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-15 14:49（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec14-kp01-diffusion-intro.jbd.json。來源任務 `kp01-explanatory-voiceover`（確認：使用者 2026-11-16 於對話說「上架」）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-15 14:28（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 27 份成品配送到本課程：lectures/lec14-kp01-diffusion-intro.md、lectures/lec14-kp02-forward-closed-form.md、lectures/lec14-kp03-backward-elbo.md、lectures/lec14-kp04-denoising-posterior.md、lectures/lec14-kp05-ddpm-algorithms.md、lectures/lec14-kp06-improved-ddpm.md、lectures/lec14-kp07-conditional-guidance.md、lectures/lec14-kp08-sde-score.md、assets/figures/lec14-kp01-forward-backward.png、assets/figures/lec14-kp01-pipelines.png、assets/figures/lec14-kp01-trajectories.png、assets/figures/lec14-kp02-schedule.png、assets/figures/lec14-kp02-step-vs-jump.png、assets/figures/lec14-kp03-elbo-terms.png、assets/figures/lec14-kp03-small-vs-large-step.png、assets/figures/lec14-kp03-two-chains.png、assets/figures/lec14-kp04-posterior.png、assets/figures/lec14-kp04-target-scale.png、assets/figures/lec14-kp05-samples.png、assets/figures/lec14-kp05-training.png、assets/figures/lec14-kp05-weights.png、assets/figures/lec14-kp06-few-steps.png、assets/figures/lec14-kp06-schedules.png、assets/figures/lec14-kp07-guidance.png、assets/figures/lec14-kp07-ilvr.png、assets/figures/lec14-kp08-paths.png、assets/figures/lec14-kp08-samples.png。來源任務 `diffusion-lecture-notes`（確認：使用者 2026-11-15 於對話說「上架」）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
 - 2026-11-15 12:11（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec13-kp08-mle-fgan-bayes.jbd.json。來源任務 `kp08-explanatory-voiceover`（確認：使用者 2026-11-15 於對話說「上架」）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
