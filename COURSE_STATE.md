@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-16 02:43（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec14-kp07-conditional-guidance.jbd.json。來源任務 `kp07-explanatory-voiceover`（確認：使用者 2026-11-16 於對話說「上架」）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-15 20:35（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec14-kp06-improved-ddpm.jbd.json。來源任務 `kp06-explanatory-voiceover`（確認：使用者 2026-11-16 於對話說「上架」）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
 - 2026-11-15 18:41（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec14-kp05-ddpm-algorithms.jbd.json。來源任務 `kp05-explanatory-voiceover`（確認：使用者 2026-11-16 於對話說「上架」）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
