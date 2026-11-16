@@ -4,9 +4,9 @@
 >
 > Level: Undergraduate (undergrad)
 
-本講義是第7週「卷積神經網路（二）：經典架構」的第五個知識點（KP05）。前面的 AlexNet、VGG、Inception 都是「整張圖進去，一個類別出來」。如果任務是「每個畫素屬於哪一類」，輸出就要和輸入一樣大。U-Net 為這件事而設計，最初用在生醫影像的分割。
+本講義是第7週「卷積神經網路（二）：經典架構」的第五個知識點（KP05）。前面的 AlexNet、VGG、Inception 都是「整張圖進去，一個類別出來」。如果任務是「每個畫素屬於哪一類」，就需要逐畫素的預測；輸出的空間尺寸取決於補邊方式，不一定與輸入相同。U-Net 為這件事而設計，最初用在生醫影像的分割。
 
-This is the fifth knowledge point (KP05) of Week 7, "Convolutional neural networks (2): classic architectures". AlexNet, VGG and Inception all take "the whole image in and one class out". If the task is "which class does each pixel belong to", the output must be as large as the input. U-Net was designed for this, first for the segmentation of biomedical images.
+This is the fifth knowledge point (KP05) of Week 7, "Convolutional neural networks (2): classic architectures". AlexNet, VGG and Inception all take "the whole image in and one class out". If the task is "which class does each pixel belong to", pixel-wise predictions are needed; the output spatial size depends on padding and need not equal the input size. U-Net was designed for this, first for the segmentation of biomedical images.
 
 先備知識是第6週 KP07 的輸出尺寸公式與補邊、KP08 的最大池化，KP03 的 VGG（通道加倍、$3\times3$ 卷積），以及第2週的 softmax 與交叉熵。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec07-kp05-figures.py` 算出，可以自己重算。
 
@@ -315,9 +315,9 @@ The four questions of the source are kept with all options; the source page mark
    - C. 把影像複製四次
    - D. 只用 $1\times1$ 卷積升空間解析度
 
-4. U-Net 最初主要應用與輸出形式是？
+4. 原始 U-Net（不補邊版本）的主要應用與輸出形式是？
    - A. 手寫數字 10 類分類，輸出 10 維向量
-   - B. 生醫影像分割；輸出與輸入同空間尺寸、$c$ 個類別通道＋softmax＋cross-entropy
+   - B. 生醫影像分割；輸出空間尺寸比輸入小、$c$ 個類別通道，以 softmax 與逐畫素 cross-entropy 訓練
    - C. 機器翻譯
    - D. 只做超解析度、沒有類別通道
 
@@ -339,9 +339,9 @@ The four questions of the source are kept with all options; the source page mark
    - C. Copying the image four times
    - D. Only a $1\times1$ convolution to raise the spatial resolution
 
-4. What are the original application and the output form of U-Net?
+4. What are the main application and output form of the original, unpadded U-Net?
    - A. 10-class handwritten-digit classification with a 10-dimensional output vector
-   - B. Biomedical image segmentation; the output has the same spatial size as the input, $c$ class channels + softmax + cross-entropy
+   - B. Biomedical image segmentation; a spatially smaller output with $c$ class channels, trained with softmax and pixel-wise cross-entropy
    - C. Machine translation
    - D. Only super-resolution with no class channels
 
@@ -350,14 +350,14 @@ The four questions of the source are kept with all options; the source page mark
 - **第 1 題，B。** 收縮路徑縮小並抓語境，擴張路徑放大並定位（第 1 節）。
 - **第 2 題，A。** 不補邊使每次卷積少兩格，左邊的圖比右邊大，所以要先裁（第 4 節）。
 - **第 3 題，B。** 擴張路徑用 $2\times2$ 轉置卷積放大（第 3 節）。A 是縮小，C、D 不是這個做法。
-- **第 4 題，B。** 生醫影像分割，輸出 $c$ 個類別通道、softmax 與逐畫素的交叉熵（第 5 節）。「同空間尺寸」要用補邊的版本；原始不補邊版本略小（第 4 節）。
+- **第 4 題，B。** 生醫影像分割，輸出 $c$ 個類別通道、softmax 與逐畫素的交叉熵（第 5 節）。原始不補邊版本由 $572\times572$ 輸入得到 $388\times388$ 輸出；採用適當補邊並對齊尺寸的現代版本可得到同尺寸輸出（第 4 節）。
 
 **Explanations** `[Added]`:
 
 - **Question 1, B.** The contracting path shrinks and captures the context and the expansive path enlarges and localizes (Section 1).
 - **Question 2, A.** Without padding every convolution loses two cells, the map on the left is larger than that on the right, and so it must be cropped first (Section 4).
 - **Question 3, B.** The expansive path enlarges with a $2\times2$ transposed convolution (Section 3). A shrinks, and C and D are not this method.
-- **Question 4, B.** Biomedical segmentation, with $c$ class channels, softmax and the pixel-wise cross-entropy (Section 5). "The same spatial size" needs the padded version; the original unpadded version is slightly smaller (Section 4).
+- **Question 4, B.** Biomedical segmentation, with $c$ class channels, softmax and the pixel-wise cross-entropy (Section 5). The original unpadded version maps a $572\times572$ input to a $388\times388$ output; modern versions with appropriate padding and size alignment can produce same-sized outputs (Section 4).
 
 **下一個單元的問題**：網路愈深，效能愈好嗎？經驗上超過大約 $20$ 層以後，再加深反而會讓訓練準確率先飽和、再變差。下一個單元（KP06）看 ResNet 怎麼解決這個退化問題。
 
