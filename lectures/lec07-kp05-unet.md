@@ -293,9 +293,9 @@ Both figures and the numbers in the text come from the same program: `lec07-kp05
 
 ### 小測驗（Quiz，來源原題）
 
-來源的四題都保留原題與全部選項；來源頁面沒有標出答案，下面的答案與解析是依本講義的內容寫的 `[補充]`。
+保留來源四題的概念與題型；第 4 題已修正原題的尺寸歧義，明確限定原始不補邊版本。下面的答案與解析依本講義內容撰寫 `[補充]`。
 
-The four questions of the source are kept with all options; the source page marks no answers, and the answers and explanations below are written from the content of this note `[Added]`.
+The concepts and format of the four source questions are retained. Question 4 has been corrected to remove the size ambiguity and explicitly refers to the original unpadded version. The answers and explanations below follow this note `[Added]`.
 
 1. U-Net 收縮路徑與擴張路徑的分工是？
    - A. 兩者都只做分類、不做定位
