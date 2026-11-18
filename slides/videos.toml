@@ -1,0 +1,20 @@
+# 投影片下載頁的「影片」欄（scripts/build_docs.py 讀取）。
+# 每支影片一筆：deck = 簡報檔名（slides/<deck>.jbd.json，不含副檔名），slug = 影片檔名（不含 .mp4），title = 片名。
+# 影片放在 Cloudflare R2，經 Worker 公開；網址 = site + /videos/<slug>.mp4，加 ?dl=1 會直接下載。
+# 影片由 ndhuccc/jbd-maker 製作（outputs/idl-2026-fall/week06-v27～v29，HyperFrames 有聲簡報）。
+site = "https://videos.ndhuccc.workers.dev"
+
+[[video]]
+deck = "lec06-kp04-discrete-conv-cross-correlation"
+slug = "idl-lec06-kp04-conv-xcorr"
+title = "離散卷積與互相關"
+
+[[video]]
+deck = "lec06-kp09-pooling-invariance-downsampling"
+slug = "idl-lec06-kp09-pooling"
+title = "池化的局部不變與下採樣"
+
+[[video]]
+deck = "lec06-kp10-infinitely-strong-prior-gap"
+slug = "idl-lec06-kp10-prior-gap"
+title = "無限強先驗、動態池化與全域平均池化"

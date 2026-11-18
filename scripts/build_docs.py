@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import html
 import re
 import shutil
 import subprocess
@@ -281,6 +282,36 @@ def generate_html_slides(stage: Path) -> set[str]:
     return {p.name for p in out.glob("*.html")} & wanted
 
 
+VIDEOS_FILE = "videos.toml"
+
+
+def slide_videos() -> dict[str, list[tuple[str, str, str]]]:
+    """slides/videos.toml 的影片清單:{簡報檔名: [(片名, 播放網址, 下載網址), ...]},依檔案中的順序。
+
+    影片放在課程 repo 之外(Cloudflare R2 + Worker),網址 = site/videos/<slug>.mp4;加 ?dl=1 由伺服器要求瀏覽器直接下載。
+    """
+    p = ROOT / "slides" / VIDEOS_FILE
+    if not p.exists():
+        return {}
+    with p.open("rb") as f:
+        data = tomllib.load(f)
+    site = str(data.get("site", "")).rstrip("/")
+    out: dict[str, list[tuple[str, str, str]]] = {}
+    for v in data.get("video", []):
+        url = f"{site}/videos/{v['slug']}.mp4"
+        out.setdefault(v["deck"], []).append((v.get("title", v["slug"]), url, url + "?dl=1"))
+    return out
+
+
+def video_cell(items: list[tuple[str, str, str]]) -> str:
+    """下載頁「影片」欄:每支一行「▶ 片名(下載)」;點片名在新分頁播放,點「下載」存成檔案。"""
+    if not items:
+        return "—"
+    esc = lambda s: html.escape(s, quote=True).replace("|", "&#124;")
+    return "<br>".join(f'<a href="{esc(u)}" target="_blank" rel="noopener">▶ {esc(t)}</a>(<a href="{esc(d)}">下載</a>)'
+                       for t, u, d in items)
+
+
 def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = frozenset()) -> int:
     """產生網站的投影片下載頁(取代 slides/README.md),依週次列出各格式的檔案。
 
@@ -295,8 +326,9 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
     sched_week = schedule_weeks()
     weeks: dict[str, dict[str, list[tuple[str, str]]]] = {}
     others: list[str] = []
+    videos = slide_videos()
     for p in sorted(base.iterdir()):
-        if not p.is_file() or p.name in ("README.md", "FORMATS.md"):
+        if not p.is_file() or p.name in ("README.md", "FORMATS.md", VIDEOS_FILE):
             continue
         m = lecture_re.match(p.name)
         if m:
@@ -334,7 +366,12 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
         lines += ["同一週的所有教材在該週的頁籤裡,請點選週次。", ""]
         for wk in sorted(weeks):
             num = int(wk[4:])
-            lines += [f'=== "第 {num} 週"', "", "    | 教材 | Chinese | English |", "    |---|---|---|"]
+            # 這週有任何簡報對應到影片(slides/videos.toml)時,表格多一欄「影片」;沒有的週維持三欄。
+            has_vid = any(st in videos for st in weeks[wk])
+            if has_vid:
+                lines += [f'=== "第 {num} 週"', "", "    | 教材 | Chinese | English | 影片 |", "    |---|---|---|---|"]
+            else:
+                lines += [f'=== "第 {num} 週"', "", "    | 教材 | Chinese | English |", "    |---|---|---|"]
             # 英文版(檔名以 -en 結尾,且有對應的中文版)併入同一列的 English 欄。
             en_of = {st[: -len("-en")]: st for st in weeks[wk] if st.endswith("-en") and st[: -len("-en")] in weeks[wk]}
             en_stems = set(en_of.values())
@@ -361,7 +398,8 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
                     en_title = english_title(base) or deck_english_title(base)
                     if en_title:
                         label += "<br>" + en_title
-                    lines.append(f"    | {label} | — | {cell(weeks[wk][stem])} |")
+                    vid = f" {video_cell(videos.get(stem[: -len('-en')], []))} |" if has_vid else ""
+                    lines.append(f"    | {label} | — | {cell(weeks[wk][stem])} |{vid}")
                     continue
                 label = slide_label(stem, kp_labels)[0] or ("本週正課" if re.fullmatch(r"lec\d{2}", stem) else stem)
                 core_stem = stem[: -len("-with-comics")] if stem.endswith("-with-comics") else stem
@@ -369,7 +407,8 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
                 if en_title:
                     label += "<br>" + en_title + ("(Comics)" if stem.endswith("-with-comics") else "")
                 en_items = weeks[wk].get(en_of.get(stem, "\0"), [])
-                lines.append(f"    | {label} | {cell(weeks[wk][stem])} | {cell(en_items)} |")
+                vid = f" {video_cell(videos.get(stem, []))} |" if has_vid else ""
+                lines.append(f"    | {label} | {cell(weeks[wk][stem])} | {cell(en_items)} |{vid}")
             lines.append("")
     if others:
         lines += ["## 其他檔案", ""] + [f"- [{name}]({name})" for name in others] + [""]

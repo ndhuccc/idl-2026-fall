@@ -67,6 +67,10 @@ PPTX、PDF、HTML 直接放進來即可。`check_slides.py` 只檢查 `.jbd.json
 - **不要放進投影片**:講者備註中的個人資訊、成績、學號、解答(`labs/*/solution/` 的內容)、尚未考過的考題。
 - **檔案大小**:超過 20 MB 會警告;超過 90 MB 會失敗(GitHub 單一檔案上限為 100 MB)。內嵌的圖片與影片較大時,先壓縮,或改用 YouTube 嵌入。
 
+## 影片欄(slides/videos.toml)
+
+下載頁的「影片」欄來自 `slides/videos.toml`:每支影片一筆 `[[video]]`,寫 `deck`(簡報檔名,不含 `.jbd.json`)、`slug`(影片檔名,不含 `.mp4`)、`title`(片名)。影片本體放在 `site` 指定的網站(目前是 Cloudflare 的 https://videos.ndhuccc.workers.dev/),不進本 repo;有影片的週,表格多一欄「影片」,點片名在新分頁播放、點「下載」存成 MP4,沒有影片的週維持原三欄。這個檔案只供建置腳本讀取,不會發佈到網站。
+
 ## 相關檔案
 
 - 檢查腳本:`scripts/check_slides.py`
