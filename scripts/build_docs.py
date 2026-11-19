@@ -175,6 +175,25 @@ PLAYER_SETUP_URL = "https://github.com/ndhuccc/IDL115/releases/download/player-v
 SLIDE_SHORT = {"jbd.json": "JianBauDau", "pptx": "PowerPoint", "pdf": "PDF", "html": "HTML"}
 
 
+def lecture_videos() -> dict[str, str]:
+    """``lecture_videos.toml`` 的 {講義 stem: 影片網址};檔案不存在或格式錯誤時回傳空字典。"""
+    p = ROOT / "lecture_videos.toml"
+    if not p.exists():
+        return {}
+    try:
+        with p.open("rb") as f:
+            data = tomllib.load(f).get("videos", {})
+    except (OSError, tomllib.TOMLDecodeError) as exc:
+        print(f"[警告] 無法讀取 lecture_videos.toml,下載頁不顯示影片連結:{exc}")
+        return {}
+    return {str(k): str(v) for k, v in data.items() if str(v).startswith("https://")}
+
+
+def video_cell(stem: str, videos: dict[str, str]) -> str:
+    url = videos.get(stem)
+    return f'<a href="{url}" target="_blank" rel="noopener">觀看</a>' if url else "—"
+
+
 def lecture_title(stem: str) -> str:
     """講義(lectures/<stem>.md)第一個標題,去掉「第N週」開頭;找不到回傳空字串。"""
     p = ROOT / "lectures" / f"{stem}.md"
@@ -293,6 +312,7 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
     lecture_re = re.compile(r"^(lec\d{2})(?:-([a-z0-9][a-z0-9-]*))?\.(jbd\.json|pptx|pdf|html)$")
     kp_labels = schedule_kp_labels()
     sched_week = schedule_weeks()
+    videos = lecture_videos()
     weeks: dict[str, dict[str, list[tuple[str, str]]]] = {}
     others: list[str] = []
     for p in sorted(base.iterdir()):
@@ -320,7 +340,8 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
              "←→ 或空白鍵換頁,F 全螢幕,N 顯示講者備註),以及 **JBD**(JianBauDau 原生檔 `.jbd.json`,"
              "用 JianBauDau 播放器開啟或繼續編輯)。PPTX、PDF 可直接用一般軟體開啟。", "",
              "同一週可以有多份教材:沒有後綴的是該週正課,"
-             "有後綴的(例如 `lec02-parameter-estimation`)是補充或自主學習教材。", ""]
+             "有後綴的(例如 `lec02-parameter-estimation`)是補充或自主學習教材。", "",
+             "有教學影片的教材,可在「影片 Video」欄點「觀看」,用瀏覽器直接播放(新分頁開啟)。", ""]
     if has_json:  # 有 JBD 檔可下載時,一併提供播放器
         lines += ["## JianBauDau 播放器", "",
                   f"- [下載 JianBauDau 播放器 1.0.6(Windows 免安裝版,.exe)]({PLAYER_URL})",
@@ -334,7 +355,7 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
         lines += ["同一週的所有教材在該週的頁籤裡,請點選週次。", ""]
         for wk in sorted(weeks):
             num = int(wk[4:])
-            lines += [f'=== "第 {num} 週"', "", "    | 教材 | Chinese | English |", "    |---|---|---|"]
+            lines += [f'=== "第 {num} 週"', "", "    | 教材 | Chinese | English | 影片 Video |", "    |---|---|---|---|"]
             # 英文版(檔名以 -en 結尾,且有對應的中文版)併入同一列的 English 欄。
             en_of = {st[: -len("-en")]: st for st in weeks[wk] if st.endswith("-en") and st[: -len("-en")] in weeks[wk]}
             en_stems = set(en_of.values())
@@ -361,7 +382,7 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
                     en_title = english_title(base) or deck_english_title(base)
                     if en_title:
                         label += "<br>" + en_title
-                    lines.append(f"    | {label} | — | {cell(weeks[wk][stem])} |")
+                    lines.append(f"    | {label} | — | {cell(weeks[wk][stem])} | {video_cell(base, videos)} |")
                     continue
                 label = slide_label(stem, kp_labels)[0] or ("本週正課" if re.fullmatch(r"lec\d{2}", stem) else stem)
                 core_stem = stem[: -len("-with-comics")] if stem.endswith("-with-comics") else stem
@@ -369,7 +390,7 @@ def write_slides_index(stage: Path, generated: frozenset[str] | set[str] = froze
                 if en_title:
                     label += "<br>" + en_title + ("(Comics)" if stem.endswith("-with-comics") else "")
                 en_items = weeks[wk].get(en_of.get(stem, "\0"), [])
-                lines.append(f"    | {label} | {cell(weeks[wk][stem])} | {cell(en_items)} |")
+                lines.append(f"    | {label} | {cell(weeks[wk][stem])} | {cell(en_items)} | {video_cell(core_stem, videos)} |")
             lines.append("")
     if others:
         lines += ["## 其他檔案", ""] + [f"- [{name}]({name})" for name in others] + [""]
