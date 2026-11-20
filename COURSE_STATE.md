@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-20 19:26（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec06-kp04-discrete-conv-cross-correlation.jbd.json。來源任務 `kp04-jbd`（確認：使用者 2026-11-20 在對話中要求「把KP04推送到課程網站替換現有簡報檔」,並選擇「轉成 JBD 取代中文版」）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-16 — 教材勘誤：U-Net 第 4 題中英文均明確限定原始不補邊版本，輸出小於輸入（572→388），並修正開場與解析；批次正規化中英文先備改為第 3 週 KP08。以 GitHub 連接器更新來源；CLI 網路受限，未執行本機完整建置，網站部署須另核對。
 - 2026-11-16 03:35（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec14-kp08-sde-score.jbd.json。來源任務 `kp08-explanatory-voiceover`（確認：使用者 2026-11-16 於對話說「上架」）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
