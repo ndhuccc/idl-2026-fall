@@ -139,38 +139,6 @@ The test MSEs of $d=2$ and $d=3$ are $0.0963$ and $0.0971$, a difference of $0.0
 
 One last question. Choosing the degree needs data that **took no part in training**; choosing it with the test set is cheating #2 of KP01, so a separate validation set is needed. But here we have only 12 points in all, and setting some aside as a validation set leaves even less for training and makes the estimate less stable. With so little data, how can we avoid wasting any point and still choose the model honestly? That is the question KP06 answers.
 
-### 補充：多個輸入時，多項式特徵有幾項？（Supplement: how many terms with several inputs?）
-
-前面的多項式只有一個輸入 $x$，所以 $d$ 次多項式有 $p=d+1$ 個參數。若有 $l$ 個輸入特徵 $x_1,\dots,x_l$、最高階數為 $r$，新特徵向量（含常數項 $1$）共有 $k$ 項，複雜度會漲得快很多：
-
-$$k=\binom{l+r}{r}=\frac{(l+r)!}{r!\,l!}$$
-
-Earlier the polynomial had one input $x$, so a degree-$d$ polynomial has $p=d+1$ parameters. With $l$ input features $x_1,\dots,x_l$ and highest degree $r$, the new feature vector (including the constant $1$) has $k$ terms, and complexity grows much faster:
-
-**推導（星與棒，stars and bars）。**
-
-1. **補齊到 $r$ 次。** 加一個虛擬變數 $x_0=1$，把每一項的總次數都固定成 $r$，不足的用 $x_0$ 補。例如 $l=2,\ r=2$：$1=x_0^2$、$x_1=x_0x_1$、$x_1x_2$ 與 $x_1^2$ 本來就是 2 次。
-2. **排星星與隔板。** $r$ 顆星 $\star$ 代表 $r$ 個因子；變數有 $l+1$ 種（$x_0,\dots,x_l$），需要 $l$ 根隔板 $\vert$ 切成 $l+1$ 區，第 $i$ 區的星數就是 $x_i$ 的次方。
-3. **數排法。** 共 $l+r$ 個位置，挑 $r$ 個放星（其餘放隔板），方法數即 $\binom{l+r}{r}$。
-
-**Derivation.** (1) Add a dummy variable $x_0=1$ and pad every term to total degree $r$. (2) Put $r$ stars $\star$ in a row and $l$ bars $\vert$ that split them into $l+1$ regions; the number of stars in region $i$ is the exponent of $x_i$. (3) Choose which $r$ of the $l+r$ positions hold stars: $\binom{l+r}{r}$ ways.
-
-**驗算（Check）。**
-
-| $l$ | $r$ | 算式 | $k$ |
-|---|---|---|---|
-| 1 | $d$ | $\frac{(1+d)!}{d!\,1!}$ | $d+1$（與上面單輸入的 $p=d+1$ 一致） |
-| 2 | 2 | $\frac{4!}{2!\,2!}=\frac{24}{4}$ | 6（偏置 1 + 一次 2 + 交互 1 + 平方 2） |
-| 3 | 2 | $\frac{5!}{2!\,3!}=\frac{120}{12}$ | 10 |
-| 2 | 1, 2, 3, 4, 5 | $\frac{3!}{1!\,2!},\ \frac{4!}{2!\,2!},\ \frac{5!}{3!\,2!},\ \frac{6!}{4!\,2!},\ \frac{7!}{5!\,2!}$ | 3, 6, 10, 15, 21 |
-| 10 | 10 | $\frac{20!}{10!\,10!}$ | 184,756 |
-
-**和過擬合的關係**：$k$ 就是模型的參數個數，$l$ 與 $r$ 一起變大時 $k$ 呈組合爆炸成長；參數遠多於訓練點時，模型就能把雜訊也記下來，這正是本單元的過擬合。
-
-**Link to overfitting**: $k$ is the parameter count; it explodes combinatorially as $l$ and $r$ grow, and with far more parameters than training points the model can memorize noise, which is overfitting.
-
-[下載補充圖解投影片（2 頁）](../slides/lec04-kp05-polynomial-term-count.jbd.json)
-
 ### 本單元重點整理（KP05 summary）
 
 **一句話重點**：欠擬合是高偏差低變異，訓練與測試誤差都高；過擬合是低偏差高變異，訓練誤差極低、測試誤差高；訓練誤差隨複雜度一路下降，所以要靠驗證或測試誤差選模型。
