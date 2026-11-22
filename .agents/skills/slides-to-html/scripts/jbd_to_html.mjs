@@ -424,7 +424,7 @@ html,body{margin:0;height:100%;background:#0f0f0d;color:#f2ede4;font-family:${DE
 .wires{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;z-index:1}
 .n{position:absolute;display:flex;border:1px solid transparent}
 .n.h,.cn.h,.clabel.h{opacity:0;pointer-events:none}.cn,.clabel{transition:opacity .45s}.n.h.hs{scale:.85}
-.n.text{align-items:flex-start;justify-content:flex-start}
+.n.text{align-items:center;align-items:safe center;justify-content:flex-start}
 .n.shape{align-items:center;justify-content:center}
 .n.img{overflow:hidden}.n.img img{width:100%;height:100%;display:block}
 .n.frame{align-items:flex-start;justify-content:flex-end;overflow:visible}
