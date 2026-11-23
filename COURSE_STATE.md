@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-23 21:19（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 10 份成品配送到本課程：slides/lec04-kp01-data-splits-and-cheating.jbd.json、slides/lec04-kp02-bias-variance-mse.jbd.json、slides/lec04-kp03-true-model-and-noise-floor.jbd.json、slides/lec04-kp04-test-error-decomposition.jbd.json、slides/lec04-kp05-overfitting-underfitting-generalization.jbd.json、slides/lec04-kp06-cross-validation.jbd.json、slides/lec04-kp07-09-regularization-infographic.jbd.json、slides/lec04-kp10-early-stopping.jbd.json、slides/lec04-kp11-dropout.jbd.json、slides/lec04-kp12-batch-normalization.jbd.json。來源任務 `zindex-fix`（確認：使用者 2026-11-23 於對話指示「其餘 110 份也批次修好」並換上課程網站）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-23（Asia/Taipei）— 依老師要求，投影片下載頁更新為 JianBauDau Player 1.0.7（`ndhuccc/IDL115` 的 `player-v1.0.7`），同時提供免安裝版與安裝版；同步 `scripts/build_docs.py`、`slides/FORMATS.md` 與異動紀錄。兩個公開下載均已實際下載並核對 SHA-256；本機網站建置及產出的下載連結檢查通過。執行檔來源與測試紀錄見 Release 的 `build-report.json`。
 
 - 2026-11-22（Asia/Taipei）— 修正課程網站網頁版簡報的高光框偏移：`.agents/skills/slides-to-html/scripts/jbd_to_html.mjs` 的文字節點由貼齊頂端改為上下置中（`.n.text{align-items:center;align-items:safe center;…}`，與 JianBauDau 播放器及 pr-2026-fall 相同）。原因：琥珀色高光框依播放器的置中排版計算，網頁版文字貼頂時字會往上跑、框看起來往下偏。驗證：圖型識別第 5 週 KP02–KP06 共 70 個框，修正前 29 個偏移超過 6px，修正後剩 3 個，經檢查都是刻意多框住圖形或整張卡片，不是偏移。網站重建後生效，簡報檔不需重做。
