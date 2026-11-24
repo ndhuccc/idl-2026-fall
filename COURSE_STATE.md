@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-24 18:40（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec06-kp01-cnn-vs-flatten-mlp.jbd.json。來源任務 `idl115-kp01-narration-release-6f399e5fc0`（確認：老師於 2026-11-24 指示將完成配音的版本推送到課程並替換現有簡報）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
+
 - 2026-11-23 21:19（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 8 份成品配送到本課程：slides/lec14-kp01-diffusion-intro.jbd.json、slides/lec14-kp02-forward-closed-form.jbd.json、slides/lec14-kp03-backward-elbo.jbd.json、slides/lec14-kp04-denoising-posterior.jbd.json、slides/lec14-kp05-ddpm-algorithms.jbd.json、slides/lec14-kp06-improved-ddpm.jbd.json、slides/lec14-kp07-conditional-guidance.jbd.json、slides/lec14-kp08-sde-score.jbd.json。來源任務 `zindex-fix`（確認：使用者 2026-11-23 於對話指示「其餘 110 份也批次修好」並換上課程網站）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
 
 - 2026-11-23 21:19（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 8 份成品配送到本課程：slides/lec13-kp01-gan-intro.jbd.json、slides/lec13-kp02-minimax-loss.jbd.json、slides/lec13-kp03-optimal-d-jsd.jbd.json、slides/lec13-kp04-nash-equilibrium.jbd.json、slides/lec13-kp05-cgan-dcgan-latent.jbd.json、slides/lec13-kp06-mode-collapse.jbd.json、slides/lec13-kp07-wgan-losses.jbd.json、slides/lec13-kp08-mle-fgan-bayes.jbd.json。來源任務 `zindex-fix`（確認：使用者 2026-11-23 於對話指示「其餘 110 份也批次修好」並換上課程網站）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
