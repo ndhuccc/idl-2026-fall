@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-25 — 第 6 週 KP07 英文簡報依新版中文逐步翻譯；更新 185 段英文字幕、講者備註與 Edge TTS 女聲旁白。課程檔案為 `slides/lec06-kp07-stride-channels-padding-output-size-en.jbd.json`。
+
 - 2026-11-25 — 第 6 週 KP06 英文簡報依新版中文逐步翻譯；更新 244 段英文字幕、講者備註與 Edge TTS 女聲旁白。課程檔案為 `slides/lec06-kp06-translation-equivariance-en.jbd.json`。
 
 - 2026-11-25 — 第 6 週 KP05 英文簡報依新版中文逐步翻譯；更新 121 段英文字幕、講者備註與 Edge TTS 女聲旁白。課程檔案為 `slides/lec06-kp05-sparse-connectivity-parameter-sharing-en.jbd.json`。
