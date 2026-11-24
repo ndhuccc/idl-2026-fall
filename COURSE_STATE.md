@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-25 — 第 6 週 KP09 英文簡報依新版中文逐步翻譯；更新 115 段英文字幕、講者備註與 Edge TTS 女聲旁白。課程檔案為 `slides/lec06-kp09-pooling-invariance-downsampling-en.jbd.json`。
+
 - 2026-11-25 — 第 6 週 KP08 英文簡報依新版中文逐步翻譯；更新 182 段英文字幕、講者備註與 Edge TTS 女聲旁白。課程檔案為 `slides/lec06-kp08-detector-and-pooling-en.jbd.json`。
 
 - 2026-11-25 — 第 6 週 KP07 英文簡報依新版中文逐步翻譯；更新 185 段英文字幕、講者備註與 Edge TTS 女聲旁白。課程檔案為 `slides/lec06-kp07-stride-channels-padding-output-size-en.jbd.json`。
