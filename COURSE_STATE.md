@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-25 — 第 6 週 KP01 英文簡報依新版中文逐步翻譯；更新 189 段英文字幕、講者備註與 Edge TTS 女聲旁白。課程檔案為 `slides/lec06-kp01-cnn-vs-flatten-mlp-en.jbd.json`。
+
 - 2026-11-25：第 6 週 KP02～KP10 的中文簡報更新為逐步配音版，沿用課表原有連結。已核對 KP01～KP10 共 10 份、1,671 段旁白。
 
 - 2026-11-24 18:40（Asia/Taipei）— 依「jbd-maker 中央工廠＋配送」流程，將 1 份成品配送到本課程：slides/lec06-kp01-cnn-vs-flatten-mlp.jbd.json。來源任務 `idl115-kp01-narration-release-6f399e5fc0`（確認：老師於 2026-11-24 指示將完成配音的版本推送到課程並替換現有簡報）；本機複製完成，尚未提交／推送時請以 `deliver_to_course.py verify` 查實際狀態。
