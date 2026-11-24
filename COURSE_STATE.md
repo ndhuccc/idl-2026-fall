@@ -40,6 +40,8 @@
 - [ ] 考試範圍(期中第 9 週、期末第 17 週)
 
 ## 決策與異動紀錄
+- 2026-11-25 — 第 6 週 KP03 英文簡報依新版中文逐步翻譯；更新 200 段英文字幕、講者備註與 Edge TTS 女聲旁白。課程檔案為 `slides/lec06-kp03-conv-layer-three-stages-en.jbd.json`。
+
 - 2026-11-25 — 第 6 週 KP02 英文簡報依新版中文逐步翻譯；更新 167 段英文字幕、講者備註與 Edge TTS 女聲旁白。課程檔案為 `slides/lec06-kp02-lenet-cnn-skeleton-en.jbd.json`。
 
 - 2026-11-25 — 第 6 週 KP01 英文簡報依新版中文逐步翻譯；更新 189 段英文字幕、講者備註與 Edge TTS 女聲旁白。課程檔案為 `slides/lec06-kp01-cnn-vs-flatten-mlp-en.jbd.json`。
