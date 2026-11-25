@@ -1,22 +1,22 @@
-# 第6週 KP07：步幅、通道、補邊與輸出尺寸（Stride, channels, padding and output size）
+# 第6週 KP06：步幅、通道、補邊與輸出尺寸（Stride, channels, padding and output size）
 
 > 程度：大學生
 >
 > Level: Undergraduate (undergrad)
 
-本講義是第6週「卷積與池化」的第七個知識點（KP07）。KP04 算過沒有補邊時的輸出大小，KP05 說明了一個核共用權重，KP06 提醒步幅大於 $1$ 會讓平移等變打折。這一節把「核每次挪幾格、邊界怎麼補、有幾個通道」這幾個旋鈕放在一起，推出一條能預測輸出尺寸的公式，並算出一層真實大小的卷積層有多少權重。
+本講義是第6週「卷積與池化」的第六個知識點（KP06）。KP03 算過沒有補邊時的輸出大小，KP04 說明了一個核共用權重，KP05 提醒步幅大於 $1$ 會讓平移等變打折。這一節把「核每次挪幾格、邊界怎麼補、有幾個通道」這幾個旋鈕放在一起，推出一條能預測輸出尺寸的公式，並算出一層真實大小的卷積層有多少權重。
 
-This is the seventh knowledge point (KP07) of Week 6, "Convolution and pooling". KP04 counted the output size without padding, KP05 explained that one kernel shares its weights, and KP06 warned that a stride larger than $1$ weakens translation equivariance. This note puts the knobs together: how many cells the kernel moves at a time, how the border is padded and how many channels there are. It derives a formula that predicts the output size, and counts the weights of one convolutional layer of realistic size.
+This is the sixth knowledge point (KP06) of Week 6, "Convolution and pooling". KP03 counted the output size without padding, KP04 explained that one kernel shares its weights, and KP05 warned that a stride larger than $1$ weakens translation equivariance. This note puts the knobs together: how many cells the kernel moves at a time, how the border is padded and how many channels there are. It derives a formula that predicts the output size, and counts the weights of one convolutional layer of realistic size.
 
-先備知識是 KP04 的有效輸出 $d-f+1$、KP05 的權重與乘加個數，以及 KP06 的步幅例子。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp07-figures.py` 算出，可以自己重算。
+先備知識是 KP03 的有效輸出 $d-f+1$、KP04 的權重與乘加個數，以及 KP05 的步幅例子。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp06-figures.py` 算出，可以自己重算。
 
-The prerequisites are the valid output $d-f+1$ of KP04, the counts of weights and multiply-adds of KP05, and the stride example of KP06. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp07-figures.py` and can be recomputed.
+The prerequisites are the valid output $d-f+1$ of KP03, the counts of weights and multiply-adds of KP04, and the stride example of KP05. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp06-figures.py` and can be recomputed.
 
-[下載本單元投影片](../slides/lec06-kp07-stride-channels-padding-output-size.jbd.json)
+[下載本單元投影片](../slides/lec06-kp06-stride-channels-padding-output-size.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec06-kp07-stride-channels-padding-output-size-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec06-kp06-stride-channels-padding-output-size-en.jbd.json)
 
-## KP07 步幅、通道、補邊與輸出尺寸（Stride, channels, padding and output size）
+## KP06 步幅、通道、補邊與輸出尺寸（Stride, channels, padding and output size）
 
 ### 學習目標（Learning objectives）
 
@@ -35,9 +35,9 @@ After reading, you can compute the side length of the output with the formula $\
 | $C_{\mathrm{in}},\ C_{\mathrm{out}}$ | 輸入的通道數、輸出的通道數（等於核的個數） | number of input channels, number of output channels (equal to the number of kernels) |
 | $\lfloor\cdot\rfloor$ | 向下取整，例如 $\lfloor 2.5\rfloor=2$ | round down, for example $\lfloor 2.5\rfloor=2$ |
 
-本講義的指標一律從 $0$ 開始數。$d,\ f$ 是二維正方形的邊長，一維時就是 KP05 的 $M,\ k$。這一節把偏置算進參數個數，並另外寫出 `[補充]`。
+本講義的指標一律從 $0$ 開始數。$d,\ f$ 是二維正方形的邊長，一維時就是 KP04 的 $M,\ k$。這一節把偏置算進參數個數，並另外寫出 `[補充]`。
 
-All indices in this note start at $0$. Here $d$ and $f$ are side lengths of 2-D squares; in 1-D they are the $M$ and $k$ of KP05. This note counts the biases in the number of parameters and states them separately `[Added]`.
+All indices in this note start at $0$. Here $d$ and $f$ are side lengths of 2-D squares; in 1-D they are the $M$ and $k$ of KP04. This note counts the biases in the number of parameters and states them separately `[Added]`.
 
 ### 1. 不補邊，輸出會縮一圈（Without padding the output shrinks by a ring）
 
@@ -93,15 +93,15 @@ Look at a 1-D example. Take $f=3$ and $p=0$:
 | $8$ | $3$ | $\lfloor5/3\rfloor+1=2$ | cells $6$ and $7$ |
 | $7$ | $2$ | $\lfloor4/2\rfloor+1=3$ | none |
 
-![三列，輸入是 0 到 7 共 8 格：步幅 1 有 6 個窗，全部格子都被讀到；步幅 2 有 3 個窗，第 7 格標紅「never read」；步幅 3 有 2 個窗，第 6、7 格標紅](../assets/figures/lec06-kp07-stride-windows.png)
+![三列，輸入是 0 到 7 共 8 格：步幅 1 有 6 個窗，全部格子都被讀到；步幅 2 有 3 個窗，第 7 格標紅「never read」；步幅 3 有 2 個窗，第 6、7 格標紅](../assets/figures/lec06-kp06-stride-windows.png)
 
-**圖說 `lec06-kp07-stride-windows`**：每一列是同一個 $8$ 格的輸入，色條是核的每個窗。先看第一列：步幅 $1$，$6$ 個窗，每一格都被讀到。再看第二列：步幅 $2$，只有 $3$ 個窗，最右邊的第 $7$ 格紅色，沒被任何窗讀到。最後看第三列：步幅 $3$，只剩 $2$ 個窗，第 $6$、$7$ 格都沒被讀到。
+**圖說 `lec06-kp06-stride-windows`**：每一列是同一個 $8$ 格的輸入，色條是核的每個窗。先看第一列：步幅 $1$，$6$ 個窗，每一格都被讀到。再看第二列：步幅 $2$，只有 $3$ 個窗，最右邊的第 $7$ 格紅色，沒被任何窗讀到。最後看第三列：步幅 $3$，只剩 $2$ 個窗，第 $6$、$7$ 格都沒被讀到。
 
-**Caption `lec06-kp07-stride-windows`**: Every row is the same $8$-cell input, and the coloured bars are the windows of the kernel. First look at the top row: stride $1$ gives $6$ windows, and every cell is read. Then the middle row: stride $2$ gives only $3$ windows, and the rightmost cell $7$ is red because no window reads it. Finally the bottom row: stride $3$ leaves $2$ windows, and cells $6$ and $7$ are not read.
+**Caption `lec06-kp06-stride-windows`**: Every row is the same $8$-cell input, and the coloured bars are the windows of the kernel. First look at the top row: stride $1$ gives $6$ windows, and every cell is read. Then the middle row: stride $2$ gives only $3$ windows, and the rightmost cell $7$ is red because no window reads it. Finally the bottom row: stride $3$ leaves $2$ windows, and cells $6$ and $7$ are not read.
 
-步幅大於 $1$ 有兩件事要記：輸出的邊長大約變成原來的 $1/s$，所以步幅 $2$ 是一種「順便縮小」的做法；而 KP06 看到，步幅 $s$ 的卷積只對 $s$ 的倍數的平移等變。
+步幅大於 $1$ 有兩件事要記：輸出的邊長大約變成原來的 $1/s$，所以步幅 $2$ 是一種「順便縮小」的做法；而 KP05 看到，步幅 $s$ 的卷積只對 $s$ 的倍數的平移等變。
 
-Two things to remember about a stride larger than $1$: the side of the output becomes about $1/s$ of the original, so a stride of $2$ is a way to shrink the map on the way; and KP06 showed that a convolution with stride $s$ is equivariant only to shifts that are multiples of $s$.
+Two things to remember about a stride larger than $1$: the side of the output becomes about $1/s$ of the original, so a stride of $2$ is a way to shrink the map on the way; and KP05 showed that a convolution with stride $s$ is equivariant only to shifts that are multiples of $s$.
 
 **常見錯誤**：以為取整只是四捨五入的小事。取整表示輸入最右邊（和最下面）可能有幾格完全沒有被讀到，上表第二列就是例子。
 
@@ -129,11 +129,11 @@ Padding adds rings of cells around the input; which numbers should fill them? Th
 | reflect | $[1,3,1,4,2,4]$ | mirror the inner values about the edge |
 | circular | $[2,3,1,4,2,3]$ | join head and tail and take the value from the other end |
 
-![五列：以輸入 3,1,4,2 補一圈，補零是 0 與 0；補常數 9 是 9 與 9；複製是 3 與 2；鏡射是 1 與 4；環狀是 2 與 3；補進去的格子是橘色](../assets/figures/lec06-kp07-padding-modes.png)
+![五列：以輸入 3,1,4,2 補一圈，補零是 0 與 0；補常數 9 是 9 與 9；複製是 3 與 2；鏡射是 1 與 4；環狀是 2 與 3；補進去的格子是橘色](../assets/figures/lec06-kp06-padding-modes.png)
 
-**圖說 `lec06-kp07-padding-modes`**：橘色是補進去的格子，藍色是原本的輸入 $[3,1,4,2]$。先看第一列補零：兩端是 $0$。再往下看，複製是把 $3$ 與 $2$ 各抄一次，鏡射是取靠內的 $1$ 與 $4$，環狀是取對面的 $2$ 與 $3$。
+**圖說 `lec06-kp06-padding-modes`**：橘色是補進去的格子，藍色是原本的輸入 $[3,1,4,2]$。先看第一列補零：兩端是 $0$。再往下看，複製是把 $3$ 與 $2$ 各抄一次，鏡射是取靠內的 $1$ 與 $4$，環狀是取對面的 $2$ 與 $3$。
 
-**Caption `lec06-kp07-padding-modes`**: Orange cells are the padded ones and blue cells are the original input $[3,1,4,2]$. First look at the top row, zero padding: both ends are $0$. Going down, replicate copies $3$ and $2$ once more each, reflect takes the inner $1$ and $4$, and circular takes the values from the opposite end, $2$ and $3$.
+**Caption `lec06-kp06-padding-modes`**: Orange cells are the padded ones and blue cells are the original input $[3,1,4,2]$. First look at the top row, zero padding: both ends are $0$. Going down, replicate copies $3$ and $2$ once more each, reflect takes the inner $1$ and $4$, and circular takes the values from the opposite end, $2$ and $3$.
 
 補零最簡單，也最常見。其他方式的差別在於補進去的值看起來像不像真的影像：補零會在邊緣製造一圈人造的黑邊，複製與鏡射讓邊緣的圖案延續，環狀適合頭尾本來就相接的資料（例如環繞的全景圖）。來源列出各種方式的常見用途，本講義沒有逐一查證，使用前請先看資料的性質 `[補充]`。
 
@@ -173,11 +173,11 @@ To get $C_{\mathrm{out}}$ feature maps we use $C_{\mathrm{out}}$ independent ker
 
 Compute a small example. The input has $2$ channels of size $3\times3$ each; there are $2$ kernels, each $2\times2\times2$ (one $2\times2$ slice per channel); no padding and a stride of $1$, so the output side is $3-2+1=2$.
 
-![左邊是 2 個 3×3 的輸入通道；中間是兩個核，各有兩片 2×2；右邊是兩張 2×2 的輸出：核 0 的輸出是 3,7,2,3；核 1 的輸出是 2,1,3,3；箭頭標示對通道相加](../assets/figures/lec06-kp07-channels.png)
+![左邊是 2 個 3×3 的輸入通道；中間是兩個核，各有兩片 2×2；右邊是兩張 2×2 的輸出：核 0 的輸出是 3,7,2,3；核 1 的輸出是 2,1,3,3；箭頭標示對通道相加](../assets/figures/lec06-kp06-channels.png)
 
-**圖說 `lec06-kp07-channels`**：先看左邊：輸入有兩個通道。再看中間：每個核有兩片 $2\times2$，一片配一個通道。最後看右邊：每個核把兩個通道的乘加結果相加，得到一張 $2\times2$ 的特徵圖，兩個核就是兩張。
+**圖說 `lec06-kp06-channels`**：先看左邊：輸入有兩個通道。再看中間：每個核有兩片 $2\times2$，一片配一個通道。最後看右邊：每個核把兩個通道的乘加結果相加，得到一張 $2\times2$ 的特徵圖，兩個核就是兩張。
 
-**Caption `lec06-kp07-channels`**: First look at the left: the input has two channels. Then the middle: every kernel has two $2\times2$ slices, one per channel. Finally the right: every kernel adds the multiply-add results of the two channels and gives one $2\times2$ feature map, so two kernels give two maps.
+**Caption `lec06-kp06-channels`**: First look at the left: the input has two channels. Then the middle: every kernel has two $2\times2$ slices, one per channel. Finally the right: every kernel adds the multiply-add results of the two channels and gives one $2\times2$ feature map, so two kernels give two maps.
 
 以核 $0$ 在位置 $(0,0)$ 為例：通道 $0$ 左上的 $2\times2$ 區塊與核 $0$ 的第一片乘加得到 $2$；通道 $1$ 的對應區塊與第二片乘加得到 $1$；兩者相加是 $3$，就是輸出 $(0,0)$ 的值。核 $0$ 的輸出是 $\begin{bmatrix}3&7\\2&3\end{bmatrix}$，核 $1$ 的輸出是 $\begin{bmatrix}2&1\\3&3\end{bmatrix}$。
 
@@ -209,11 +209,11 @@ KP01 曾經說，這一層和全連接層的輸出大小不同，不宜直接相
 
 KP01 said that the outputs of this layer and a fully connected layer have different sizes, so the two counts should not simply be divided. With $p=1$ the output is exactly $224\times224\times64$, and a fair comparison is possible. Connecting the same input ($150{,}528$ numbers) to the same output ($3{,}211{,}264$ numbers) with a fully connected layer needs $150{,}528\times3{,}211{,}264=483{,}385{,}147{,}392$ weights, about $279{,}736{,}775$ times the $1{,}728$ weights of the convolutional layer.
 
-到這裡，我們知道卷積層的旋鈕怎麼決定輸出大小與權重個數。下一步是卷積後面的兩個階段：偵測器與池化。KP08 先看偵測器與池化各做什麼。
+到這裡，我們知道卷積層的旋鈕怎麼決定輸出大小與權重個數。下一步是卷積後面的兩個階段：偵測器與池化。KP07 先看偵測器與池化各做什麼。
 
-At this point we know how the knobs of a convolutional layer set the output size and the number of weights. The next step is the two stages after the convolution: the detector and pooling. KP08 looks at what each of them does.
+At this point we know how the knobs of a convolutional layer set the output size and the number of weights. The next step is the two stages after the convolution: the detector and pooling. KP07 looks at what each of them does.
 
-### 本單元重點整理（KP07 summary）
+### 本單元重點整理（KP06 summary）
 
 **一句話重點**：卷積層的輸出邊長由四個旋鈕決定：$\bigl\lfloor\frac{d-f+2p}{s}\bigr\rfloor+1$；一個核的深度等於輸入通道數，輸出通道數等於核的個數，權重個數是 $f\times f\times C_{\mathrm{in}}\times C_{\mathrm{out}}$。
 
@@ -247,19 +247,19 @@ At this point we know how the knobs of a convolutional layer set the output size
 
 **圖**：本單元有三張圖。
 
-- `lec06-kp07-stride-windows`：步幅 $1,2,3$ 的窗，以及沒有被讀到的格子。
-- `lec06-kp07-padding-modes`：五種補邊方式補出的結果。
-- `lec06-kp07-channels`：2 個通道、2 個核，各核對通道相加。
+- `lec06-kp06-stride-windows`：步幅 $1,2,3$ 的窗，以及沒有被讀到的格子。
+- `lec06-kp06-padding-modes`：五種補邊方式補出的結果。
+- `lec06-kp06-channels`：2 個通道、2 個核，各核對通道相加。
 
-三張圖與文中數字都由同一支程式產生：`lec06-kp07-figures.py`。
+三張圖與文中數字都由同一支程式產生：`lec06-kp06-figures.py`。
 
 **Figure**: Three figures in this unit.
 
-- `lec06-kp07-stride-windows`: the windows for strides $1,2,3$ and the cells that are never read.
-- `lec06-kp07-padding-modes`: the results of five padding methods.
-- `lec06-kp07-channels`: 2 channels and 2 kernels, each kernel summing over the channels.
+- `lec06-kp06-stride-windows`: the windows for strides $1,2,3$ and the cells that are never read.
+- `lec06-kp06-padding-modes`: the results of five padding methods.
+- `lec06-kp06-channels`: 2 channels and 2 kernels, each kernel summing over the channels.
 
-All three figures and every number in the text come from one program: `lec06-kp07-figures.py`.
+All three figures and every number in the text come from one program: `lec06-kp06-figures.py`.
 
 **想深入**（選讀）`[補充]`：公式的右邊其實就是核的左上角可以站的位置個數。若想要輸出剛好是輸入的 $1/s$（例如 $s=2$ 時邊長折半），可以選 $f=3$、$p=1$：$\lfloor(d+2-3)/2\rfloor+1=\lfloor(d-1)/2\rfloor+1$，$d$ 為偶數時剛好是 $d/2$，例如 $224\to112$。
 
@@ -338,8 +338,8 @@ All three figures and every number in the text come from one program: `lec06-kp0
 - 來源說 valid 在訊號處理歷史中是「完全不擴充邊界」。本講義保留這個說法，並明說它不是「比較正確」的意思。
 - 來源列出五種補邊方式與各自的典型用途（例如影像修復用複製、風格遷移與超解析度用鏡射、全景圖與週期性模擬用環狀）。本講義用同一個 $[3,1,4,2]$ 的例子算出五種結果，但各種用途是來源的說法，沒有逐一查證，已在正文註明。
 - 來源的多通道說明、$f\times f\times C_{\mathrm{in}}\times C_{\mathrm{out}}$ 的參數量與偏置的寫法沿用。本講義補上一個可以手算的 $2$ 通道、$2$ 核的小例子，並把 KP01 留下的比較（$224\times224\times3$ 配 $64$ 個核）補算完整，因為補邊後輸出大小與全連接層相同。
-- 來源以「步幅 $2$ 輸出尺寸大致折半」一句話帶過，沒有算數。本講義用公式算出 $224\to112$，並與 KP06 的結論連起來：步幅大於 $1$ 只對步幅倍數的平移等變。
-- 來源的符號 $d,\ f,\ p,\ s,\ C_{\mathrm{in}},\ C_{\mathrm{out}}$ 沿用；一維時對應 KP05 的 $M,\ k$。
+- 來源以「步幅 $2$ 輸出尺寸大致折半」一句話帶過，沒有算數。本講義用公式算出 $224\to112$，並與 KP05 的結論連起來：步幅大於 $1$ 只對步幅倍數的平移等變。
+- 來源的符號 $d,\ f,\ p,\ s,\ C_{\mathrm{in}},\ C_{\mathrm{out}}$ 沿用；一維時對應 KP04 的 $M,\ k$。
 - 來源的互動計算器與四題測驗不採用。本講義的練習題依本單元的數字重新設計，測驗題的概念（核深度對齊 $C_{\mathrm{in}}$、輸出尺寸公式、valid 的定義、補邊方法的辨析）都包含在正文與練習裡。
 
 This note is rewritten from KP07 of CCC-LNS IDL_115 Chapter 4 (slides); Chapter 4 of that material is Week 6 of this course. The source was accessed on 2026-10-30. Content that the source does not contain is marked `[Added]` where it appears.
@@ -349,8 +349,8 @@ This note is rewritten from KP07 of CCC-LNS IDL_115 Chapter 4 (slides); Chapter 
 - The source says that valid in the history of signal processing means "no extension of the border at all". This note keeps that and says explicitly that it does not mean "more correct".
 - The source lists five padding methods with their typical uses (for example replicate for image repair, reflect for style transfer and super-resolution, circular for panoramas and periodic simulation). This note computes the five results on the same example $[3,1,4,2]$, but the uses are the source's claims and have not been checked one by one, as stated in the text.
 - The source's explanation of multiple channels, the parameter count $f\times f\times C_{\mathrm{in}}\times C_{\mathrm{out}}$ and the biases are kept. This note adds a small hand-computable example with $2$ channels and $2$ kernels, and completes the comparison that KP01 left open ($224\times224\times3$ with $64$ kernels), because with padding the output has the same size as the fully connected layer's.
-- The source only says in one sentence that a stride of $2$ "roughly halves the output size", without numbers. This note computes $224\to112$ with the formula and connects it to the conclusion of KP06: a stride larger than $1$ is equivariant only to multiples of the stride.
-- The source's symbols $d,\ f,\ p,\ s,\ C_{\mathrm{in}},\ C_{\mathrm{out}}$ are kept; in 1-D they correspond to $M,\ k$ of KP05.
+- The source only says in one sentence that a stride of $2$ "roughly halves the output size", without numbers. This note computes $224\to112$ with the formula and connects it to the conclusion of KP05: a stride larger than $1$ is equivariant only to multiples of the stride.
+- The source's symbols $d,\ f,\ p,\ s,\ C_{\mathrm{in}},\ C_{\mathrm{out}}$ are kept; in 1-D they correspond to $M,\ k$ of KP04.
 - The source's interactive calculator and four-question quiz are not used. The practice questions of this note are newly designed from the numbers of this unit, and the concepts of the quiz (kernel depth aligned with $C_{\mathrm{in}}$, the output-size formula, the definition of valid, distinguishing padding methods) are all contained in the text and the practice.
 
 ### 術語對照（Terminology）

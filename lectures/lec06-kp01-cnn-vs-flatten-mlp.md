@@ -8,13 +8,13 @@
 
 This is the first knowledge point (KP01) of Week 6, "Convolution and pooling", and it opens the week. The multilayer perceptron (MLP) of Week 2 is built from fully connected layers, Week 3 learned its weights with backpropagation and gradient descent, and Week 4 showed that too many weights invite overfitting. This week the data are photographs. How should a photograph be given to a network so that the most important information is not lost and the weights do not become too many to train?
 
-本週的路線如下。KP01 說明「先排成一條向量再全連接」會丟掉什麼，以及只看鄰居、共用權重的接法。KP02（自主學習）看第一個成功的例子 LeNet；KP03 把一層拆成三個步驟；KP04 把「滑著乘加」寫成精確算式。
+本週的路線如下。KP01 說明「先排成一條向量再全連接」會丟掉什麼，以及只看鄰居、共用權重的接法。KP02 把一層拆成三個步驟；KP03 把「滑著乘加」寫成精確算式。
 
-The route of the week is as follows. KP01 explains what "lay it out as one vector, then connect everything" loses, and introduces the layer that looks only at neighbours and reuses its weights. KP02 (self-study) looks at the first successful example, LeNet; KP03 splits one layer into three steps; KP04 writes the sliding multiply-and-add as an exact formula.
+The route of the week is as follows. KP01 explains what "lay it out as one vector, then connect everything" loses, and introduces the layer that looks only at neighbours and reuses its weights. KP02 splits one layer into three steps; KP03 writes the sliding multiply-and-add as an exact formula.
 
-KP05–KP07 談這種接法的性質與輸出大小，KP08–KP09 談池化，KP10（自主學習）把它們放進同一個觀點。經典架構留給第7週。
+KP04–KP06 談這種接法的性質與輸出大小，KP07–KP08 談池化，KP09（自主學習）把它們放進同一個觀點，KP10（自主學習）再用第一個成功的例子 LeNet 把這些零件裝成完整的網路。經典架構留給第7週。
 
-KP05–KP07 cover the properties of this layer and the size of its output, KP08–KP09 cover pooling, and KP10 (self-study) puts them under one point of view. Classic architectures are left to Week 7.
+KP04–KP06 cover the properties of this layer and the size of its output, KP07–KP08 cover pooling, KP09 (self-study) puts them under one point of view, and KP10 (self-study) uses the first successful example, LeNet, to put these parts together into a complete network. Classic architectures are left to Week 7.
 
 先備知識是第2週的全連接層與第3週的「權重是學出來的」。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp01-figures.py` 算出，可以自己重算。
 
@@ -43,7 +43,7 @@ After reading, you can explain why laying an image out as one vector and giving 
 | $s[i,j]$ | 特徵圖在輸出位置 $(i,j)$ 的值 | value of the feature map at the output position $(i,j)$ |
 | $m,\ n$ | 求和時掃過核各格的指標 | summation indices that sweep the cells of the kernel |
 | $x[t],\ w[m],\ s[t]$ | 一維的輸入、核與輸出 | 1-D input, kernel and output |
-| $\star$ | 第 2 節的滑動乘加（KP04 會正式命名） | the sliding multiply-and-add of Section 2 (named formally in KP04) |
+| $\star$ | 第 2 節的滑動乘加（KP03 會正式命名） | the sliding multiply-and-add of Section 2 (named formally in KP03) |
 
 本講義的指標一律從 $0$ 開始數。參數個數一律不含偏置 `[補充]`。
 
@@ -91,9 +91,9 @@ $$
 s[i,j]=\sum_{m=0}^{k-1}\sum_{n=0}^{k-1} I[i+m,\,j+n]\,K[m,n]
 $$
 
-求和指標 $m,n$ 只負責掃過核的每一格，和輸出位置 $(i,j)$ 無關；被乘到的畫素是第 $p=i+m$ 列、第 $q=j+n$ 行。核要完整落在影像內，這種輸出叫**有效輸出**。$5\times 5$ 的影像配 $3\times 3$ 的核，每個方向只有 $5-3+1=3$ 個位置，所以特徵圖是 $3\times 3$。這個式子在 KP04 會有正式的名字，並和教科書的寫法比較。
+求和指標 $m,n$ 只負責掃過核的每一格，和輸出位置 $(i,j)$ 無關；被乘到的畫素是第 $p=i+m$ 列、第 $q=j+n$ 行。核要完整落在影像內，這種輸出叫**有效輸出**。$5\times 5$ 的影像配 $3\times 3$ 的核，每個方向只有 $5-3+1=3$ 個位置，所以特徵圖是 $3\times 3$。這個式子在 KP03 會有正式的名字，並和教科書的寫法比較。
 
-The summation indices $m,n$ only sweep the cells of the kernel and have nothing to do with the output position $(i,j)$; the pixel being multiplied is at row $p=i+m$, column $q=j+n$. The kernel must lie completely inside the image, and such an output is called the **valid output**. A $5\times 5$ image with a $3\times 3$ kernel has only $5-3+1=3$ positions in each direction, so the feature map is $3\times 3$. KP04 gives this formula its formal name and compares it with the textbook form.
+The summation indices $m,n$ only sweep the cells of the kernel and have nothing to do with the output position $(i,j)$; the pixel being multiplied is at row $p=i+m$, column $q=j+n$. The kernel must lie completely inside the image, and such an output is called the **valid output**. A $5\times 5$ image with a $3\times 3$ kernel has only $5-3+1=3$ positions in each direction, so the feature map is $3\times 3$. KP03 gives this formula its formal name and compares it with the textbook form.
 
 主例子是 $5\times 5$ 的棋盤格影像：第 $p$ 列第 $q$ 行在 $p+q$ 為偶數時是 $1$，否則是 $0$。核的四個角與中央是 $1$，其餘是 $0$。
 
@@ -115,9 +115,9 @@ A network whose main building block is this operation is called a **convolutiona
 
 ### 3. 兩個限制把 256 個權重降到 9 個（Two restrictions cut 256 weights down to 9）
 
-為了公平比較，固定同一個任務：輸入是 $4\times 4$ 影像，輸出也是 $4\times 4$，每個畫素位置各有一個輸出。這叫**同尺寸**輸出。第 2 節的窗以左上角對齊，只算有效輸出，輸出會比輸入小。為了讓輸出和輸入一樣大，這裡改讓每個輸出的 $3\times 3$ 窗以它自己的位置為中心；靠近邊緣的窗有一部分落在影像外，那部分不接線 `[補充]`。KP07 會講怎麼在邊緣補值。
+為了公平比較，固定同一個任務：輸入是 $4\times 4$ 影像，輸出也是 $4\times 4$，每個畫素位置各有一個輸出。這叫**同尺寸**輸出。第 2 節的窗以左上角對齊，只算有效輸出，輸出會比輸入小。為了讓輸出和輸入一樣大，這裡改讓每個輸出的 $3\times 3$ 窗以它自己的位置為中心；靠近邊緣的窗有一部分落在影像外，那部分不接線 `[補充]`。KP06 會講怎麼在邊緣補值。
 
-To compare fairly, fix one task: the input is a $4\times 4$ image and the output is also $4\times 4$, one output per pixel position. This is called a **same-size** output. The windows of Section 2 are aligned by their top-left corner and give only the valid output, which is smaller than the input. To make the output as large as the input, here the $3\times 3$ window of each output is centred on its own position instead; near the border part of the window falls outside the image, and that part is not connected `[Added]`. KP07 explains how to fill in values at the border.
+To compare fairly, fix one task: the input is a $4\times 4$ image and the output is also $4\times 4$, one output per pixel position. This is called a **same-size** output. The windows of Section 2 are aligned by their top-left corner and give only the valid output, which is smaller than the input. To make the output as large as the input, here the $3\times 3$ window of each output is centred on its own position instead; near the border part of the window falls outside the image, and that part is not connected `[Added]`. KP06 explains how to fill in values at the border.
 
 下面的「連線」指一個輸入畫素送進一個輸出的一條路徑，每條連線乘上一個權重。三種接法依序是：
 
@@ -149,9 +149,9 @@ These two restrictions are also assumptions put into the model before it sees an
 
 The gap grows with the image. A $28\times 28$ grayscale handwritten digit connected to $512$ hidden units needs $784\times 512=401{,}408$ weights in a fully connected layer. A $224\times 224$ colour photograph has $3$ numbers per pixel, red, green and blue, so $150{,}528$ numbers; connecting it to $512$ units needs $77{,}070{,}336$ weights. With $64$ kernels of size $3\times 3\times 3$ instead (the last $3$ stands for the $3$ colour numbers of each pixel), only $64\times 27=1{,}728$ weights are needed, and this number does not depend on the size of the image.
 
-上面兩種層的輸出大小不同，所以這兩個數不宜直接相除 `[補充]`。同尺寸的公平比較就是 $4\times 4$ 的例子。多個核與彩色通道的細節留給 KP07。
+上面兩種層的輸出大小不同，所以這兩個數不宜直接相除 `[補充]`。同尺寸的公平比較就是 $4\times 4$ 的例子。多個核與彩色通道的細節留給 KP06。
 
-The outputs of these two layers have different sizes, so the two numbers should not simply be divided `[Added]`. The fair same-size comparison is the $4\times 4$ example. The details of several kernels and colour channels are left to KP07.
+The outputs of these two layers have different sizes, so the two numbers should not simply be divided `[Added]`. The fair same-size comparison is the $4\times 4$ example. The details of several kernels and colour channels are left to KP06.
 
 常見錯誤 `[補充]`：把連線數和權重數混為一談。共用權重之後，連線仍有 $100$ 條，只是它們共用 $9$ 個數。
 
@@ -177,17 +177,17 @@ For $x=[0,2,1,3,0,0]$ the output is $s=[10,13,19,12,0]$; for example $s[1]=2\cdo
 
 Why does this happen? Every output uses the same kernel, and the computation looks only at the numbers in the window, not at where the window is. So wherever the same pattern moves, the same numbers are computed there. This property is called **translation equivariance**: when the input shifts by some amount, the output shifts by the same amount.
 
-平移等變不是「輸出不變」。輸入平移時輸出完全不變，叫**平移不變**；卷積層本身沒有這個性質。KP08–KP09 的池化只對小位移帶來近似的不變，而且只在局部成立。
+平移等變不是「輸出不變」。輸入平移時輸出完全不變，叫**平移不變**；卷積層本身沒有這個性質。KP07–KP08 的池化只對小位移帶來近似的不變，而且只在局部成立。
 
-Translation equivariance does not mean that the output stays the same. An output that does not change at all when the input shifts is called **translation invariant**; a convolutional layer alone does not have this property. The pooling of KP08–KP09 brings only approximate invariance to small shifts, and only locally.
+Translation equivariance does not mean that the output stays the same. An output that does not change at all when the input shifts is called **translation invariant**; a convolutional layer alone does not have this property. The pooling of KP07–KP08 brings only approximate invariance to small shifts, and only locally.
 
-平移等變的成立有條件 `[補充]`：核每次只挪一格（KP07 稱為步幅 $1$），而且只看離邊界夠遠的位置。上面的例子裡，邊界那一格就不符合。KP06 會再仔細談這個性質。
+平移等變的成立有條件 `[補充]`：核每次只挪一格（KP06 稱為步幅 $1$），而且只看離邊界夠遠的位置。上面的例子裡，邊界那一格就不符合。KP05 會再仔細談這個性質。
 
-Translation equivariance holds under conditions `[Added]`: the kernel moves one cell at a time (KP07 calls this a stride of $1$), and only positions far enough from the border are considered. In the example above, the border cell does not satisfy this. KP06 looks at this property more carefully.
+Translation equivariance holds under conditions `[Added]`: the kernel moves one cell at a time (KP06 calls this a stride of $1$), and only positions far enough from the border are considered. In the example above, the border cell does not satisfy this. KP05 looks at this property more carefully.
 
-到這裡，我們知道了不攤平、只接鄰居、共用權重的好處。可是用小核掃描影像，具體要接成什麼樣的網路？KP02 用 LeNet 給出第一個完整的例子，KP03 再把一層卷積層拆開來看。
+到這裡，我們知道了不攤平、只接鄰居、共用權重的好處。可是用小核掃描影像，具體要接成什麼樣的網路？KP02 先把一層卷積層拆開來看；等這些零件都看過了，KP10 再用 LeNet 給出第一個完整的例子。
 
-At this point we know the benefits of not flattening, connecting only neighbours and sharing weights. But what kind of network do we actually build from small kernels that scan an image? KP02 gives the first complete example with LeNet, and KP03 takes one convolutional layer apart.
+At this point we know the benefits of not flattening, connecting only neighbours and sharing weights. But what kind of network do we actually build from small kernels that scan an image? KP02 first takes one convolutional layer apart; once all the parts have been seen, KP10 gives the first complete example with LeNet.
 
 ### 本單元重點整理（KP01 summary）
 
@@ -247,9 +247,9 @@ Translation equivariance: shifting the input and then computing the output equal
 
 All four figures and every number in the text come from one program: `lec06-kp01-figures.py`.
 
-**想深入**（選讀）`[補充]`：同尺寸輸出、$k\times k$ 窗時，只接鄰居的連線數最多是 $HWk^2$，邊緣的窗蓋到影像外，所以實際更少，例如 $4\times 4$ 時是 $100$ 而不是 $16\times 9=144$。KP05 會把稀疏連接與權重共享寫成一般的計數式。
+**想深入**（選讀）`[補充]`：同尺寸輸出、$k\times k$ 窗時，只接鄰居的連線數最多是 $HWk^2$，邊緣的窗蓋到影像外，所以實際更少，例如 $4\times 4$ 時是 $100$ 而不是 $16\times 9=144$。KP04 會把稀疏連接與權重共享寫成一般的計數式。
 
-**Going deeper** (optional) `[Added]`: with a same-size output and a $k\times k$ window, the neighbours-only layer has at most $HWk^2$ connections; the border windows reach outside the image, so the actual number is smaller, for example $100$ rather than $16\times 9=144$ for $4\times 4$. KP05 writes sparse connectivity and parameter sharing as general counting formulas.
+**Going deeper** (optional) `[Added]`: with a same-size output and a $k\times k$ window, the neighbours-only layer has at most $HWk^2$ connections; the border windows reach outside the image, so the actual number is smaller, for example $100$ rather than $16\times 9=144$ for $4\times 4$. KP04 writes sparse connectivity and parameter sharing as general counting formulas.
 
 **小練習**：
 
@@ -325,10 +325,10 @@ All four figures and every number in the text come from one program: `lec06-kp01
 - 來源目錄把這個性質寫成「平移等價」。一般用語是「平移等變」，本講義統一使用。來源也區分了等變與不變，本講義沿用這個區分。
 - 來源的滑動示意圖中，$5\times 5$ 棋盤格配四角與中央為 $1$ 的核，中央格寫 $4$。重算是 $5$，因為核的五個 $1$ 都落在影像的 $1$ 上；整張特徵圖三列是 $[5,0,5]$、$[0,5,0]$、$[5,0,5]$。
 - 來源簡報的中文寫參數量下降 $4{,}400$ 倍以上，英文寫 $44{,}000$ 倍，兩者不一致；來源寫的約 $77\times 10^6$，精確值是 $77{,}070{,}336$。本講義只寫精確的 $77{,}070{,}336$ 與 $1{,}728$，不寫倍數。來源另把 $401{,}408$ 與 $576$ 並列比較，但兩種層的輸出大小不同，本講義改用同尺寸的 $4\times 4$ 例子比較。
-- 來源的章節路線圖是原教科書整章的路線（權重初始化、里程碑架構），不是本課第6週的內容。本講義導言改用本週實際的 KP01–KP10，經典架構留給第7週。
-- 來源說平移等變「數學上可嚴格證明」，本講義補上成立條件：步幅 $1$、離邊界夠遠。來源說「池化之後才平移不變」，本講義改寫成池化只帶來對小位移的近似不變，細節留給 KP09。
-- 來源的符號 $X$、$W$、$Y$ 改為 $I$、$K$、$s$，與 KP04 一致；影像的指標改用 $p,q$，讓 $i,j$ 只代表輸出位置。指標從 $0$ 開始，與來源的公式相同。來源的公式含偏置 $b$，來源的參數個數則都沒有算偏置；本講義的公式省略 $b$，並把「參數個數不含偏置」明寫成約定（標為補充）。
-- 取捨：來源的信紙、樂譜、焊槍等比喻不採用，只保留 $4\times 4$ 主例子。第 4 節的一維例子沿用 KP04 的 $x=[2,1,3]$、$w=[4,5]$。沿用來源的部分：$4\times 4$ 三種接法的比較、第 1 題的 $8\times 8$ 題目、棋盤格與核的滑動例子、$28\times 28$ 與 $224\times 224$ 的權重數。
+- 來源的章節路線圖是原教科書整章的路線（權重初始化、里程碑架構），不是本課第6週的內容。本講義導言改用本週實際的 KP01–KP09，經典架構留給第7週。
+- 來源說平移等變「數學上可嚴格證明」，本講義補上成立條件：步幅 $1$、離邊界夠遠。來源說「池化之後才平移不變」，本講義改寫成池化只帶來對小位移的近似不變，細節留給 KP08。
+- 來源的符號 $X$、$W$、$Y$ 改為 $I$、$K$、$s$，與 KP03 一致；影像的指標改用 $p,q$，讓 $i,j$ 只代表輸出位置。指標從 $0$ 開始，與來源的公式相同。來源的公式含偏置 $b$，來源的參數個數則都沒有算偏置；本講義的公式省略 $b$，並把「參數個數不含偏置」明寫成約定（標為補充）。
+- 取捨：來源的信紙、樂譜、焊槍等比喻不採用，只保留 $4\times 4$ 主例子。第 4 節的一維例子沿用 KP03 的 $x=[2,1,3]$、$w=[4,5]$。沿用來源的部分：$4\times 4$ 三種接法的比較、第 1 題的 $8\times 8$ 題目、棋盤格與核的滑動例子、$28\times 28$ 與 $224\times 224$ 的權重數。
 
 This note is rewritten from KP01 of CCC-LNS IDL_115 Chapter 4 (main text, teaching notes and slides); Chapter 4 of that material is Week 6 of this course. The source was accessed on 2026-10-27. Content that the source does not contain is marked `[Added]` where it appears.
 
@@ -336,10 +336,10 @@ This note is rewritten from KP01 of CCC-LNS IDL_115 Chapter 4 (main text, teachi
 - The source's table of contents calls this property "translation equivalence". The standard term is translation equivariance, used throughout this note. The source also distinguishes equivariance from invariance, and this note keeps that distinction.
 - In the source's sliding figure, the $5\times 5$ checkerboard with the kernel that is $1$ at its corners and centre shows $4$ in the centre cell. The recomputed value is $5$, because all five $1$s of the kernel land on $1$s of the image; the whole feature map has rows $[5,0,5]$, $[0,5,0]$ and $[5,0,5]$.
 - The Chinese text of the source's slides says the parameter count drops more than $4{,}400$ times, the English text says $44{,}000$ times, and the two disagree; the source's about $77\times 10^6$ is exactly $77{,}070{,}336$. This note gives only the exact numbers $77{,}070{,}336$ and $1{,}728$, without a ratio. The source also compares $401{,}408$ with $576$ side by side, but the two layers have outputs of different sizes, so this note compares with the same-size $4\times 4$ example instead.
-- The source's chapter roadmap follows the whole chapter of the original textbook (weight initialisation, milestone architectures), not Week 6 of this course. The introduction of this note uses the actual KP01–KP10 of the week and leaves classic architectures to Week 7.
-- The source says translation equivariance "can be proved rigorously"; this note adds the conditions under which it holds: a stride of $1$ and positions far enough from the border. The source says translation invariance appears after pooling; this note says instead that pooling brings only approximate invariance to small shifts, with details left to KP09.
-- The source's symbols $X$, $W$, $Y$ are renamed $I$, $K$, $s$, consistent with KP04; the image is indexed by $p,q$ so that $i,j$ only denote output positions. Indices start at $0$, as in the source's formula. The source's formula includes a bias $b$, while none of the source's parameter counts includes biases; this note drops $b$ from the formula and states the convention that parameter counts exclude biases (marked as added).
-- Choices: the source's analogies of a letter, a music score and a welding torch are not used; only the $4\times 4$ main example is kept. The 1-D example of Section 4 reuses $x=[2,1,3]$ and $w=[4,5]$ from KP04. Taken from the source: the comparison of the three $4\times 4$ layers, the $8\times 8$ task of Practice 1, the checkerboard-and-kernel sliding example, and the weight counts for $28\times 28$ and $224\times 224$.
+- The source's chapter roadmap follows the whole chapter of the original textbook (weight initialisation, milestone architectures), not Week 6 of this course. The introduction of this note uses the actual KP01–KP09 of the week and leaves classic architectures to Week 7.
+- The source says translation equivariance "can be proved rigorously"; this note adds the conditions under which it holds: a stride of $1$ and positions far enough from the border. The source says translation invariance appears after pooling; this note says instead that pooling brings only approximate invariance to small shifts, with details left to KP08.
+- The source's symbols $X$, $W$, $Y$ are renamed $I$, $K$, $s$, consistent with KP03; the image is indexed by $p,q$ so that $i,j$ only denote output positions. Indices start at $0$, as in the source's formula. The source's formula includes a bias $b$, while none of the source's parameter counts includes biases; this note drops $b$ from the formula and states the convention that parameter counts exclude biases (marked as added).
+- Choices: the source's analogies of a letter, a music score and a welding torch are not used; only the $4\times 4$ main example is kept. The 1-D example of Section 4 reuses $x=[2,1,3]$ and $w=[4,5]$ from KP03. Taken from the source: the comparison of the three $4\times 4$ layers, the $8\times 8$ task of Practice 1, the checkerboard-and-kernel sliding example, and the weight counts for $28\times 28$ and $224\times 224$.
 
 ### 術語對照（Terminology）
 

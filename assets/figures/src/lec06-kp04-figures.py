@@ -1,238 +1,184 @@
-"""KP04 figures (discrete convolution and cross-correlation) in two skins from the same data.
+"""KP05 figures (sparse connectivity and parameter sharing) in two skins from the same data.
     assets/figures/<id>.png (light, lectures)    assets/figures/<id>.svg (dark, deck)
-Ids: lec06-kp04-flip-1d, lec06-kp04-rotate-180, lec06-kp04-2d-correlation.
-Prints every number the lecture quotes (all computed here, nothing typed by hand).
+Ids: lec06-kp04-three-layers, lec06-kp04-weight-matrix, lec06-kp04-counts, lec06-kp04-k-to-m.
+Prints every number the lecture quotes (all computed here, nothing typed by hand) and asserts them.
 
 Numbers
-  * 1-D main example: x = [2, 1, 3], w = [4, 5]; valid convolution (flip first), valid cross-correlation (no flip),
-    and cross-correlation with the flipped kernel [5, 4].
-  * 180-degree rotation of the 3x3 kernel with entries 1..9 (source KP04 figure).
-  * 2-D main example: I = [[1,2,0],[1,1,2],[0,1,1]], K = 2x2 identity (source KP04 Fig. 1), valid cross-correlation.
-  * practice: x = [1,0,2], w = [3,4]; Prewitt horizontal kernel on the KP03 3x3 patch; asymmetric K = [[1,2],[0,0]]
-    on I; kernels [1,2,1] and [1,0,-1] on [3,1,4,1,5]; valid output lengths.
+  * 1-D layer with m = 6 inputs and a window of k = 3: the valid output has n = m - k + 1 = 4 units.
+    fully connected: m*n weights; locally connected (sparse, not shared): k*n weights; convolutional (sparse and shared): k weights.
+    connections (paths from an input into an output) and multiply-adds are m*n, k*n and k*n.
+  * 28 x 28 image, 5 x 5 window, valid output 24 x 24 (one kernel, bias excluded).
+  * m = 6 with k = 1..6: n = 7 - k, and at k = m every count equals m.
+  * the 224 x 224 numbers of the source (50,000 and 5,555) are rechecked.
+  * practice: m = 8, k = 3; the three counts for a 10-input row with k = 4.
 Run:  py assets/figures/src/lec06-kp04-figures.py
 """
 import os
 import sys
 
-import numpy as np
-
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import matplotlib.pyplot as plt  # noqa: E402
-from matplotlib.patches import FancyArrowPatch, Rectangle  # noqa: E402
+from matplotlib.patches import Circle  # noqa: E402
 
-from lec04_common import DARK, LIGHT, finish, skin  # noqa: E402
+from lec04_common import DARK, LIGHT, axes, clean, finish, skin  # noqa: E402
 
 
 # ------------------------------------------------------------------ numbers
-def corr1d(x, w):
-    """valid cross-correlation: s[t] = sum_m x[t+m] w[m]"""
-    k = len(w)
-    return np.array([sum(x[t + m] * w[m] for m in range(k)) for t in range(len(x) - k + 1)])
-
-
-def conv1d_full(x, w):
-    """full convolution: (x*w)[t] = sum_tau x[tau] w[t-tau]"""
-    L, k = len(x), len(w)
-    return np.array([sum(x[tau] * w[t - tau] for tau in range(L) if 0 <= t - tau < k) for t in range(L + k - 1)])
-
-
-def conv1d_valid(x, w):
-    k = len(w)
-    return conv1d_full(x, w)[k - 1:len(x)]
-
-
-def corr2d(I, K):
-    """valid cross-correlation: s[i,j] = sum_m sum_n I[i+m, j+n] K[m,n]"""
-    k = K.shape[0]
-    H, W = I.shape
-    return np.array([[(I[i:i + k, j:j + k] * K).sum() for j in range(W - k + 1)] for i in range(H - k + 1)])
-
-
-def conv2d_valid(I, K):
-    """valid convolution = cross-correlation with the kernel rotated by 180 degrees"""
-    return corr2d(I, np.rot90(K, 2))
-
-
-def conv2d_full(I, K):
-    """full 2-D convolution by its definition: (I*K)[i,j] = sum_p sum_q I[p,q] K[i-p, j-q]"""
-    H, W = I.shape
-    k = K.shape[0]
-    out = np.zeros((H + k - 1, W + k - 1), dtype=I.dtype)
-    for i in range(H + k - 1):
-        for j in range(W + k - 1):
-            out[i, j] = sum(I[p, q] * K[i - p, j - q] for p in range(H) for q in range(W)
-                            if 0 <= i - p < k and 0 <= j - q < k)
-    return out
-
-
-def corr1d_full(x, w):
-    """full cross-correlation: every shift t = -(k-1) .. n-1 with any overlap, zeros outside the signal"""
-    k = len(w)
-    return np.array([sum(x[t + m] * w[m] for m in range(k) if 0 <= t + m < len(x)) for t in range(-(k - 1), len(x))])
-
-
-X1 = np.array([2, 1, 3])
-W1 = np.array([4, 5])
-I2 = np.array([[1, 2, 0], [1, 1, 2], [0, 1, 1]])
-K2 = np.eye(2, dtype=int)
-K9 = np.arange(1, 10).reshape(3, 3)
+def counts_1d(m, k):
+    n = m - k + 1
+    return dict(m=m, k=k, n=n, fc=m * n, local=k * n, conv=k, conn_fc=m * n, conn_sparse=k * n, madds_fc=m * n, madds_sparse=k * n)
 
 
 def numbers():
-    print("1-D full convolution x*w      :", conv1d_full(X1, W1).tolist())
-    print("1-D valid convolution x*w     :", conv1d_valid(X1, W1).tolist())
-    print("1-D valid cross-correlation   :", corr1d(X1, W1).tolist())
-    print("1-D corr with flipped [5,4]   :", corr1d(X1, W1[::-1]).tolist())
-    assert np.array_equal(conv1d_valid(X1, W1), np.convolve(X1, W1, "valid"))
-    assert np.array_equal(corr1d(X1, W1), np.correlate(X1, W1, "valid"))
-    print("rot180 of 1..9                :", np.rot90(K9, 2).tolist())
-    print("2-D corr I, identity          :", corr2d(I2, K2).tolist())
-    print("2-D conv I, identity          :", conv2d_valid(I2, K2).tolist())
-    print("2-D window (0,1) terms        :", (I2[0:2, 1:3] * K2).tolist())
-    Ka = np.array([[1, 2], [0, 0]])
-    for name, KK in (("identity", K2), ("[[1,2],[0,0]]", Ka)):
-        F = conv2d_full(I2, KK)
-        k = KK.shape[0]
-        print(f"2-D full conv I*{name}: {F.tolist()}  entries [k-1:H, k-1:W] = {F[k-1:3, k-1:3].tolist()}"
-              f"  corr with rot180 = {corr2d(I2, np.rot90(KK, 2)).tolist()}")
-        assert np.array_equal(F[k - 1:3, k - 1:3], corr2d(I2, np.rot90(KK, 2)))
-    print("(I*K)[0,0] by definition (Ka) :", conv2d_full(I2, Ka)[0, 0])
-    print("full corr x*w, w*x            :", corr1d_full(X1, W1).tolist(), corr1d_full(W1, X1).tolist())
-    assert np.array_equal(corr1d_full(X1, W1), np.correlate(X1, W1, "full"))
-    print("conv commutative              :", conv1d_full(X1, W1).tolist(), conv1d_full(W1, X1).tolist())
+    N = {}
+    N["row"] = counts_1d(6, 3)
+    assert N["row"] == dict(m=6, k=3, n=4, fc=24, local=12, conv=3, conn_fc=24, conn_sparse=12, madds_fc=24, madds_sparse=12)
+    # 28 x 28 with 5 x 5, valid output 24 x 24
+    H = 28; k = 5; ho = H - k + 1; n = ho * ho; m = H * H
+    N["img"] = dict(m=m, n=n, k=k * k, ho=ho, fc=m * n, local=k * k * n, conv=k * k, ratio_fc_conv=m * n // (k * k), ratio_fc_local=m / (k * k))
+    assert (m, n, ho) == (784, 576, 24) and N["img"]["fc"] == 451584 and N["img"]["local"] == 14400 and N["img"]["conv"] == 25
+    assert N["img"]["ratio_fc_conv"] == 18063 and abs(m * n / 25 - 18063.36) < 1e-9 and m / 25 == 31.36
+    # the source's 224 x 224 numbers
+    N["src"] = dict(pixels=224 * 224, rgb=224 * 224 * 3, ratio_exact=224 * 224 / 9, ratio_50000=50000 / 9)
+    assert N["src"]["pixels"] == 50176 and N["src"]["rgb"] == 150528 and abs(N["src"]["ratio_exact"] - 5575.11) < 0.01 and abs(N["src"]["ratio_50000"] - 5555.56) < 0.01
+    # m = 6, k = 1..6
+    N["sweep"] = [counts_1d(6, kk) for kk in range(1, 7)]
+    assert [r["n"] for r in N["sweep"]] == [6, 5, 4, 3, 2, 1]
+    assert [r["fc"] for r in N["sweep"]] == [36, 30, 24, 18, 12, 6] and [r["local"] for r in N["sweep"]] == [6, 10, 12, 12, 10, 6] and [r["conv"] for r in N["sweep"]] == [1, 2, 3, 4, 5, 6]
+    assert N["sweep"][-1]["fc"] == N["sweep"][-1]["local"] == N["sweep"][-1]["conv"] == 6
+    # convolution written as a matrix (cross-correlation as in KP03): M = 6, k = 3, w = [1, 2, -1]
+    import numpy as np
+    x = np.array([2, 1, 3, 0, 1, 4]); w = np.array([1, 2, -1]); Wm = np.zeros((4, 6), dtype=int)
+    for t in range(4): Wm[t, t:t + 3] = w
+    N["ex"] = dict(s=(Wm @ x).tolist(), W=Wm.tolist())
+    assert N["ex"]["s"] == np.correlate(x, w, "valid").tolist() == [1, 7, 2, -2]
+    assert int((Wm != 0).sum()) == 12 and len(set(Wm[Wm != 0].tolist())) == 3
+    # the two savings: sparsity M/k, sharing P, product M*P/k
+    r = N["row"]; assert r["fc"] / r["local"] == r["m"] / r["k"] == 2 and r["local"] / r["conv"] == r["n"] == 4 and r["fc"] / r["conv"] == r["m"] * r["n"] / r["k"] == 8
     # practice
-    print("P1 x=[1,0,2], w=[3,4] conv    :", conv1d_valid(np.array([1, 0, 2]), np.array([3, 4])).tolist(),
-          "corr:", corr1d(np.array([1, 0, 2]), np.array([3, 4])).tolist())
-    Hp = np.array([[1, 1, 1], [0, 0, 0], [-1, -1, -1]])
-    Xp = np.array([[0, 0, 0], [1, 1, 1], [2, 2, 2]])
-    print("P2 Prewitt H on KP03 patch    : corr", corr2d(Xp, Hp).tolist(), "conv", conv2d_valid(Xp, Hp).tolist(),
-          "rot180(H)", np.rot90(Hp, 2).tolist())
-    Ka = np.array([[1, 2], [0, 0]])
-    print("P3 K=[[1,2],[0,0]] on I       : corr", corr2d(I2, Ka).tolist(), "conv", conv2d_valid(I2, Ka).tolist(),
-          "rot180(K)", np.rot90(Ka, 2).tolist())
-    xs = np.array([3, 1, 4, 1, 5])
-    for k in ([1, 2, 1], [1, 0, -1]):
-        k = np.array(k)
-        print("P4 kernel", k.tolist(), "corr", corr1d(xs, k).tolist(), "conv", conv1d_valid(xs, k).tolist())
-    Fp = conv2d_full(Xp, Hp)
-    print("P2 full conv (X*H)[2,2]       :", Fp[2, 2])
-    assert Fp[2, 2] == 6 and corr2d(Xp, Hp)[0, 0] == -6
-    print("valid lengths L=7,k=3:", 7 - 3 + 1, " 5x5 with 3x3:", 5 - 3 + 1)
+    x4 = np.array([0, 5, 5, 0]); W4 = np.array([[1, -1, 0, 0], [0, 1, -1, 0], [0, 0, 1, -1]]); N["p4"] = (W4 @ x4).tolist(); assert N["p4"] == [-5, 0, 5] == np.correlate(x4, [1, -1], "valid").tolist()
+    N["p3"] = counts_1d(100, 5); assert (N["p3"]["n"], N["p3"]["fc"], N["p3"]["local"], N["p3"]["conv"]) == (96, 9600, 480, 5)
+    N["p1"] = counts_1d(8, 3); assert (N["p1"]["n"], N["p1"]["fc"], N["p1"]["local"], N["p1"]["conv"]) == (6, 48, 18, 3)
+    N["p2"] = counts_1d(10, 4); assert (N["p2"]["n"], N["p2"]["fc"], N["p2"]["local"], N["p2"]["conv"]) == (7, 70, 28, 4)
+    return N
 
 
-# ------------------------------------------------------------------ drawing helpers
-def cell(ax, x, y, v, face, c, size=1.0, lw=1.2, fs=None, bold=False):
-    ax.add_patch(Rectangle((x, y), size, size, facecolor=face, edgecolor=c["muted"], lw=lw))
-    ax.text(x + size / 2, y + size / 2, f"{v}", ha="center", va="center", color=c["text"],
-            fontsize=fs, fontweight="bold" if bold else "normal")
-
-
-def tint(hexcol, a, dark):
-    """blend a colour toward the background (light) or keep it translucent-looking (dark)."""
-    h = hexcol.lstrip("#")
-    r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
-    base = (0.12, 0.11, 0.10) if dark else (1, 1, 1)
-    return tuple(base[i] * (1 - a) + (r, g, b)[i] * a for i in range(3))
+def show(N):
+    print("row m=6,k=3:", N["row"])
+    print("image 28x28, 5x5:", N["img"])
+    print("source 224x224:", N["src"])
+    for r in N["sweep"]: print("sweep", r)
+    print("p1", N["p1"]); print("p2", N["p2"]); print("p3", N["p3"]); print("p4", N["p4"]); print("ex", N["ex"])
 
 
 # ------------------------------------------------------------------ figures
-def fig_flip_1d(dark):
-    c = DARK if dark else LIGHT
-    skin(c, dark, base_px=18)
-    W, H = 1000, 400
-    fig = plt.figure(figsize=(W / 100, H / 100))
-    col = {4: tint(c["edge"], 0.55, dark), 5: tint(c["ref"], 0.45, dark)}
-    xface = tint(c["muted"], 0.18, dark)
-    # (title, kernel as laid down, output, first output index t, kernel label)
-    # convolution keeps the index of its definition: the valid part starts at t = k-1 = 1
-    panels = [("convolution $x*w$ (flip $w$ to $[5,4]$)", W1[::-1], conv1d_valid(X1, W1), len(W1) - 1, "$w$ flipped"),
-              ("cross-correlation $x\\star w$, $w=[4,5]$", W1, corr1d(X1, W1), 0, "$w$"),
-              ("cross-correlation $x\\star\\tilde w$, $\\tilde w=[5,4]$", W1[::-1], corr1d(X1, W1[::-1]), 0, "$\\tilde w$")]
-    for p, (title, kern, out, t0, _klab) in enumerate(panels):
-        ax = fig.add_axes([0.005 + p * 0.333, 0.02, 0.325, 0.86])
-        ax.set_xlim(-1.0, 5.4); ax.set_ylim(-5.3, 1.7); ax.set_aspect("equal"); ax.axis("off")
-        ax.set_title(title, fontsize=14, color=c["text"])
-        ax.text(-0.5, 0.5, "$x$", ha="center", va="center", fontsize=17)
-        for i, v in enumerate(X1):
-            cell(ax, i + 0.2, 0, v, xface, c, fs=17)
-        for r in range(2):
-            y = -1.4 - 1.3 * r
-            for m, v in enumerate(kern):
-                cell(ax, r + m + 0.2, y, v, col[int(v)], c, fs=17)
-            terms = " + ".join(f"{X1[r + m]}\\cdot{kern[m]}" for m in range(2))
-            ax.text(-0.5, y + 0.5, f"$t={t0 + r}$", ha="center", va="center", fontsize=15, color=c["text"])
-            ax.text(r + 2.3, y + 0.5, f"${terms}$", ha="left", va="center", fontsize=16, color=c["text"])
-        ax.text(-0.5, -4.2 + 0.5, "out", ha="center", va="center", fontsize=15)
-        for t, v in enumerate(out):
-            cell(ax, t + 0.2, -4.2, v, tint(c["ok"] if p != 1 else c["warn"], 0.35, dark), c, bold=True, fs=17)
-        if p == 2:
-            ax.text(2.4, -4.2 + 0.5, "= convolution", ha="left", va="center", fontsize=15, color=c["ok"])
-    finish(fig, "lec06-kp04-flip-1d", dark, c)
-    return W, H
+def tint_pal(c):
+    return [c["main"], c["ref"], c["vec"], c["edge"], c["ok"], c["warn"]]
 
 
-def fig_rotate_180(dark):
+def fig_three(dark):
     c = DARK if dark else LIGHT
     skin(c, dark, base_px=16)
-    W, H = 760, 380
-    fig = plt.figure(figsize=(W / 100, H / 100))
-    ax = fig.add_axes([0.02, 0.02, 0.96, 0.86])
-    ax.set_xlim(-0.5, 9.5); ax.set_ylim(-1.1, 3.6); ax.set_aspect("equal"); ax.axis("off")
-    cmap = plt.get_cmap("Blues" if not dark else "Oranges")
-    R = np.rot90(K9, 2)
-    for ox, M, lab in ((0.3, K9, "$K$"), (6.2, R, "$\\tilde K$ (rotated)")):
-        for r in range(3):
-            for q in range(3):
-                v = int(M[r, q])
-                face = cmap(0.12 + 0.07 * v)
-                cell(ax, ox + q, 2 - r, v, face, c, bold=v in (1, 9))
-        ax.text(ox + 1.5, 3.3, lab, ha="center", va="center", fontsize=15)
-    ax.add_patch(FancyArrowPatch((3.6, 1.5), (5.9, 1.5), arrowstyle="-|>", mutation_scale=24, lw=2.2, color=c["main"]))
-    ax.text(4.75, 2.0, "rotate $180^\\circ$", ha="center", va="center", fontsize=14, color=c["main"])
-    ax.text(4.75, -0.6, "$\\tilde K[m,n]=K[k-1-m,\\,k-1-n]$", ha="center", va="center", fontsize=12, color=c["muted"])
-    finish(fig, "lec06-kp04-rotate-180", dark, c)
-    return W, H
+    W, Hh = 760, 330
+    fig, ax = axes(W, Hh, left=8, bottom=8, right=8, top=8)
+    ax.set_xlim(0, W); ax.set_ylim(0, Hh); ax.axis("off")
+    m, k = 6, 3; n = m - k + 1
+    pal = tint_pal(c)
+    titles = [("fully connected", "24 weights"), ("sparse, not shared", "12 weights"), ("sparse and shared", "3 weights")]
+    for p in range(3):
+        x0 = 10 + p * 250
+        xin = [x0 + 20 + i * 36 for i in range(m)]
+        xout = [x0 + 20 + 36 + j * 36 for j in range(n)]
+        yin, yout = 70, 220
+        for j in range(n):
+            wins = range(m) if p == 0 else range(j, j + k)
+            for i in wins:
+                if p == 0: col = c["muted"]; a = 0.45
+                elif p == 1: col = pal[(j * k + (i - j)) % 6] if False else pal[(j * 3 + (i - j)) % 6]; a = 0.95
+                else: col = pal[i - j]; a = 0.95
+                ax.plot([xin[i], xout[j]], [yin + 8, yout - 8], color=col, lw=1.8 if p else 1.0, alpha=a, zorder=2)
+        for x in xin: ax.add_patch(Circle((x, yin), 8, fc=c["bg"] if not dark else "none", ec=c["text"], lw=1.6, zorder=3))
+        for x in xout: ax.add_patch(Circle((x, yout), 8, fc=c["bg"] if not dark else "none", ec=c["text"], lw=1.6, zorder=3))
+        ax.text(x0 + 130, 285, titles[p][0], ha="center", va="center", fontsize=15, color=c["text"], fontweight="bold")
+        ax.text(x0 + 130, 30, titles[p][1], ha="center", va="center", fontsize=15, color=c["main"], fontweight="bold")
+    finish(fig, "lec06-kp04-three-layers", dark, c)
+    return W, Hh
 
 
-def fig_2d_correlation(dark):
+def fig_matrix(dark):
+    """The same three layers as P x M weight matrices: zeros = no connection (sparse), equal colours = equal weights (shared)."""
     c = DARK if dark else LIGHT
     skin(c, dark, base_px=16)
-    W, H = 900, 380
-    fig = plt.figure(figsize=(W / 100, H / 100))
-    ax = fig.add_axes([0.01, 0.02, 0.98, 0.86])
-    ax.set_xlim(-0.6, 12.6); ax.set_ylim(-1.4, 3.7); ax.set_aspect("equal"); ax.axis("off")
-    S = corr2d(I2, K2)
-    hi = tint(c["edge"], 0.5, dark); base = tint(c["muted"], 0.15, dark)
-    for r in range(3):
-        for q in range(3):
-            inwin = r in (0, 1) and q in (1, 2)
-            cell(ax, q, 2 - r, int(I2[r, q]), hi if inwin else base, c, bold=inwin)
-    ax.add_patch(Rectangle((1, 1), 2, 2, fill=False, edgecolor=c["main"], lw=3))
-    ax.text(1.5, 3.35, "$I$", ha="center", fontsize=15)
-    ax.text(3.75, 1.5, "$\\star$", ha="center", va="center", fontsize=26)
-    for r in range(2):
-        for q in range(2):
-            cell(ax, 4.5 + q, 1.5 - r, int(K2[r, q]), tint(c["ref"], 0.4 if K2[r, q] else 0.12, dark), c)
-    ax.text(5.5, 3.35, "$K$", ha="center", fontsize=15)
-    ax.text(7.25, 1.5, "$=$", ha="center", va="center", fontsize=24)
-    for r in range(2):
-        for q in range(2):
-            on = (r, q) == (0, 1)
-            cell(ax, 8 + q, 1.5 - r, int(S[r, q]), tint(c["ok"], 0.55 if on else 0.2, dark), c, bold=on)
-    ax.add_patch(Rectangle((9, 1.5), 1, 1, fill=False, edgecolor=c["main"], lw=3))
-    ax.text(9.0, 3.35, "$s=I\\star K$", ha="center", fontsize=15)
-    t = I2[0:2, 1:3]
-    ax.text(5.6, -0.9, f"$s[0,1]={t[0,0]}\\cdot1+{t[0,1]}\\cdot0+{t[1,0]}\\cdot0+{t[1,1]}\\cdot1={S[0,1]}$",
-            ha="center", va="center", fontsize=14, color=c["main"])
-    finish(fig, "lec06-kp04-2d-correlation", dark, c)
-    return W, H
+    W, Hh = 760, 250
+    fig, ax = axes(W, Hh, left=8, bottom=8, right=8, top=8)
+    ax.set_xlim(0, W); ax.set_ylim(0, Hh); ax.axis("off")
+    m, k = 6, 3; n = m - k + 1
+    pal = tint_pal(c)
+    cell = 30
+    titles = ["fully connected", "sparse, not shared", "sparse and shared"]
+    for p in range(3):
+        x0 = 30 + p * 250; y0 = 70
+        idx = 0
+        for j in range(n):
+            for i in range(m):
+                inside = i >= j and i < j + k
+                x = x0 + i * cell; y = y0 + (n - 1 - j) * cell
+                if p == 0: col = plt.cm.hsv(idx / 24 * 0.85); idx += 1; on = True
+                elif p == 1:
+                    on = inside
+                    if on: col = plt.cm.hsv(idx / 12 * 0.85); idx += 1
+                else:
+                    on = inside
+                    if on: col = pal[i - j]
+                if on:
+                    ax.add_patch(plt.Rectangle((x, y), cell - 3, cell - 3, fc=col, ec="none", alpha=0.9))
+                else:
+                    ax.add_patch(plt.Rectangle((x, y), cell - 3, cell - 3, fc="none", ec=c["muted"], lw=0.8, alpha=0.5))
+                    ax.text(x + (cell - 3) / 2, y + (cell - 3) / 2, "0", ha="center", va="center", fontsize=11, color=c["muted"])
+        ax.text(x0 + m * cell / 2, 215, titles[p], ha="center", va="center", fontsize=15, color=c["text"], fontweight="bold")
+        ax.text(x0 + m * cell / 2, 30, ["24 different numbers", "12 different numbers", "3 different numbers"][p], ha="center", va="center", fontsize=14, color=c["main"], fontweight="bold")
+    finish(fig, "lec06-kp04-weight-matrix", dark, c)
+    return W, Hh
+
+
+def fig_counts(dark):
+    c = DARK if dark else LIGHT
+    skin(c, dark, base_px=16)
+    N = numbers()["img"]
+    W, Hh = 740, 300
+    fig, ax = axes(W, Hh, left=190, bottom=64, right=40, top=20)
+    labs = ["fully connected", "sparse, not shared", "sparse and shared"]
+    vals = [N["fc"], N["local"], N["conv"]]
+    cols = [c["warn"], c["edge"], c["ok"]]
+    ax.barh(range(3), vals, color=cols, height=0.55)
+    ax.set_xscale("log"); ax.set_xlim(1, 4e6)
+    ax.set_yticks(range(3)); ax.set_yticklabels(labs); ax.invert_yaxis()
+    for i, v in enumerate(vals): ax.text(v * 1.25, i, f"{v:,}", va="center", color=c["text"], fontsize=15, fontweight="bold")
+    ax.set_xlabel("number of weights (log scale)")
+    clean(ax)
+    finish(fig, "lec06-kp04-counts", dark, c)
+    return W, Hh
+
+
+def fig_sweep(dark):
+    c = DARK if dark else LIGHT
+    skin(c, dark, base_px=16)
+    S = numbers()["sweep"]
+    W, Hh = 640, 340
+    fig, ax = axes(W, Hh, left=70, bottom=60, right=24, top=22)
+    ks = [r["k"] for r in S]
+    for key, col, lab, mk in (("fc", c["warn"], "fully connected", "o"), ("local", c["edge"], "sparse, not shared", "s"), ("conv", c["ok"], "sparse and shared", "^")):
+        ax.plot(ks, [r[key] for r in S], color=col, marker=mk, lw=2.4, ms=8, label=lab)
+    ax.annotate("k = M: all three equal 6", xy=(6, 6), xytext=(3.9, 23), color=c["text"], fontsize=14, fontweight="bold", arrowprops=dict(arrowstyle="->", color=c["text"], lw=1.6))
+    ax.set_xlabel("window size k  (M = 6 inputs, P = 7 - k outputs)"); ax.set_ylabel("number of weights")
+    ax.set_xticks(ks); ax.set_ylim(0, 44); ax.legend(frameon=False, loc="upper right", fontsize=13)
+    clean(ax)
+    finish(fig, "lec06-kp04-k-to-m", dark, c)
+    return W, Hh
 
 
 if __name__ == "__main__":
-    numbers()
-    for dark in (False, True):
-        fig_flip_1d(dark)
-        fig_rotate_180(dark)
-        fig_2d_correlation(dark)
-    print("wrote lec06-kp04-flip-1d, lec06-kp04-rotate-180, lec06-kp04-2d-correlation (.png light, .svg dark)")
+    N = numbers(); show(N)
+    for f in (fig_three, fig_matrix, fig_counts, fig_sweep):
+        for dark in (False, True): f(dark)
+    print("figures written")

@@ -1,22 +1,22 @@
-# 第6週 KP10：無限強先驗、動態池化與全域平均池化（The infinitely strong prior, dynamic pooling and global average pooling）
+# 第6週 KP09：無限強先驗、動態池化與全域平均池化（The infinitely strong prior, dynamic pooling and global average pooling）
 
 > 程度：大學生
 >
 > Level: Undergraduate (undergrad)
 
-本講義是第6週「卷積與池化」的最後一個知識點（KP10），屬於自主學習。KP05 看到卷積層把遠距連線的權重變成 $0$，KP08–KP09 看到池化沒有權重。這一節把它們放進同一個觀點：卷積與池化是一種**無限強的先驗**，在看資料之前就把許多連線釘死成 $0$。接著看池化的兩個延伸，動態池化與空間金字塔池化，最後看現代網路尾端用的全域平均池化。
+本講義是第6週「卷積與池化」的第九個知識點（KP09），屬於自主學習。KP04 看到卷積層把遠距連線的權重變成 $0$，KP07–KP08 看到池化沒有權重。這一節把它們放進同一個觀點：卷積與池化是一種**無限強的先驗**，在看資料之前就把許多連線釘死成 $0$。接著看池化的兩個延伸，動態池化與空間金字塔池化，最後看現代網路尾端用的全域平均池化。
 
-This is the last knowledge point (KP10) of Week 6, "Convolution and pooling", and it is for self-study. KP05 saw that a convolutional layer turns the weights of distant connections into $0$, and KP08–KP09 saw that pooling has no weights. This note puts them into one view: convolution and pooling are an **infinitely strong prior** that fixes many connections to $0$ before seeing any data. It then looks at two extensions of pooling, dynamic pooling and spatial pyramid pooling, and finally at the global average pooling used at the end of modern networks.
+This is the ninth knowledge point (KP09) of Week 6, "Convolution and pooling", and it is for self-study. KP04 saw that a convolutional layer turns the weights of distant connections into $0$, and KP07–KP08 saw that pooling has no weights. This note puts them into one view: convolution and pooling are an **infinitely strong prior** that fixes many connections to $0$ before seeing any data. It then looks at two extensions of pooling, dynamic pooling and spatial pyramid pooling, and finally at the global average pooling used at the end of modern networks.
 
-先備知識是 KP01 與 KP05 的稀疏連接、第4週的權重衰減（L1、L2 正則化）與 KP08–KP09 的池化。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp10-figures.py` 算出，可以自己重算。
+先備知識是 KP01 與 KP04 的稀疏連接、第4週的權重衰減（L1、L2 正則化）與 KP07–KP08 的池化。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp09-figures.py` 算出，可以自己重算。
 
-The prerequisites are the sparse connectivity of KP01 and KP05, the weight decay (L1 and L2 regularization) of Week 4, and the pooling of KP08–KP09. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp10-figures.py`, so you can recompute it yourself.
+The prerequisites are the sparse connectivity of KP01 and KP04, the weight decay (L1 and L2 regularization) of Week 4, and the pooling of KP07–KP08. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp09-figures.py`, so you can recompute it yourself.
 
-[下載本單元投影片](../slides/lec06-kp10-infinitely-strong-prior-gap.jbd.json)
+[下載本單元投影片](../slides/lec06-kp09-infinitely-strong-prior-gap.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec06-kp10-infinitely-strong-prior-gap-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec06-kp09-infinitely-strong-prior-gap-en.jbd.json)
 
-## KP10 無限強先驗、動態池化與全域平均池化（The infinitely strong prior, dynamic pooling and global average pooling）
+## KP09 無限強先驗、動態池化與全域平均池化（The infinitely strong prior, dynamic pooling and global average pooling）
 
 ### 學習目標（Learning objectives）
 
@@ -53,15 +53,15 @@ A **prior** is our belief about what the weights look like before seeing the tra
 - **Stronger prior**: L1 regularization or weight decay (Week 4). It pushes the weights towards $0$ and encourages small or sparse weights, but the weights are still free: if the signal of the data is strong enough the gradient can pull them back.
 - **Infinitely strong prior**: convolution and pooling. For inputs that are too far away the weights are **fixed to $0$**, and the gradient can never change them. It is not "we would like it small" but "it does not exist".
 
-用一個 $8\times8$ 的權重矩陣來數（$8$ 個輸出、$8$ 個輸入）。全連接層有 $64$ 個自由的權重。把每個輸出只接寬度 $3$ 的鄰居，就只剩一條寬 $3$ 的帶子，$22$ 格可能不是 $0$，其餘 $42$ 格被釘成 $0$。再讓每一列共用同一個核（KP05），自由的權重只剩 $3$ 個。
+用一個 $8\times8$ 的權重矩陣來數（$8$ 個輸出、$8$ 個輸入）。全連接層有 $64$ 個自由的權重。把每個輸出只接寬度 $3$ 的鄰居，就只剩一條寬 $3$ 的帶子，$22$ 格可能不是 $0$，其餘 $42$ 格被釘成 $0$。再讓每一列共用同一個核（KP04），自由的權重只剩 $3$ 個。
 
-Count on an $8\times8$ weight matrix ($8$ outputs and $8$ inputs). A fully connected layer has $64$ free weights. If every output connects only to neighbours of width $3$, only a band of width $3$ is left: $22$ cells may be non-zero and the remaining $42$ cells are fixed to $0$. If every row then shares the same kernel (KP05), only $3$ free weights remain.
+Count on an $8\times8$ weight matrix ($8$ outputs and $8$ inputs). A fully connected layer has $64$ free weights. If every output connects only to neighbours of width $3$, only a band of width $3$ is left: $22$ cells may be non-zero and the remaining $42$ cells are fixed to $0$. If every row then shares the same kernel (KP04), only $3$ free weights remain.
 
-![三個 8 乘 8 的權重矩陣：左邊弱先驗，全連接，64 格都是自由的權重；中間較強先驗，每格都是很小但仍自由的權重；右邊無限強先驗，只有寬 3 的帶子上的 22 格是自由的，其餘 42 格釘成 0](../assets/figures/lec06-kp10-prior-matrices.png)
+![三個 8 乘 8 的權重矩陣：左邊弱先驗，全連接，64 格都是自由的權重；中間較強先驗，每格都是很小但仍自由的權重；右邊無限強先驗，只有寬 3 的帶子上的 22 格是自由的，其餘 42 格釘成 0](../assets/figures/lec06-kp09-prior-matrices.png)
 
-**圖說 `lec06-kp10-prior-matrices`**：先看左邊的弱先驗：$64$ 格全部是自由的權重。再看中間的較強先驗：$64$ 格仍然是自由的，只是都被推得很小（顏色很淡）。最後看右邊的無限強先驗：只有斜帶上的 $22$ 格是自由的綠色，其餘 $42$ 格是被釘成 $0$ 的白色，梯度改不到。
+**圖說 `lec06-kp09-prior-matrices`**：先看左邊的弱先驗：$64$ 格全部是自由的權重。再看中間的較強先驗：$64$ 格仍然是自由的，只是都被推得很小（顏色很淡）。最後看右邊的無限強先驗：只有斜帶上的 $22$ 格是自由的綠色，其餘 $42$ 格是被釘成 $0$ 的白色，梯度改不到。
 
-**Caption `lec06-kp10-prior-matrices`**: First look at the weak prior on the left: all $64$ cells are free weights. Then the stronger prior in the middle: all $64$ cells are still free, only pushed very small (pale colours). Finally the infinitely strong prior on the right: only the $22$ cells on the diagonal band are free (green) and the remaining $42$ cells are white and fixed to $0$, out of reach of the gradient.
+**Caption `lec06-kp09-prior-matrices`**: First look at the weak prior on the left: all $64$ cells are free weights. Then the stronger prior in the middle: all $64$ cells are still free, only pushed very small (pale colours). Finally the infinitely strong prior on the right: only the $22$ cells on the diagonal band are free (green) and the remaining $42$ cells are white and fixed to $0$, out of reach of the gradient.
 
 常見錯誤：以為卷積只是「很強的 L1 正則化」。L1 只是把權重推向 $0$，權重仍然自由；卷積與池化是結構上的限制，權重根本不在模型裡。
 
@@ -77,15 +77,15 @@ On very high-dimensional images a fully connected network has too many free para
 
 This also echoes **Occam's razor**: if two models both explain the data, the one with the simpler structure usually generalises better. The infinitely strong prior builds this principle directly into the structure of the network. Restricting "cannot learn" is sometimes stronger than "can learn everything".
 
-這個賭注也可能輸：若任務需要很遠兩點之間的直接關係，過強的局部限制就會有害。所以現代網路靠堆很多層，讓感受野逐步變大（KP01 與 KP05）`[補充]`。
+這個賭注也可能輸：若任務需要很遠兩點之間的直接關係，過強的局部限制就會有害。所以現代網路靠堆很多層，讓感受野逐步變大（KP01 與 KP04）`[補充]`。
 
-The bet can also be lost: if the task needs a direct relation between two far points, an over-strong local restriction does harm. Modern networks therefore stack many layers so that the receptive field grows step by step (KP01 and KP05) `[Added]`.
+The bet can also be lost: if the task needs a direct relation between two far points, an over-strong local restriction does harm. Modern networks therefore stack many layers so that the receptive field grows step by step (KP01 and KP04) `[Added]`.
 
 ### 3. 動態池化：不一定要池化相鄰的格子（Dynamic pooling: pooling need not use neighbouring cells）
 
-KP08 的池化窗是固定的幾何鄰居：每個窗是相鄰的 $2\times2$ 格。**動態池化**讓池化的範圍跟著內容走：先把特徵點依內容或位置分群（例如用 K 平均分群），再對**同一群**一起池化。每個輸入可以有自己量身打造的摘要區域。
+KP07 的池化窗是固定的幾何鄰居：每個窗是相鄰的 $2\times2$ 格。**動態池化**讓池化的範圍跟著內容走：先把特徵點依內容或位置分群（例如用 K 平均分群），再對**同一群**一起池化。每個輸入可以有自己量身打造的摘要區域。
 
-The pooling window of KP08 is a fixed geometric neighbourhood: every window is an adjacent $2\times2$ block. **Dynamic pooling** lets the range of pooling follow the content: first group the feature points by content or position (for example with K-means clustering) and then pool **within each group**. Every input can have its own tailor-made summary regions.
+The pooling window of KP07 is a fixed geometric neighbourhood: every window is an adjacent $2\times2$ block. **Dynamic pooling** lets the range of pooling follow the content: first group the feature points by content or position (for example with K-means clustering) and then pool **within each group**. Every input can have its own tailor-made summary regions.
 
 用一個一維的小例子。八個特徵點的位置是 $2,3,4,5,6,7,20,21$，值依序是 $3,8,1,6,2,5,4,9$。若用寬 $4$ 的固定格子，位置 $2,3$ 在第一格、$4$ 到 $7$ 在第二格、$20,21$ 在第六格，最大池化得 $[8,6,9]$：自然的一群 $2$ 到 $7$ 被切成兩半。若先用 K 平均（$k=2$）分群，得到 $\{2,\dots,7\}$ 與 $\{20,21\}$ 兩群，最大池化得 $[8,9]$：自然的一群留在一起 `[補充]`。
 
@@ -119,17 +119,17 @@ A small example. Three $2\times2$ feature maps $[1,3;5,7]$, $[0,2;2,0]$, $[4,4;4
 
 The difference is in the number of weights. The final feature map is $7\times7\times512$ and has to be sorted into $1000$ classes. Flattening and fully connecting gives an input of $7\times7\times512=25{,}088$ numbers and $25{,}088\times1000=25{,}088{,}000$ weights. With global average pooling the input has only $512$ numbers and the weights are $512\times1000=512{,}000$, $49$ times fewer, a reduction of $98\%$ `[Added]`. Modern networks such as ResNet do exactly this at the end, saving tens of millions of fully connected weights.
 
-![兩條橫條：攤平 7 乘 7 乘 512 等於 25,088 個數，接 1000 類的全連接層要 25,088,000 個權重；全域平均池化只剩 512 個數，權重 512,000 個，少 49 倍](../assets/figures/lec06-kp10-gap.png)
+![兩條橫條：攤平 7 乘 7 乘 512 等於 25,088 個數，接 1000 類的全連接層要 25,088,000 個權重；全域平均池化只剩 512 個數，權重 512,000 個，少 49 倍](../assets/figures/lec06-kp09-gap.png)
 
-**圖說 `lec06-kp10-gap`**：先看上面的紅色長條：攤平 $7\times7\times512=25{,}088$ 個數，接 $1000$ 類的全連接層要 $25{,}088{,}000$ 個權重。再看下面的綠色短條：全域平均池化只剩 $512$ 個數，權重 $512{,}000$ 個，少了 $49$ 倍。
+**圖說 `lec06-kp09-gap`**：先看上面的紅色長條：攤平 $7\times7\times512=25{,}088$ 個數，接 $1000$ 類的全連接層要 $25{,}088{,}000$ 個權重。再看下面的綠色短條：全域平均池化只剩 $512$ 個數，權重 $512{,}000$ 個，少了 $49$ 倍。
 
-**Caption `lec06-kp10-gap`**: First look at the red long bar above: flattening $7\times7\times512=25{,}088$ numbers, a fully connected layer for $1000$ classes needs $25{,}088{,}000$ weights. Then the green short bar below: global average pooling leaves only $512$ numbers and $512{,}000$ weights, $49$ times fewer.
+**Caption `lec06-kp09-gap`**: First look at the red long bar above: flattening $7\times7\times512=25{,}088$ numbers, a fully connected layer for $1000$ classes needs $25{,}088{,}000$ weights. Then the green short bar below: global average pooling leaves only $512$ numbers and $512{,}000$ weights, $49$ times fewer.
 
 常見錯誤：以為全域平均池化會把所有通道平均成一個數。它是每個通道各自取整張圖的平均，通道數不變。
 
 Common error: thinking that global average pooling averages all channels into a single number. It takes the mean of the whole map for every channel on its own and the number of channels is unchanged.
 
-### 本單元重點整理（KP10 summary）
+### 本單元重點整理（KP09 summary）
 
 **一句話重點**：卷積與池化是無限強先驗：把遠距連線的權重在結構上釘成 $0$，梯度改不到，這個「押注稀疏」的限制讓模型泛化更好；動態池化讓池化範圍跟著內容，空間金字塔池化用固定數量的箱子吃任意大小的圖，全域平均池化把每張特徵圖壓成一個數，取代巨大的全連接層。
 
@@ -163,17 +163,17 @@ Common error: thinking that global average pooling averages all channels into a 
 
 **圖**：本單元有兩張圖。
 
-- `lec06-kp10-prior-matrices`：三級先驗的 $8\times8$ 權重矩陣。
-- `lec06-kp10-gap`：全域平均池化與攤平再全連接的權重個數。
+- `lec06-kp09-prior-matrices`：三級先驗的 $8\times8$ 權重矩陣。
+- `lec06-kp09-gap`：全域平均池化與攤平再全連接的權重個數。
 
-兩張圖與文中數字都由同一支程式產生：`lec06-kp10-figures.py`。
+兩張圖與文中數字都由同一支程式產生：`lec06-kp09-figures.py`。
 
 **Figures**: this unit has two figures.
 
-- `lec06-kp10-prior-matrices`: the $8\times8$ weight matrices of the three levels of prior.
-- `lec06-kp10-gap`: the number of weights of global average pooling versus flatten-then-fully-connect.
+- `lec06-kp09-prior-matrices`: the $8\times8$ weight matrices of the three levels of prior.
+- `lec06-kp09-gap`: the number of weights of global average pooling versus flatten-then-fully-connect.
 
-Both figures and the numbers in the text come from the same program: `lec06-kp10-figures.py`.
+Both figures and the numbers in the text come from the same program: `lec06-kp09-figures.py`.
 
 **想深入**（選讀）`[補充]`：全域平均池化還有一個副作用：每個通道對應一個類別的「證據圖」，把最後一層的特徵圖逐通道看，就能知道網路把注意力放在影像的哪裡。這是類別激活圖一類方法的出發點，細節留給後面的週次。另外，GAP 沒有權重，所以不會像全連接層那樣把輸入大小綁死：只要通道數固定，輸入圖多大都行。
 

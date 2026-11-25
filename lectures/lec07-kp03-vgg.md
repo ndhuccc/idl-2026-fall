@@ -8,9 +8,9 @@
 
 This is the third knowledge point (KP03) of Week 7, "Convolutional neural networks (2): classic architectures". AlexNet has only eight layers and uses a large $11\times11$ kernel. This note asks: what happens if we make the network clearly deeper and shrink the kernels to the smallest size? VGG's answer is to use almost only $3\times3$ kernels and stack them layer upon layer.
 
-先備知識是第6週 KP07 的步幅、補邊與輸出尺寸公式，KP08 的最大池化，第3週的動量、第4週的 L2 權重衰減，以及 KP02 的 AlexNet。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec07-kp03-figures.py` 算出，可以自己重算。
+先備知識是第6週 KP06 的步幅、補邊與輸出尺寸公式，KP07 的最大池化，第3週的動量、第4週的 L2 權重衰減，以及 KP02 的 AlexNet。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec07-kp03-figures.py` 算出，可以自己重算。
 
-The prerequisites are the stride, padding and output-size formula of Week 6 KP07, the max pooling of KP08, the momentum of Week 3, the L2 weight decay of Week 4 and the AlexNet of KP02. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp03-figures.py`, so you can recompute it yourself.
+The prerequisites are the stride, padding and output-size formula of Week 6 KP06, the max pooling of KP07, the momentum of Week 3, the L2 weight decay of Week 4 and the AlexNet of KP02. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp03-figures.py`, so you can recompute it yourself.
 
 [下載本單元投影片](../slides/lec07-kp03-vgg-infographic-voiced.jbd.json)
 
@@ -88,9 +88,9 @@ Common error: thinking that small kernels "see less". One layer indeed sees only
 
 ### 3. 尺寸不縮的卷積，縮小靠池化（Convolutions that keep the size, and pooling that shrinks it）
 
-輸入是 $224\times224\times3$ 的影像，先對 RGB 三個通道各減去它們的均值（零中心化）。所有 $3\times3$ 卷積的步幅都是 $1$，補邊（padding）是 $1$。用第6週 KP07 的公式，輸出邊長是 $\lfloor(n+2\times1-3)/1\rfloor+1=n$：**空間尺寸不變**。如果不補邊，$224$ 會縮成 $222$，每疊一層就少兩格，邊緣的資訊逐層被丟掉；到了邊長只有 $7$ 的深處，再疊三層就只剩 $1$ 格 `[補充]`。
+輸入是 $224\times224\times3$ 的影像，先對 RGB 三個通道各減去它們的均值（零中心化）。所有 $3\times3$ 卷積的步幅都是 $1$，補邊（padding）是 $1$。用第6週 KP06 的公式，輸出邊長是 $\lfloor(n+2\times1-3)/1\rfloor+1=n$：**空間尺寸不變**。如果不補邊，$224$ 會縮成 $222$，每疊一層就少兩格，邊緣的資訊逐層被丟掉；到了邊長只有 $7$ 的深處，再疊三層就只剩 $1$ 格 `[補充]`。
 
-The input is a $224\times224\times3$ image, from which the mean of each of the three RGB channels is first subtracted (zero-centering). Every $3\times3$ convolution has stride $1$ and padding $1$. With the formula of Week 6 KP07 the output side is $\lfloor(n+2\times1-3)/1\rfloor+1=n$: the **spatial size does not change**. Without padding $224$ would shrink to $222$, losing two cells per layer and discarding the information at the edges layer by layer; deep inside, where the side is only $7$, three more layers would leave just $1$ cell `[Added]`.
+The input is a $224\times224\times3$ image, from which the mean of each of the three RGB channels is first subtracted (zero-centering). Every $3\times3$ convolution has stride $1$ and padding $1$. With the formula of Week 6 KP06 the output side is $\lfloor(n+2\times1-3)/1\rfloor+1=n$: the **spatial size does not change**. Without padding $224$ would shrink to $222$, losing two cells per layer and discarding the information at the edges layer by layer; deep inside, where the side is only $7$, three more layers would leave just $1$ cell `[Added]`.
 
 降低解析度不靠卷積，靠池化：最大池化的窗寬是 $2$、步幅是 $2$，窗與窗不重疊，長寬各減半。這和 AlexNet 窗寬 $3$、步幅 $2$ 的重疊池化不同。每池化一次，邊長減半：$224\to112\to56\to28\to14\to7$，共五次 `[補充]`。
 
@@ -208,9 +208,9 @@ In this recipe, besides the "larger training set against overfitting" of Section
 
 The three figures and the numbers in the text all come from the same program: `lec07-kp03-figures.py`.
 
-**想深入**（選讀）`[補充]`：全連接層的第一層輸入是 $7\times7\times512=25{,}088$ 個數。第6週 KP10 的全域平均池化把每個通道取平均，只剩 $512$ 個數，這一層的權重就從 $102{,}760{,}448$ 降到 $512\times4096=2{,}097{,}152$，少了 $49$ 倍。後來的架構（例如 KP06 的 ResNet）就用這個辦法省掉大部分的全連接參數。
+**想深入**（選讀）`[補充]`：全連接層的第一層輸入是 $7\times7\times512=25{,}088$ 個數。第6週 KP09 的全域平均池化把每個通道取平均，只剩 $512$ 個數，這一層的權重就從 $102{,}760{,}448$ 降到 $512\times4096=2{,}097{,}152$，少了 $49$ 倍。後來的架構（例如 KP06 的 ResNet）就用這個辦法省掉大部分的全連接參數。
 
-**Going deeper** (optional) `[Added]`: the first fully connected layer takes $7\times7\times512=25{,}088$ numbers. The global average pooling of Week 6 KP10 averages each channel and leaves only $512$ numbers, so the weights of this layer drop from $102{,}760{,}448$ to $512\times4096=2{,}097{,}152$, $49$ times fewer. Later architectures (for example the ResNet of KP06) use this to save most of the fully connected parameters.
+**Going deeper** (optional) `[Added]`: the first fully connected layer takes $7\times7\times512=25{,}088$ numbers. The global average pooling of Week 6 KP09 averages each channel and leaves only $512$ numbers, so the weights of this layer drop from $102{,}760{,}448$ to $512\times4096=2{,}097{,}152$, $49$ times fewer. Later architectures (for example the ResNet of KP06) use this to save most of the fully connected parameters.
 
 **小練習**：
 
@@ -355,14 +355,14 @@ The four questions of the source are kept with all options. The source page mark
 **題後解析**：
 
 - **第 1 題，B。** $\lfloor(n+2-3)/1\rfloor+1=n$，尺寸不變（第 3 節）；縮小靠池化，A 錯。
-- **第 2 題，C。** $4096\to4096\to1000$（第 4 節）。D 是 LeNet 的 $120$-$84$-$10$（第6週 KP02）。
+- **第 2 題，C。** $4096\to4096\to1000$（第 4 節）。D 是 LeNet 的 $120$-$84$-$10$（第6週 KP10）。
 - **第 3 題，B。** 多數版本不用 LRN，因為實驗上沒有幫助（第 4 節）。
 - **第 4 題，B。** 窗寬 $2$、步幅 $2$，不重疊，長寬各減半（第 3 節）。A 是重疊池化，那是 AlexNet 的風格（窗 $3$、步幅 $2$）。
 
 **Explanations**:
 
 - **Question 1, B.** $\lfloor(n+2-3)/1\rfloor+1=n$, the size does not change (Section 3); shrinking is done by pooling, so A is wrong.
-- **Question 2, C.** $4096\to4096\to1000$ (Section 4). D is the $120$-$84$-$10$ of LeNet (Week 6 KP02).
+- **Question 2, C.** $4096\to4096\to1000$ (Section 4). D is the $120$-$84$-$10$ of LeNet (Week 6 KP10).
 - **Question 3, B.** Most versions do not use LRN, because it did not help in experiments (Section 4).
 - **Question 4, B.** Window $2$ and stride $2$, non-overlapping, halving height and width (Section 3). A is an overlapping pooling, which is the style of AlexNet (window $3$, stride $2$).
 
@@ -377,14 +377,14 @@ The four questions of the source are kept with all options. The source page mark
 This note is rewritten from KP13 of CCC-LNS IDL_115 Chapter 4 (web lecture); Chapter 4 of that material covers Weeks 6 and 7 of this course. The source was accessed on 2026-11-04. Content that the source does not contain is marked `[Added]` where it appears.
 
 - 來源說卷積層數依版本而異，沒有給具體數字，也沒有給任何公式。本講義補上感受野 $2L+1$、小核堆疊與單一大核的權重比較（$C=64$ 的例子）、$224\to7$ 的尺寸鏈，以及 VGG-16 的逐層權重（$13$ 層卷積、通道 $64$ 到 $512$）；這些都由程式算出，標示 `[補充]`。VGG-16 的總數 $138{,}357{,}544$（含偏置）與常見的引用值相符，作為驗算。
-- 補邊 $1$ 使尺寸不變是來源的設定（來源沒有講不補邊的後果），本講義用第6週 KP07 的公式驗算，並補上不補邊的對照。
+- 補邊 $1$ 使尺寸不變是來源的設定（來源沒有講不補邊的後果），本講義用第6週 KP06 的公式驗算，並補上不補邊的對照。
 - 來源說對策是「更大的訓練集，而非先把模型變瘦」。本講義保留，並補上 L2 權重衰減也是一道防線的說明。
 - 來源沒有說 VGG 的初始化方式，本講義也沒有編造，只說沿用 KP01 的想法。
 - 來源的標題寫「深度與感受野」，但沒有講感受野怎麼算；本講義補上，這是新增的核心內容。
 - 取捨：來源的小測驗四題原題保留，答案依來源頁面標示，並補上解析。
 
 - The source says the number of convolutional layers depends on the version, gives no concrete numbers and no formulas. This note adds the receptive field $2L+1$, the weight comparison of a stack of small kernels and one big kernel (the $C=64$ example), the size chain $224\to7$ and the weights of each layer of VGG-16 ($13$ convolutional layers, channels $64$ to $512$); these are computed by the program and marked `[Added]`. The total of VGG-16, $138{,}357{,}544$ with biases, agrees with the frequently cited value and serves as a check.
-- Padding $1$ keeping the size is the source's setting (the source does not discuss what happens without padding), and this note checks it with the formula of Week 6 KP07 and adds the comparison without padding.
+- Padding $1$ keeping the size is the source's setting (the source does not discuss what happens without padding), and this note checks it with the formula of Week 6 KP06 and adds the comparison without padding.
 - The source says the remedy is "a larger training set rather than slimming the model first". This note keeps it and adds that L2 weight decay is another line of defence.
 - The source does not say how VGG is initialized and this note does not invent it either, only saying that it follows the ideas of KP01.
 - The source's title says "depth and receptive field" but does not explain how to compute a receptive field; this note adds it, which is new core content.

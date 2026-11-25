@@ -8,9 +8,9 @@
 
 This is the fifth knowledge point (KP05) of Week 7, "Convolutional neural networks (2): classic architectures". AlexNet, VGG and Inception all take "the whole image in and one class out". If the task is "which class does each pixel belong to", pixel-wise predictions are needed; the output spatial size depends on padding and need not equal the input size. U-Net was designed for this, first for the segmentation of biomedical images.
 
-先備知識是第6週 KP07 的輸出尺寸公式與補邊、KP08 的最大池化，KP03 的 VGG（通道加倍、$3\times3$ 卷積），以及第2週的 softmax 與交叉熵。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec07-kp05-figures.py` 算出，可以自己重算。
+先備知識是第6週 KP06 的輸出尺寸公式與補邊、KP07 的最大池化，KP03 的 VGG（通道加倍、$3\times3$ 卷積），以及第2週的 softmax 與交叉熵。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec07-kp05-figures.py` 算出，可以自己重算。
 
-The prerequisites are the output-size formula and padding of Week 6 KP07, the max pooling of KP08, the VGG of KP03 (channels doubled, $3\times3$ convolutions), and the softmax and cross-entropy of Week 2. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp05-figures.py`, so you can recompute it yourself.
+The prerequisites are the output-size formula and padding of Week 6 KP06, the max pooling of KP07, the VGG of KP03 (channels doubled, $3\times3$ convolutions), and the softmax and cross-entropy of Week 2. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp05-figures.py`, so you can recompute it yourself.
 
 [下載本單元投影片](../slides/lec07-kp05-unet-infographic-voiced.jbd.json)
 

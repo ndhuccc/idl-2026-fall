@@ -1,26 +1,26 @@
-# 第6週 KP04：離散卷積與互相關（Discrete convolution and cross-correlation）
+# 第6週 KP03：離散卷積與互相關（Discrete convolution and cross-correlation）
 
 > 程度：大學生
 >
 > Level: Undergraduate (undergrad)
 
-本講義是第6週「卷積與池化」的第四個知識點（KP04）。KP03 說過，卷積層的第一站是拿一個小窗在影像上滑動、逐格相乘再加總。這一節要把這個動作寫成精確的算式。接著回答一個常讓人困惑的問題：課本上的卷積，和程式實際算的是同一件事嗎？
+本講義是第6週「卷積與池化」的第三個知識點（KP03）。KP02 說過，卷積層的第一站是拿一個小窗在影像上滑動、逐格相乘再加總。這一節要把這個動作寫成精確的算式。接著回答一個常讓人困惑的問題：課本上的卷積，和程式實際算的是同一件事嗎？
 
-This is the fourth knowledge point (KP04) of Week 6, "Convolution and pooling". KP03 said that the first stage of a convolutional layer slides a small window over the image, multiplies cell by cell and adds up. This section writes that action as an exact formula. It also answers a question that often confuses students: is the convolution of the textbook the same thing that the code computes?
+This is the third knowledge point (KP03) of Week 6, "Convolution and pooling". KP02 said that the first stage of a convolutional layer slides a small window over the image, multiplies cell by cell and adds up. This section writes that action as an exact formula. It also answers a question that often confuses students: is the convolution of the textbook the same thing that the code computes?
 
-先備知識只有 KP03 的「小窗滑動」與第3章的反向傳播。第一次出現的符號都會定義。所有數字都由 `assets/figures/src/lec06-kp04-figures.py` 算出，可以自己重算。
+先備知識只有 KP02 的「小窗滑動」與第3章的反向傳播。第一次出現的符號都會定義。所有數字都由 `assets/figures/src/lec06-kp03-figures.py` 算出，可以自己重算。
 
 內容依 CCC-LNS IDL_115 第4章 KP04 重新撰寫，該教材的第4章就是本課的第6週。來源的讀取日期是 2026-10-27。來源沒有的內容，都在出現的地方標示 `[補充]`。
 
-The only prerequisites are the sliding window of KP03 and the backpropagation of Chapter 3. Every symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp04-figures.py` and can be recomputed.
+The only prerequisites are the sliding window of KP02 and the backpropagation of Chapter 3. Every symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp03-figures.py` and can be recomputed.
 
 The text is rewritten from KP04 of CCC-LNS IDL_115 Chapter 4; Chapter 4 of that material is Week 6 of this course. The source was accessed on 2026-10-27. Content that the source does not contain is marked `[Added]` where it appears.
 
-[下載本單元投影片](../slides/lec06-kp04-discrete-conv-cross-correlation.jbd.json)
+[下載本單元投影片](../slides/lec06-kp03-discrete-conv-cross-correlation.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec06-kp04-discrete-conv-cross-correlation-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec06-kp03-discrete-conv-cross-correlation-en.jbd.json)
 
-## KP04 離散卷積與互相關（Discrete convolution and cross-correlation）
+## KP03 離散卷積與互相關（Discrete convolution and cross-correlation）
 
 ### 學習目標（Learning objectives）
 
@@ -50,17 +50,17 @@ All indices in this note start at $0$ `[Added]`.
 
 ### 1. 每個輸出是附近幾格的加權和（Each output is a weighted sum of nearby inputs）
 
-KP03 用 Prewitt 核找邊緣時，每個輸出只看它附近的 $3\times 3$ 格。把這件事一般化：每個輸出位置，等於「附近幾格輸入」乘上一組固定權重再加總。這組權重就叫**核**，也叫**濾波器**。
+KP02 用 Prewitt 核找邊緣時，每個輸出只看它附近的 $3\times 3$ 格。把這件事一般化：每個輸出位置，等於「附近幾格輸入」乘上一組固定權重再加總。這組權重就叫**核**，也叫**濾波器**。
 
-When KP03 found edges with the Prewitt kernel, each output looked only at the $3\times 3$ cells near it. Generalise this: each output position equals the nearby inputs times a fixed set of weights, added up. This set of weights is called the **kernel**, also called a **filter**.
+When KP02 found edges with the Prewitt kernel, each output looked only at the $3\times 3$ cells near it. Generalise this: each output position equals the nearby inputs times a fixed set of weights, added up. This set of weights is called the **kernel**, also called a **filter**.
 
 先看最小的例子。一維訊號 $x=[2,1,3]$ 有 3 格，核 $w=[4,5]$ 有 2 個權重。把核蓋在訊號上，對齊的格子相乘再相加，就得到一個輸出。核往右挪一格，再算一次。
 
 Start with the smallest example. The 1-D signal $x=[2,1,3]$ has 3 cells and the kernel $w=[4,5]$ has 2 weights. Lay the kernel on the signal, multiply the aligned cells and add: that gives one output. Move the kernel one cell to the right and compute again.
 
-核必須完整落在訊號範圍內，所以只有 $3-2+1=2$ 個位置可以算。這種輸出叫**有效輸出**。一般地，長 $n$ 的訊號配長 $k$ 的核，有效輸出有 $n-k+1$ 個數。KP07 會再談輸出大小。
+核必須完整落在訊號範圍內，所以只有 $3-2+1=2$ 個位置可以算。這種輸出叫**有效輸出**。一般地，長 $n$ 的訊號配長 $k$ 的核，有效輸出有 $n-k+1$ 個數。KP06 會再談輸出大小。
 
-The kernel must lie completely inside the signal, so only $3-2+1=2$ positions can be computed. This is called the **valid output**. In general, a signal of length $n$ with a kernel of length $k$ has $n-k+1$ valid outputs. KP07 returns to output sizes.
+The kernel must lie completely inside the signal, so only $3-2+1=2$ positions can be computed. This is called the **valid output**. In general, a signal of length $n$ with a kernel of length $k$ has $n-k+1$ valid outputs. KP06 returns to output sizes.
 
 問題來了：核要「照原樣」蓋上去，還是要先左右顛倒再蓋？兩種做法的數字不一樣。
 
@@ -138,11 +138,11 @@ $$
 
 The $t+k-1$ on the right is only a shift of numbering. By definition, the valid output of convolution is numbered from $t=k-1$, that of cross-correlation from $t=0$. In the main example $k=2$, so $t=1,2$ of convolution correspond to $t=0,1$ of cross-correlation.
 
-![三欄對照：左欄卷積把核翻成 5、4 後在 t 等於 1、2 滑過 2、1、3，得到 14、17；中欄互相關用原本的 4、5，在 t 等於 0、1 得到 13、19；右欄用翻轉核 5、4 做互相關，又得到 14、17](../assets/figures/lec06-kp04-flip-1d.png)
+![三欄對照：左欄卷積把核翻成 5、4 後在 t 等於 1、2 滑過 2、1、3，得到 14、17；中欄互相關用原本的 4、5，在 t 等於 0、1 得到 13、19；右欄用翻轉核 5、4 做互相關，又得到 14、17](../assets/figures/lec06-kp03-flip-1d.png)
 
-**圖說 `lec06-kp04-flip-1d`**：先看三欄頂端同一條訊號 $[2,1,3]$，再看核的兩種顏色：橘色是 $4$，藍色是 $5$。左欄藍色在前（核已翻轉），中欄橘色在前（沒有翻），右欄又是藍色在前。左欄照卷積的定義標成 $t=1,2$，另外兩欄標成 $t=0,1$。最後比較底部的輸出：左右兩欄都是 $[14,17]$，只有中欄不同。
+**圖說 `lec06-kp03-flip-1d`**：先看三欄頂端同一條訊號 $[2,1,3]$，再看核的兩種顏色：橘色是 $4$，藍色是 $5$。左欄藍色在前（核已翻轉），中欄橘色在前（沒有翻），右欄又是藍色在前。左欄照卷積的定義標成 $t=1,2$，另外兩欄標成 $t=0,1$。最後比較底部的輸出：左右兩欄都是 $[14,17]$，只有中欄不同。
 
-**Caption `lec06-kp04-flip-1d`**: First look at the same signal $[2,1,3]$ at the top of all three columns, then at the two colours of the kernel: orange is $4$ and blue is $5$. In the left column blue comes first (the kernel is flipped), in the middle orange comes first (no flip), and in the right column blue comes first again. The left column is labelled $t=1,2$ as in the definition of convolution; the other two are labelled $t=0,1$. Finally compare the outputs at the bottom: the left and right columns both give $[14,17]$; only the middle differs.
+**Caption `lec06-kp03-flip-1d`**: First look at the same signal $[2,1,3]$ at the top of all three columns, then at the two colours of the kernel: orange is $4$ and blue is $5$. In the left column blue comes first (the kernel is flipped), in the middle orange comes first (no flip), and in the right column blue comes first again. The left column is labelled $t=1,2$ as in the definition of convolution; the other two are labelled $t=0,1$. Finally compare the outputs at the bottom: the left and right columns both give $[14,17]$; only the middle differs.
 
 常見錯誤：以為「互相關」是另一種完全不同的運算。其實兩者只差核的方向，乘加的骨架相同。
 
@@ -170,11 +170,11 @@ $$
 
 In theory the sums run to infinity; in practice only the cells under the kernel are added, and everything outside the kernel counts as $0$. When the kernel is small (for example $3\times3$ or $5\times5$), this is one local multiply-and-add at each $(i,j)$.
 
-![左邊是數字 1 到 9 依序排列的 3 乘 3 核，箭頭標示轉 180 度，右邊變成 9 到 1，原本左上的 1 跑到右下](../assets/figures/lec06-kp04-rotate-180.png)
+![左邊是數字 1 到 9 依序排列的 3 乘 3 核，箭頭標示轉 180 度，右邊變成 9 到 1，原本左上的 1 跑到右下](../assets/figures/lec06-kp03-rotate-180.png)
 
-**圖說 `lec06-kp04-rotate-180`**：先看左邊的 $K$：$1$ 在左上，$9$ 在右下，顏色由淺到深。再看右邊的 $\tilde{K}$：深淺整個倒過來，$1$ 跑到右下，$9$ 跑到左上。底部的算式給出每一格的新位置。
+**圖說 `lec06-kp03-rotate-180`**：先看左邊的 $K$：$1$ 在左上，$9$ 在右下，顏色由淺到深。再看右邊的 $\tilde{K}$：深淺整個倒過來，$1$ 跑到右下，$9$ 跑到左上。底部的算式給出每一格的新位置。
 
-**Caption `lec06-kp04-rotate-180`**: First look at $K$ on the left: $1$ is at the top left, $9$ at the bottom right, and the colours go from light to dark. Then look at $\tilde{K}$ on the right: the shading is reversed, $1$ has moved to the bottom right and $9$ to the top left. The formula at the bottom gives the new position of every cell.
+**Caption `lec06-kp03-rotate-180`**: First look at $K$ on the left: $1$ is at the top left, $9$ at the bottom right, and the colours go from light to dark. Then look at $\tilde{K}$ on the right: the shading is reversed, $1$ has moved to the bottom right and $9$ to the top left. The formula at the bottom gives the new position of every cell.
 
 二維互相關則是不翻核，直接把核的左上角對齊影像的 $(i,j)$：
 
@@ -215,11 +215,11 @@ $$
 
 After all four positions, the two rows of the output are $[2,4]$ and $[2,2]$.
 
-![3 乘 3 影像右上的 2 乘 2 區塊被框起來，與 2 乘 2 單位矩陣核做互相關，輸出 2 乘 2 的右上格是 4](../assets/figures/lec06-kp04-2d-correlation.png)
+![3 乘 3 影像右上的 2 乘 2 區塊被框起來，與 2 乘 2 單位矩陣核做互相關，輸出 2 乘 2 的右上格是 4](../assets/figures/lec06-kp03-2d-correlation.png)
 
-**圖說 `lec06-kp04-2d-correlation`**：先看左邊影像 $I$ 框起來的四格 $2,0,1,2$，再看中間的核 $K$，只有對角線是 $1$。核蓋在框上時，對角的兩格 $2$ 與 $2$ 被保留，加起來是 $4$。最後看右邊輸出的框，正是 $s[0,1]=4$。
+**圖說 `lec06-kp03-2d-correlation`**：先看左邊影像 $I$ 框起來的四格 $2,0,1,2$，再看中間的核 $K$，只有對角線是 $1$。核蓋在框上時，對角的兩格 $2$ 與 $2$ 被保留，加起來是 $4$。最後看右邊輸出的框，正是 $s[0,1]=4$。
 
-**Caption `lec06-kp04-2d-correlation`**: First look at the four framed cells $2,0,1,2$ of the image $I$ on the left, then at the kernel $K$ in the middle, which has $1$ only on the diagonal. With the kernel on the frame, the two diagonal cells $2$ and $2$ are kept, and they add up to $4$. Finally look at the frame in the output on the right: it is exactly $s[0,1]=4$.
+**Caption `lec06-kp03-2d-correlation`**: First look at the four framed cells $2,0,1,2$ of the image $I$ on the left, then at the kernel $K$ in the middle, which has $1$ only on the diagonal. With the kernel on the frame, the two diagonal cells $2$ and $2$ are kept, and they add up to $4$. Finally look at the frame in the output on the right: it is exactly $s[0,1]=4$.
 
 這個例子有一個陷阱。單位矩陣轉 $180^\circ$ 之後還是自己，所以用卷積算也得到 $[2,4]$ 與 $[2,2]$。核轉 $180^\circ$ 後不變時，兩種運算一樣。要看出差別，必須換成轉了會變的核（見小練習第 3 題）。
 
@@ -247,10 +247,10 @@ Another analogy: whether you write with your left or right hand, enough practice
 
 The argument has one assumption: the numbers of the kernel must be learned. In the two cases below, flipping does matter:
 
-- 核是人手設計的固定濾波器，例如 KP03 的 Prewitt 核。翻轉後的 Prewitt 核正負號全反，偵測到的邊緣也會變號（見小練習第 2 題）。
+- 核是人手設計的固定濾波器，例如 KP02 的 Prewitt 核。翻轉後的 Prewitt 核正負號全反，偵測到的邊緣也會變號（見小練習第 2 題）。
 - 把一個框架訓練好的權重，搬到使用另一種慣例的程式裡 `[補充]`。這時核必須先轉 $180^\circ$，否則輸出會錯。
 
-- The kernel is a fixed, hand-designed filter, such as the Prewitt kernel of KP03. The flipped Prewitt kernel has every sign reversed, so the sign of every detected edge is reversed too (see Practice 2).
+- The kernel is a fixed, hand-designed filter, such as the Prewitt kernel of KP02. The flipped Prewitt kernel has every sign reversed, so the sign of every detected edge is reversed too (see Practice 2).
 - Weights trained in one framework are moved into code that uses the other convention `[Added]`. The kernel must then be rotated by $180^\circ$ first, otherwise the output is wrong.
 
 與實作的連結：PyTorch 的 `torch.nn.functional.conv2d` 與 TensorFlow 的 `tf.nn.conv2d` 名字叫卷積。但它們實際做的是互相關。論文的公式常寫 $*$，程式裡多半是 $\star$。
@@ -261,11 +261,11 @@ NumPy 的情形是 `[補充]`：`np.convolve` 會翻核，`np.correlate` 不翻�
 
 The case of NumPy is `[Added]`: `np.convolve` flips the kernel and `np.correlate` does not. The program of this note uses these two functions to check the numbers of Sections 2 and 3.
 
-到這裡，「滑著乘加」已經有了精確的算式。可是同一個乘加，也可以寫成一個巨大的全連接層。和全連接層比，卷積到底省下了什麼？這是 KP05 的主題：稀疏連接與權重共享。
+到這裡，「滑著乘加」已經有了精確的算式。可是同一個乘加，也可以寫成一個巨大的全連接層。和全連接層比，卷積到底省下了什麼？這是 KP04 的主題：稀疏連接與權重共享。
 
-At this point the sliding multiply-and-add has an exact formula. But the same multiply-and-add can also be written as one huge fully connected layer. Compared with a fully connected layer, what does convolution save? That is the topic of KP05: sparse connectivity and parameter sharing.
+At this point the sliding multiply-and-add has an exact formula. But the same multiply-and-add can also be written as one huge fully connected layer. Compared with a fully connected layer, what does convolution save? That is the topic of KP04: sparse connectivity and parameter sharing.
 
-### 本單元重點整理（KP04 summary）
+### 本單元重點整理（KP03 summary）
 
 **一句話重點**：理論上的卷積要先把核翻轉再滑動；深度學習程式通常不翻轉，實際算的是互相關。翻轉只是核的數字換個排列，兩種寫法的表達能力相同，而核是學出來的，所以不翻也能訓練。
 
@@ -307,19 +307,19 @@ The flipped kernel is $\tilde{K}[m,n]=K[k-1-m,\,k-1-n]$, and $(I\star\tilde{K})[
 
 **圖**：本單元有三張圖。
 
-- `lec06-kp04-flip-1d`：一維翻與不翻的對照。
-- `lec06-kp04-rotate-180`：二維核轉 $180^\circ$。
-- `lec06-kp04-2d-correlation`：二維互相關的一次乘加。
+- `lec06-kp03-flip-1d`：一維翻與不翻的對照。
+- `lec06-kp03-rotate-180`：二維核轉 $180^\circ$。
+- `lec06-kp03-2d-correlation`：二維互相關的一次乘加。
 
-三張圖與文中數字都由同一支程式產生：`lec06-kp04-figures.py`。
+三張圖與文中數字都由同一支程式產生：`lec06-kp03-figures.py`。
 
 **Figure**: Three figures in this unit.
 
-- `lec06-kp04-flip-1d`: flip versus no flip in 1-D.
-- `lec06-kp04-rotate-180`: rotating a 2-D kernel by $180^\circ$.
-- `lec06-kp04-2d-correlation`: one multiply-and-add of 2-D cross-correlation.
+- `lec06-kp03-flip-1d`: flip versus no flip in 1-D.
+- `lec06-kp03-rotate-180`: rotating a 2-D kernel by $180^\circ$.
+- `lec06-kp03-2d-correlation`: one multiply-and-add of 2-D cross-correlation.
 
-All three figures and every number in the text come from one program: `lec06-kp04-figures.py`.
+All three figures and every number in the text come from one program: `lec06-kp03-figures.py`.
 
 **想深入**（選讀，需要訊號與系統的背景）：卷積滿足交換律，$x*w=w*x$；互相關一般不滿足。卷積在傅立葉域對應逐點相乘，互相關則需要多一步複共軛。
 

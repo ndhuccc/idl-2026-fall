@@ -5775,7 +5775,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "二\n怎麼算",
+      "text": "二\n算式與性質",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -5876,7 +5876,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "三\n為什麼\n省參數",
+      "text": "三\n尺寸與\n偵測",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -5977,7 +5977,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "四\n池化",
+      "text": "四\n池化與先驗",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -6078,7 +6078,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "五\n先驗與\n延伸",
+      "text": "五\n組回\nLeNet",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -6145,7 +6145,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "KP01–KP02 → KP03–KP04、KP07 → KP05–KP06 → KP08–KP09 → KP10",
+      "text": "KP01–KP02 → KP03–KP05 → KP06–KP07 → KP08–KP09 → KP10",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -8205,7 +8205,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "LeNet：先卷積池化、最後才攤平；參數 $61{,}750$，全連接占 $95.8\\%$（自主學習）",
+      "text": "一層三站：卷積、偵測器、池化；核由反向傳播學出",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -9235,7 +9235,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "攤平丟掉鄰居；LeNet 示範更好的骨架。",
+      "text": "攤平丟掉鄰居；卷積層分三站處理。",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew5-1": {
@@ -9865,7 +9865,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "階段二：卷積怎麼算（KP03、KP04、KP07）",
+      "text": "階段二：算式與性質（KP03、KP04、KP05）",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew5-24": {
@@ -10109,7 +10109,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "三站：卷積、偵測器、池化；核由反向傳播學出",
+      "text": "理論要翻轉核；程式通常不翻（互相關），表達力相同",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -10239,7 +10239,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "理論要翻轉核；程式通常不翻（互相關），表達力相同",
+      "text": "稀疏連接（大部分是 $0$）+ 權重共享（同一組權重往右挪）",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -10304,7 +10304,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "KP07",
+      "text": "KP05",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -10369,7 +10369,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "輸出邊長 $\\lfloor\\frac{d-f+2p}{s}\\rfloor+1$；權重 $f\\times f\\times C_{\\mathrm{in}}\\times C_{\\mathrm{out}}$",
+      "text": "先平移再卷積 = 先卷積再平移（平移等變，不等於不變）",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -10503,7 +10503,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "卷積怎麼算？",
+      "text": "算式與性質？",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew5-44": {
@@ -11427,7 +11427,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "三站流水線、不翻轉的互相關、輸出邊長公式。",
+      "text": "不翻轉的互相關、稀疏與共享、平移等變。",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew6-1": {
@@ -12057,7 +12057,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "階段三：為什麼省參數（KP05、KP06）",
+      "text": "階段三：尺寸與偵測（KP06、KP07）",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew6-24": {
@@ -12145,7 +12145,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "承接階段二：算出來很省，為什麼？",
+      "text": "承接階段二：一層輸出多大？怎麼點亮特徵？",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew6-27": {
@@ -12236,7 +12236,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "KP05",
+      "text": "KP06",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -12301,7 +12301,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "稀疏連接（大部分是 $0$）+ 權重共享（同一組權重往右挪）",
+      "text": "輸出邊長 $\\lfloor\\frac{d-f+2p}{s}\\rfloor+1$；權重 $f\\times f\\times C_{\\mathrm{in}}\\times C_{\\mathrm{out}}$",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -12366,7 +12366,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "KP06",
+      "text": "KP07",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -12431,7 +12431,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "先平移再卷積 = 先卷積再平移（平移等變，不等於不變）",
+      "text": "偵測器逐格套活化函數；池化每窗留一個摘要，沒有權重",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -12496,7 +12496,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "共用同一個核，所以省權重、又等變",
+      "text": "先算尺寸與權重，再逐格偵測、池化摘要",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -12630,7 +12630,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "為什麼省參數？",
+      "text": "尺寸與偵測？",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew6-42": {
@@ -13461,7 +13461,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "權重矩陣大部分是 $0$，其餘各列是同一組權重往右挪。",
+      "text": "輸出邊長由四個旋鈕決定；池化每窗留一個摘要。",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew7-1": {
@@ -14091,7 +14091,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "階段四：池化做什麼（KP08、KP09）",
+      "text": "階段四：池化與先驗（KP08、KP09）",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew7-24": {
@@ -14179,7 +14179,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "承接階段三：卷積之後的兩站。",
+      "text": "承接階段三：池化帶來什麼？這樣設計為什麼有效？",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew7-27": {
@@ -14335,7 +14335,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "偵測器逐格套活化函數；池化每窗留一個摘要，沒有權重",
+      "text": "近似平移不變 + 下採樣；位置是答案時有害",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -14465,7 +14465,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "近似平移不變 + 下採樣；位置是答案時有害",
+      "text": "無限強先驗：遠距權重釘成 $0$；動態池化、SPP、GAP（自主學習）",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -14664,7 +14664,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "池化做什麼？",
+      "text": "池化與先驗？",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew7-42": {
@@ -15588,7 +15588,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "池化沒有權重，換來近似不變與更小的特徵圖。",
+      "text": "池化換來近似不變；這些限制都是押注稀疏的先驗。",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew8-1": {
@@ -16218,7 +16218,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "階段五：先驗與延伸（KP10）",
+      "text": "階段五：組回完整網路（KP10）",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew8-24": {
@@ -16306,7 +16306,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "承接階段四：回頭問，為什麼這樣設計會有效？",
+      "text": "承接階段四：零件都看過了，把它們裝回去。",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew8-27": {
@@ -16462,7 +16462,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "無限強先驗：遠距權重釘成 $0$（押注稀疏）",
+      "text": "LeNet：先卷積池化、最後才攤平（自主學習）",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -16527,7 +16527,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "動態池化\n範圍跟著內容",
+      "text": "卷積池化交替\n抽空間特徵",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -16592,7 +16592,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "空間金字塔池化\n固定箱子數",
+      "text": "最後才攤平\n全連接決策",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -16657,7 +16657,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "全域平均池化\n每張圖一個數",
+      "text": "尺寸口訣\n$28\\to14\\to10\\to5$",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -16722,7 +16722,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "$25{,}088{,}000\\to512{,}000$",
+      "text": "參數 $61{,}750$",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -16753,7 +16753,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "少 $49$ 倍",
+      "text": "全連接占 $95.8\\%$",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -16887,7 +16887,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "先驗與延伸！",
+      "text": "組回完整網路！",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew8-45": {
@@ -17718,7 +17718,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "遠距權重釘成 $0$；GAP 把 $25{,}088{,}000$ 降到 $512{,}000$。",
+      "text": "LeNet 參數 $61{,}750$，其中 $95.8\\%$ 在全連接層。",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew9-1": {
@@ -20767,7 +20767,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "先讀 KP01\n→ KP03 → KP04 → KP07\n為什麼、怎麼算",
+      "text": "先讀 KP01 → KP02\n→ KP03 → KP04 → KP05\n為什麼、算式與性質",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -20832,7 +20832,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "再讀 KP05 → KP06\n→ KP08 → KP09\n省參數、池化",
+      "text": "再讀 KP06 → KP07\n→ KP08\n尺寸、偵測、池化",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -20897,7 +20897,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "最後 KP10\n先驗與延伸",
+      "text": "最後 KP09 → KP10\n先驗、組回 LeNet",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -20962,7 +20962,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "KP02 LeNet：自主學習，隨時可讀",
+      "text": "KP09、KP10：自主學習",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -22020,7 +22020,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "KP01 → KP03 → KP04 → KP07 → KP05 → KP06 → KP08 → KP09 → KP10。",
+      "text": "依編號讀：KP01 → KP02 → … → KP09 → KP10。",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew11-1": {
@@ -23026,7 +23026,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "這些零件要怎麼疊成完整的網路？",
+      "text": "LeNet 之後，網路要怎麼疊得更深？",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -24082,7 +24082,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "第 7 週：LeNet、AlexNet、VGG、ResNet 怎麼把零件疊起來。",
+      "text": "第 7 週：AlexNet、VGG、Inception、ResNet 怎麼疊得更深。",
       "shapeKind": "rectangle"
     }
   },
@@ -24472,7 +24472,7 @@
       "id": "scene-u01-step-new3",
       "label": "KP00 · 3/11",
       "order": 9,
-      "speakerNotes": "先想想：五個階段！ 十個知識點分成五個階段：一、為什麼要卷積；二、卷積怎麼算。"
+      "speakerNotes": "先想想：五個階段！ 十個知識點分成五個階段：一、為什麼要卷積；二、卷積的算式與性質。"
     },
     {
       "durationMs": 900,
@@ -24494,7 +24494,7 @@
       "id": "scene-u01-p3b1",
       "label": "KP00 · 3/11 (1)",
       "order": 10,
-      "speakerNotes": "先想想：五個階段！ 十個知識點分成五個階段：一、為什麼要卷積；二、卷積怎麼算。",
+      "speakerNotes": "先想想：五個階段！ 十個知識點分成五個階段：一、為什麼要卷積；二、卷積的算式與性質。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -24552,7 +24552,7 @@
       "id": "scene-u01-p3b2",
       "label": "KP00 · 3/11 (2)",
       "order": 11,
-      "speakerNotes": "再看結果：三、為什麼參數這麼少；四、池化做什麼。",
+      "speakerNotes": "再看結果：三、輸出尺寸與偵測；四、池化與無限強先驗。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -24616,7 +24616,7 @@
       "id": "scene-u01-p3b3",
       "label": "KP00 · 3/11 (3)",
       "order": 12,
-      "speakerNotes": "最後說明：五、無限強先驗與三個延伸。順著箭頭讀，每一段回答一個小問題。",
+      "speakerNotes": "最後說明：五、用 LeNet 把零件組回完整的網路。順著箭頭讀，每一段回答一個小問題。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -24794,7 +24794,7 @@
       "id": "scene-u01-p4b3",
       "label": "KP00 · 4/11 (3)",
       "order": 16,
-      "speakerNotes": "最後說明：KP02：LeNet 把這些零件裝成骨架，前面卷積與池化，最後才攤平，參數總共六萬一千七百五十。",
+      "speakerNotes": "最後說明：KP02：一層卷積層有三站，卷積、偵測器、池化，核的數字由反向傳播學出來。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -24834,7 +24834,7 @@
       "id": "scene-u01-step-new5",
       "label": "KP00 · 5/11",
       "order": 17,
-      "speakerNotes": "先想想：卷積怎麼算？ KP03：一層卷積層有三站，卷積、偵測器、池化，核的數字由反向傳播學出來。"
+      "speakerNotes": "先想想：算式與性質？ KP03：理論的卷積要翻轉核，程式通常不翻，算的是互相關，兩者表達能力相同。"
     },
     {
       "durationMs": 900,
@@ -24856,7 +24856,7 @@
       "id": "scene-u01-p5b1",
       "label": "KP00 · 5/11 (1)",
       "order": 18,
-      "speakerNotes": "先想想：卷積怎麼算？ KP03：一層卷積層有三站，卷積、偵測器、池化，核的數字由反向傳播學出來。",
+      "speakerNotes": "先想想：算式與性質？ KP03：理論的卷積要翻轉核，程式通常不翻，算的是互相關，兩者表達能力相同。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -24908,7 +24908,7 @@
       "id": "scene-u01-p5b2",
       "label": "KP00 · 5/11 (2)",
       "order": 19,
-      "speakerNotes": "再看結果：KP04：理論的卷積要翻轉核，程式通常不翻，算的是互相關，兩者表達能力相同。",
+      "speakerNotes": "再看結果：KP04：卷積層是權重矩陣有兩個特徵的全連接層：大部分是零，是稀疏連接；其餘各列是同一組權重往右挪，是權重共享。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -24960,7 +24960,7 @@
       "id": "scene-u01-p5b3",
       "label": "KP00 · 5/11 (3)",
       "order": 20,
-      "speakerNotes": "最後說明：KP07：輸出邊長由四個旋鈕決定，權重個數是 f 乘 f 乘輸入通道乘輸出通道。",
+      "speakerNotes": "最後說明：KP05：因為所有位置共用同一個核，先平移再卷積等於先卷積再平移，這叫平移等變；它只在步幅為一時成立，也不等於平移不變。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25012,7 +25012,7 @@
       "id": "scene-u01-step-new6",
       "label": "KP00 · 6/11",
       "order": 21,
-      "speakerNotes": "先想想：為什麼省參數？ KP05：卷積層是權重矩陣有兩個特徵的全連接層：大部分是零，是稀疏連接；其餘各列是同一組權重往右挪，是權重共享。"
+      "speakerNotes": "先想想：尺寸與偵測？ KP06：輸出邊長由四個旋鈕決定，權重個數是 f 乘 f 乘輸入通道乘輸出通道。"
     },
     {
       "durationMs": 900,
@@ -25034,7 +25034,7 @@
       "id": "scene-u01-p6b1",
       "label": "KP00 · 6/11 (1)",
       "order": 22,
-      "speakerNotes": "先想想：為什麼省參數？ KP05：卷積層是權重矩陣有兩個特徵的全連接層：大部分是零，是稀疏連接；其餘各列是同一組權重往右挪，是權重共享。",
+      "speakerNotes": "先想想：尺寸與偵測？ KP06：輸出邊長由四個旋鈕決定，權重個數是 f 乘 f 乘輸入通道乘輸出通道。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25086,7 +25086,7 @@
       "id": "scene-u01-p6b2",
       "label": "KP00 · 6/11 (2)",
       "order": 23,
-      "speakerNotes": "再看結果：KP06：因為所有位置共用同一個核，先平移再卷積等於先卷積再平移，這叫平移等變。",
+      "speakerNotes": "再看結果：KP07：偵測器對每一格各套一次活化函數；池化把圖切成窗，每窗只留一個摘要，沒有可學習的權重。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25138,7 +25138,7 @@
       "id": "scene-u01-p6b3",
       "label": "KP00 · 6/11 (3)",
       "order": 24,
-      "speakerNotes": "最後說明：等變只在步幅為一時成立，對旋轉與縮放不成立，也不等於平移不變。",
+      "speakerNotes": "最後說明：先算出尺寸與權重，再逐格偵測、用池化留下摘要。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25178,7 +25178,7 @@
       "id": "scene-u01-step-new7",
       "label": "KP00 · 7/11",
       "order": 25,
-      "speakerNotes": "先想想：池化做什麼？ KP08：偵測器對每一格各套一次活化函數；池化把圖切成窗，每窗只留一個摘要，沒有可學習的權重。"
+      "speakerNotes": "先想想：池化與先驗？ KP08：輸入右移一格，最大池化的輸出常常一半不動，所以對局部小位移近似不變；特徵圖縮小，後面的格數與權重也減少，但位置本身是答案時反而有害。"
     },
     {
       "durationMs": 900,
@@ -25200,7 +25200,7 @@
       "id": "scene-u01-p7b1",
       "label": "KP00 · 7/11 (1)",
       "order": 26,
-      "speakerNotes": "先想想：池化做什麼？ KP08：偵測器對每一格各套一次活化函數；池化把圖切成窗，每窗只留一個摘要，沒有可學習的權重。",
+      "speakerNotes": "先想想：池化與先驗？ KP08：輸入右移一格，最大池化的輸出常常一半不動，所以對局部小位移近似不變；特徵圖縮小，後面的格數與權重也減少，但位置本身是答案時反而有害。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25252,7 +25252,7 @@
       "id": "scene-u01-p7b2",
       "label": "KP00 · 7/11 (2)",
       "order": 27,
-      "speakerNotes": "再看結果：KP09：輸入右移一格，最大池化的輸出常常一半不動，所以對局部小位移近似不變；特徵圖縮小，後面的格數與權重也減少。",
+      "speakerNotes": "再看結果：KP09：卷積與池化是無限強先驗，把遠距連線的權重釘成零，押注稀疏；延伸有動態池化、空間金字塔池化與全域平均池化。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25304,7 +25304,7 @@
       "id": "scene-u01-p7b3",
       "label": "KP00 · 7/11 (3)",
       "order": 28,
-      "speakerNotes": "最後說明：代價：位置本身是答案時，池化的不變性反而有害。",
+      "speakerNotes": "最後說明：卷積保留位置，是等變；池化模糊位置，是近似不變；這些限制都是押注稀疏的先驗。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25344,7 +25344,7 @@
       "id": "scene-u01-step-new8",
       "label": "KP00 · 8/11",
       "order": 29,
-      "speakerNotes": "先想想：先驗與延伸！ KP10：卷積與池化是無限強先驗，把遠距連線的權重在結構上釘成零，這是押注稀疏，讓模型泛化更好。"
+      "speakerNotes": "先想想：組回完整網路！ KP10：LeNet 把前面的零件裝回去，前面卷積與池化交替抽特徵，最後才攤平交給全連接層。"
     },
     {
       "durationMs": 900,
@@ -25366,7 +25366,7 @@
       "id": "scene-u01-p8b1",
       "label": "KP00 · 8/11 (1)",
       "order": 30,
-      "speakerNotes": "先想想：先驗與延伸！ KP10：卷積與池化是無限強先驗，把遠距連線的權重在結構上釘成零，這是押注稀疏，讓模型泛化更好。",
+      "speakerNotes": "先想想：組回完整網路！ KP10：LeNet 把前面的零件裝回去，前面卷積與池化交替抽特徵，最後才攤平交給全連接層。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25418,7 +25418,7 @@
       "id": "scene-u01-p8b2",
       "label": "KP00 · 8/11 (2)",
       "order": 31,
-      "speakerNotes": "再看結果：三個延伸：動態池化讓池化範圍跟著內容；空間金字塔池化用固定數量的箱子吃任意大小的圖；全域平均池化把每張特徵圖壓成一個數。",
+      "speakerNotes": "再看結果：尺寸口訣是二十八、十四、十、五，通道從一到六再到十六。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25482,7 +25482,7 @@
       "id": "scene-u01-p8b3",
       "label": "KP00 · 8/11 (3)",
       "order": 32,
-      "speakerNotes": "最後說明：例如七乘七乘五百一十二接一千類，全域平均池化把權重從二千五百零八萬八千降到五十一萬二千，少了四十九倍。",
+      "speakerNotes": "最後說明：參數總共六萬一千七百五十，其中百分之九十五點八在全連接層。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25712,7 +25712,7 @@
       "id": "scene-u01-step-new10",
       "label": "KP00 · 10/11",
       "order": 37,
-      "speakerNotes": "先想想：建議的閱讀順序！ 建議的順序：先讀 KP01，知道為什麼不攤平；再讀 KP03、KP04、KP07，學會一層卷積怎麼算。"
+      "speakerNotes": "先想想：建議的閱讀順序！ 依編號讀：先讀 KP01，知道為什麼不攤平；再讀 KP02 到 KP05，學會一層卷積怎麼算、有什麼性質。"
     },
     {
       "durationMs": 900,
@@ -25734,7 +25734,7 @@
       "id": "scene-u01-p10b1",
       "label": "KP00 · 10/11 (1)",
       "order": 38,
-      "speakerNotes": "先想想：建議的閱讀順序！ 建議的順序：先讀 KP01，知道為什麼不攤平；再讀 KP03、KP04、KP07，學會一層卷積怎麼算。",
+      "speakerNotes": "先想想：建議的閱讀順序！ 依編號讀：先讀 KP01，知道為什麼不攤平；再讀 KP02 到 KP05，學會一層卷積怎麼算、有什麼性質。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25774,7 +25774,7 @@
       "id": "scene-u01-p10b2",
       "label": "KP00 · 10/11 (2)",
       "order": 39,
-      "speakerNotes": "再看結果：接著讀 KP05 與 KP06，看它為什麼省參數、又平移等變；再讀 KP08 與 KP09，學池化。",
+      "speakerNotes": "再看結果：接著讀 KP06 到 KP08，學輸出尺寸、偵測器與池化。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25814,7 +25814,7 @@
       "id": "scene-u01-p10b3",
       "label": "KP00 · 10/11 (3)",
       "order": 40,
-      "speakerNotes": "最後說明：最後讀 KP10 的先驗與延伸。KP02 的 LeNet 是自主學習，把前面的零件裝回去，隨時都可以讀。",
+      "speakerNotes": "最後說明：最後讀 KP09 的先驗與延伸，再讀 KP10 的 LeNet，把前面的零件裝回去。KP09 與 KP10 是自主學習。",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25928,7 +25928,7 @@
       "id": "scene-u01-p11b2",
       "label": "KP00 · 11/11 (2)",
       "order": 43,
-      "speakerNotes": "再看結果：可是這些零件要怎麼疊成一個完整的網路？",
+      "speakerNotes": "再看結果：LeNet 之後，網路要怎麼疊得更深？",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25980,7 +25980,7 @@
       "id": "scene-u01-p11b3",
       "label": "KP00 · 11/11 (3)",
       "order": 44,
-      "speakerNotes": "最後說明：這是第七週的主題：經典架構，LeNet、AlexNet、VGG、ResNet。",
+      "speakerNotes": "最後說明：這是第七週的主題：經典架構，AlexNet、VGG、Inception、ResNet。",
       "reveal": {
         "timing": "after-camera",
         "enter": [

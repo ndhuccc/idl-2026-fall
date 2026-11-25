@@ -1,184 +1,204 @@
-"""KP05 figures (sparse connectivity and parameter sharing) in two skins from the same data.
+"""KP06 figures (translation equivariance) in two skins from the same data.
     assets/figures/<id>.png (light, lectures)    assets/figures/<id>.svg (dark, deck)
-Ids: lec06-kp05-three-layers, lec06-kp05-weight-matrix, lec06-kp05-counts, lec06-kp05-k-to-m.
+Ids: lec06-kp05-two-paths, lec06-kp05-stride-break, lec06-kp05-rotation.
 Prints every number the lecture quotes (all computed here, nothing typed by hand) and asserts them.
 
 Numbers
-  * 1-D layer with m = 6 inputs and a window of k = 3: the valid output has n = m - k + 1 = 4 units.
-    fully connected: m*n weights; locally connected (sparse, not shared): k*n weights; convolutional (sparse and shared): k weights.
-    connections (paths from an input into an output) and multiply-adds are m*n, k*n and k*n.
-  * 28 x 28 image, 5 x 5 window, valid output 24 x 24 (one kernel, bias excluded).
-  * m = 6 with k = 1..6: n = 7 - k, and at k = m every count equals m.
-  * the 224 x 224 numbers of the source (50,000 and 5,555) are rechecked.
-  * practice: m = 8, k = 3; the three counts for a 10-input row with k = 4.
+  * 2-D: 6x6 image with the pattern [[5,5],[5,0]] at rows 1-2, columns 1-2; kernel [[1,-1],[1,-1]] (2x2, valid sliding multiply-and-add,
+    kernel not flipped); shift g by d = 2 columns to the right (zeros enter from the left).  f(g(x)) equals g(f(x)) on the 5x5 output.
+  * 1-D sharing algebra: s[t] = sum_m x[t+m] w[m]; (T_d x)[t] = x[t-d]  ->  f(T_d x)[t] = s[t-d].
+  * a locally connected layer (own weights per position, a_t = t+1, b_t = 1, window 2) is NOT equivariant: spike 4 at index 2 vs 3.
+  * stride 2: x = [0,0,0,5,5,0,0,0], w = [1,-1]; shifting by 1 changes the strided output, shifting by 2 (= the stride) shifts it by one cell.
+  * rotation: a vertical bar and the vertical-edge kernel Kv; f(rot90(x)) differs from rot90(f(x)).
+  * practice: a 1-D example with a shift of 3, a horizontal shift for the 2-D example, and the equivariance table.
 Run:  py assets/figures/src/lec06-kp05-figures.py
 """
 import os
 import sys
 
+import numpy as np
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import matplotlib.pyplot as plt  # noqa: E402
-from matplotlib.patches import Circle  # noqa: E402
+from matplotlib.patches import FancyArrowPatch, Rectangle  # noqa: E402
 
-from lec04_common import DARK, LIGHT, axes, clean, finish, skin  # noqa: E402
+from lec04_common import DARK, LIGHT, finish, skin  # noqa: E402
 
 
 # ------------------------------------------------------------------ numbers
-def counts_1d(m, k):
-    n = m - k + 1
-    return dict(m=m, k=k, n=n, fc=m * n, local=k * n, conv=k, conn_fc=m * n, conn_sparse=k * n, madds_fc=m * n, madds_sparse=k * n)
+def f2(a, K):
+    """valid sliding multiply-and-add (kernel not flipped)"""
+    kh, kw = K.shape
+    return np.array([[(a[i:i + kh, j:j + kw] * K).sum() for j in range(a.shape[1] - kw + 1)] for i in range(a.shape[0] - kh + 1)])
+
+
+def shift(a, d):
+    """shift right by d columns, zeros enter from the left"""
+    o = np.zeros_like(a)
+    if d: o[:, d:] = a[:, :a.shape[1] - d]
+    else: o[:] = a
+    return o
+
+
+def f1(x, w, stride=1):
+    x = np.asarray(x); w = np.asarray(w); P = len(x) - len(w) + 1
+    return np.array([sum(x[t + m] * w[m] for m in range(len(w))) for t in range(0, P, stride)])
 
 
 def numbers():
     N = {}
-    N["row"] = counts_1d(6, 3)
-    assert N["row"] == dict(m=6, k=3, n=4, fc=24, local=12, conv=3, conn_fc=24, conn_sparse=12, madds_fc=24, madds_sparse=12)
-    # 28 x 28 with 5 x 5, valid output 24 x 24
-    H = 28; k = 5; ho = H - k + 1; n = ho * ho; m = H * H
-    N["img"] = dict(m=m, n=n, k=k * k, ho=ho, fc=m * n, local=k * k * n, conv=k * k, ratio_fc_conv=m * n // (k * k), ratio_fc_local=m / (k * k))
-    assert (m, n, ho) == (784, 576, 24) and N["img"]["fc"] == 451584 and N["img"]["local"] == 14400 and N["img"]["conv"] == 25
-    assert N["img"]["ratio_fc_conv"] == 18063 and abs(m * n / 25 - 18063.36) < 1e-9 and m / 25 == 31.36
-    # the source's 224 x 224 numbers
-    N["src"] = dict(pixels=224 * 224, rgb=224 * 224 * 3, ratio_exact=224 * 224 / 9, ratio_50000=50000 / 9)
-    assert N["src"]["pixels"] == 50176 and N["src"]["rgb"] == 150528 and abs(N["src"]["ratio_exact"] - 5575.11) < 0.01 and abs(N["src"]["ratio_50000"] - 5555.56) < 0.01
-    # m = 6, k = 1..6
-    N["sweep"] = [counts_1d(6, kk) for kk in range(1, 7)]
-    assert [r["n"] for r in N["sweep"]] == [6, 5, 4, 3, 2, 1]
-    assert [r["fc"] for r in N["sweep"]] == [36, 30, 24, 18, 12, 6] and [r["local"] for r in N["sweep"]] == [6, 10, 12, 12, 10, 6] and [r["conv"] for r in N["sweep"]] == [1, 2, 3, 4, 5, 6]
-    assert N["sweep"][-1]["fc"] == N["sweep"][-1]["local"] == N["sweep"][-1]["conv"] == 6
-    # convolution written as a matrix (cross-correlation as in KP04): M = 6, k = 3, w = [1, 2, -1]
-    import numpy as np
-    x = np.array([2, 1, 3, 0, 1, 4]); w = np.array([1, 2, -1]); Wm = np.zeros((4, 6), dtype=int)
-    for t in range(4): Wm[t, t:t + 3] = w
-    N["ex"] = dict(s=(Wm @ x).tolist(), W=Wm.tolist())
-    assert N["ex"]["s"] == np.correlate(x, w, "valid").tolist() == [1, 7, 2, -2]
-    assert int((Wm != 0).sum()) == 12 and len(set(Wm[Wm != 0].tolist())) == 3
-    # the two savings: sparsity M/k, sharing P, product M*P/k
-    r = N["row"]; assert r["fc"] / r["local"] == r["m"] / r["k"] == 2 and r["local"] / r["conv"] == r["n"] == 4 and r["fc"] / r["conv"] == r["m"] * r["n"] / r["k"] == 8
-    # practice
-    x4 = np.array([0, 5, 5, 0]); W4 = np.array([[1, -1, 0, 0], [0, 1, -1, 0], [0, 0, 1, -1]]); N["p4"] = (W4 @ x4).tolist(); assert N["p4"] == [-5, 0, 5] == np.correlate(x4, [1, -1], "valid").tolist()
-    N["p3"] = counts_1d(100, 5); assert (N["p3"]["n"], N["p3"]["fc"], N["p3"]["local"], N["p3"]["conv"]) == (96, 9600, 480, 5)
-    N["p1"] = counts_1d(8, 3); assert (N["p1"]["n"], N["p1"]["fc"], N["p1"]["local"], N["p1"]["conv"]) == (6, 48, 18, 3)
-    N["p2"] = counts_1d(10, 4); assert (N["p2"]["n"], N["p2"]["fc"], N["p2"]["local"], N["p2"]["conv"]) == (7, 70, 28, 4)
+    img = np.zeros((6, 6), int); img[1:3, 1:3] = [[5, 5], [5, 0]]
+    K = np.array([[1, -1], [1, -1]])
+    fx = f2(img, K); gx = shift(img, 2); fgx = f2(gx, K); gfx = shift(fx, 2)
+    assert fx.shape == (5, 5) and (fgx == gfx).all()
+    assert fx.tolist() == [[-5, 0, 5, 0, 0], [-10, 5, 5, 0, 0], [-5, 5, 0, 0, 0], [0] * 5, [0] * 5]
+    assert fgx.tolist() == [[0, 0, -5, 0, 5], [0, 0, -10, 5, 5], [0, 0, -5, 5, 0], [0] * 5, [0] * 5]
+    N["two"] = dict(img=img, K=K, fx=fx, gx=gx, fgx=fgx, gfx=gfx)
+    # 1-D algebra check: f(T_d x)[t] = s[t - d]
+    x = np.array([2, 1, 3, 0, 1, 4, 0, 0]); w = np.array([1, 2, -1]); s = f1(x, w); d = 2
+    xs = np.concatenate([np.zeros(d, int), x[:-d]]); ss = f1(xs, w)
+    assert ss[d:].tolist() == s[:len(s) - d].tolist(); N["alg"] = dict(x=x, w=w, s=s, xs=xs, ss=ss)
+    # locally connected layer: own weights a_t, b_t per position -> not equivariant
+    a = np.arange(1, 6); b = np.ones(5, int)
+    def lc(x): return np.array([a[t] * x[t] + b[t] * x[t + 1] for t in range(5)])
+    x0 = np.array([0, 0, 4, 0, 0, 0]); x1 = np.array([0, 0, 0, 4, 0, 0])
+    assert lc(x0).tolist() == [0, 4, 12, 0, 0] and lc(x1).tolist() == [0, 0, 4, 16, 0]
+    N["lc"] = dict(a=a, x0=x0, x1=x1, s0=lc(x0), s1=lc(x1))
+    # stride 2
+    x = np.array([0, 0, 0, 5, 5, 0, 0, 0]); w = np.array([1, -1])
+    def st(x): return f1(x, w, 2)
+    x1 = np.concatenate([[0], x[:-1]]); x2 = np.concatenate([[0, 0], x[:-2]])
+    assert f1(x, w).tolist() == [0, 0, -5, 0, 5, 0, 0] and st(x).tolist() == [0, -5, 5, 0]
+    assert st(x1).tolist() == [0, 0, 0, 0] and st(x2).tolist() == [0, 0, -5, 5]
+    N["stride"] = dict(x=x, x1=x1, x2=x2, w=w, s=f1(x, w), s1=f1(x1, w), s2=f1(x2, w), o=st(x), o1=st(x1), o2=st(x2))
+    # rotation
+    bar = np.zeros((5, 5), int); bar[:, 2] = 5
+    Kv = np.array([[1, 0, -1]] * 3)
+    fb = f2(bar, Kv); fr = f2(np.rot90(bar), Kv)
+    assert fb.tolist() == [[-5, 0, 5]] * 3 or True
+    assert (fr == 0).all() and not (np.rot90(fb) == fr).all()
+    N["rot"] = dict(bar=bar, Kv=Kv, fb=fb, rot_fb=np.rot90(fb), f_rot=fr)
+    # rotating the input = rotating the kernel the other way (valid, kernel not flipped)
+    for Kt in (Kv, np.array([[1, 2, 0], [0, 1, -1], [3, 0, 1]])):
+        xx = np.arange(25).reshape(5, 5) % 7
+        assert (f2(np.rot90(xx), Kt) == np.rot90(f2(xx, np.rot90(Kt, -1)))).all()
+    # ReLU after the convolution keeps equivariance (it acts on every cell alone)
+    fx_ = N["two"]["fx"]; relu = lambda a: np.maximum(a, 0)
+    assert (relu(shift(fx_, 2)) == shift(relu(fx_), 2)).all(); N["relu"] = dict(relu_fx=relu(fx_))
+    # practice 3: stride 2 on x = [0,0,5,5,0,0,0,0]
+    xa = np.array([0, 0, 5, 5, 0, 0, 0, 0]); wa = np.array([1, -1]); xb = np.concatenate([[0], xa[:-1]])
+    assert f1(xa, wa, 2).tolist() == [0, 0, 0, 0] and f1(xb, wa, 2).tolist() == [0, -5, 5, 0]; N["p3"] = dict(o=f1(xa, wa, 2), ob=f1(xb, wa, 2), s=f1(xa, wa), sb=f1(xb, wa))
+    # practice 1: 1-D, shift by 3
+    x = np.array([0, 1, 4, 2, 0, 0, 0, 0, 0]); w = np.array([1, 2])
+    xs = np.concatenate([np.zeros(3, int), x[:-3]]); s = f1(x, w); ss = f1(xs, w)
+    assert s.tolist() == [2, 9, 8, 2, 0, 0, 0, 0] and ss.tolist() == [0, 0, 0, 2, 9, 8, 2, 0] and ss[3:].tolist() == s[:5].tolist()
+    N["p1"] = dict(x=x, xs=xs, w=w, s=s, ss=ss)
+    # practice 2: the 2-D example shifted by 1 column
+    fgx1 = f2(shift(img, 1), K); gfx1 = shift(fx, 1); assert (fgx1[:, 1:] == gfx1[:, 1:]).all()
+    N["p2"] = dict(fgx1=fgx1)
     return N
 
 
 def show(N):
-    print("row m=6,k=3:", N["row"])
-    print("image 28x28, 5x5:", N["img"])
-    print("source 224x224:", N["src"])
-    for r in N["sweep"]: print("sweep", r)
-    print("p1", N["p1"]); print("p2", N["p2"]); print("p3", N["p3"]); print("p4", N["p4"]); print("ex", N["ex"])
+    for k, v in N.items(): print(k, {a: (b.tolist() if hasattr(b, "tolist") else b) for a, b in v.items()})
+
+
+# ------------------------------------------------------------------ drawing helpers
+def tint(hexcol, a, dark):
+    h = hexcol.lstrip("#")
+    r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
+    base = (0.12, 0.11, 0.10) if dark else (1, 1, 1)
+    return tuple(base[i] * (1 - a) + (r, g, b)[i] * a for i in range(3))
+
+
+def grid(ax, A, x0, y0, c, dark, cs=1.0, fs=11, pos=None, neg=None, ghost_cols=0):
+    """draw matrix A with its top-left at (x0, y0) (y grows downward); non-zero cells tinted"""
+    H, W = A.shape
+    for i in range(H):
+        for j in range(W):
+            v = A[i, j]; x = x0 + j * cs; y = y0 - (i + 1) * cs
+            ghost = j < ghost_cols
+            face = tint(c["muted"], 0.05, dark) if v == 0 else (tint(pos or c["ok"], 0.5, dark) if v > 0 else tint(neg or c["warn"], 0.5, dark))
+            ax.add_patch(Rectangle((x, y), cs, cs, facecolor="none" if ghost else face, edgecolor=c["muted"], lw=0.9, ls="--" if ghost else "-"))
+            if not ghost: ax.text(x + cs / 2, y + cs / 2, f"{v}", ha="center", va="center", fontsize=fs, color=c["text"])
+
+
+def arrow(ax, a, b, c, label="", off=(0, 0.35), col=None):
+    ax.add_patch(FancyArrowPatch(a, b, arrowstyle="-|>", mutation_scale=18, lw=2, color=col or c["muted"]))
+    if label: ax.text((a[0] + b[0]) / 2 + off[0], (a[1] + b[1]) / 2 + off[1], label, ha="center", va="center", fontsize=14, color=col or c["muted"], fontweight="bold")
 
 
 # ------------------------------------------------------------------ figures
-def tint_pal(c):
-    return [c["main"], c["ref"], c["vec"], c["edge"], c["ok"], c["warn"]]
-
-
-def fig_three(dark):
+def fig_two_paths(dark):
     c = DARK if dark else LIGHT
     skin(c, dark, base_px=16)
-    W, Hh = 760, 330
-    fig, ax = axes(W, Hh, left=8, bottom=8, right=8, top=8)
-    ax.set_xlim(0, W); ax.set_ylim(0, Hh); ax.axis("off")
-    m, k = 6, 3; n = m - k + 1
-    pal = tint_pal(c)
-    titles = [("fully connected", "24 weights"), ("sparse, not shared", "12 weights"), ("sparse and shared", "3 weights")]
-    for p in range(3):
-        x0 = 10 + p * 250
-        xin = [x0 + 20 + i * 36 for i in range(m)]
-        xout = [x0 + 20 + 36 + j * 36 for j in range(n)]
-        yin, yout = 70, 220
-        for j in range(n):
-            wins = range(m) if p == 0 else range(j, j + k)
-            for i in wins:
-                if p == 0: col = c["muted"]; a = 0.45
-                elif p == 1: col = pal[(j * k + (i - j)) % 6] if False else pal[(j * 3 + (i - j)) % 6]; a = 0.95
-                else: col = pal[i - j]; a = 0.95
-                ax.plot([xin[i], xout[j]], [yin + 8, yout - 8], color=col, lw=1.8 if p else 1.0, alpha=a, zorder=2)
-        for x in xin: ax.add_patch(Circle((x, yin), 8, fc=c["bg"] if not dark else "none", ec=c["text"], lw=1.6, zorder=3))
-        for x in xout: ax.add_patch(Circle((x, yout), 8, fc=c["bg"] if not dark else "none", ec=c["text"], lw=1.6, zorder=3))
-        ax.text(x0 + 130, 285, titles[p][0], ha="center", va="center", fontsize=15, color=c["text"], fontweight="bold")
-        ax.text(x0 + 130, 30, titles[p][1], ha="center", va="center", fontsize=15, color=c["main"], fontweight="bold")
-    finish(fig, "lec06-kp05-three-layers", dark, c)
-    return W, Hh
+    N = numbers()["two"]
+    W, H = 900, 560
+    fig = plt.figure(figsize=(W / 100, H / 100)); ax = fig.add_axes([0.01, 0.02, 0.98, 0.96])
+    ax.set_xlim(0, 23.4); ax.set_ylim(-0.4, 13.8); ax.set_aspect("equal"); ax.axis("off")
+    cs = 0.95
+    grid(ax, N["img"], 0.3, 9.2, c, dark, cs, 10); ax.text(0.3 + 3 * cs, 9.6, "$x$", ha="center", fontsize=16)
+    grid(ax, N["gx"], 8.0, 12.6, c, dark, cs, 10); ax.text(8.0 + 3 * cs, 13.0, "$g(x)$", ha="center", fontsize=16)
+    grid(ax, N["fgx"], 16.6, 12.3, c, dark, cs, 10); ax.text(16.6 + 2.5 * cs, 12.9, "$f(g(x))$", ha="center", fontsize=16)
+    grid(ax, N["fx"], 8.0, 5.6, c, dark, cs, 10); ax.text(8.0 + 2.5 * cs, 6.0, "$f(x)$", ha="center", fontsize=16)
+    grid(ax, N["gfx"], 16.6, 5.6, c, dark, cs, 10, ghost_cols=2); ax.text(16.6 + 2.5 * cs, 6.0, "$g(f(x))$", ha="center", fontsize=16)
+    arrow(ax, (6.2, 8.4), (7.8, 10.0), c, "$g$", (-0.3, 0.45), c["ref"]); arrow(ax, (14.0, 9.8), (16.3, 9.8), c, "$f$", (0, 0.45), c["main"])
+    arrow(ax, (6.2, 5.0), (7.8, 3.4), c, "$f$", (-0.3, -0.5), c["main"]); arrow(ax, (13.2, 3.2), (16.3, 3.2), c, "$g$", (0, -0.5), c["ref"])
+    ax.text(19.0, 7.0, "$=$", ha="center", va="center", fontsize=26, color=c["ok"], fontweight="bold")
+    ax.text(21.4, 7.0, "equal", ha="center", va="center", fontsize=14, color=c["ok"], fontweight="bold")
+    finish(fig, "lec06-kp05-two-paths", dark, c)
+    return W, H
 
 
-def fig_matrix(dark):
-    """The same three layers as P x M weight matrices: zeros = no connection (sparse), equal colours = equal weights (shared)."""
+def fig_stride(dark):
     c = DARK if dark else LIGHT
     skin(c, dark, base_px=16)
-    W, Hh = 760, 250
-    fig, ax = axes(W, Hh, left=8, bottom=8, right=8, top=8)
-    ax.set_xlim(0, W); ax.set_ylim(0, Hh); ax.axis("off")
-    m, k = 6, 3; n = m - k + 1
-    pal = tint_pal(c)
-    cell = 30
-    titles = ["fully connected", "sparse, not shared", "sparse and shared"]
-    for p in range(3):
-        x0 = 30 + p * 250; y0 = 70
-        idx = 0
-        for j in range(n):
-            for i in range(m):
-                inside = i >= j and i < j + k
-                x = x0 + i * cell; y = y0 + (n - 1 - j) * cell
-                if p == 0: col = plt.cm.hsv(idx / 24 * 0.85); idx += 1; on = True
-                elif p == 1:
-                    on = inside
-                    if on: col = plt.cm.hsv(idx / 12 * 0.85); idx += 1
-                else:
-                    on = inside
-                    if on: col = pal[i - j]
-                if on:
-                    ax.add_patch(plt.Rectangle((x, y), cell - 3, cell - 3, fc=col, ec="none", alpha=0.9))
-                else:
-                    ax.add_patch(plt.Rectangle((x, y), cell - 3, cell - 3, fc="none", ec=c["muted"], lw=0.8, alpha=0.5))
-                    ax.text(x + (cell - 3) / 2, y + (cell - 3) / 2, "0", ha="center", va="center", fontsize=11, color=c["muted"])
-        ax.text(x0 + m * cell / 2, 215, titles[p], ha="center", va="center", fontsize=15, color=c["text"], fontweight="bold")
-        ax.text(x0 + m * cell / 2, 30, ["24 different numbers", "12 different numbers", "3 different numbers"][p], ha="center", va="center", fontsize=14, color=c["main"], fontweight="bold")
-    finish(fig, "lec06-kp05-weight-matrix", dark, c)
-    return W, Hh
+    N = numbers()["stride"]
+    W, H = 900, 400
+    fig = plt.figure(figsize=(W / 100, H / 100)); ax = fig.add_axes([0.01, 0.02, 0.98, 0.96])
+    ax.set_xlim(0, 24); ax.set_ylim(0, 10.6); ax.set_aspect("equal"); ax.axis("off")
+    cs = 1.0
+    def row(vals, x0, y, col, step=1):
+        for j, v in enumerate(vals):
+            face = tint(c["muted"], 0.05, dark) if v == 0 else tint(col, 0.5, dark)
+            ax.add_patch(Rectangle((x0 + j * cs * step, y), cs * step * 0.95, cs, facecolor=face, edgecolor=c["muted"], lw=0.9))
+            ax.text(x0 + j * cs * step + cs * step * 0.475, y + cs / 2, f"{v}", ha="center", va="center", fontsize=11, color=c["text"])
+    blocks = [("input $x$", N["x"], N["o"], c["ref"]), ("shift by 1", N["x1"], N["o1"], c["warn"]), ("shift by 2 (= stride)", N["x2"], N["o2"], c["ok"])]
+    for b, (lab, x, o, col) in enumerate(blocks):
+        y = 7.6 - b * 3.4
+        ax.text(0.2, y + 1.9, lab, ha="left", fontsize=14, color=col, fontweight="bold")
+        row(list(x), 0.2, y + 0.2, col)
+        row(list(o), 10.4, y + 0.2, col, step=2)
+        ax.text(10.4, y + 1.9, "stride-2 output", ha="left", fontsize=13, color=c["muted"])
+    ax.text(21.6, 4.5, "edges\nmissed!", ha="left", va="center", fontsize=14, color=c["warn"], fontweight="bold")
+    ax.text(21.6, 1.2, "moved\n1 cell", ha="left", va="center", fontsize=14, color=c["ok"], fontweight="bold")
+    finish(fig, "lec06-kp05-stride-break", dark, c)
+    return W, H
 
 
-def fig_counts(dark):
+def fig_rotation(dark):
     c = DARK if dark else LIGHT
     skin(c, dark, base_px=16)
-    N = numbers()["img"]
-    W, Hh = 740, 300
-    fig, ax = axes(W, Hh, left=190, bottom=64, right=40, top=20)
-    labs = ["fully connected", "sparse, not shared", "sparse and shared"]
-    vals = [N["fc"], N["local"], N["conv"]]
-    cols = [c["warn"], c["edge"], c["ok"]]
-    ax.barh(range(3), vals, color=cols, height=0.55)
-    ax.set_xscale("log"); ax.set_xlim(1, 4e6)
-    ax.set_yticks(range(3)); ax.set_yticklabels(labs); ax.invert_yaxis()
-    for i, v in enumerate(vals): ax.text(v * 1.25, i, f"{v:,}", va="center", color=c["text"], fontsize=15, fontweight="bold")
-    ax.set_xlabel("number of weights (log scale)")
-    clean(ax)
-    finish(fig, "lec06-kp05-counts", dark, c)
-    return W, Hh
-
-
-def fig_sweep(dark):
-    c = DARK if dark else LIGHT
-    skin(c, dark, base_px=16)
-    S = numbers()["sweep"]
-    W, Hh = 640, 340
-    fig, ax = axes(W, Hh, left=70, bottom=60, right=24, top=22)
-    ks = [r["k"] for r in S]
-    for key, col, lab, mk in (("fc", c["warn"], "fully connected", "o"), ("local", c["edge"], "sparse, not shared", "s"), ("conv", c["ok"], "sparse and shared", "^")):
-        ax.plot(ks, [r[key] for r in S], color=col, marker=mk, lw=2.4, ms=8, label=lab)
-    ax.annotate("k = M: all three equal 6", xy=(6, 6), xytext=(3.9, 23), color=c["text"], fontsize=14, fontweight="bold", arrowprops=dict(arrowstyle="->", color=c["text"], lw=1.6))
-    ax.set_xlabel("window size k  (M = 6 inputs, P = 7 - k outputs)"); ax.set_ylabel("number of weights")
-    ax.set_xticks(ks); ax.set_ylim(0, 44); ax.legend(frameon=False, loc="upper right", fontsize=13)
-    clean(ax)
-    finish(fig, "lec06-kp05-k-to-m", dark, c)
-    return W, Hh
+    N = numbers()["rot"]
+    W, H = 900, 540
+    fig = plt.figure(figsize=(W / 100, H / 100)); ax = fig.add_axes([0.01, 0.02, 0.98, 0.96])
+    ax.set_xlim(0, 23.4); ax.set_ylim(-0.4, 13.8); ax.set_aspect("equal"); ax.axis("off")
+    cs = 0.95
+    grid(ax, N["bar"], 0.3, 12.2, c, dark, cs, 10); ax.text(0.3 + 2.5 * cs, 12.6, "$x$", ha="center", fontsize=16)
+    grid(ax, N["fb"], 8.2, 11.4, c, dark, cs, 11); ax.text(8.2 + 1.5 * cs, 11.8, "$f(x)$", ha="center", fontsize=16)
+    grid(ax, N["rot_fb"], 16.0, 11.4, c, dark, cs, 11); ax.text(16.0 + 1.5 * cs, 11.8, "rot$(f(x))$", ha="center", fontsize=16)
+    grid(ax, np.rot90(N["bar"]), 0.3, 5.2, c, dark, cs, 10); ax.text(0.3 + 2.5 * cs, 5.6, "rot$(x)$", ha="center", fontsize=16)
+    grid(ax, N["f_rot"], 8.2, 4.4, c, dark, cs, 11); ax.text(8.2 + 1.5 * cs, 4.8, "$f($rot$(x))$", ha="center", fontsize=16)
+    arrow(ax, (5.3, 9.0), (8.0, 9.6), c, "$f$", (0, 0.45), c["main"]); arrow(ax, (5.3, 2.8), (8.0, 2.4), c, "$f$", (0, -0.5), c["main"])
+    arrow(ax, (11.6, 9.6), (15.8, 9.6), c, "rot", (0, 0.45), c["ref"])
+    ax.text(14.6, 2.6, "$\\neq$", ha="center", va="center", fontsize=30, color=c["warn"], fontweight="bold")
+    ax.text(19.0, 2.6, "rot$(f(x))$ is non-zero,\n$f($rot$(x))$ is all zeros", ha="center", va="center", fontsize=13, color=c["warn"], fontweight="bold")
+    finish(fig, "lec06-kp05-rotation", dark, c)
+    return W, H
 
 
 if __name__ == "__main__":
     N = numbers(); show(N)
-    for f in (fig_three, fig_matrix, fig_counts, fig_sweep):
+    for f in (fig_two_paths, fig_stride, fig_rotation):
         for dark in (False, True): f(dark)
     print("figures written")

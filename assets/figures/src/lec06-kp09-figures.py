@@ -1,14 +1,15 @@
-"""KP09 figures (local invariance and downsampling of pooling) in two skins from the same data.
+"""KP10 figures (infinitely strong prior, dynamic pooling, SPP, global average pooling) in two skins from the same data.
     assets/figures/<id>.png (light, lectures)    assets/figures/<id>.svg (dark, deck)
-Ids: lec06-kp09-shift-pooling, lec06-kp09-downsampling.
+Ids: lec06-kp09-prior-matrices, lec06-kp09-gap.
 Prints every number the lecture quotes (all computed here, nothing typed by hand) and asserts them.
 
 Numbers
-  * the 4 x 4 map A and the same map shifted right by 1 (zero fill): every one of the 16 cells changes,
-    yet max pooling (2 x 2, stride 2) keeps 2 of 4 outputs ([4, 8, 9, 4] -> [4, 8, 5, 9]); average pooling changes all 4.
-  * shift by 2 (= stride): the pooled map is the old pooled map shifted by one output cell.
-  * downsampling: 224 x 224 x 64 -> 112 x 112 x 64 cells and the weights of a fully connected layer with 1000 outputs.
-  * practice: P1 a 1-D row, P2 weights before/after pooling, P3 shift by the stride, P4 two peaks at different places.
+  * an 8 x 8 weight matrix (8 outputs, 8 inputs): fully connected 64 free weights; a width-3 band has 22 cells that may be non-zero
+    and 42 cells fixed to 0 (an infinitely strong prior); sharing the band leaves 3 free weights.
+  * global average pooling: a 7 x 7 x 512 map -> 512 numbers; the weights of a 1000-class layer: 25,088,000 -> 512,000 (49 x fewer, 98 % less).
+  * spatial pyramid pooling with 4 x 4, 2 x 2, 1 x 1 bins: 21 bins per channel whatever the size of the map (13 x 13 or 10 x 10).
+  * dynamic pooling: k-means (k = 2) on 8 feature positions groups them by content, a fixed grid of width 4 cuts the first group in two (maxima 8, 6, 9 against 8, 9).
+  * practice: P1 band counts, P2 GAP weights, P3 GAP of three 2 x 2 maps, P4 SPP bin sizes.
 Run:  py assets/figures/src/lec06-kp09-figures.py
 """
 import os
@@ -18,46 +19,59 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import matplotlib.pyplot as plt  # noqa: E402
-from matplotlib.patches import FancyArrowPatch, Rectangle  # noqa: E402
+from matplotlib.patches import Rectangle  # noqa: E402
 
 from lec04_common import DARK, LIGHT, finish, skin  # noqa: E402
 
-A = np.array([[1, 3, 8, 2], [4, 2, 1, 6], [5, 7, 0, 1], [2, 9, 4, 3]])
+
+def band(n, k):
+    M = np.zeros((n, n), int)
+    for i in range(n):
+        for j in range(n):
+            if abs(i - j) <= k // 2: M[i, j] = 1
+    return M
 
 
-def shift(M, d):
-    out = np.zeros_like(M)
-    if d == 0: return M.copy()
-    out[:, d:] = M[:, :-d]; return out
+def bins(n, b):
+    """window and stride of one SPP level with b bins on a map of side n."""
+    win = int(np.ceil(n / b)); st = n // b
+    return win, st
 
 
-def pool(M, f=np.max, w=2, s=2):
-    n = (M.shape[0] - w) // s + 1
-    return np.array([[f(M[i * s:i * s + w, j * s:j * s + w]) for j in range(n)] for i in range(n)])
+def kmeans1d(x, k=2, it=20):
+    x = np.asarray(x, float); c = np.array([x.min(), x.max()], float)
+    for _ in range(it):
+        lab = np.abs(x[:, None] - c[None]).argmin(1); c = np.array([x[lab == j].mean() for j in range(k)])
+    return lab
 
 
 def numbers():
     N = {}
-    B = shift(A, 1); assert B.tolist() == [[0, 1, 3, 8], [0, 4, 2, 1], [0, 5, 7, 0], [0, 2, 9, 4]]
-    assert int((A != B).sum()) == 16
-    pa, pb = pool(A), pool(B); assert pa.tolist() == [[4, 8], [9, 4]] and pb.tolist() == [[4, 8], [5, 9]]
-    assert int((pa == pb).sum()) == 2
-    aa, ab = pool(A, np.mean), pool(B, np.mean); assert aa.tolist() == [[2.5, 4.25], [5.75, 2.0]] and ab.tolist() == [[1.25, 3.5], [1.75, 5.0]] and int((aa == ab).sum()) == 0
-    C = shift(A, 2); pc = pool(C); assert pc.tolist() == [[0, 4], [0, 9]] or True
-    N["A"], N["B"], N["C"] = A, B, C; N["pool"] = dict(a=pa, b=pb, c=pc, avg_a=aa, avg_b=ab)
-    # shifting by the stride (2): max pooled map is the old pooled map moved one output cell right
-    assert np.array_equal(pc[:, 1:], pa[:, :-1]) and (pc[:, 0] == 0).all()
-    # downsampling
-    c0, c1 = 224 * 224 * 64, 112 * 112 * 64; assert (c0, c1, c0 // c1) == (3211264, 802816, 4)
-    assert (c0 * 1000, c1 * 1000) == (3211264000, 802816000); N["ds"] = dict(c0=c0, c1=c1, w0=c0 * 1000, w1=c1 * 1000)
+    B8 = band(8, 3); assert int(B8.sum()) == 22 and int((B8 == 0).sum()) == 42 and 8 * 8 == 64
+    assert int(band(10, 3).sum()) == 28 and int((band(10, 3) == 0).sum()) == 72
+    N["band"] = B8
+    flat, gap = 7 * 7 * 512, 512; assert (flat, gap) == (25088, 512) and (flat * 1000, gap * 1000) == (25088000, 512000) and flat // gap == 49
+    assert round(100 * (1 - gap / flat), 1) == 98.0
+    N["gap"] = dict(flat=flat, gap=gap, w_flat=flat * 1000, w_gap=gap * 1000)
+    # SPP
+    spp = {}
+    for n in (13, 10):
+        lv = {}
+        for b in (4, 2, 1): w, s = bins(n, b); lv[b] = (w, s, [(i * s, i * s + w - 1) for i in range(b)])
+        spp[n] = lv
+    assert spp[13][4][:2] == (4, 3) and spp[13][2][:2] == (7, 6) and spp[13][1][:2] == (13, 13) and spp[10][4][:2] == (3, 2) and spp[10][2][:2] == (5, 5) and spp[10][1][:2] == (10, 10)
+    assert 16 + 4 + 1 == 21 and 21 * 256 == 5376
+    N["spp"] = spp
+    # dynamic pooling
+    pos = np.array([2, 3, 4, 5, 6, 7, 20, 21]); val = np.array([3, 8, 1, 6, 2, 5, 4, 9]); lab = kmeans1d(pos)
+    grid = {}
+    for p, v in zip(pos, val): grid.setdefault(int(p) // 4, []).append(int(v))
+    km = {int(j): [int(v) for v, l in zip(val, lab) if l == j] for j in (0, 1)}
+    assert sorted(len(v) for v in km.values()) == [2, 6] and len(grid) == 3 and [max(v) for _, v in sorted(grid.items())] == [8, 6, 9] and sorted(max(v) for v in km.values()) == [8, 9]
+    N["dyn"] = dict(pos=pos, val=val, lab=lab, grid=grid, km=km)
     # practice
-    x = np.array([0, 5, 4, 0, 9, 1, 2, 0]); xs = np.concatenate([[0], x[:-1]]); p = lambda v, f=np.max: np.array([f(v[i:i + 2]) for i in range(0, 8, 2)])
-    assert p(x).tolist() == [5, 4, 9, 2] and p(xs).tolist() == [0, 5, 9, 2] and p(x, np.mean).tolist() == [2.5, 2.0, 5.0, 1.0] and p(xs, np.mean).tolist() == [0.0, 4.5, 4.5, 1.5]
-    x2 = np.concatenate([[0, 0], x[:-2]]); assert x2.tolist() == [0, 0, 0, 5, 4, 0, 9, 1] and p(x2).tolist() == [0, 5, 4, 9]
-    N["p1"] = dict(x=x, xs=xs, a=p(x), b=p(xs), x2=x2, c=p(x2))
-    assert 56 * 56 * 128 * 1000 == 401408000 and 28 * 28 * 128 * 1000 == 100352000
-    H1 = np.zeros((4, 4), int); H1[0, 2] = 9; H2 = np.zeros((4, 4), int); H2[1, 3] = 9; assert pool(H1).tolist() == pool(H2).tolist() == [[0, 9], [0, 0]]
-    N["p4"] = dict(H1=H1, H2=H2, out=pool(H1))
+    assert int(band(8, 3).sum()) == 22 and int(band(10, 3).sum()) == 28
+    maps = [np.array([[1, 3], [5, 7]]), np.array([[0, 2], [2, 0]]), np.array([[4, 4], [4, 4]])]; g = [float(m.mean()) for m in maps]; assert g == [4.0, 1.0, 4.0]; N["p3"] = g
     return N
 
 
@@ -71,50 +85,42 @@ def tint(hexcol, a, dark):
     return tuple(base[i] * (1 - a) + (r, g, b)[i] * a for i in range(3))
 
 
-def box(ax, x, y, v, face, c, w=1.0, h=1.0, fs=12, edge=None, lw=1.0):
-    ax.add_patch(Rectangle((x, y), w, h, facecolor=face, edgecolor=edge or c["muted"], lw=lw))
-    if v is not None: ax.text(x + w / 2, y + h / 2, v if isinstance(v, str) else f"{v:g}", ha="center", va="center", fontsize=fs, color=c["text"])
-
-
-def fig_shift(dark):
+def fig_prior(dark):
     c = DARK if dark else LIGHT
-    skin(c, dark, base_px=16); N = numbers(); W, H = 940, 500
+    skin(c, dark, base_px=16); N = numbers(); W, H = 940, 400; B = N["band"]
     fig = plt.figure(figsize=(W / 100, H / 100)); ax = fig.add_axes([0.01, 0.02, 0.98, 0.96])
-    ax.set_xlim(0, 24); ax.set_ylim(0, 12.6); ax.set_aspect("equal"); ax.axis("off")
-    qc = [c["ref"], c["main"], c["vec"], c["ok"]]
-    pa, pb = N["pool"]["a"], N["pool"]["b"]
-    for k, (M, P_, ttl, x0) in enumerate(((N["A"], pa, "original", 0.4), (N["B"], pb, "shifted right by 1", 13.0))):
-        ax.text(x0 + 2.6, 12.0, ttl, ha="center", fontsize=13, color=c["text"], fontweight="bold")
-        for i in range(4):
-            for j in range(4): box(ax, x0 + j * 1.3, 11.2 - (i + 1) * 1.3, int(M[i, j]), tint(qc[(i // 2) * 2 + j // 2], 0.3, dark), c, 1.25, 1.25, 13)
-        ax.text(x0 + 2.6, 5.4, "max pooling", ha="center", fontsize=12, color=c["muted"])
-        for i in range(2):
-            for j in range(2):
-                same = pa[i, j] == pb[i, j]
-                box(ax, x0 + 0.6 + j * 2.0, 4.6 - (i + 1) * 1.5, int(P_[i, j]), tint(qc[i * 2 + j], 0.45, dark), c, 1.9, 1.4, 15, edge=c["ok"] if same else c["warn"], lw=3.0 if same else 1.0)
-    ax.add_patch(FancyArrowPatch((8.4, 8.0), (11.8, 8.0), arrowstyle="-|>", mutation_scale=18, lw=2, color=c["muted"])); ax.text(10.1, 8.5, "shift", ha="center", fontsize=12, color=c["muted"])
-    ax.text(12.0, 0.2, "green frame: output unchanged (4 and 8)", ha="center", fontsize=12, color=c["ok"], fontweight="bold")
-    finish(fig, "lec06-kp09-shift-pooling", dark, c)
+    ax.set_xlim(0, 24); ax.set_ylim(0, 10.2); ax.set_aspect("equal"); ax.axis("off")
+    rng = np.random.default_rng(3)
+    for k, (ttl, col) in enumerate((("weak prior\n(fully connected)", c["ref"]), ("strong prior\n(weights pushed to 0)", c["main"]), ("infinitely strong prior\n(fixed to 0)", c["ok"]))):
+        x0 = 0.4 + k * 8.0; ax.text(x0 + 3.2, 9.5, ttl, ha="center", va="center", fontsize=12, color=col, fontweight="bold")
+        for i in range(8):
+            for j in range(8):
+                if k == 0: a = 0.45
+                elif k == 1: a = 0.12 + 0.1 * rng.random()
+                else: a = 0.6 if B[i, j] else 0.0
+                ax.add_patch(Rectangle((x0 + j * 0.8, 7.9 - (i + 1) * 0.8 + 0.4), 0.78, 0.78, facecolor=tint(col, a, dark) if a else tint(c["muted"], 0.05, dark), edgecolor=c["muted"], lw=0.5))
+    ax.text(3.6, 0.5, "64 free weights", ha="center", fontsize=12, color=c["ref"]); ax.text(11.6, 0.5, "64 weights, small but free", ha="center", fontsize=12, color=c["main"]); ax.text(19.6, 0.5, "22 free, 42 fixed to $0$", ha="center", fontsize=12, color=c["ok"])
+    finish(fig, "lec06-kp09-prior-matrices", dark, c)
     return W, H
 
 
-def fig_down(dark):
+def fig_gap(dark):
     c = DARK if dark else LIGHT
-    skin(c, dark, base_px=16); N = numbers()["ds"]; W, H = 900, 380
+    skin(c, dark, base_px=16); N = numbers()["gap"]; W, H = 900, 380
     fig = plt.figure(figsize=(W / 100, H / 100)); ax = fig.add_axes([0.01, 0.02, 0.98, 0.96])
     ax.set_xlim(0, 22); ax.set_ylim(0, 9.5); ax.set_aspect("equal"); ax.axis("off")
-    for r, (nm, cells, wts, col, ln) in enumerate((("$224\\times224\\times64$", N["c0"], N["w0"], c["warn"], 17.0), ("$112\\times112\\times64$", N["c1"], N["w1"], c["ok"], 4.25))):
+    for r, (nm, wts, col, ln) in enumerate((("flatten $7\\times7\\times512=25{,}088$ numbers", N["w_flat"], c["warn"], 17.0), ("global average pooling: $512$ numbers", N["w_gap"], c["ok"], 0.35))):
         y = 6.2 - r * 3.6
-        ax.text(0.0, y + 1.6, nm + f": {cells:,} cells", ha="left", fontsize=13, color=col, fontweight="bold")
-        ax.add_patch(Rectangle((0.0, y), ln, 1.2, facecolor=tint(col, 0.5, dark), edgecolor=col, lw=1.5))
-        ax.text(0.0, y - 0.7, f"FC layer with 1000 outputs: {wts:,} weights", ha="left", va="center", fontsize=12, color=c["text"])
-    ax.text(0.0, 0.4, "pooling $2\\times2$, stride 2: a quarter of the cells, a quarter of the weights", ha="left", fontsize=12, color=c["muted"])
-    finish(fig, "lec06-kp09-downsampling", dark, c)
+        ax.text(0.0, y + 1.6, nm, ha="left", fontsize=13, color=col, fontweight="bold")
+        ax.add_patch(Rectangle((0.0, y), max(ln, 0.12), 1.2, facecolor=tint(col, 0.5, dark), edgecolor=col, lw=1.5))
+        ax.text(0.0, y - 0.7, f"1000-class layer: {wts:,} weights", ha="left", va="center", fontsize=12, color=c["text"])
+    ax.text(0.0, 0.4, "$49\\times$ fewer weights, $98\\%$ less", ha="left", fontsize=12, color=c["muted"])
+    finish(fig, "lec06-kp09-gap", dark, c)
     return W, H
 
 
 if __name__ == "__main__":
     N = numbers(); show(N)
-    for f in (fig_shift, fig_down):
+    for f in (fig_prior, fig_gap):
         for dark in (False, True): f(dark)
     print("figures written")

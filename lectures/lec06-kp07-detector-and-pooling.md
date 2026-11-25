@@ -1,22 +1,22 @@
-# 第6週 KP08：偵測器與池化（Detector and pooling）
+# 第6週 KP07：偵測器與池化（Detector and pooling）
 
 > 程度：大學生
 >
 > Level: Undergraduate (undergrad)
 
-本講義是第6週「卷積與池化」的第八個知識點（KP08）。KP03 把一層卷積層拆成三站：卷積、偵測器、池化，並用 $\mathrm{ReLU}$ 和 $2\times2$ 最大池化走過一個小例子。這一節把後兩站各自講清楚：偵測器到底做什麼，池化有哪幾種摘要方式，以及池化的窗、步幅、通道要怎麼設定。
+本講義是第6週「卷積與池化」的第七個知識點（KP07）。KP02 把一層卷積層拆成三站：卷積、偵測器、池化，並用 $\mathrm{ReLU}$ 和 $2\times2$ 最大池化走過一個小例子。這一節把後兩站各自講清楚：偵測器到底做什麼，池化有哪幾種摘要方式，以及池化的窗、步幅、通道要怎麼設定。
 
-This is the eighth knowledge point (KP08) of Week 6, "Convolution and pooling". KP03 split a convolutional layer into three stages, convolution, detector and pooling, and walked through a small example with $\mathrm{ReLU}$ and $2\times2$ max pooling. This note explains the last two stages one by one: what exactly the detector does, which kinds of summary pooling has, and how to set the window, the stride and the channels of pooling.
+This is the seventh knowledge point (KP07) of Week 6, "Convolution and pooling". KP02 split a convolutional layer into three stages, convolution, detector and pooling, and walked through a small example with $\mathrm{ReLU}$ and $2\times2$ max pooling. This note explains the last two stages one by one: what exactly the detector does, which kinds of summary pooling has, and how to set the window, the stride and the channels of pooling.
 
-先備知識是 KP03 的三站、KP07 的輸出邊長公式與第2週的活化函數。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp08-figures.py` 算出，可以自己重算。
+先備知識是 KP02 的三站、KP06 的輸出邊長公式與第2週的活化函數。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp07-figures.py` 算出，可以自己重算。
 
-The prerequisites are the three stages of KP03, the output-side formula of KP07 and the activation functions of Week 2. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp08-figures.py`, so you can recompute it yourself.
+The prerequisites are the three stages of KP02, the output-side formula of KP06 and the activation functions of Week 2. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp07-figures.py`, so you can recompute it yourself.
 
-[下載本單元投影片](../slides/lec06-kp08-detector-and-pooling.jbd.json)
+[下載本單元投影片](../slides/lec06-kp07-detector-and-pooling.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec06-kp08-detector-and-pooling-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec06-kp07-detector-and-pooling-en.jbd.json)
 
-## KP08 偵測器與池化（Detector and pooling）
+## KP07 偵測器與池化（Detector and pooling）
 
 ### 學習目標（Learning objectives）
 
@@ -51,13 +51,13 @@ $r[i,j]=\sigma\bigl(s[i,j]\bigr)$
 
 In biological vision and signal processing a "detector" is a unit that gives a strong signal when its target appears and stays silent otherwise. The convolution stage only does linear multiply-adds, and its output has both signs. The detector stage applies the activation function $\sigma$ to **every cell** of the feature map $s$, once each, and gives $r$. This note uses the $\mathrm{ReLU}(a)=\max(0,a)$ of Week 2: when the pattern in the window matches the kernel and gives a large positive number, the cell is "lit"; when it does not match and gives a negative number, it is cut to $0$. Every cell is computed on its own, looking neither at neighbours nor at position.
 
-用 KP03 的主例子：特徵圖第 $0$ 列是 $[-6,-6,-4,-2]$，套上 $\mathrm{ReLU}$ 後全變 $0$，其餘不變。偵測器因此只留下「上亮下暗」的下緣。
+用 KP02 的主例子：特徵圖第 $0$ 列是 $[-6,-6,-4,-2]$，套上 $\mathrm{ReLU}$ 後全變 $0$，其餘不變。偵測器因此只留下「上亮下暗」的下緣。
 
-With the main example of KP03: row $0$ of the feature map is $[-6,-6,-4,-2]$ and becomes all $0$ after $\mathrm{ReLU}$, while the rest is unchanged. The detector thus keeps only the bottom edge, bright above and dark below.
+With the main example of KP02: row $0$ of the feature map is $[-6,-6,-4,-2]$ and becomes all $0$ after $\mathrm{ReLU}$, while the rest is unchanged. The detector thus keeps only the bottom edge, bright above and dark below.
 
-偵測器帶來非線性。KP03 已經算過：兩層卷積中間沒有偵測器，只等於一層卷積。
+偵測器帶來非線性。KP02 已經算過：兩層卷積中間沒有偵測器，只等於一層卷積。
 
-The detector brings nonlinearity. KP03 already showed that two convolutions with no detector in between equal one convolution.
+The detector brings nonlinearity. KP02 already showed that two convolutions with no detector in between equal one convolution.
 
 常見錯誤：以為偵測器是另一個要學的層。它沒有可學習的權重，只是一個固定的函數（在本講義是 $\mathrm{ReLU}$）。要學的是前一站的核。
 
@@ -79,9 +79,9 @@ Pooling cuts $r$ into small windows and **keeps only one summary number per wind
 - **Median pooling**: sort the numbers of the window and take the middle one (the mean of the middle two if the count is even). It is not afraid of individual extreme values, but sorting is more work `[Added]`.
 - **$\ell_2$ pooling**: the square root of the sum of squares $\sqrt{\sum x^2}$, reflecting the total energy of the window.
 
-池化和卷積最關鍵的差別：池化是純粹的統計運算，**沒有任何可學習的權重**，也不用反向傳播去調整它的數字。KP03 的 $y[u,v]=\max\{r[2u,2v],\,r[2u,2v+1],\,r[2u+1,2v],\,r[2u+1,2v+1]\}$ 就是步幅 $2$、窗寬 $2$ 的最大池化。
+池化和卷積最關鍵的差別：池化是純粹的統計運算，**沒有任何可學習的權重**，也不用反向傳播去調整它的數字。KP02 的 $y[u,v]=\max\{r[2u,2v],\,r[2u,2v+1],\,r[2u+1,2v],\,r[2u+1,2v+1]\}$ 就是步幅 $2$、窗寬 $2$ 的最大池化。
 
-The key difference between pooling and convolution: pooling is a pure statistic and has **no learnable weights**; backpropagation does not tune any number of it. The $y[u,v]=\max\{r[2u,2v],\,r[2u,2v+1],\,r[2u+1,2v],\,r[2u+1,2v+1]\}$ of KP03 is max pooling with width $2$ and stride $2$.
+The key difference between pooling and convolution: pooling is a pure statistic and has **no learnable weights**; backpropagation does not tune any number of it. The $y[u,v]=\max\{r[2u,2v],\,r[2u,2v+1],\,r[2u+1,2v],\,r[2u+1,2v+1]\}$ of KP02 is max pooling with width $2$ and stride $2$.
 
 ### 3. 同一張 $4\times4$，四種摘要四個故事（The same $4\times4$ map, four summaries, four stories）
 
@@ -96,11 +96,11 @@ The textbook $4\times4$ input is $X$, with rows $[2,1,7,5]$, $[2,3,2,4]$, $[8,-1
 | 左下 bottom-left | $8,-1,7,3$ | $8$ | $4.25$ | $5$ | $\sqrt{123}\approx11.091$ |
 | 右下 bottom-right | $-5,1,2,6$ | $6$ | $1$ | $1.5$ | $\sqrt{66}\approx8.124$ |
 
-![左邊是 4 乘 4 的輸入，四個象限各一種顏色；右邊是四個 2 乘 2 的輸出：最大池化是 3、7、8、6，平均池化是 2、4.5、4.25、1，中位數池化是 2、4.5、5、1.5，ℓ2 池化是 4.243、9.695、11.091、8.124](../assets/figures/lec06-kp08-pooling-4x4.png)
+![左邊是 4 乘 4 的輸入，四個象限各一種顏色；右邊是四個 2 乘 2 的輸出：最大池化是 3、7、8、6，平均池化是 2、4.5、4.25、1，中位數池化是 2、4.5、5、1.5，ℓ2 池化是 4.243、9.695、11.091、8.124](../assets/figures/lec06-kp07-pooling-4x4.png)
 
-**圖說 `lec06-kp08-pooling-4x4`**：先看左邊的輸入，四種顏色是四塊不重疊的 $2\times2$。再看右邊第一個輸出，最大池化：每一塊只留最大值，得到 $[3,7]$、$[8,6]$。接著看平均池化與中位數池化：同一張輸入給出不同的數。最後看 $\ell_2$ 池化：它的數字最大，因為平方和包含了每一格的能量。
+**圖說 `lec06-kp07-pooling-4x4`**：先看左邊的輸入，四種顏色是四塊不重疊的 $2\times2$。再看右邊第一個輸出，最大池化：每一塊只留最大值，得到 $[3,7]$、$[8,6]$。接著看平均池化與中位數池化：同一張輸入給出不同的數。最後看 $\ell_2$ 池化：它的數字最大，因為平方和包含了每一格的能量。
 
-**Caption `lec06-kp08-pooling-4x4`**: First look at the input on the left, where the four colours are the four non-overlapping $2\times2$ blocks. Then the first output on the right, max pooling: every block keeps only its maximum, giving $[3,7]$, $[8,6]$. Next the average and median pooling: the same input gives different numbers. Finally the $\ell_2$ pooling: its numbers are the largest because the sum of squares includes the energy of every cell.
+**Caption `lec06-kp07-pooling-4x4`**: First look at the input on the left, where the four colours are the four non-overlapping $2\times2$ blocks. Then the first output on the right, max pooling: every block keeps only its maximum, giving $[3,7]$, $[8,6]$. Next the average and median pooling: the same input gives different numbers. Finally the $\ell_2$ pooling: its numbers are the largest because the sum of squares includes the energy of every cell.
 
 右下一塊含有 $-5$：最大池化仍然抓到最強的 $6$，平均池化被拉低到 $1$，中位數是 $1.5$。沒有哪一種永遠最好，要看下游任務在乎什麼。卷積網路內部最常用的是最大池化，因為活化的大小表示「特徵是否存在」。
 
@@ -115,14 +115,14 @@ Pooling is set up in the same language as convolution.
 - **窗寬 $w$**：常用 $2\times2$ 或 $3\times3$。窗愈大，縮得愈厲害。
 - **步幅 $s_{\mathrm p}$**：步幅等於窗寬時，窗彼此不重疊，是最常見的設定；步幅小於窗寬時，窗互相重疊，叫**重疊池化**。
 - **補邊**：和卷積一樣可以補，但池化很少補。補零再做最大池化時，外圍會引進 $0$。
-- **輸出大小**：沿用 KP07 的公式，$\bigl\lfloor\frac{d-w+2p}{s_{\mathrm p}}\bigr\rfloor+1$。$d=4,\ w=2,\ s_{\mathrm p}=2$ 得 $2$；$d=224$ 同樣設定得 $112$。
+- **輸出大小**：沿用 KP06 的公式，$\bigl\lfloor\frac{d-w+2p}{s_{\mathrm p}}\bigr\rfloor+1$。$d=4,\ w=2,\ s_{\mathrm p}=2$ 得 $2$；$d=224$ 同樣設定得 $112$。
 - **通道**：池化對每個通道**各自獨立**做，不跨通道相加。所以輸出的通道數和輸入一樣，$4\times4\times3$ 的輸入得到 $2\times2\times3$。
 - **參數個數**：$0$。$224\times224\times64$ 的特徵圖經過 $2\times2$、步幅 $2$ 的池化，變成 $112\times112\times64$，格數剩四分之一，權重個數仍是 $0$。
 
 - **Window width $w$**: usually $2\times2$ or $3\times3$. The larger the window, the stronger the shrinking.
 - **Stride $s_{\mathrm p}$**: when the stride equals the width the windows do not overlap, the most common setting; when the stride is smaller than the width the windows overlap, called **overlapping pooling**.
 - **Padding**: it can be added as in convolution, but pooling rarely pads. Zero padding followed by max pooling brings $0$ into the border.
-- **Output size**: the formula of KP07, $\bigl\lfloor\frac{d-w+2p}{s_{\mathrm p}}\bigr\rfloor+1$. $d=4,\ w=2,\ s_{\mathrm p}=2$ gives $2$; $d=224$ with the same setting gives $112$.
+- **Output size**: the formula of KP06, $\bigl\lfloor\frac{d-w+2p}{s_{\mathrm p}}\bigr\rfloor+1$. $d=4,\ w=2,\ s_{\mathrm p}=2$ gives $2$; $d=224$ with the same setting gives $112$.
 - **Channels**: pooling is done on every channel **on its own**, with no summing across channels. So the output has as many channels as the input: a $4\times4\times3$ input gives $2\times2\times3$.
 - **Number of parameters**: $0$. A $224\times224\times64$ feature map pooled with $2\times2$ and stride $2$ becomes $112\times112\times64$, a quarter of the cells, and the number of weights is still $0$.
 
@@ -130,17 +130,17 @@ Pooling is set up in the same language as convolution.
 
 Look at the window and the stride on a 1-D row $[1,5,2,8,3,4,7,6]$. Width $2$, stride $2$: four windows, and max pooling gives $[5,8,4,7]$. Width $3$, stride $2$ (overlapping): $\lfloor(8-3)/2\rfloor+1=3$ windows, giving $[5,8,7]$, and cell $7$ is read by no window. Width $3$, stride $1$: six windows, giving $[5,8,8,8,7,7]$.
 
-![三列各有一條 8 格的數列 1,5,2,8,3,4,7,6，色條是池化的窗：窗寬 2 步幅 2 有 4 個窗；窗寬 3 步幅 2 有 3 個窗，第 7 格紅色沒被讀到；窗寬 3 步幅 1 有 6 個窗](../assets/figures/lec06-kp08-pooling-windows.png)
+![三列各有一條 8 格的數列 1,5,2,8,3,4,7,6，色條是池化的窗：窗寬 2 步幅 2 有 4 個窗；窗寬 3 步幅 2 有 3 個窗，第 7 格紅色沒被讀到；窗寬 3 步幅 1 有 6 個窗](../assets/figures/lec06-kp07-pooling-windows.png)
 
-**圖說 `lec06-kp08-pooling-windows`**：每一列是同一條 $8$ 格的數列，色條是池化的窗。先看第一列：窗寬 $2$、步幅 $2$，$4$ 個窗剛好蓋滿，輸出 $[5,8,4,7]$。再看第二列：窗寬 $3$、步幅 $2$，窗互相重疊，$3$ 個窗，最右邊的第 $7$ 格紅色，沒被讀到。最後看第三列：步幅 $1$，$6$ 個窗，每一格都被讀到。
+**圖說 `lec06-kp07-pooling-windows`**：每一列是同一條 $8$ 格的數列，色條是池化的窗。先看第一列：窗寬 $2$、步幅 $2$，$4$ 個窗剛好蓋滿，輸出 $[5,8,4,7]$。再看第二列：窗寬 $3$、步幅 $2$，窗互相重疊，$3$ 個窗，最右邊的第 $7$ 格紅色，沒被讀到。最後看第三列：步幅 $1$，$6$ 個窗，每一格都被讀到。
 
-**Caption `lec06-kp08-pooling-windows`**: Every row is the same $8$-cell row and the coloured bars are the pooling windows. First the top row: width $2$ and stride $2$, four windows cover everything exactly and the output is $[5,8,4,7]$. Then the middle row: width $3$ and stride $2$, the windows overlap, there are $3$ of them, and the rightmost cell $7$ is red because no window reads it. Finally the bottom row: stride $1$, $6$ windows, and every cell is read.
+**Caption `lec06-kp07-pooling-windows`**: Every row is the same $8$-cell row and the coloured bars are the pooling windows. First the top row: width $2$ and stride $2$, four windows cover everything exactly and the output is $[5,8,4,7]$. Then the middle row: width $3$ and stride $2$, the windows overlap, there are $3$ of them, and the rightmost cell $7$ is red because no window reads it. Finally the bottom row: stride $1$, $6$ windows, and every cell is read.
 
 常見錯誤：以為池化會把通道也合併掉。池化只縮小空間，每個通道各做各的，通道數不變。
 
 Common error: thinking that pooling also merges the channels. Pooling only shrinks the space; every channel is done on its own and the number of channels does not change.
 
-### 本單元重點整理（KP08 summary）
+### 本單元重點整理（KP07 summary）
 
 **一句話重點**：偵測器對特徵圖的每一格各套一次活化函數（如 $\mathrm{ReLU}$），點亮吻合的特徵；池化把圖切成窗，每窗只留一個摘要（最大、平均、中位數、$\ell_2$），沒有可學習權重，窗、步幅、補邊的規則和卷積相同，通道各自獨立。
 
@@ -174,17 +174,17 @@ Common error: thinking that pooling also merges the channels. Pooling only shrin
 
 **圖**：本單元有兩張圖。
 
-- `lec06-kp08-pooling-4x4`：同一張 $4\times4$ 的四種池化。
-- `lec06-kp08-pooling-windows`：窗寬與步幅不同時的窗，以及沒被讀到的格子。
+- `lec06-kp07-pooling-4x4`：同一張 $4\times4$ 的四種池化。
+- `lec06-kp07-pooling-windows`：窗寬與步幅不同時的窗，以及沒被讀到的格子。
 
-兩張圖與文中數字都由同一支程式產生：`lec06-kp08-figures.py`。
+兩張圖與文中數字都由同一支程式產生：`lec06-kp07-figures.py`。
 
 **Figures**: this unit has two figures.
 
-- `lec06-kp08-pooling-4x4`: four poolings of the same $4\times4$ map.
-- `lec06-kp08-pooling-windows`: windows for different widths and strides, and the cells that are not read.
+- `lec06-kp07-pooling-4x4`: four poolings of the same $4\times4$ map.
+- `lec06-kp07-pooling-windows`: windows for different widths and strides, and the cells that are not read.
 
-Both figures and the numbers in the text come from the same program: `lec06-kp08-figures.py`.
+Both figures and the numbers in the text come from the same program: `lec06-kp07-figures.py`.
 
 **想深入**（選讀）`[補充]`：偵測器與最大池化可以交換順序。$\mathrm{ReLU}$ 是不遞減的函數，所以 $\mathrm{ReLU}(\max x)=\max(\mathrm{ReLU}\,x)$，例如窗 $[-5,1,2,6]$ 兩邊都是 $6$，窗 $[-5,-1,-2,-3]$ 兩邊都是 $0$。先池化再偵測可以少算幾次 $\mathrm{ReLU}$。平均池化沒有這個性質：$[-4,2]$ 先平均得 $-1$、再 $\mathrm{ReLU}$ 得 $0$，先 $\mathrm{ReLU}$ 得 $[0,2]$、再平均得 $1$。反向傳播時，最大池化把梯度只送給窗裡最大的那一格，例如窗 $[3,7,2,4]$ 的梯度是 $[0,1,0,0]$；平均池化把梯度平分，是 $[0.25,0.25,0.25,0.25]$。
 
@@ -264,14 +264,14 @@ This note is rewritten from KP08 of CCC-LNS IDL_115 Chapter 4 (slides); Chapter 
 
 - 來源把右上塊 $[7,5;2,4]$ 的中位數寫成 $5.5$。排序後是 $2,4,5,7$，中間兩個 $4,5$ 的平均是 $4.5$。本講義改為 $4.5$，來源的中位數矩陣 $[[2,5.5],[5,1.5]]$ 應為 $[[2,4.5],[5,1.5]]$。其他三塊（$2$、$5$、$1.5$）與最大、平均的數字都正確。
 - 來源的算例把 $\ell_2$ 池化只用文字說明，沒有算數。本講義算出四塊的值 $4.243,\ 9.695,\ 11.091,\ 8.124$。
-- 來源的中文講「Max Pooling 對局部微小位移最具魯棒性」，這是 KP09 的內容；本講義只談池化的種類與設定，不先下結論。來源把偵測器稱為啟用函式，本課第2週用「活化函數」，本講義統一使用。
-- 來源把偵測器寫成「神經元被徹底截斷為 0」。本講義改寫成：負的反應在 $\mathrm{ReLU}$ 下變成 $0$，並用 KP03 的例子說明；偵測器不一定是 $\mathrm{ReLU}$。
+- 來源的中文講「Max Pooling 對局部微小位移最具魯棒性」，這是 KP08 的內容；本講義只談池化的種類與設定，不先下結論。來源把偵測器稱為啟用函式，本課第2週用「活化函數」，本講義統一使用。
+- 來源把偵測器寫成「神經元被徹底截斷為 0」。本講義改寫成：負的反應在 $\mathrm{ReLU}$ 下變成 $0$，並用 KP02 的例子說明；偵測器不一定是 $\mathrm{ReLU}$。
 - 取捨：來源的互動實驗室與四題測驗不採用，概念（偵測器的角色、$4\times4$ 的最大池化結果、池化沒有可學習參數、負值對平均池化的影響）都包含在正文與練習裡。補充的內容有：中位數排序的成本、重疊池化的一維算例、偵測器與最大池化交換順序、池化的梯度分配。
 
 - The source writes the median of the upper-right block $[7,5;2,4]$ as $5.5$. Sorted it is $2,4,5,7$ and the mean of the middle two $4,5$ is $4.5$. This note uses $4.5$; the source's median matrix $[[2,5.5],[5,1.5]]$ should be $[[2,4.5],[5,1.5]]$. The other three blocks ($2$, $5$, $1.5$) and the max and average numbers are correct.
 - The source only explains $\ell_2$ pooling in words, without numbers. This note computes the values of the four blocks, $4.243,\ 9.695,\ 11.091,\ 8.124$.
-- The source says in Chinese that "max pooling is the most robust to small local shifts"; that belongs to KP09, so this note only covers the kinds and the settings of pooling and does not conclude in advance. The source calls the detector's function an activation in another wording; Week 2 of this course uses "activation function", used throughout this note.
-- The source describes the detector as "neurons being completely cut to 0". This note rewrites it as: negative responses become $0$ under $\mathrm{ReLU}$, illustrated with the example of KP03; the detector need not be $\mathrm{ReLU}$.
+- The source says in Chinese that "max pooling is the most robust to small local shifts"; that belongs to KP08, so this note only covers the kinds and the settings of pooling and does not conclude in advance. The source calls the detector's function an activation in another wording; Week 2 of this course uses "activation function", used throughout this note.
+- The source describes the detector as "neurons being completely cut to 0". This note rewrites it as: negative responses become $0$ under $\mathrm{ReLU}$, illustrated with the example of KP02; the detector need not be $\mathrm{ReLU}$.
 - Choices: the source's interactive lab and four-question quiz are not used, and their concepts (the role of the detector, the max-pooling result on the $4\times4$ map, pooling having no learnable parameters, the effect of negative values on average pooling) are all contained in the text and the practice. The added content is: the cost of sorting for the median, a 1-D example of overlapping pooling, swapping the detector and max pooling, and the gradient routing of pooling.
 
 ### 術語對照（Terminology）

@@ -8,9 +8,9 @@
 
 This is the second knowledge point (KP02) of Week 7, "Convolutional neural networks (2): classic architectures". KP01 set the starting point of training. This note asks: how do we know that one architecture is better than another? The answer is that everyone competes on the same contest and the same data. VGG, Inception and ResNet all competed there one generation after another; and the first deep CNN to win by a large margin was AlexNet.
 
-先備知識是第6週 KP02 的 LeNet 骨架（卷積、池化、全連接）、KP07 的輸出尺寸公式、第2週的 softmax 與 KP01 的初始化。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec07-kp02-figures.py` 算出，可以自己重算。
+先備知識是第6週 KP10 的 LeNet 骨架（卷積、池化、全連接）、KP06 的輸出尺寸公式、第2週的 softmax 與 KP01 的初始化。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec07-kp02-figures.py` 算出，可以自己重算。
 
-The prerequisites are the LeNet skeleton of Week 6 KP02 (convolution, pooling, fully connected), the output-size formula of KP07, the softmax of Week 2 and the initialization of KP01. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp02-figures.py`, so you can recompute it yourself.
+The prerequisites are the LeNet skeleton of Week 6 KP10 (convolution, pooling, fully connected), the output-size formula of KP06, the softmax of Week 2 and the initialization of KP01. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp02-figures.py`, so you can recompute it yourself.
 
 [下載本單元投影片](../slides/lec07-kp02-imagenet-alexnet-infographic-voiced.jbd.json)
 
@@ -98,9 +98,9 @@ A GPU of that time had about $3$ GB of memory and could not hold the whole netwo
 
 Apart from the last layer, which uses softmax for the $1000$-way classification, all layers use ReLU, which in practice converges faster. The whole network has about $60$ million parameters and $650$ thousand neurons. The error rates on ILSVRC $2010$ are $37.5\%$ for top-1 and $17.0\%$ for top-5. Note that these are results on the $2010$ data and not the score of the $2012$ win; the source gives no number for $2012$.
 
-來源沒有給特徵圖的邊長。用第6週 KP07 的公式 $\lfloor(n+2p-k)/s\rfloor+1$ 可以推 `[補充]`：輸入 $227$，第 $1$ 層（核 $11$、步幅 $4$、不補邊）得 $55$；池化（窗 $3$、步幅 $2$）得 $27$；第 $2$ 層（核 $5$、補邊 $2$）仍是 $27$；池化得 $13$；第 $3$、$4$、$5$ 層（核 $3$、補邊 $1$）都是 $13$；最後一次池化得 $6$。所以第 $5$ 層之後是 $6\times6\times256=9216$ 個數，送進第 6 層。
+來源沒有給特徵圖的邊長。用第6週 KP06 的公式 $\lfloor(n+2p-k)/s\rfloor+1$ 可以推 `[補充]`：輸入 $227$，第 $1$ 層（核 $11$、步幅 $4$、不補邊）得 $55$；池化（窗 $3$、步幅 $2$）得 $27$；第 $2$ 層（核 $5$、補邊 $2$）仍是 $27$；池化得 $13$；第 $3$、$4$、$5$ 層（核 $3$、補邊 $1$）都是 $13$；最後一次池化得 $6$。所以第 $5$ 層之後是 $6\times6\times256=9216$ 個數，送進第 6 層。
 
-The source gives no side lengths of the feature maps. They can be derived with the formula $\lfloor(n+2p-k)/s\rfloor+1$ of Week 6 KP07 `[Added]`: with input $227$, layer $1$ (kernel $11$, stride $4$, no padding) gives $55$; pooling (window $3$, stride $2$) gives $27$; layer $2$ (kernel $5$, padding $2$) stays at $27$; pooling gives $13$; layers $3$, $4$, $5$ (kernel $3$, padding $1$) all give $13$; the last pooling gives $6$. So after layer $5$ there are $6\times6\times256=9216$ numbers that enter layer 6.
+The source gives no side lengths of the feature maps. They can be derived with the formula $\lfloor(n+2p-k)/s\rfloor+1$ of Week 6 KP06 `[Added]`: with input $227$, layer $1$ (kernel $11$, stride $4$, no padding) gives $55$; pooling (window $3$, stride $2$) gives $27$; layer $2$ (kernel $5$, padding $2$) stays at $27$; pooling gives $13$; layers $3$, $4$, $5$ (kernel $3$, padding $1$) all give $13$; the last pooling gives $6$. So after layer $5$ there are $6\times6\times256=9216$ numbers that enter layer 6.
 
 注意來源寫輸入是 $224\times224$。若真的是 $224$，第 $1$ 層是 $\lfloor(224-11)/4\rfloor+1=54$，而且 $(224-11)/4=53.25$ 不是整數，窗最後會多出一截。實務上 AlexNet 的輸入常寫成 $227\times227$（或 $224$ 加補邊），這樣才除得盡 `[補充]`。本講義的特徵圖尺寸都用 $227$ 推。
 
@@ -122,9 +122,9 @@ The fully connected layers depend on the number of inputs. Layer $6$: $9216\time
 
 **Caption `lec07-kp02-params`** [Function: seeing it at a glance]: First look at the five blue bars: layer $1$ has about $3.5\times10^{4}$ and the other four lie between $3\times10^{5}$ and $9\times10^{5}$. Then look at the three red bars: the fully connected layers are one to two orders of magnitude higher, and `fc6` alone has $37.74$ million. Note that the vertical axis is logarithmic, so the real differences in height are larger than they look. Finally look at the two labels: convolution takes only $3.8\%$ and the fully connected layers take $96.2\%$.
 
-這個比例和第6週 LeNet 一樣：參數的絕大部分在最後的全連接層，卷積層用共享的小核，參數很少。第6週 KP10 說的全域平均池化，就是針對這個問題。神經元的個數則相反，主要在前面的卷積層：第 $1$ 層就有 $55\times55\times96=290{,}400$ 個，全網路約 $6.6\times10^{5}$，與來源的約 $65$ 萬同一個量級 `[補充]`。
+這個比例和第6週 LeNet 一樣：參數的絕大部分在最後的全連接層，卷積層用共享的小核，參數很少。第6週 KP09 說的全域平均池化，就是針對這個問題。神經元的個數則相反，主要在前面的卷積層：第 $1$ 層就有 $55\times55\times96=290{,}400$ 個，全網路約 $6.6\times10^{5}$，與來源的約 $65$ 萬同一個量級 `[補充]`。
 
-This is the same pattern as the LeNet of Week 6: most of the parameters are in the final fully connected layers, while the convolutional layers use small shared kernels and have few. The global average pooling of Week 6 KP10 targets exactly this problem. The neurons are the other way round and sit mainly in the early convolutional layers: layer $1$ alone has $55\times55\times96=290{,}400$, and the whole network about $6.6\times10^{5}$, of the same order as the source's about $650$ thousand `[Added]`.
+This is the same pattern as the LeNet of Week 6: most of the parameters are in the final fully connected layers, while the convolutional layers use small shared kernels and have few. The global average pooling of Week 6 KP09 targets exactly this problem. The neurons are the other way round and sit mainly in the early convolutional layers: layer $1$ alone has $55\times55\times96=290{,}400$, and the whole network about $6.6\times10^{5}$, of the same order as the source's about $650$ thousand `[Added]`.
 
 常見錯誤：以為卷積層是參數的大宗。卷積層算得多（神經元多），但參數只占 $3.8\%$。
 

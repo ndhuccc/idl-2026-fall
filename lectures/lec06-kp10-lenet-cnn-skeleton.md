@@ -1,28 +1,28 @@
-# 第6週 KP02：LeNet 與典型 CNN 骨架（LeNet and the classic CNN skeleton）
+# 第6週 KP10：LeNet 與典型 CNN 骨架（LeNet and the classic CNN skeleton）
 
 > 程度：大學生
 >
 > Level: Undergraduate (undergrad)
 
-本講義是第6週「卷積與池化」的第二個知識點（KP02），屬於自主學習。前面的 KP01 到 KP10 把零件一個一個拆開看過：卷積、步幅與填補、偵測器、池化。這一節把零件裝回去，看第一個成功的完整卷積網路 LeNet 長什麼樣子：特徵圖的尺寸怎麼一路變化、參數在哪裡、為什麼「先卷積池化、最後才全連接」成了後世二十年的骨架。
+本講義是第6週「卷積與池化」的最後一個知識點（KP10），屬於自主學習。前面的 KP01 到 KP09 把零件一個一個拆開看過：卷積、步幅與填補、偵測器、池化。這一節把零件裝回去，看第一個成功的完整卷積網路 LeNet 長什麼樣子：特徵圖的尺寸怎麼一路變化、參數在哪裡、為什麼「先卷積池化、最後才全連接」成了後世二十年的骨架。
 
-This is the second knowledge point (KP02) of Week 6, "Convolution and pooling", and it is for self-study. KP01 to KP10 took the parts apart one at a time: convolution, stride and padding, the detector, pooling. This note puts the parts back together and looks at the first successful complete convolutional network, LeNet: how the size of the feature maps changes layer by layer, where the parameters are, and why "convolve and pool first, fully connect last" became the skeleton of the next twenty years.
+This is the last knowledge point (KP10) of Week 6, "Convolution and pooling", and it is for self-study. KP01 to KP09 took the parts apart one at a time: convolution, stride and padding, the detector, pooling. This note puts the parts back together and looks at the first successful complete convolutional network, LeNet: how the size of the feature maps changes layer by layer, where the parameters are, and why "convolve and pool first, fully connect last" became the skeleton of the next twenty years.
 
-先備知識是 KP05 的權重共享、KP07 的輸出邊長公式與 KP08 的池化。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp02-figures.py` 算出，可以自己重算。
+先備知識是 KP04 的權重共享、KP06 的輸出邊長公式與 KP07 的池化。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp10-figures.py` 算出，可以自己重算。
 
-The prerequisites are the parameter sharing of KP05, the output-side formula of KP07 and the pooling of KP08. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp02-figures.py`, so you can recompute it yourself.
+The prerequisites are the parameter sharing of KP04, the output-side formula of KP06 and the pooling of KP07. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp10-figures.py`, so you can recompute it yourself.
 
-[下載本單元投影片](../slides/lec06-kp02-lenet-cnn-skeleton.jbd.json)
+[下載本單元投影片](../slides/lec06-kp10-lenet-cnn-skeleton.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec06-kp02-lenet-cnn-skeleton-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec06-kp10-lenet-cnn-skeleton-en.jbd.json)
 
-## KP02 LeNet 與典型 CNN 骨架（LeNet and the classic CNN skeleton）
+## KP10 LeNet 與典型 CNN 骨架（LeNet and the classic CNN skeleton）
 
 ### 學習目標（Learning objectives）
 
-讀完之後，你能說出 neocognitron、1989 年的反向傳播卷積網路與 LeNet-5 各是什麼，並用尺寸口訣 $28\times28\times6\to14\times14\to10\times10\times16\to5\times5\to120\to84\to10$ 寫出 LeNet 每一層的尺寸，並用 KP07 的公式驗算。你能逐層算出參數個數，說出總數與全連接層所占的比例。你能解釋為什麼全連接層要放在最後，並把 LeNet 和一開始就攤平的 MLP 比較。你也能說出 AlexNet 與 VGG 沿用了 LeNet 的哪一部分。
+讀完之後，你能說出 neocognitron、1989 年的反向傳播卷積網路與 LeNet-5 各是什麼，並用尺寸口訣 $28\times28\times6\to14\times14\to10\times10\times16\to5\times5\to120\to84\to10$ 寫出 LeNet 每一層的尺寸，並用 KP06 的公式驗算。你能逐層算出參數個數，說出總數與全連接層所占的比例。你能解釋為什麼全連接層要放在最後，並把 LeNet 和一開始就攤平的 MLP 比較。你也能說出 AlexNet 與 VGG 沿用了 LeNet 的哪一部分。
 
-After reading, you can say what the neocognitron, the 1989 backpropagation-trained convolutional network and LeNet-5 each are, write the size of every LeNet layer with the size rule $28\times28\times6\to14\times14\to10\times10\times16\to5\times5\to120\to84\to10$, and verify it with the formula of KP07. You can compute the number of parameters layer by layer and say the total and the share of the fully connected layers. You can explain why the fully connected layers come last and compare LeNet with an MLP that flattens at the very beginning. You can also say which part of LeNet AlexNet and VGG kept.
+After reading, you can say what the neocognitron, the 1989 backpropagation-trained convolutional network and LeNet-5 each are, write the size of every LeNet layer with the size rule $28\times28\times6\to14\times14\to10\times10\times16\to5\times5\to120\to84\to10$, and verify it with the formula of KP06. You can compute the number of parameters layer by layer and say the total and the share of the fully connected layers. You can explain why the fully connected layers come last and compare LeNet with an MLP that flattens at the very beginning. You can also say which part of LeNet AlexNet and VGG kept.
 
 ### 符號表（Symbols）
 
@@ -67,11 +67,11 @@ The input is a $28\times28$ grey-scale handwritten digit with one channel. The p
 4. **Pool2**: $2\times2$ with stride $2$. The output is $5\times5\times16$.
 5. **Flatten and fully connect**: $5\times5\times16=400$ numbers, followed in turn by $120$, $84$ and $10$. The final $10$ outputs correspond to the digits $0$ to $9$.
 
-![LeNet 的流水線：輸入 28 乘 28 乘 1，經過 conv 1、pool 1、conv 2、pool 2，尺寸依序是 28 乘 28 乘 6、14 乘 14 乘 6、10 乘 10 乘 16、5 乘 5 乘 16，攤平成 400，再接 120、84、10 的全連接層](../assets/figures/lec06-kp02-pipeline.png)
+![LeNet 的流水線：輸入 28 乘 28 乘 1，經過 conv 1、pool 1、conv 2、pool 2，尺寸依序是 28 乘 28 乘 6、14 乘 14 乘 6、10 乘 10 乘 16、5 乘 5 乘 16，攤平成 400，再接 120、84、10 的全連接層](../assets/figures/lec06-kp10-pipeline.png)
 
-**圖說 `lec06-kp02-pipeline`**：先看左邊的方塊：邊長一路縮小，從 $28$ 到 $14$、$10$、$5$，疊起來的片數（通道）從 $1$ 變 $6$，再變 $16$。再看右邊的細長條：攤平成 $400$ 之後只剩一條向量，依序是 $120$、$84$、$10$。最後看底下一行：它就是尺寸口訣。
+**圖說 `lec06-kp10-pipeline`**：先看左邊的方塊：邊長一路縮小，從 $28$ 到 $14$、$10$、$5$，疊起來的片數（通道）從 $1$ 變 $6$，再變 $16$。再看右邊的細長條：攤平成 $400$ 之後只剩一條向量，依序是 $120$、$84$、$10$。最後看底下一行：它就是尺寸口訣。
 
-**Caption `lec06-kp02-pipeline`**: First look at the blocks on the left: the side shrinks from $28$ to $14$, $10$ and $5$, while the number of stacked sheets (channels) goes from $1$ to $6$ and then $16$. Then the thin bars on the right: after flattening to $400$ there is only a vector, in turn $120$, $84$ and $10$. Finally the bottom line: it is the size rule.
+**Caption `lec06-kp10-pipeline`**: First look at the blocks on the left: the side shrinks from $28$ to $14$, $10$ and $5$, while the number of stacked sheets (channels) goes from $1$ to $6$ and then $16$. Then the thin bars on the right: after flattening to $400$ there is only a vector, in turn $120$, $84$ and $10$. Finally the bottom line: it is the size rule.
 
 尺寸口訣：
 
@@ -111,19 +111,19 @@ The number of parameters of a convolution layer is $P=k\cdot k\cdot c_{\mathrm{i
 | FC2 | $120\cdot84+84$ | $10{,}164$ |
 | Output | $84\cdot10+10$ | $850$ |
 
-總數是 $61{,}750$。前四層（卷積與池化）一共只有 $2{,}616$ 個，後三層（全連接）有 $59{,}134$ 個，占 $95.8\%$。池化的 $12$ 與 $32$ 是原始 LeNet 的設計：每張特徵圖有一個可學的係數與偏置；KP08 的平均池化沒有權重，若用那樣的池化，總數是 $61{,}706$，全連接的比例仍是 $95.8\%$ `[補充]`。
+總數是 $61{,}750$。前四層（卷積與池化）一共只有 $2{,}616$ 個，後三層（全連接）有 $59{,}134$ 個，占 $95.8\%$。池化的 $12$ 與 $32$ 是原始 LeNet 的設計：每張特徵圖有一個可學的係數與偏置；KP07 的平均池化沒有權重，若用那樣的池化，總數是 $61{,}706$，全連接的比例仍是 $95.8\%$ `[補充]`。
 
-The total is $61{,}750$. The first four layers (convolution and pooling) have only $2{,}616$ parameters together and the last three (fully connected) have $59{,}134$, a share of $95.8\%$. The $12$ and $32$ of pooling come from the original LeNet design: every feature map has one learnable coefficient and a bias; the average pooling of KP08 has no weights, and with such pooling the total is $61{,}706$ and the share of the fully connected layers is still $95.8\%$ `[Added]`.
+The total is $61{,}750$. The first four layers (convolution and pooling) have only $2{,}616$ parameters together and the last three (fully connected) have $59{,}134$, a share of $95.8\%$. The $12$ and $32$ of pooling come from the original LeNet design: every feature map has one learnable coefficient and a bias; the average pooling of KP07 has no weights, and with such pooling the total is $61{,}706$ and the share of the fully connected layers is still $95.8\%$ `[Added]`.
 
-![各層參數個數的橫條圖：Conv1 為 156、Pool1 為 12、Conv2 為 2416、Pool2 為 32、FC1 為 48120、FC2 為 10164、Output 為 850；底下標出總數 61750，卷積加池化 2616，全連接 59134，占 95.8%](../assets/figures/lec06-kp02-params.png)
+![各層參數個數的橫條圖：Conv1 為 156、Pool1 為 12、Conv2 為 2416、Pool2 為 32、FC1 為 48120、FC2 為 10164、Output 為 850；底下標出總數 61750，卷積加池化 2616，全連接 59134，占 95.8%](../assets/figures/lec06-kp10-params.png)
 
-**圖說 `lec06-kp02-params`**：先看上面四條藍色短條：卷積與池化層的參數都很少。再看下面三條紅色長條：FC1 一條就有 $48{,}120$，比前四層加起來的 $2{,}616$ 多十幾倍。最後看底下一行：全連接層占了 $95.8\%$。
+**圖說 `lec06-kp10-params`**：先看上面四條藍色短條：卷積與池化層的參數都很少。再看下面三條紅色長條：FC1 一條就有 $48{,}120$，比前四層加起來的 $2{,}616$ 多十幾倍。最後看底下一行：全連接層占了 $95.8\%$。
 
-**Caption `lec06-kp02-params`**: First look at the four short blue bars on top: the convolution and pooling layers have very few parameters. Then the three long red bars below: FC1 alone has $48{,}120$, more than ten times the $2{,}616$ of the first four layers together. Finally the bottom line: the fully connected layers take $95.8\%$.
+**Caption `lec06-kp10-params`**: First look at the four short blue bars on top: the convolution and pooling layers have very few parameters. Then the three long red bars below: FC1 alone has $48{,}120$, more than ten times the $2{,}616$ of the first four layers together. Finally the bottom line: the fully connected layers take $95.8\%$.
 
-這就是為什麼後來的網路（例如 ResNet）會用 KP10 的全域平均池化取代肥大的全連接層：參數幾乎都擠在那裡。
+這就是為什麼後來的網路（例如 ResNet）會用 KP09 的全域平均池化取代肥大的全連接層：參數幾乎都擠在那裡。
 
-This is why later networks (for example ResNet) replace the fat fully connected layers with the global average pooling of KP10: nearly all the parameters are crowded there.
+This is why later networks (for example ResNet) replace the fat fully connected layers with the global average pooling of KP09: nearly all the parameters are crowded there.
 
 ### 4. 為什麼先卷積、最後才全連接（Why convolve first and fully connect last）
 
@@ -131,9 +131,9 @@ This is why later networks (for example ResNet) replace the fat fully connected 
 
 There are three reasons, all of them a summary of the previous knowledge points.
 
-**理由一：結構的順序就是先驗。** 左邊的卷積與池化，神經元只有局部感受野，權重在整個平面共享，專心抓邊緣、轉角等基礎形狀；這就是 KP10 說的無限強先驗。到了右邊，空間圖案已經變成高度抽象的特徵組合，這時才攤平，交給全連接層權衡全域的關係。
+**理由一：結構的順序就是先驗。** 左邊的卷積與池化，神經元只有局部感受野，權重在整個平面共享，專心抓邊緣、轉角等基礎形狀；這就是 KP09 說的無限強先驗。到了右邊，空間圖案已經變成高度抽象的特徵組合，這時才攤平，交給全連接層權衡全域的關係。
 
-**Reason 1: the order of the structure is the prior.** In the convolution and pooling on the left, the neurons have only local receptive fields and the weights are shared over the whole plane, concentrating on basic shapes such as edges and corners; this is the infinitely strong prior of KP10. On the right the spatial patterns have become highly abstract combinations of features, and only then is the map flattened and handed to the fully connected layers to weigh global relations.
+**Reason 1: the order of the structure is the prior.** In the convolution and pooling on the left, the neurons have only local receptive fields and the weights are shared over the whole plane, concentrating on basic shapes such as edges and corners; this is the infinitely strong prior of KP09. On the right the spatial patterns have become highly abstract combinations of features, and only then is the map flattened and handed to the fully connected layers to weigh global relations.
 
 **理由二：階層化的特徵。** 淺層卷積抓方向、邊緣與紋理；深層把小局部拼成零件，例如眼睛、輪子；最後的全連接層判斷整個物件。這符合自然影像由小到大、層層組合的本質。
 
@@ -173,7 +173,7 @@ Compare with an MLP that flattens at the very beginning: $784\to120\to84\to10$ w
 
 Why is this skeleton still used? **AlexNet**, which won ImageNet in 2012, is in essence a deeper and wider LeNet running on GPUs: again many convolution and pooling layers in series followed at the end by fully connected layers $4096\to4096\to1000$, with ReLU and Dropout added. **VGG** of 2014 modularised the loop "convolution, then halve by pooling" and stacked $3\times3$ kernels throughout, yet the logic "extract features first, then decide" comes from LeNet. These two networks are the topic of next week.
 
-### 本單元重點整理（KP02 summary）
+### 本單元重點整理（KP10 summary）
 
 **一句話重點**：LeNet 是「前面卷積與池化交替抽空間特徵，結尾才攤平交給全連接層決策」的黃金原型；尺寸 $28\to14\to10\to5$ 一路縮小、通道 $1\to6\to16$ 增加，參數總共 $61{,}750$，其中 $95.8\%$ 擠在全連接層。
 
@@ -207,17 +207,17 @@ Why is this skeleton still used? **AlexNet**, which won ImageNet in 2012, is in 
 
 **圖**：本單元有兩張圖。
 
-- `lec06-kp02-pipeline`：LeNet 的流水線與每一層的尺寸。
-- `lec06-kp02-params`：各層的參數個數。
+- `lec06-kp10-pipeline`：LeNet 的流水線與每一層的尺寸。
+- `lec06-kp10-params`：各層的參數個數。
 
-兩張圖與文中數字都由同一支程式產生：`lec06-kp02-figures.py`。
+兩張圖與文中數字都由同一支程式產生：`lec06-kp10-figures.py`。
 
 **Figures**: this unit has two figures.
 
-- `lec06-kp02-pipeline`: the LeNet pipeline and the size of every layer.
-- `lec06-kp02-params`: the number of parameters of every layer.
+- `lec06-kp10-pipeline`: the LeNet pipeline and the size of every layer.
+- `lec06-kp10-params`: the number of parameters of every layer.
 
-Both figures and the numbers in the text come from the same program: `lec06-kp02-figures.py`.
+Both figures and the numbers in the text come from the same program: `lec06-kp10-figures.py`.
 
 **想深入**（選讀）`[補充]`：原始論文的第二個卷積層（C3）並不是「$16$ 個核各看全部 $6$ 張圖」。它用一張連接表：$6$ 張輸出圖各連 $3$ 張相鄰的輸入圖，$6$ 張各連 $4$ 張相鄰的，$3$ 張各連 $4$ 張不相鄰的，$1$ 張連全部 $6$ 張。參數是 $6\cdot(3\cdot25+1)+6\cdot(4\cdot25+1)+3\cdot(4\cdot25+1)+1\cdot(6\cdot25+1)=1{,}516$，比全連接的 $2{,}416$ 少。換上 $1{,}516$ 以後，全網路是 $60{,}850$ 個參數，也就是常聽到的「約六萬」。連接表的目的是少一些參數，並讓不同的特徵圖看不同組合的輸入；現代的實作多半直接全連接，簡單，也容易用矩陣運算加速。
 
@@ -292,7 +292,7 @@ Both figures and the numbers in the text come from the same program: `lec06-kp02
 This note is rewritten from KP02 of CCC-LNS IDL_115 Chapter 4 (slides); Chapter 4 of that material is Week 6 of this course. The source was accessed on 2026-10-30. Content that the source does not contain is marked `[Added]` where it appears.
 
 - 來源的互動實驗室寫「前四層卷積與池化總共約 $3{,}000$ 個參數，後三層全連接占 $57{,}000+$（$>90\%$）」。本講義逐層算出：前四層是 $2{,}616$，全連接是 $59{,}134$，占 $95.8\%$，總數 $61{,}750$。
-- 來源的池化層參數是 $12$ 與 $32$，同時又說是「$2\times2$ 平均池化」。這兩者矛盾：KP08 的平均池化沒有權重。本講義說明 $12$、$32$ 是原始 LeNet 每張圖一個係數加一個偏置的設計，並補上無權重池化時的總數 $61{,}706$。
+- 來源的池化層參數是 $12$ 與 $32$，同時又說是「$2\times2$ 平均池化」。這兩者矛盾：KP07 的平均池化沒有權重。本講義說明 $12$、$32$ 是原始 LeNet 每張圖一個係數加一個偏置的設計，並補上無權重池化時的總數 $61{,}706$。
 - 來源的對照表寫 MLP 約「$100{,}000+$」、LeNet 約「$60{,}000$」，沒有說明 MLP 的結構。本講義指定 $784\to120\to84\to10$，算出 $105{,}214$ 對 $61{,}750$。
 - 來源的 Conv2 是 $2{,}416$，與全連接版相同；原論文的 C3 用連接表，是 $1{,}516$。本講義放在「想深入」說明，並算出全網路 $60{,}850$。
 - 來源的輸出層寫成 RBF 或 Softmax。本講義把最後一層當成 $10$ 類的分類輸出，不展開 RBF 的細節。
@@ -300,7 +300,7 @@ This note is rewritten from KP02 of CCC-LNS IDL_115 Chapter 4 (slides); Chapter 
 - 取捨：來源的互動模擬器與四題測驗不採用，概念（歷史、尺寸口訣、參數集中地、為何全連接放最後）都在正文與練習裡。補充的內容有：每階段的數字個數、無權重池化的總數、MLP 的算式、早攤平的算例、C3 的連接表。
 
 - The source's interactive lab says "the first four layers of convolution and pooling have about $3{,}000$ parameters in total and the last three fully connected layers have $57{,}000+$ ($>90\%$)". This note computes layer by layer: the first four are $2{,}616$, the fully connected ones are $59{,}134$, a share of $95.8\%$, in total $61{,}750$.
-- The source gives the pooling layers $12$ and $32$ parameters and also calls them "$2\times2$ average pooling". The two contradict each other: the average pooling of KP08 has no weights. This note explains that $12$ and $32$ are the design of the original LeNet with one coefficient and a bias per map, and adds the total $61{,}706$ for pooling without weights.
+- The source gives the pooling layers $12$ and $32$ parameters and also calls them "$2\times2$ average pooling". The two contradict each other: the average pooling of KP07 has no weights. This note explains that $12$ and $32$ are the design of the original LeNet with one coefficient and a bias per map, and adds the total $61{,}706$ for pooling without weights.
 - The source's comparison table writes an MLP of about "$100{,}000+$" and LeNet about "$60{,}000$" without giving the structure of the MLP. This note fixes $784\to120\to84\to10$ and computes $105{,}214$ against $61{,}750$.
 - The source's Conv2 is $2{,}416$, the same as the fully connected version; C3 of the original paper uses a connection table and has $1{,}516$. This note explains it in "Going deeper" and computes $60{,}850$ for the whole network.
 - The source writes the output layer as RBF or Softmax. This note treats the last layer as a $10$-class classification output and does not expand the details of RBF.

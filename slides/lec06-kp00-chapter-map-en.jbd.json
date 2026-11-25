@@ -5775,7 +5775,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "2\nhow to\ncompute",
+      "text": "2\nformula and\nproperties",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -5876,7 +5876,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "3\nwhy few\nweights",
+      "text": "3\nsize and\ndetector",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -5977,7 +5977,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "4\npooling",
+      "text": "4\npooling\nand prior",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -6078,7 +6078,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "5\nprior and\nextensions",
+      "text": "5\nassemble\nLeNet",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -6145,7 +6145,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "KP01–KP02 → KP03–KP04, KP07 → KP05–KP06 → KP08–KP09 → KP10",
+      "text": "KP01–KP02 → KP03–KP05 → KP06–KP07 → KP08–KP09 → KP10",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -8205,7 +8205,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "LeNet: convolve and pool first, flatten last; $61{,}750$ parameters, $95.8\\%$ fully connected (self-study)",
+      "text": "one layer, three stages: convolution, detector, pooling; the kernel is learned by backprop",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -9235,7 +9235,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "Flattening throws neighbours away; LeNet shows a better skeleton.",
+      "text": "Flattening throws neighbours away; a convolution layer works in three stages.",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew5-1": {
@@ -9865,7 +9865,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "Stage 2: how a convolution is computed (KP03, KP04, KP07)",
+      "text": "Stage 2: formula and properties (KP03, KP04, KP05)",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew5-24": {
@@ -10109,7 +10109,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "three stages: convolution, detector, pooling; the kernel is learned by backprop",
+      "text": "theory flips the kernel; code usually does not (cross-correlation), same power",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -10239,7 +10239,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "theory flips the kernel; code usually does not (cross-correlation), same power",
+      "text": "sparse connectivity (mostly $0$) + parameter sharing (one set moved right)",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -10304,7 +10304,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "KP07",
+      "text": "KP05",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -10369,7 +10369,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "output side $\\lfloor\\frac{d-f+2p}{s}\\rfloor+1$; weights $f\\times f\\times C_{\\mathrm{in}}\\times C_{\\mathrm{out}}$",
+      "text": "shift then convolve = convolve then shift (equivariance, not invariance)",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -10503,7 +10503,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "How is it computed?",
+      "text": "Formula and properties?",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew5-44": {
@@ -11427,7 +11427,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "A three-stage pipeline, cross-correlation without flipping, the output-side formula.",
+      "text": "Cross-correlation without flipping, sparsity and sharing, translation equivariance.",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew6-1": {
@@ -12057,7 +12057,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "Stage 3: why so few parameters (KP05, KP06)",
+      "text": "Stage 3: size and detector (KP06, KP07)",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew6-24": {
@@ -12145,7 +12145,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "After stage 2: it is cheap, so why?",
+      "text": "After stage 2: how big is the output, and how are features lit up?",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew6-27": {
@@ -12236,7 +12236,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "KP05",
+      "text": "KP06",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -12301,7 +12301,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "sparse connectivity (mostly $0$) + parameter sharing (one set moved right)",
+      "text": "output side $\\lfloor\\frac{d-f+2p}{s}\\rfloor+1$; weights $f\\times f\\times C_{\\mathrm{in}}\\times C_{\\mathrm{out}}$",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -12366,7 +12366,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "KP06",
+      "text": "KP07",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -12431,7 +12431,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "shift then convolve = convolve then shift (equivariance, not invariance)",
+      "text": "detector: activation per cell; pooling: one summary per window, no weights",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -12496,7 +12496,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "one shared kernel: fewer weights and equivariance",
+      "text": "size and weights first, then detect per cell and pool",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -12630,7 +12630,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "Why so few weights?",
+      "text": "Size and detector?",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew6-42": {
@@ -13461,7 +13461,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "Most of the weight matrix is $0$ and the other rows are one set of weights moved to the right.",
+      "text": "Four knobs set the output side; pooling keeps one summary per window.",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew7-1": {
@@ -14091,7 +14091,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "Stage 4: what pooling does (KP08, KP09)",
+      "text": "Stage 4: pooling and the prior (KP08, KP09)",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew7-24": {
@@ -14179,7 +14179,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "After stage 3: the last two stations after convolution.",
+      "text": "After stage 3: what does pooling buy, and why does this design work?",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew7-27": {
@@ -14335,7 +14335,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "detector: activation per cell; pooling: one summary per window, no weights",
+      "text": "approximate invariance + downsampling; harmful when position is the answer",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -14465,7 +14465,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "approximate invariance + downsampling; harmful when position is the answer",
+      "text": "infinitely strong prior: distant weights fixed to $0$; dynamic pooling, SPP, GAP (self-study)",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -14664,7 +14664,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "What does pooling do?",
+      "text": "Pooling and the prior?",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew7-42": {
@@ -15588,7 +15588,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "Pooling has no weights and buys approximate invariance and smaller feature maps.",
+      "text": "Pooling buys approximate invariance; all these limits are a prior that bets on sparsity.",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew8-1": {
@@ -16218,7 +16218,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "Stage 5: the prior and extensions (KP10)",
+      "text": "Stage 5: assemble a complete network (KP10)",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew8-24": {
@@ -16306,7 +16306,7 @@
         "textAlign": "left",
         "lineHeight": 1.25
       },
-      "text": "After stage 4: looking back, why does this design work?",
+      "text": "After stage 4: all the parts are known; put them back together.",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew8-27": {
@@ -16462,7 +16462,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "infinitely strong prior: distant weights fixed to $0$ (a bet on sparsity)",
+      "text": "LeNet: convolve and pool first, flatten last (self-study)",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -16527,7 +16527,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "dynamic pooling\nrange follows content",
+      "text": "convolution and pooling\nextract features",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -16592,7 +16592,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "spatial pyramid pooling\nfixed bins",
+      "text": "flatten last\nfully connected decision",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -16657,7 +16657,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "global average pooling\none number per map",
+      "text": "size rule\n$28\\to14\\to10\\to5$",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -16722,7 +16722,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "$25{,}088{,}000\\to512{,}000$",
+      "text": "$61{,}750$ parameters",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -16753,7 +16753,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "$49$ times fewer",
+      "text": "$95.8\\%$ fully connected",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -16887,7 +16887,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "The prior and extensions!",
+      "text": "Assemble a complete network!",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew8-45": {
@@ -17718,7 +17718,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "Distant weights are fixed to $0$; GAP takes $25{,}088{,}000$ down to $512{,}000$.",
+      "text": "LeNet has $61{,}750$ parameters, $95.8\\%$ of them in the fully connected layers.",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew9-1": {
@@ -20767,7 +20767,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "first KP01\n→ KP03 → KP04 → KP07\nwhy and how",
+      "text": "first KP01 → KP02\n→ KP03 → KP04 → KP05\nwhy, formula, properties",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -20832,7 +20832,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "then KP05 → KP06\n→ KP08 → KP09\nfewer weights, pooling",
+      "text": "then KP06 → KP07\n→ KP08\nsize, detector, pooling",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -20897,7 +20897,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "finally KP10\nprior and extensions",
+      "text": "finally KP09 → KP10\nprior, assemble LeNet",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -20962,7 +20962,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "KP02 LeNet: self-study, readable at any time",
+      "text": "KP09, KP10: self-study",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -22020,7 +22020,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "KP01 → KP03 → KP04 → KP07 → KP05 → KP06 → KP08 → KP09 → KP10.",
+      "text": "Read in numerical order: KP01 → KP02 → … → KP09 → KP10.",
       "shapeKind": "rectangle"
     },
     "scene-u01-pnew11-1": {
@@ -23026,7 +23026,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "how are these parts stacked into a complete network?",
+      "text": "after LeNet, how are networks stacked deeper?",
       "shapeKind": "rectangle",
       "initiallyHidden": true
     },
@@ -24082,7 +24082,7 @@
         "textAlign": "center",
         "lineHeight": 1.22
       },
-      "text": "Week 7: how LeNet, AlexNet, VGG and ResNet stack the parts.",
+      "text": "Week 7: how AlexNet, VGG, Inception and ResNet go deeper.",
       "shapeKind": "rectangle"
     }
   },
@@ -24472,7 +24472,7 @@
       "id": "scene-u01-step-new3",
       "label": "KP00 · 3/11",
       "order": 9,
-      "speakerNotes": "Think first: Five stages! The ten knowledge points fall into five stages: one, why convolve; two, how it is computed."
+      "speakerNotes": "Think first: Five stages! The ten knowledge points fall into five stages: one, why convolve; two, the formula and properties of convolution."
     },
     {
       "durationMs": 900,
@@ -24494,7 +24494,7 @@
       "id": "scene-u01-p3b1",
       "label": "KP00 · 3/11 (1)",
       "order": 10,
-      "speakerNotes": "Think first: Five stages! The ten knowledge points fall into five stages: one, why convolve; two, how it is computed.",
+      "speakerNotes": "Think first: Five stages! The ten knowledge points fall into five stages: one, why convolve; two, the formula and properties of convolution.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -24552,7 +24552,7 @@
       "id": "scene-u01-p3b2",
       "label": "KP00 · 3/11 (2)",
       "order": 11,
-      "speakerNotes": "Now the result: Three, why there are so few parameters; four, what pooling does.",
+      "speakerNotes": "Now the result: Three, output size and the detector; four, pooling and the infinitely strong prior.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -24616,7 +24616,7 @@
       "id": "scene-u01-p3b3",
       "label": "KP00 · 3/11 (3)",
       "order": 12,
-      "speakerNotes": "Finally: Five, the infinitely strong prior and three extensions. Read along the arrows; every stage answers a small question.",
+      "speakerNotes": "Finally: Five, LeNet puts the parts back together into a complete network. Read along the arrows; every stage answers a small question.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -24794,7 +24794,7 @@
       "id": "scene-u01-p4b3",
       "label": "KP00 · 4/11 (3)",
       "order": 16,
-      "speakerNotes": "Finally: KP02: LeNet puts these parts together into a skeleton, with convolution and pooling in front and flattening only at the end, and sixty-one thousand seven hundred fifty parameters in total.",
+      "speakerNotes": "Finally: KP02: a convolution layer has three stages, convolution, detector and pooling, and the numbers of the kernel are learned by backpropagation.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -24834,7 +24834,7 @@
       "id": "scene-u01-step-new5",
       "label": "KP00 · 5/11",
       "order": 17,
-      "speakerNotes": "Think first: How is it computed? KP03: a convolution layer has three stages, convolution, detector and pooling, and the numbers of the kernel are learned by backpropagation."
+      "speakerNotes": "Think first: Formula and properties? KP03: theoretical convolution flips the kernel while code usually does not and computes cross-correlation; the two have the same expressive power."
     },
     {
       "durationMs": 900,
@@ -24856,7 +24856,7 @@
       "id": "scene-u01-p5b1",
       "label": "KP00 · 5/11 (1)",
       "order": 18,
-      "speakerNotes": "Think first: How is it computed? KP03: a convolution layer has three stages, convolution, detector and pooling, and the numbers of the kernel are learned by backpropagation.",
+      "speakerNotes": "Think first: Formula and properties? KP03: theoretical convolution flips the kernel while code usually does not and computes cross-correlation; the two have the same expressive power.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -24908,7 +24908,7 @@
       "id": "scene-u01-p5b2",
       "label": "KP00 · 5/11 (2)",
       "order": 19,
-      "speakerNotes": "Now the result: KP04: theoretical convolution flips the kernel while code usually does not and computes cross-correlation; the two have the same expressive power.",
+      "speakerNotes": "Now the result: KP04: a convolution layer is a fully connected layer whose weight matrix has two features: most of it is zero, which is sparse connectivity, and the other rows are one set of weights moved to the right, which is parameter sharing.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -24960,7 +24960,7 @@
       "id": "scene-u01-p5b3",
       "label": "KP00 · 5/11 (3)",
       "order": 20,
-      "speakerNotes": "Finally: KP07: the output side is set by four knobs and the number of weights is f times f times input channels times output channels.",
+      "speakerNotes": "Finally: KP05: because all positions share one kernel, shifting then convolving equals convolving then shifting, called translation equivariance; it holds for stride one and is not translation invariance.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25012,7 +25012,7 @@
       "id": "scene-u01-step-new6",
       "label": "KP00 · 6/11",
       "order": 21,
-      "speakerNotes": "Think first: Why so few weights? KP05: a convolution layer is a fully connected layer whose weight matrix has two features: most of it is zero, which is sparse connectivity, and the other rows are one set of weights moved to the right, which is parameter sharing."
+      "speakerNotes": "Think first: Size and detector? KP06: the output side is set by four knobs and the number of weights is f times f times input channels times output channels."
     },
     {
       "durationMs": 900,
@@ -25034,7 +25034,7 @@
       "id": "scene-u01-p6b1",
       "label": "KP00 · 6/11 (1)",
       "order": 22,
-      "speakerNotes": "Think first: Why so few weights? KP05: a convolution layer is a fully connected layer whose weight matrix has two features: most of it is zero, which is sparse connectivity, and the other rows are one set of weights moved to the right, which is parameter sharing.",
+      "speakerNotes": "Think first: Size and detector? KP06: the output side is set by four knobs and the number of weights is f times f times input channels times output channels.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25086,7 +25086,7 @@
       "id": "scene-u01-p6b2",
       "label": "KP00 · 6/11 (2)",
       "order": 23,
-      "speakerNotes": "Now the result: KP06: because all positions share one kernel, shifting then convolving equals convolving then shifting, called translation equivariance.",
+      "speakerNotes": "Now the result: KP07: the detector applies an activation function once to every cell; pooling cuts the map into windows and keeps one summary per window with no learnable weights.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25138,7 +25138,7 @@
       "id": "scene-u01-p6b3",
       "label": "KP00 · 6/11 (3)",
       "order": 24,
-      "speakerNotes": "Finally: Equivariance holds for stride one, fails for rotation and scaling and is not translation invariance.",
+      "speakerNotes": "Finally: Work out the size and the weights first, then detect cell by cell and keep summaries with pooling.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25178,7 +25178,7 @@
       "id": "scene-u01-step-new7",
       "label": "KP00 · 7/11",
       "order": 25,
-      "speakerNotes": "Think first: What does pooling do? KP08: the detector applies an activation function once to every cell; pooling cuts the map into windows and keeps one summary per window with no learnable weights."
+      "speakerNotes": "Think first: Pooling and the prior? KP08: when the input shifts right by one, the max-pooled output often has half unchanged, so it is approximately invariant to small local shifts; the feature map shrinks, reducing later cells and weights, but this does harm when the position itself is the answer."
     },
     {
       "durationMs": 900,
@@ -25200,7 +25200,7 @@
       "id": "scene-u01-p7b1",
       "label": "KP00 · 7/11 (1)",
       "order": 26,
-      "speakerNotes": "Think first: What does pooling do? KP08: the detector applies an activation function once to every cell; pooling cuts the map into windows and keeps one summary per window with no learnable weights.",
+      "speakerNotes": "Think first: Pooling and the prior? KP08: when the input shifts right by one, the max-pooled output often has half unchanged, so it is approximately invariant to small local shifts; the feature map shrinks, reducing later cells and weights, but this does harm when the position itself is the answer.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25252,7 +25252,7 @@
       "id": "scene-u01-p7b2",
       "label": "KP00 · 7/11 (2)",
       "order": 27,
-      "speakerNotes": "Now the result: KP09: when the input shifts right by one, the max-pooled output often has half unchanged, so it is approximately invariant to small local shifts; the feature map shrinks, reducing later cells and weights.",
+      "speakerNotes": "Now the result: KP09: convolution and pooling are an infinitely strong prior that fixes the weights of distant connections to zero, a bet on sparsity; the extensions are dynamic pooling, spatial pyramid pooling and global average pooling.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25304,7 +25304,7 @@
       "id": "scene-u01-p7b3",
       "label": "KP00 · 7/11 (3)",
       "order": 28,
-      "speakerNotes": "Finally: The cost: when the position itself is the answer, the invariance of pooling does harm.",
+      "speakerNotes": "Finally: Convolution keeps position and is equivariant; pooling blurs position and is approximately invariant; all these limits are a prior that bets on sparsity.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25344,7 +25344,7 @@
       "id": "scene-u01-step-new8",
       "label": "KP00 · 8/11",
       "order": 29,
-      "speakerNotes": "Think first: The prior and extensions! KP10: convolution and pooling are an infinitely strong prior that structurally fixes the weights of distant connections to zero; this bet on sparsity lets the model generalise better."
+      "speakerNotes": "Think first: Assemble a complete network! KP10: LeNet puts the earlier parts back together, alternating convolution and pooling to extract features and flattening only at the end for the fully connected layers."
     },
     {
       "durationMs": 900,
@@ -25366,7 +25366,7 @@
       "id": "scene-u01-p8b1",
       "label": "KP00 · 8/11 (1)",
       "order": 30,
-      "speakerNotes": "Think first: The prior and extensions! KP10: convolution and pooling are an infinitely strong prior that structurally fixes the weights of distant connections to zero; this bet on sparsity lets the model generalise better.",
+      "speakerNotes": "Think first: Assemble a complete network! KP10: LeNet puts the earlier parts back together, alternating convolution and pooling to extract features and flattening only at the end for the fully connected layers.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25418,7 +25418,7 @@
       "id": "scene-u01-p8b2",
       "label": "KP00 · 8/11 (2)",
       "order": 31,
-      "speakerNotes": "Now the result: Three extensions: dynamic pooling lets the pooling range follow the content; spatial pyramid pooling takes images of any size with a fixed number of bins; global average pooling squeezes every feature map into one number.",
+      "speakerNotes": "Now the result: The size rule is twenty-eight, fourteen, ten, five, and the channels go from one to six to sixteen.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25482,7 +25482,7 @@
       "id": "scene-u01-p8b3",
       "label": "KP00 · 8/11 (3)",
       "order": 32,
-      "speakerNotes": "Finally: For example with seven by seven by 512 into a thousand classes, global average pooling takes the weights from 25,088,000 down to 512,000, forty-nine times fewer.",
+      "speakerNotes": "Finally: There are sixty-one thousand seven hundred fifty parameters in total, ninety-five point eight percent of them in the fully connected layers.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25712,7 +25712,7 @@
       "id": "scene-u01-step-new10",
       "label": "KP00 · 10/11",
       "order": 37,
-      "speakerNotes": "Think first: A suggested reading order! A suggested order: read KP01 first to see why not to flatten; then KP03, KP04 and KP07 to learn how one convolution layer is computed."
+      "speakerNotes": "Think first: A suggested reading order! Read in numerical order: KP01 first to see why not to flatten; then KP02 to KP05 to learn how one convolution layer is computed and what properties it has."
     },
     {
       "durationMs": 900,
@@ -25734,7 +25734,7 @@
       "id": "scene-u01-p10b1",
       "label": "KP00 · 10/11 (1)",
       "order": 38,
-      "speakerNotes": "Think first: A suggested reading order! A suggested order: read KP01 first to see why not to flatten; then KP03, KP04 and KP07 to learn how one convolution layer is computed.",
+      "speakerNotes": "Think first: A suggested reading order! Read in numerical order: KP01 first to see why not to flatten; then KP02 to KP05 to learn how one convolution layer is computed and what properties it has.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25774,7 +25774,7 @@
       "id": "scene-u01-p10b2",
       "label": "KP00 · 10/11 (2)",
       "order": 39,
-      "speakerNotes": "Now the result: Then KP05 and KP06 to see why it saves parameters and is equivariant; then KP08 and KP09 to learn pooling.",
+      "speakerNotes": "Now the result: Then KP06 to KP08 to learn output size, the detector and pooling.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25814,7 +25814,7 @@
       "id": "scene-u01-p10b3",
       "label": "KP00 · 10/11 (3)",
       "order": 40,
-      "speakerNotes": "Finally: Finally the prior and extensions of KP10. LeNet in KP02 is for self-study, puts the earlier parts back together and can be read at any time.",
+      "speakerNotes": "Finally: Finally the prior and extensions of KP09, then LeNet in KP10, which puts the earlier parts back together. KP09 and KP10 are for self-study.",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25928,7 +25928,7 @@
       "id": "scene-u01-p11b2",
       "label": "KP00 · 11/11 (2)",
       "order": 43,
-      "speakerNotes": "Now the result: But how are these parts stacked into a complete network?",
+      "speakerNotes": "Now the result: After LeNet, how are networks stacked deeper?",
       "reveal": {
         "timing": "after-camera",
         "enter": [
@@ -25980,7 +25980,7 @@
       "id": "scene-u01-p11b3",
       "label": "KP00 · 11/11 (3)",
       "order": 44,
-      "speakerNotes": "Finally: That is the topic of Week 7: classic architectures, LeNet, AlexNet, VGG and ResNet.",
+      "speakerNotes": "Finally: That is the topic of Week 7: classic architectures, AlexNet, VGG, Inception and ResNet.",
       "reveal": {
         "timing": "after-camera",
         "enter": [

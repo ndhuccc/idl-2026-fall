@@ -8,9 +8,9 @@
 
 This is the fourth knowledge point (KP04) of Week 7, "Convolutional neural networks (2): classic architectures". VGG moved forward by "going deeper" and the parameters and computation blew up together. This note asks: instead of relying on depth alone, can each layer use small and large kernels more cleverly? Inception's answer is to let kernels of different sizes work side by side in one layer and join the results; and in front of the expensive large kernels, to first shrink the channels with a $1\times1$ convolution.
 
-先備知識是第6週 KP07 的通道與輸出尺寸、KP03 的小核堆疊與權重個數，以及 KP02 與 KP03 的 AlexNet 與 VGG。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec07-kp04-figures.py` 算出，可以自己重算。
+先備知識是第6週 KP06 的通道與輸出尺寸、KP03 的小核堆疊與權重個數，以及 KP02 與 KP03 的 AlexNet 與 VGG。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec07-kp04-figures.py` 算出，可以自己重算。
 
-The prerequisites are the channels and output size of Week 6 KP07, the stacks of small kernels and numbers of weights of KP03, and the AlexNet and VGG of KP02 and KP03. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp04-figures.py`, so you can recompute it yourself.
+The prerequisites are the channels and output size of Week 6 KP06, the stacks of small kernels and numbers of weights of KP03, and the AlexNet and VGG of KP02 and KP03. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp04-figures.py`, so you can recompute it yourself.
 
 [下載本單元投影片](../slides/lec07-kp04-inception-googlenet-infographic-voiced.jbd.json)
 

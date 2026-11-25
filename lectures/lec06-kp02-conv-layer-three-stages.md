@@ -1,22 +1,22 @@
-# 第6週 KP03：卷積層三階段（The three stages of a convolutional layer）
+# 第6週 KP02：卷積層三階段（The three stages of a convolutional layer）
 
 > 程度：大學生
 >
 > Level: Undergraduate (undergrad)
 
-本講義是第6週「卷積與池化」的第三個知識點（KP03）。KP01 讓一個小核在影像上滑動，逐格相乘再加總，得到特徵圖；KP02（自主學習）看 LeNet 怎麼把這種層一層層疊成完整的網路。這一節把其中一層拆開，回答兩個問題：一層卷積層裡面，到底做了哪幾件事？核裡的那九個數字，又是從哪裡來的？
+本講義是第6週「卷積與池化」的第二個知識點（KP02）。KP01 讓一個小核在影像上滑動，逐格相乘再加總，得到特徵圖。這一節把一層卷積層拆開，回答兩個問題：一層卷積層裡面，到底做了哪幾件事？核裡的那九個數字，又是從哪裡來的？
 
-This is the third knowledge point (KP03) of Week 6, "Convolution and pooling". KP01 slid a small kernel over an image, multiplying cell by cell and adding up, to get a feature map; KP02 (self-study) looks at how LeNet stacks such layers into a complete network. This section takes one of those layers apart and answers two questions: what exactly happens inside one convolutional layer, and where do the nine numbers of the kernel come from?
+This is the second knowledge point (KP02) of Week 6, "Convolution and pooling". KP01 slid a small kernel over an image, multiplying cell by cell and adding up, to get a feature map. This section takes one convolutional layer apart and answers two questions: what exactly happens inside one convolutional layer, and where do the nine numbers of the kernel come from?
 
-先備知識是 KP01 的核與特徵圖、第2週的活化函數：線性整流函數 $\mathrm{ReLU}(a)=\max(0,a)$，以及第3週的反向傳播與梯度下降。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp03-figures.py` 算出，可以自己重算。
+先備知識是 KP01 的核與特徵圖、第2週的活化函數：線性整流函數 $\mathrm{ReLU}(a)=\max(0,a)$，以及第3週的反向傳播與梯度下降。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp02-figures.py` 算出，可以自己重算。
 
-The prerequisites are the kernel and feature map of KP01, the ReLU activation function of Week 2, $\mathrm{ReLU}(a)=\max(0,a)$, and the backpropagation and gradient descent of Week 3. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp03-figures.py` and can be recomputed.
+The prerequisites are the kernel and feature map of KP01, the ReLU activation function of Week 2, $\mathrm{ReLU}(a)=\max(0,a)$, and the backpropagation and gradient descent of Week 3. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp02-figures.py` and can be recomputed.
 
-[下載本單元投影片](../slides/lec06-kp03-conv-layer-three-stages.jbd.json)
+[下載本單元投影片](../slides/lec06-kp02-conv-layer-three-stages.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec06-kp03-conv-layer-three-stages-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec06-kp02-conv-layer-three-stages-en.jbd.json)
 
-## KP03 卷積層三階段（The three stages of a convolutional layer）
+## KP02 卷積層三階段（The three stages of a convolutional layer）
 
 ### 學習目標（Learning objectives）
 
@@ -86,11 +86,11 @@ Compute on a $3\times3$ patch $X$ of an image. Its rows are $[0,0,0]$, $[1,1,1]$
 - $K_{\mathrm h}$: row $0$ gives $0\cdot1+0\cdot1+0\cdot1=0$, row $1$ is multiplied by $0$ and gives $0$, and row $2$ gives $2\cdot(-1)+2\cdot(-1)+2\cdot(-1)=-6$; the total is $-6$.
 - $K_{\mathrm v}$: every row gives $1\cdot v+0\cdot v+(-1)\cdot v=0$, where $v$ is the value of that row; the total is $0$.
 
-![左邊是水平與垂直兩個 Prewitt 核；上方是上暗下亮的 3 乘 3 小塊和它轉置後的左暗右亮小塊；中間四個方框是反應：水平核對上暗下亮給 -6、對左暗右亮給 0，垂直核對上暗下亮給 0、對左暗右亮給 -6](../assets/figures/lec06-kp03-prewitt-responses.png)
+![左邊是水平與垂直兩個 Prewitt 核；上方是上暗下亮的 3 乘 3 小塊和它轉置後的左暗右亮小塊；中間四個方框是反應：水平核對上暗下亮給 -6、對左暗右亮給 0，垂直核對上暗下亮給 0、對左暗右亮給 -6](../assets/figures/lec06-kp02-prewitt-responses.png)
 
-**圖說 `lec06-kp03-prewitt-responses`**：先看左邊的兩個核，藍色是 $+1$、紅色是 $-1$。再看上方兩個小塊：左邊是 $X$，右邊是把 $X$ 轉置（列與行互換）、變成左暗右亮的小塊。中間四個方框是核與小塊逐格相乘再加總的結果。水平核只對上下對比的 $X$ 有反應，垂直核只對左右對比的那一塊有反應，各給 $-6$（紅色方框表示負的反應），另一格都是 $0$。
+**圖說 `lec06-kp02-prewitt-responses`**：先看左邊的兩個核，藍色是 $+1$、紅色是 $-1$。再看上方兩個小塊：左邊是 $X$，右邊是把 $X$ 轉置（列與行互換）、變成左暗右亮的小塊。中間四個方框是核與小塊逐格相乘再加總的結果。水平核只對上下對比的 $X$ 有反應，垂直核只對左右對比的那一塊有反應，各給 $-6$（紅色方框表示負的反應），另一格都是 $0$。
 
-**Caption `lec06-kp03-prewitt-responses`**: First look at the two kernels on the left; blue is $+1$ and red is $-1$. Then look at the two patches on top: the left one is $X$, and the right one is $X$ transposed (rows and columns swapped), dark on the left and bright on the right. The four boxes are the results of multiplying a kernel and a patch cell by cell and adding up. The horizontal kernel responds only to the top-versus-bottom patch $X$, the vertical kernel only to the left-versus-right patch; each gives $-6$ (a red box marks a negative response), and the other box is $0$.
+**Caption `lec06-kp02-prewitt-responses`**: First look at the two kernels on the left; blue is $+1$ and red is $-1$. Then look at the two patches on top: the left one is $X$, and the right one is $X$ transposed (rows and columns swapped), dark on the left and bright on the right. The four boxes are the results of multiplying a kernel and a patch cell by cell and adding up. The horizontal kernel responds only to the top-versus-bottom patch $X$, the vertical kernel only to the left-versus-right patch; each gives $-6$ (a red box marks a negative response), and the other box is $0$.
 
 所以核真的在「挑」它會的那一種邊緣。反應的絕對值大，表示有這個方向的邊緣；正負號說明哪一邊比較亮 `[補充]`。$K_{\mathrm h}$ 給正數時上面比較亮，給負數時下面比較亮，就像 $X$ 的 $-6$。
 
@@ -130,22 +130,22 @@ The whole feature map has the rows $[-6,-6,-4,-2]$, $[0,0,0,0]$, $[6,6,4,2]$ and
 
 **Stage three: pooling.** Here it is **max pooling**: cut the $4\times4$ map $r$ into four non-overlapping $2\times2$ blocks and keep only the largest number of each block, written $y[u,v]=\max\big(r[2u,2v],\,r[2u,2v+1],\,r[2u+1,2v],\,r[2u+1,2v+1]\big)$. The top-left and top-right blocks are all $0$; the bottom-left block is $6,6,6,6$ and gives $6$; the bottom-right block is $4,2,4,2$ and gives $4$. So $y$ has the rows $[0,0]$ and $[6,4]$.
 
-![由左到右四塊格子：6 乘 6 影像，第 1 到 3 列、第 0 到 3 行是 2；卷積後的 4 乘 4 特徵圖，第 0 列是 -6,-6,-4,-2，第 1 列全 0，第 2、3 列是 6,6,4,2；線性整流函數之後第 0 列變成 0，並用線切成四塊 2 乘 2；池化後的 2 乘 2 是 0,0 與 6,4](../assets/figures/lec06-kp03-three-stages.png)
+![由左到右四塊格子：6 乘 6 影像，第 1 到 3 列、第 0 到 3 行是 2；卷積後的 4 乘 4 特徵圖，第 0 列是 -6,-6,-4,-2，第 1 列全 0，第 2、3 列是 6,6,4,2；線性整流函數之後第 0 列變成 0，並用線切成四塊 2 乘 2；池化後的 2 乘 2 是 0,0 與 6,4](../assets/figures/lec06-kp02-three-stages.png)
 
-**圖說 `lec06-kp03-three-stages`**：由左往右看。最左邊是 $6\times6$ 影像，橘色的是亮塊。第一站的特徵圖裡，綠色是正數（上亮下暗），紅色是負數（上暗下亮）。第二站的 $\mathrm{ReLU}$ 把紅色那一列全變成 $0$，橘線把它切成四塊 $2\times2$。第三站每塊只留最大值，得到 $2\times2$ 的 $[0,0]$、$[6,4]$：亮塊的下緣在下半部；左半邊的窗整段蓋在下緣上，所以是 $6$，右半邊只蓋到下緣的一部分，所以是 $4$。
+**圖說 `lec06-kp02-three-stages`**：由左往右看。最左邊是 $6\times6$ 影像，橘色的是亮塊。第一站的特徵圖裡，綠色是正數（上亮下暗），紅色是負數（上暗下亮）。第二站的 $\mathrm{ReLU}$ 把紅色那一列全變成 $0$，橘線把它切成四塊 $2\times2$。第三站每塊只留最大值，得到 $2\times2$ 的 $[0,0]$、$[6,4]$：亮塊的下緣在下半部；左半邊的窗整段蓋在下緣上，所以是 $6$，右半邊只蓋到下緣的一部分，所以是 $4$。
 
-**Caption `lec06-kp03-three-stages`**: Read from left to right. On the far left is the $6\times6$ image, with the bright block in orange. In the feature map of stage one, green cells are positive (bright above dark) and red cells are negative (dark above bright). The ReLU of stage two turns the whole red row into $0$, and the orange lines cut the map into four $2\times2$ blocks. Stage three keeps the largest number of each block and gives the $2\times2$ rows $[0,0]$ and $[6,4]$: the bottom edge of the block lies in the lower half; the windows of the left half lie entirely on the bottom edge, so they give $6$, while those of the right half cover only part of it, so they give $4$.
+**Caption `lec06-kp02-three-stages`**: Read from left to right. On the far left is the $6\times6$ image, with the bright block in orange. In the feature map of stage one, green cells are positive (bright above dark) and red cells are negative (dark above bright). The ReLU of stage two turns the whole red row into $0$, and the orange lines cut the map into four $2\times2$ blocks. Stage three keeps the largest number of each block and gives the $2\times2$ rows $[0,0]$ and $[6,4]$: the bottom edge of the block lies in the lower half; the windows of the left half lie entirely on the bottom edge, so they give $6$, while those of the right half cover only part of it, so they give $4$.
 
 三站為什麼缺一不可？
 
 Why is each of the three stages needed?
 
 - 少了偵測器：卷積只是乘加，是線性運算。第2週說過，線性運算疊再多層，仍等於一次線性運算。兩層卷積直接疊起來，也只等於一層卷積（見小練習第 3 題）。活化函數讓網路能表達非線性的關係。
-- 少了池化：特徵圖和輸入差不多大，後面的層要處理的數字很多。池化把圖縮小，也讓小位移的影響變小；KP08–KP09 會算給你看，而且它只帶來近似的穩定。
+- 少了池化：特徵圖和輸入差不多大，後面的層要處理的數字很多。池化把圖縮小，也讓小位移的影響變小；KP07–KP08 會算給你看，而且它只帶來近似的穩定。
 - 少了卷積：就回到 KP01 的全連接層，失去稀疏連接與權重共享的好處。
 
 - Without the detector: convolution is only multiply-and-add, a linear operation. As Week 2 showed, any number of stacked linear operations is still one linear operation, and two convolutions stacked directly equal a single convolution (see Practice 3). The activation function lets the network express nonlinear relations.
-- Without pooling: the feature map is about as large as the input, so the following layers have many numbers to process. Pooling shrinks the map and makes small shifts matter less; KP08–KP09 work this out, and the stability it brings is only approximate.
+- Without pooling: the feature map is about as large as the input, so the following layers have many numbers to process. Pooling shrinks the map and makes small shifts matter less; KP07–KP08 work this out, and the stability it brings is only approximate.
 - Without convolution: we are back to the fully connected layer of KP01 and lose the benefits of sparse connectivity and parameter sharing.
 
 常見錯誤：以為卷積層就是一次乘法。它是三站：卷積、偵測器、池化。另一個常見錯誤 `[補充]`：只看 $K_{\mathrm h}$ 的輸出大小，忘了正負號。上暗下亮的邊緣給負數，經過 $\mathrm{ReLU}$ 就消失了。
@@ -174,11 +174,11 @@ $$
 
 This gradient can be computed because the convolution stage is linear in the kernel: the partial derivative of $s[i,j]$ with respect to $K[m,n]$ is exactly the pixel it multiplies, $I[i+m,\,j+n]$ `[Added]`. For example, the partial derivative of $s[2,0]$ in the main example with respect to $K[0,0]$ is $I[2,0]=2$. The same $K[m,n]$ is used at every position, and backpropagation adds up the contributions of all positions with the chain rule of Week 3.
 
-![左邊是手設的水平 Prewitt 核，數字固定；箭頭指向右邊九格 K[m,n] 的可學習核；綠色的前向箭頭經過卷積、線性整流函數、池化到損失 e；紅色的反向箭頭從損失回到核，標出偏導數與梯度下降的更新式](../assets/figures/lec06-kp03-learned-kernel.png)
+![左邊是手設的水平 Prewitt 核，數字固定；箭頭指向右邊九格 K[m,n] 的可學習核；綠色的前向箭頭經過卷積、線性整流函數、池化到損失 e；紅色的反向箭頭從損失回到核，標出偏導數與梯度下降的更新式](../assets/figures/lec06-kp02-learned-kernel.png)
 
-**圖說 `lec06-kp03-learned-kernel`**：先看左邊：手設的 $K_{\mathrm h}$，九個數字是固定的。箭頭往右：同樣的九格改成權重 $K[m,n]$。再看綠色箭頭：前向時，核做卷積，接著 $\mathrm{ReLU}$、池化與後面的層，最後算出損失 $e$。最後看紅色箭頭：反向時，損失對每個 $K[m,n]$ 的偏導數傳回來，用梯度下降更新這九個數。
+**圖說 `lec06-kp02-learned-kernel`**：先看左邊：手設的 $K_{\mathrm h}$，九個數字是固定的。箭頭往右：同樣的九格改成權重 $K[m,n]$。再看綠色箭頭：前向時，核做卷積，接著 $\mathrm{ReLU}$、池化與後面的層，最後算出損失 $e$。最後看紅色箭頭：反向時，損失對每個 $K[m,n]$ 的偏導數傳回來，用梯度下降更新這九個數。
 
-**Caption `lec06-kp03-learned-kernel`**: First look at the left: the hand-set $K_{\mathrm h}$, whose nine numbers are fixed. Follow the arrow to the right: the same nine cells become weights $K[m,n]$. Then the green arrows: in the forward pass the kernel convolves, followed by the ReLU, the pooling and the later layers, and finally the loss $e$ is computed. Finally the red arrow: in the backward pass the partial derivative of the loss with respect to each $K[m,n]$ comes back, and gradient descent updates the nine numbers.
+**Caption `lec06-kp02-learned-kernel`**: First look at the left: the hand-set $K_{\mathrm h}$, whose nine numbers are fixed. Follow the arrow to the right: the same nine cells become weights $K[m,n]$. Then the green arrows: in the forward pass the kernel convolves, followed by the ReLU, the pooling and the later layers, and finally the loss $e$ is computed. Finally the red arrow: in the backward pass the partial derivative of the loss with respect to each $K[m,n]$ comes back, and gradient descent updates the nine numbers.
 
 學出來的核，可能像 Prewitt 那樣抓邊緣，也可能抓紋理、斑點或更複雜的局部圖案。卷積神經網路沒有發明新的神奇濾波器，而是讓反向傳播取代工程師手調。Prewitt 的用處，是讓我們看清「核在做什麼」。
 
@@ -188,11 +188,11 @@ A learned kernel may catch edges like Prewitt does, or textures, spots and more 
 
 Common error: thinking that a CNN can only use edge kernels like Prewitt. Prewitt is just an example from the era of hand-tuning; a modern convolutional layer learns its kernels from data.
 
-最後留一個問題。本講義的式子沿用 KP01，核照原樣蓋上去。教科書的卷積卻要先把核轉 $180^\circ$ 再蓋，而 $K_{\mathrm h}$ 轉 $180^\circ$ 後正好變成自己的負號，反應也跟著變號 `[補充]`。到底該不該翻？這個「滑著乘加」要怎麼精確寫成算式？KP04 回答。
+最後留一個問題。本講義的式子沿用 KP01，核照原樣蓋上去。教科書的卷積卻要先把核轉 $180^\circ$ 再蓋，而 $K_{\mathrm h}$ 轉 $180^\circ$ 後正好變成自己的負號，反應也跟著變號 `[補充]`。到底該不該翻？這個「滑著乘加」要怎麼精確寫成算式？KP03 回答。
 
-One question is left. The formula in this note follows KP01 and lays the kernel down as it is. The textbook convolution, however, rotates the kernel by $180^\circ$ first, and $K_{\mathrm h}$ rotated by $180^\circ$ becomes exactly its own negative, so the response changes sign too `[Added]`. Should the kernel be flipped or not? How is this sliding multiply-and-add written as an exact formula? KP04 answers.
+One question is left. The formula in this note follows KP01 and lays the kernel down as it is. The textbook convolution, however, rotates the kernel by $180^\circ$ first, and $K_{\mathrm h}$ rotated by $180^\circ$ becomes exactly its own negative, so the response changes sign too `[Added]`. Should the kernel be flipped or not? How is this sliding multiply-and-add written as an exact formula? KP03 answers.
 
-### 本單元重點整理（KP03 summary）
+### 本單元重點整理（KP02 summary）
 
 **一句話重點**：一層卷積層有三站：卷積（核滑動做乘加）、偵測器（逐格套活化函數）、池化（每塊留一個摘要）；核的數字不是人手設計的，而是當成權重，用反向傳播學出來。
 
@@ -230,23 +230,23 @@ For learning, $\dfrac{\partial s[i,j]}{\partial K[m,n]}=I[i+m,\,j+n]$, and the u
 
 **圖**：本單元有三張圖。
 
-- `lec06-kp03-prewitt-responses`：兩個 Prewitt 核對兩個小塊的反應。
-- `lec06-kp03-three-stages`：$6\times6$ 影像走完卷積、$\mathrm{ReLU}$、池化三站。
-- `lec06-kp03-learned-kernel`：核從手設變成可學習權重。
+- `lec06-kp02-prewitt-responses`：兩個 Prewitt 核對兩個小塊的反應。
+- `lec06-kp02-three-stages`：$6\times6$ 影像走完卷積、$\mathrm{ReLU}$、池化三站。
+- `lec06-kp02-learned-kernel`：核從手設變成可學習權重。
 
-三張圖與文中數字都由同一支程式產生：`lec06-kp03-figures.py`。
+三張圖與文中數字都由同一支程式產生：`lec06-kp02-figures.py`。
 
 **Figure**: Three figures in this unit.
 
-- `lec06-kp03-prewitt-responses`: the responses of the two Prewitt kernels to two patches.
-- `lec06-kp03-three-stages`: a $6\times6$ image through the three stages of convolution, ReLU and pooling.
-- `lec06-kp03-learned-kernel`: the kernel turns from hand-set numbers into learnable weights.
+- `lec06-kp02-prewitt-responses`: the responses of the two Prewitt kernels to two patches.
+- `lec06-kp02-three-stages`: a $6\times6$ image through the three stages of convolution, ReLU and pooling.
+- `lec06-kp02-learned-kernel`: the kernel turns from hand-set numbers into learnable weights.
 
-All three figures and every number in the text come from one program: `lec06-kp03-figures.py`.
+All three figures and every number in the text come from one program: `lec06-kp02-figures.py`.
 
-**想深入**（選讀）`[補充]`：偵測器不一定用 $\mathrm{ReLU}$，第2週的其他活化函數也可以；池化也不一定取最大值，取平均也很常見。KP08 會比較不同的池化，KP07 會談多個核與彩色通道。
+**想深入**（選讀）`[補充]`：偵測器不一定用 $\mathrm{ReLU}$，第2週的其他活化函數也可以；池化也不一定取最大值，取平均也很常見。KP07 會比較不同的池化，KP06 會談多個核與彩色通道。
 
-**Going deeper** (optional) `[Added]`: the detector need not be a ReLU, since other activation functions of Week 2 also work; pooling need not take the maximum either, and taking the average is also common. KP08 compares different kinds of pooling, and KP07 covers several kernels and colour channels.
+**Going deeper** (optional) `[Added]`: the detector need not be a ReLU, since other activation functions of Week 2 also work; pooling need not take the maximum either, and taking the average is also common. KP07 compares different kinds of pooling, and KP06 covers several kernels and colour channels.
 
 **小練習**：
 
@@ -323,20 +323,20 @@ All three figures and every number in the text come from one program: `lec06-kp0
 本講義依 CCC-LNS IDL_115 第4章 KP03（主文、教授講解與簡報）重新撰寫，該教材的第4章就是本課的第6週。來源的讀取日期是 2026-10-27。來源沒有的內容，都在出現的地方標示 `[補充]`。
 
 - 來源把第二站寫成「激活」或「啟用」。本課第2週用「活化函數」，本講義統一使用。
-- 來源說少了池化時，物件平移 $1$ 個畫素就會讓下游特徵完全錯位。KP01 已說明卷積層是平移等變的：輸入移動，特徵圖跟著移動，不是完全錯位。本講義改寫成池化讓圖變小，並讓小位移的影響變小，細節留給 KP08–KP09。
+- 來源說少了池化時，物件平移 $1$ 個畫素就會讓下游特徵完全錯位。KP01 已說明卷積層是平移等變的：輸入移動，特徵圖跟著移動，不是完全錯位。本講義改寫成池化讓圖變小，並讓小位移的影響變小，細節留給 KP07–KP08。
 - 來源把卷積階段稱為含偏置的仿射運算。本講義沿用 KP01 的約定，公式不含偏置。
 - 來源只說 Prewitt 核遇到邊緣時輸出的絕對值很大。本講義補上正負號的意思，並指出負的反應經過 $\mathrm{ReLU}$ 會變成 $0$。
 - 來源的更新式用 $\boldsymbol W$ 表示核、$\mathcal L$ 表示損失。本講義改用 $K[m,n]$ 與第3週的損失 $e$。
-- 取捨：來源的錄音室等化器比喻、手設核與學習核的多列比較表（含多通道）不採用，多通道留給 KP07；保留修圖軟體「找邊緣」濾鏡這一個說法。來源互動實驗室的 $6\times6\to4\times4\to2\times2$ 流程保留，但影像數值由本講義自訂。沿用來源的部分：三站的名稱與順序、兩個 Prewitt 核、第 2 節的小塊與 $-6$、$0$ 兩個反應，以及第 1 題的小塊。
+- 取捨：來源的錄音室等化器比喻、手設核與學習核的多列比較表（含多通道）不採用，多通道留給 KP06；保留修圖軟體「找邊緣」濾鏡這一個說法。來源互動實驗室的 $6\times6\to4\times4\to2\times2$ 流程保留，但影像數值由本講義自訂。沿用來源的部分：三站的名稱與順序、兩個 Prewitt 核、第 2 節的小塊與 $-6$、$0$ 兩個反應，以及第 1 題的小塊。
 
 This note is rewritten from KP03 of CCC-LNS IDL_115 Chapter 4 (main text, teaching notes and slides); Chapter 4 of that material is Week 6 of this course. The source was accessed on 2026-10-27. Content that the source does not contain is marked `[Added]` where it appears.
 
 - The source calls the second stage "activation" with two different Chinese words. This note uses the single term of Week 2, activation function, throughout.
-- The source says that without pooling a shift of $1$ pixel makes the downstream features completely misaligned. KP01 showed that a convolutional layer is translation equivariant: when the input moves, the feature map moves with it, which is not complete misalignment. This note says instead that pooling shrinks the map and makes small shifts matter less, with details left to KP08–KP09.
+- The source says that without pooling a shift of $1$ pixel makes the downstream features completely misaligned. KP01 showed that a convolutional layer is translation equivariant: when the input moves, the feature map moves with it, which is not complete misalignment. This note says instead that pooling shrinks the map and makes small shifts matter less, with details left to KP07–KP08.
 - The source calls the convolution stage an affine operation with a bias. This note keeps the convention of KP01 and writes the formula without a bias.
 - The source says only that a Prewitt kernel gives an output with a large absolute value at an edge. This note adds what the sign means and points out that a negative response becomes $0$ after the ReLU.
 - The source's update formula uses $\boldsymbol W$ for the kernel and $\mathcal L$ for the loss. This note uses $K[m,n]$ and the loss $e$ of Week 3.
-- Choices: the source's analogy of a recording-studio equaliser and its multi-row table comparing hand-set and learned kernels (including several channels) are not used; several channels are left to KP07. The single image of a photo editor's "find edges" filter is kept. The $6\times6\to4\times4\to2\times2$ flow of the source's interactive lab is kept, but the image values are chosen by this note. Taken from the source: the names and order of the three stages, the two Prewitt kernels, the patch of Section 2 with its responses $-6$ and $0$, and the patch of Practice 1.
+- Choices: the source's analogy of a recording-studio equaliser and its multi-row table comparing hand-set and learned kernels (including several channels) are not used; several channels are left to KP06. The single image of a photo editor's "find edges" filter is kept. The $6\times6\to4\times4\to2\times2$ flow of the source's interactive lab is kept, but the image values are chosen by this note. Taken from the source: the names and order of the three stages, the two Prewitt kernels, the patch of Section 2 with its responses $-6$ and $0$, and the patch of Practice 1.
 
 ### 術語對照（Terminology）
 

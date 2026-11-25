@@ -9,7 +9,7 @@ Numbers
   * same-size 4x4 (and 8x8) layer: weights of a fully connected layer, connections of a 3x3 local layer that touch
     real pixels (no padded zeros), and weights after sharing (bias excluded).
   * larger images: 28x28 to 512 units, 224x224x3 to 512 units, 64 kernels of 3x3x3.
-  * 1-D shift: x = [2, 1, 3] and w = [4, 5] (same numbers as KP04) on a row of six cells, shifted right by one.
+  * 1-D shift: x = [2, 1, 3] and w = [4, 5] (same numbers as KP03) on a row of six cells, shifted right by one.
   * practice: 8x8 counts, 5x5 flatten indices, a 4x4 image with a 2x2 kernel, the edge kernel [1, -1].
 Run:  py assets/figures/src/lec06-kp01-figures.py
 """

@@ -8,9 +8,9 @@
 
 This is the last knowledge point (KP07) of Week 7, "Convolutional neural networks (2): classic architectures". KP06 saw that a residual block connects the output of an earlier layer to a later one by "addition". This note asks: what if the outputs of **all** earlier layers are connected? This is DenseNet. It then takes a brief look at two architectures after ResNet, EfficientNet and ConvNeXt, and finally reviews the whole chapter.
 
-先備知識是 KP06 的殘差塊與式 (9)(10)、KP04 的串接，以及第4週的批次正規化與第6週 KP08 的平均池化。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec07-kp07-figures.py` 算出，可以自己重算。
+先備知識是 KP06 的殘差塊與式 (9)(10)、KP04 的串接，以及第4週的批次正規化與第6週 KP07 的平均池化。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec07-kp07-figures.py` 算出，可以自己重算。
 
-The prerequisites are the residual block and formulas (9) and (10) of KP06, the concatenation of KP04, the batch normalization of Week 4 and the average pooling of Week 6 KP08. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp07-figures.py`, so you can recompute it yourself.
+The prerequisites are the residual block and formulas (9) and (10) of KP06, the concatenation of KP04, the batch normalization of Week 4 and the average pooling of Week 6 KP07. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec07-kp07-figures.py`, so you can recompute it yourself.
 
 [下載本單元投影片](../slides/lec07-kp07-densenet-and-beyond-infographic-voiced.jbd.json)
 

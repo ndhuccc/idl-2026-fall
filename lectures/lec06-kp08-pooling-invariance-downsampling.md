@@ -1,22 +1,22 @@
-# 第6週 KP09：池化的局部不變與下採樣（Local invariance and downsampling of pooling）
+# 第6週 KP08：池化的局部不變與下採樣（Local invariance and downsampling of pooling）
 
 > 程度：大學生
 >
 > Level: Undergraduate (undergrad)
 
-本講義是第6週「卷積與池化」的第九個知識點（KP09）。KP08 說明了池化怎麼算：每個窗留一個摘要，沒有權重。這一節回答：池化為什麼值得做？答案有兩個。輸入稍微平移，池化的輸出常常不變；而且池化讓特徵圖變小，後面的層要處理的數字少很多。
+本講義是第6週「卷積與池化」的第八個知識點（KP08）。KP07 說明了池化怎麼算：每個窗留一個摘要，沒有權重。這一節回答：池化為什麼值得做？答案有兩個。輸入稍微平移，池化的輸出常常不變；而且池化讓特徵圖變小，後面的層要處理的數字少很多。
 
-This is the ninth knowledge point (KP09) of Week 6, "Convolution and pooling". KP08 explained how pooling is computed: every window keeps one summary and there are no weights. This note answers why pooling is worth doing. There are two answers: when the input shifts slightly the pooled output often does not change, and pooling shrinks the feature map so that later layers handle far fewer numbers.
+This is the eighth knowledge point (KP08) of Week 6, "Convolution and pooling". KP07 explained how pooling is computed: every window keeps one summary and there are no weights. This note answers why pooling is worth doing. There are two answers: when the input shifts slightly the pooled output often does not change, and pooling shrinks the feature map so that later layers handle far fewer numbers.
 
-先備知識是 KP06 的平移等變、KP07 的輸出邊長公式與 KP08 的最大池化。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp09-figures.py` 算出，可以自己重算。
+先備知識是 KP05 的平移等變、KP06 的輸出邊長公式與 KP07 的最大池化。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp08-figures.py` 算出，可以自己重算。
 
-The prerequisites are the translation equivariance of KP06, the output-side formula of KP07 and the max pooling of KP08. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp09-figures.py`, so you can recompute it yourself.
+The prerequisites are the translation equivariance of KP05, the output-side formula of KP06 and the max pooling of KP07. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp08-figures.py`, so you can recompute it yourself.
 
-[下載本單元投影片](../slides/lec06-kp09-pooling-invariance-downsampling.jbd.json)
+[下載本單元投影片](../slides/lec06-kp08-pooling-invariance-downsampling.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec06-kp09-pooling-invariance-downsampling-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec06-kp08-pooling-invariance-downsampling-en.jbd.json)
 
-## KP09 池化的局部不變與下採樣（Local invariance and downsampling of pooling）
+## KP08 池化的局部不變與下採樣（Local invariance and downsampling of pooling）
 
 ### 學習目標（Learning objectives）
 
@@ -49,11 +49,11 @@ Take a $4\times4$ map $A$ with rows $[1,3,8,2]$, $[4,2,1,6]$, $[5,7,0,1]$, $[2,9
 
 Shift $A$ right by one with $0$ filled on the left and you get $B$ with rows $[0,1,3,8]$, $[0,4,2,1]$, $[0,5,7,0]$, $[0,2,9,4]$. Cell by cell all $16$ cells have changed. Yet the max pooling of $B$ is $[4,8]$, $[5,9]$: the two upper outputs $4$ and $8$ did not move at all and only the two lower ones changed.
 
-![左邊是原圖 A，右邊是右移一格後的圖 B，各自下方是 2 乘 2 的最大池化輸出。原圖輸出是 4、8、9、4，右移後是 4、8、5、9；4 與 8 用綠框標示完全沒變](../assets/figures/lec06-kp09-shift-pooling.png)
+![左邊是原圖 A，右邊是右移一格後的圖 B，各自下方是 2 乘 2 的最大池化輸出。原圖輸出是 4、8、9、4，右移後是 4、8、5、9；4 與 8 用綠框標示完全沒變](../assets/figures/lec06-kp08-shift-pooling.png)
 
-**圖說 `lec06-kp09-shift-pooling`**：先看左右兩張 $4\times4$ 的圖：右邊把左邊整體右移一格，每一格的數字都不同。再看各自下方的輸出：綠框的 $4$ 與 $8$ 在兩邊相同。最後看下排：$9,4$ 變成 $5,9$，因為下排窗的最大值被滑出或換了窗。
+**圖說 `lec06-kp08-shift-pooling`**：先看左右兩張 $4\times4$ 的圖：右邊把左邊整體右移一格，每一格的數字都不同。再看各自下方的輸出：綠框的 $4$ 與 $8$ 在兩邊相同。最後看下排：$9,4$ 變成 $5,9$，因為下排窗的最大值被滑出或換了窗。
 
-**Caption `lec06-kp09-shift-pooling`**: First look at the two $4\times4$ maps: the right one is the left one shifted right by one and every cell has a different number. Then the outputs below each: the green-framed $4$ and $8$ are the same on both sides. Finally the bottom row: $9,4$ become $5,9$, because the maximum of the lower windows slid out or moved to another window.
+**Caption `lec06-kp08-shift-pooling`**: First look at the two $4\times4$ maps: the right one is the left one shifted right by one and every cell has a different number. Then the outputs below each: the green-framed $4$ and $8$ are the same on both sides. Finally the bottom row: $9,4$ become $5,9$, because the maximum of the lower windows slid out or moved to another window.
 
 原因很直接：上排的窗，最強的 $4$ 與 $8$ 在平移後仍然落在同一個窗裡；下排的 $9$ 被推到另一個窗，所以兩個輸出都換了。只要窗內的最強特徵還在窗內，最大池化的摘要就不動。這個性質叫**局部平移不變**，它是近似的、只對小的位移成立。
 
@@ -87,9 +87,9 @@ Not every task cares about "whether". Face keypoint detection (for example the c
 
 Look at a small example. Two $4\times4$ heat maps each have a single peak $9$: the first at row $0$, column $2$, and the second at row $1$, column $3$. The positions differ, but after max pooling with width $2$ and stride $2$ both give $[0,9]$, $[0,0]$, exactly the same `[Added]`. Pooling only tells us "there is a peak in the upper-right window", and not at which cell of the window.
 
-所以位置要緊的任務，常常少用池化，或改用其他方式保留位置。KP06 說過，平移等變的卷積會保留位置；是池化把位置逐步丟掉。
+所以位置要緊的任務，常常少用池化，或改用其他方式保留位置。KP05 說過，平移等變的卷積會保留位置；是池化把位置逐步丟掉。
 
-So tasks where position matters often use less pooling or keep the position in other ways. KP06 said that the translation-equivariant convolution keeps position; it is pooling that throws position away step by step.
+So tasks where position matters often use less pooling or keep the position in other ways. KP05 said that the translation-equivariant convolution keeps position; it is pooling that throws position away step by step.
 
 ### 4. 下採樣的紅利：格數少了，後面的權重也少了（The payoff of downsampling: fewer cells and fewer later weights）
 
@@ -101,11 +101,11 @@ $224\times224\times64$ 的特徵圖有 $3{,}211{,}264$ 格，池化成 $112\time
 
 A $224\times224\times64$ feature map has $3{,}211{,}264$ cells and is left with $802{,}816$ after pooling to $112\times112\times64$. If a fully connected layer with $1000$ outputs follows, the number of weights drops from $3{,}211{,}264\times1000=3{,}211{,}264{,}000$ to $802{,}816\times1000=802{,}816{,}000$, again a quarter `[Added]`. The later layers have fewer numbers to process, so the amount of computation and the risk of overfitting drop as well.
 
-![兩條橫條：224 乘 224 乘 64 有 3,211,264 格，接 1000 個輸出的全連接層要 3,211,264,000 個權重；池化成 112 乘 112 乘 64 後只有 802,816 格，權重 802,816,000 個，是四分之一](../assets/figures/lec06-kp09-downsampling.png)
+![兩條橫條：224 乘 224 乘 64 有 3,211,264 格，接 1000 個輸出的全連接層要 3,211,264,000 個權重；池化成 112 乘 112 乘 64 後只有 802,816 格，權重 802,816,000 個，是四分之一](../assets/figures/lec06-kp08-downsampling.png)
 
-**圖說 `lec06-kp09-downsampling`**：先看上面的紅色長條：$224\times224\times64$ 有 $3{,}211{,}264$ 格，下方標出接 $1000$ 個輸出的全連接層要 $3{,}211{,}264{,}000$ 個權重。再看下面的綠色短條：池化後只有 $802{,}816$ 格，權重 $802{,}816{,}000$ 個，只有原來的四分之一。
+**圖說 `lec06-kp08-downsampling`**：先看上面的紅色長條：$224\times224\times64$ 有 $3{,}211{,}264$ 格，下方標出接 $1000$ 個輸出的全連接層要 $3{,}211{,}264{,}000$ 個權重。再看下面的綠色短條：池化後只有 $802{,}816$ 格，權重 $802{,}816{,}000$ 個，只有原來的四分之一。
 
-**Caption `lec06-kp09-downsampling`**: First look at the red long bar above: $224\times224\times64$ has $3{,}211{,}264$ cells, and below it the fully connected layer with $1000$ outputs needs $3{,}211{,}264{,}000$ weights. Then the green short bar below: after pooling there are only $802{,}816$ cells and $802{,}816{,}000$ weights, a quarter of the original.
+**Caption `lec06-kp08-downsampling`**: First look at the red long bar above: $224\times224\times64$ has $3{,}211{,}264$ cells, and below it the fully connected layer with $1000$ outputs needs $3{,}211{,}264{,}000$ weights. Then the green short bar below: after pooling there are only $802{,}816$ cells and $802{,}816{,}000$ weights, a quarter of the original.
 
 常見錯誤：以為池化的好處只是平移不變。縮小特徵圖、減少後面的計算與權重，同樣是池化的重要用途。
 
@@ -113,15 +113,15 @@ Common error: thinking that the only benefit of pooling is translation invarianc
 
 ### 5. 等變與不變：卷積與池化分工（Equivariance and invariance: convolution and pooling divide the work）
 
-KP06 說卷積是平移等變：$f(g(x))=g(f(x))$，輸入移多少，特徵圖也跟著移多少，位置資訊還在。池化帶來的是近似的平移不變：$f(g(x))\approx f(x)$，輸入小小一動，輸出幾乎不動，位置資訊被模糊掉。
+KP05 說卷積是平移等變：$f(g(x))=g(f(x))$，輸入移多少，特徵圖也跟著移多少，位置資訊還在。池化帶來的是近似的平移不變：$f(g(x))\approx f(x)$，輸入小小一動，輸出幾乎不動，位置資訊被模糊掉。
 
-KP06 said that convolution is translation equivariant: $f(g(x))=g(f(x))$, the feature map moves as far as the input and the position information is kept. What pooling brings is an approximate translation invariance: $f(g(x))\approx f(x)$, a small move of the input hardly moves the output and the position information is blurred.
+KP05 said that convolution is translation equivariant: $f(g(x))=g(f(x))$, the feature map moves as far as the input and the position information is kept. What pooling brings is an approximate translation invariance: $f(g(x))\approx f(x)$, a small move of the input hardly moves the output and the position information is blurred.
 
 兩者分工合作：卷積在前面保留位置、找出圖案；池化一路把位置逐步模糊，到最後的分類只問「是什麼」。適合的任務也不同。
 
 The two divide the work: convolution at the front keeps position and finds patterns; pooling blurs the position step by step until the final classification only asks "what it is". The suited tasks differ too.
 
-| 特性 | 卷積（KP06） | 池化（本節） |
+| 特性 | 卷積（KP05） | 池化（本節） |
 |---|---|---|
 | 平移的性質 | 等變 $f(g(x))=g(f(x))$ | 近似不變 $f(g(x))\approx f(x)$ |
 | 輸入右移 | 特徵圖跟著右移 | 輸出幾乎不動（小位移） |
@@ -129,7 +129,7 @@ The two divide the work: convolution at the front keeps position and finds patte
 | 下採樣 | 步幅大於 $1$ 時有 | 步幅大於 $1$ 時有 |
 | 適合的任務 | 語意分割、畫素級標註、物件邊界定位 | 整張影像分類、場景辨識、特徵有沒有 |
 
-| Property | Convolution (KP06) | Pooling (this note) |
+| Property | Convolution (KP05) | Pooling (this note) |
 |---|---|---|
 | Behaviour under a shift | equivariant $f(g(x))=g(f(x))$ | approximately invariant $f(g(x))\approx f(x)$ |
 | Input moves right | the feature map moves right | the output hardly moves (small shifts) |
@@ -137,7 +137,7 @@ The two divide the work: convolution at the front keeps position and finds patte
 | Downsampling | with a stride larger than $1$ | with a stride larger than $1$ |
 | Suited tasks | semantic segmentation, pixel labelling, object boundaries | whole-image classification, scene recognition, whether a feature is present |
 
-### 本單元重點整理（KP09 summary）
+### 本單元重點整理（KP08 summary）
 
 **一句話重點**：最大池化對局部小位移近似不變，只要窗內最強的特徵還在窗內，輸出就不動；池化也讓特徵圖縮小，減少後面的格數與權重。位置本身是答案時，池化的不變性反而有害；卷積保留位置（等變），池化模糊位置（近似不變），兩者分工。
 
@@ -171,21 +171,21 @@ The two divide the work: convolution at the front keeps position and finds patte
 
 **圖**：本單元有兩張圖。
 
-- `lec06-kp09-shift-pooling`：輸入右移一格，最大池化一半輸出不動。
-- `lec06-kp09-downsampling`：池化後的格數與全連接層權重。
+- `lec06-kp08-shift-pooling`：輸入右移一格，最大池化一半輸出不動。
+- `lec06-kp08-downsampling`：池化後的格數與全連接層權重。
 
-兩張圖與文中數字都由同一支程式產生：`lec06-kp09-figures.py`。
+兩張圖與文中數字都由同一支程式產生：`lec06-kp08-figures.py`。
 
 **Figures**: this unit has two figures.
 
-- `lec06-kp09-shift-pooling`: the input shifts right by one and half of the max-pooled output does not move.
-- `lec06-kp09-downsampling`: the cells after pooling and the weights of a fully connected layer.
+- `lec06-kp08-shift-pooling`: the input shifts right by one and half of the max-pooled output does not move.
+- `lec06-kp08-downsampling`: the cells after pooling and the weights of a fully connected layer.
 
-Both figures and the numbers in the text come from the same program: `lec06-kp09-figures.py`.
+Both figures and the numbers in the text come from the same program: `lec06-kp08-figures.py`.
 
-**想深入**（選讀）`[補充]`：位移剛好等於步幅時，池化是等變的：$A$ 右移 $2$ 格後，最大池化變成 $[0,4]$、$[0,9]$，正是 $[4,8]$、$[9,4]$ 整體右移一個輸出格，最右邊的 $8$ 與 $4$ 被擠出範圍。這和 KP06 一致：步幅 $s$ 的運算只對 $s$ 的倍數的平移等變。不變和等變是兩端，實際的池化介於中間：位移小、最強特徵還在窗內時近似不變，位移等於步幅時等變，其他位移則兩者都不嚴格成立。
+**想深入**（選讀）`[補充]`：位移剛好等於步幅時，池化是等變的：$A$ 右移 $2$ 格後，最大池化變成 $[0,4]$、$[0,9]$，正是 $[4,8]$、$[9,4]$ 整體右移一個輸出格，最右邊的 $8$ 與 $4$ 被擠出範圍。這和 KP05 一致：步幅 $s$ 的運算只對 $s$ 的倍數的平移等變。不變和等變是兩端，實際的池化介於中間：位移小、最強特徵還在窗內時近似不變，位移等於步幅時等變，其他位移則兩者都不嚴格成立。
 
-**Going deeper** (optional) `[Added]`: when the shift equals the stride, pooling is equivariant: after shifting $A$ right by $2$, max pooling gives $[0,4]$, $[0,9]$, which is exactly $[4,8]$, $[9,4]$ moved right by one output cell, with the rightmost $8$ and $4$ pushed out of range. This agrees with KP06: an operation of stride $s$ is equivariant only to shifts that are multiples of $s$. Invariance and equivariance are the two ends, and real pooling lies in between: approximately invariant for small shifts with the strongest feature still inside the window, equivariant when the shift equals the stride, and neither strictly true for other shifts.
+**Going deeper** (optional) `[Added]`: when the shift equals the stride, pooling is equivariant: after shifting $A$ right by $2$, max pooling gives $[0,4]$, $[0,9]$, which is exactly $[4,8]$, $[9,4]$ moved right by one output cell, with the rightmost $8$ and $4$ pushed out of range. This agrees with KP05: an operation of stride $s$ is equivariant only to shifts that are multiples of $s$. Invariance and equivariance are the two ends, and real pooling lies in between: approximately invariant for small shifts with the strongest feature still inside the window, equivariant when the shift equals the stride, and neither strictly true for other shifts.
 
 **小練習**：
 

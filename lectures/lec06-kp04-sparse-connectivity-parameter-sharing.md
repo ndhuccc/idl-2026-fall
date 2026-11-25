@@ -1,22 +1,22 @@
-# 第6週 KP05：稀疏連接與權重共享（Sparse connectivity and parameter sharing）
+# 第6週 KP04：稀疏連接與權重共享（Sparse connectivity and parameter sharing）
 
 > 程度：大學生
 >
 > Level: Undergraduate (undergrad)
 
-本講義是第6週「卷積與池化」的第五個知識點（KP05）。KP01 說明為什麼影像不該攤平，並初步比較了三種接法的權重個數；KP03 把一層拆成三個階段；KP04 把「滑著乘加」寫成精確算式，最後提到：同一個乘加也可以寫成一個巨大的全連接層。這一節接著問：和全連接層比，卷積到底省下了什麼？省下的東西有幾種？
+本講義是第6週「卷積與池化」的第四個知識點（KP04）。KP01 說明為什麼影像不該攤平，並初步比較了三種接法的權重個數；KP02 把一層拆成三個階段；KP03 把「滑著乘加」寫成精確算式，最後提到：同一個乘加也可以寫成一個巨大的全連接層。這一節接著問：和全連接層比，卷積到底省下了什麼？省下的東西有幾種？
 
-This is the fifth knowledge point (KP05) of Week 6, "Convolution and pooling". KP01 explained why an image should not be flattened and made a first comparison of the weight counts of three layers; KP03 split one layer into three stages; KP04 wrote the sliding multiply-and-add as an exact formula and ended by noting that the same multiply-and-add can also be written as one huge fully connected layer. This note continues with the question: compared with a fully connected layer, what exactly does convolution save, and how many different things does it save?
+This is the fourth knowledge point (KP04) of Week 6, "Convolution and pooling". KP01 explained why an image should not be flattened and made a first comparison of the weight counts of three layers; KP02 split one layer into three stages; KP03 wrote the sliding multiply-and-add as an exact formula and ended by noting that the same multiply-and-add can also be written as one huge fully connected layer. This note continues with the question: compared with a fully connected layer, what exactly does convolution save, and how many different things does it save?
 
-先備知識是 KP01 的稀疏連接與權重共享的初步介紹、KP04 的一維滑動乘加 $s[t]=\sum_m x[t+m]\,w[m]$，以及第2週的全連接層。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp05-figures.py` 算出，可以自己重算。
+先備知識是 KP01 的稀疏連接與權重共享的初步介紹、KP03 的一維滑動乘加 $s[t]=\sum_m x[t+m]\,w[m]$，以及第2週的全連接層。第一次出現的詞與符號都會定義。所有數字都由 `assets/figures/src/lec06-kp04-figures.py` 算出，可以自己重算。
 
-The prerequisites are the first introduction of sparse connectivity and parameter sharing in KP01, the 1-D sliding multiply-and-add $s[t]=\sum_m x[t+m]\,w[m]$ of KP04, and the fully connected layer of Week 2. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp05-figures.py` and can be recomputed.
+The prerequisites are the first introduction of sparse connectivity and parameter sharing in KP01, the 1-D sliding multiply-and-add $s[t]=\sum_m x[t+m]\,w[m]$ of KP03, and the fully connected layer of Week 2. Every term and symbol is defined when it first appears. Every number is computed by `assets/figures/src/lec06-kp04-figures.py` and can be recomputed.
 
-[下載本單元投影片](../slides/lec06-kp05-sparse-connectivity-parameter-sharing.jbd.json)
+[下載本單元投影片](../slides/lec06-kp04-sparse-connectivity-parameter-sharing.jbd.json)
 
-[Download the slides of this unit (English)](../slides/lec06-kp05-sparse-connectivity-parameter-sharing-en.jbd.json)
+[Download the slides of this unit (English)](../slides/lec06-kp04-sparse-connectivity-parameter-sharing-en.jbd.json)
 
-## KP05 稀疏連接與權重共享（Sparse connectivity and parameter sharing）
+## KP04 稀疏連接與權重共享（Sparse connectivity and parameter sharing）
 
 ### 學習目標（Learning objectives）
 
@@ -36,15 +36,15 @@ After reading, you can write a 1-D convolution as a weight matrix and point out 
 | $s[t]$ | 輸出在位置 $t$ 的值 | value of the output at position $t$ |
 | $\mathbf{W}$ | $P\times M$ 的權重矩陣，第 $t$ 列是第 $t$ 個輸出的權重 | the $P\times M$ weight matrix; row $t$ holds the weights of output $t$ |
 
-本講義的指標一律從 $0$ 開始數。為了不和 KP04 用 $n$ 表示訊號長度混淆，這裡的長度改用 $M$、輸出格數用 $P$。參數個數一律不含偏置 `[補充]`。
+本講義的指標一律從 $0$ 開始數。為了不和 KP03 用 $n$ 表示訊號長度混淆，這裡的長度改用 $M$、輸出格數用 $P$。參數個數一律不含偏置 `[補充]`。
 
-All indices in this note start at $0$. To avoid clashing with KP04, where $n$ is the signal length, the length here is $M$ and the number of outputs is $P$. Parameter counts never include biases `[Added]`.
+All indices in this note start at $0$. To avoid clashing with KP03, where $n$ is the signal length, the length here is $M$ and the number of outputs is $P$. Parameter counts never include biases `[Added]`.
 
 ### 1. 卷積可以寫成一個全連接層（A convolution can be written as a fully connected layer）
 
-先看一個具體例子。輸入有 $M=6$ 格：$x=[2,1,3,0,1,4]$。核有 $k=3$ 格：$w=[1,2,-1]$。用 KP04 的滑動乘加 $s[t]=\sum_{m=0}^{2}x[t+m]\,w[m]$，有效輸出有 $P=6-3+1=4$ 格：
+先看一個具體例子。輸入有 $M=6$ 格：$x=[2,1,3,0,1,4]$。核有 $k=3$ 格：$w=[1,2,-1]$。用 KP03 的滑動乘加 $s[t]=\sum_{m=0}^{2}x[t+m]\,w[m]$，有效輸出有 $P=6-3+1=4$ 格：
 
-Look at a concrete example first. The input has $M=6$ cells: $x=[2,1,3,0,1,4]$. The kernel has $k=3$ cells: $w=[1,2,-1]$. With the sliding multiply-and-add of KP04, $s[t]=\sum_{m=0}^{2}x[t+m]\,w[m]$, the valid output has $P=6-3+1=4$ cells:
+Look at a concrete example first. The input has $M=6$ cells: $x=[2,1,3,0,1,4]$. The kernel has $k=3$ cells: $w=[1,2,-1]$. With the sliding multiply-and-add of KP03, $s[t]=\sum_{m=0}^{2}x[t+m]\,w[m]$, the valid output has $P=6-3+1=4$ cells:
 
 - $s[0]=2\cdot1+1\cdot2+3\cdot(-1)=1$
 - $s[1]=1\cdot1+3\cdot2+0\cdot(-1)=7$
@@ -69,11 +69,11 @@ This is exactly a fully connected layer of Week 2, only with a very special weig
 - Most of each row is $0$: an output looks only at the $k$ cells in its window, and the connections outside the window do not exist. This is **sparse connectivity**.
 - Every row is the same $1,2,-1$ moved one cell to the right: all outputs use the same kernel. This is **parameter sharing**.
 
-![三個 4×6 權重矩陣：全連接 24 個顏色都不同；只稀疏不共享，每列有三格有顏色、其餘是 0，共 12 個顏色都不同；稀疏又共享，帶狀區域只有三種顏色，每列都是同三色往右挪一格](../assets/figures/lec06-kp05-weight-matrix.png)
+![三個 4×6 權重矩陣：全連接 24 個顏色都不同；只稀疏不共享，每列有三格有顏色、其餘是 0，共 12 個顏色都不同；稀疏又共享，帶狀區域只有三種顏色，每列都是同三色往右挪一格](../assets/figures/lec06-kp04-weight-matrix.png)
 
-**圖說 `lec06-kp05-weight-matrix`**：先看左邊的矩陣：$4\times6=24$ 格全部有顏色，而且顏色都不同，代表 $24$ 個互相獨立的權重。再看中間：每列只留三格，其餘是 $0$，共 $12$ 個顏色不同的權重。最後看右邊：同樣只留三格，但每一列都是同樣的三種顏色往右挪一格，所以只有 $3$ 個不同的數。
+**圖說 `lec06-kp04-weight-matrix`**：先看左邊的矩陣：$4\times6=24$ 格全部有顏色，而且顏色都不同，代表 $24$ 個互相獨立的權重。再看中間：每列只留三格，其餘是 $0$，共 $12$ 個顏色不同的權重。最後看右邊：同樣只留三格，但每一列都是同樣的三種顏色往右挪一格，所以只有 $3$ 個不同的數。
 
-**Caption `lec06-kp05-weight-matrix`**: First look at the left matrix: all $4\times6=24$ cells are coloured, and all colours differ, standing for $24$ independent weights. Then look at the middle one: each row keeps only three cells and the rest are $0$, giving $12$ weights with different colours. Finally look at the right one: it also keeps three cells per row, but every row has the same three colours moved one cell to the right, so there are only $3$ different numbers.
+**Caption `lec06-kp04-weight-matrix`**: First look at the left matrix: all $4\times6=24$ cells are coloured, and all colours differ, standing for $24$ independent weights. Then look at the middle one: each row keeps only three cells and the rest are $0$, giving $12$ weights with different colours. Finally look at the right one: it also keeps three cells per row, but every row has the same three colours moved one cell to the right, so there are only $3$ different numbers.
 
 寫成矩陣有一個好處：「卷積層是全連接層加上兩個限制」不再只是一句話，而是看得見的圖案。
 
@@ -103,11 +103,11 @@ The three layers and their counts are as follows; all take $P=M-k+1$ outputs.
 | 只稀疏、不共享（sparse, not shared） | $kP$ | $kP$ | $12$；$12$ |
 | 稀疏又共享＝卷積層（sparse and shared） | $k$ | $kP$ | $3$；$12$ |
 
-![三組一維連線圖，各有 6 個輸入與 4 個輸出：全連接 24 條灰線、24 個權重；只稀疏不共享 12 條彩色線、12 個權重；稀疏又共享 12 條線只有 3 種顏色、3 個權重](../assets/figures/lec06-kp05-three-layers.png)
+![三組一維連線圖，各有 6 個輸入與 4 個輸出：全連接 24 條灰線、24 個權重；只稀疏不共享 12 條彩色線、12 個權重；稀疏又共享 12 條線只有 3 種顏色、3 個權重](../assets/figures/lec06-kp04-three-layers.png)
 
-**圖說 `lec06-kp05-three-layers`**：下排是 $6$ 個輸入，上排是 $4$ 個輸出，一條線是一條連線。先看左邊：灰線 $24$ 條，每條是獨立的權重。再看中間：線只剩 $12$ 條，每條仍有自己的顏色。最後看右邊：還是 $12$ 條線，但只有 $3$ 種顏色，同色的線用同一個權重。
+**圖說 `lec06-kp04-three-layers`**：下排是 $6$ 個輸入，上排是 $4$ 個輸出，一條線是一條連線。先看左邊：灰線 $24$ 條，每條是獨立的權重。再看中間：線只剩 $12$ 條，每條仍有自己的顏色。最後看右邊：還是 $12$ 條線，但只有 $3$ 種顏色，同色的線用同一個權重。
 
-**Caption `lec06-kp05-three-layers`**: The bottom row has $6$ inputs and the top row $4$ outputs; one line is one connection. First look at the left: there are $24$ grey lines, each an independent weight. Then the middle: only $12$ lines remain, each still with its own colour. Finally the right: there are still $12$ lines, but only $3$ colours, and lines of the same colour use the same weight.
+**Caption `lec06-kp04-three-layers`**: The bottom row has $6$ inputs and the top row $4$ outputs; one line is one connection. First look at the left: there are $24$ grey lines, each an independent weight. Then the middle: only $12$ lines remain, each still with its own colour. Finally the right: there are still $12$ lines, but only $3$ colours, and lines of the same colour use the same weight.
 
 從表可以讀出兩個限制各省了什麼：
 
@@ -141,11 +141,11 @@ Now an image example. The input is a $28\times28$ grayscale image with $M=784$ p
 - Sparse, not shared: every output connects to $25$ pixels, giving $25\times576=14{,}400$ weights and $14{,}400$ multiply-adds.
 - Sparse and shared: there is one $5\times5$ kernel, so $25$ weights; the multiply-adds are still $14{,}400$.
 
-![橫條圖，對數橫軸：全連接 451,584、只稀疏不共享 14,400、稀疏又共享 25](../assets/figures/lec06-kp05-counts.png)
+![橫條圖，對數橫軸：全連接 451,584、只稀疏不共享 14,400、稀疏又共享 25](../assets/figures/lec06-kp04-counts.png)
 
-**圖說 `lec06-kp05-counts`**：橫軸是權重個數，採對數刻度，每一格差十倍。先看最上面的紅條：全連接 $451{,}584$。再看中間：只稀疏，掉到 $14{,}400$。最後看最下面的綠條：再共享，只剩 $25$。
+**圖說 `lec06-kp04-counts`**：橫軸是權重個數，採對數刻度，每一格差十倍。先看最上面的紅條：全連接 $451{,}584$。再看中間：只稀疏，掉到 $14{,}400$。最後看最下面的綠條：再共享，只剩 $25$。
 
-**Caption `lec06-kp05-counts`**: The horizontal axis is the number of weights on a logarithmic scale, where each tick is ten times the previous one. First look at the red bar at the top: the fully connected layer has $451{,}584$. Then the middle one: sparse only falls to $14{,}400$. Finally the green bar at the bottom: with sharing it is only $25$.
+**Caption `lec06-kp04-counts`**: The horizontal axis is the number of weights on a logarithmic scale, where each tick is ten times the previous one. First look at the red bar at the top: the fully connected layer has $451{,}584$. Then the middle one: sparse only falls to $14{,}400$. Finally the green bar at the bottom: with sharing it is only $25$.
 
 比一比：稀疏省了 $M/k=784/25=31.36$ 倍，共享省了 $P=576$ 倍；兩者相乘是 $451{,}584/25=18{,}063.36$ 倍。權重少了四個數量級，乘加卻只從 $451{,}584$ 降到 $14{,}400$，只少了約 $31$ 倍。
 
@@ -170,11 +170,11 @@ Fix $M=6$ and let the window $k$ grow from $1$ to $6$. The number of outputs is 
 | $5$ | $2$ | $12$ | $10$ | $5$ |
 | $6$ | $1$ | $6$ | $6$ | $6$ |
 
-![折線圖：窗 k 從 1 到 6，全連接由 36 降到 6，只稀疏不共享先升後降，稀疏又共享由 1 升到 6；k=6 時三條線交在 6](../assets/figures/lec06-kp05-k-to-m.png)
+![折線圖：窗 k 從 1 到 6，全連接由 36 降到 6，只稀疏不共享先升後降，稀疏又共享由 1 升到 6；k=6 時三條線交在 6](../assets/figures/lec06-kp04-k-to-m.png)
 
-**圖說 `lec06-kp05-k-to-m`**：橫軸是窗的大小 $k$，縱軸是權重個數，輸入固定 $M=6$。先看紅線：全連接隨 $k$ 變大而下降，因為輸出變少了。再看綠線：只共享一組核，權重就是 $k$，一路上升。最後看右端：$k=M=6$ 時，三條線交在同一點 $6$。
+**圖說 `lec06-kp04-k-to-m`**：橫軸是窗的大小 $k$，縱軸是權重個數，輸入固定 $M=6$。先看紅線：全連接隨 $k$ 變大而下降，因為輸出變少了。再看綠線：只共享一組核，權重就是 $k$，一路上升。最後看右端：$k=M=6$ 時，三條線交在同一點 $6$。
 
-**Caption `lec06-kp05-k-to-m`**: The horizontal axis is the window size $k$ and the vertical axis the number of weights, with the input fixed at $M=6$. First look at the red line: the fully connected layer falls as $k$ grows, because there are fewer outputs. Then the green line: one shared kernel means $k$ weights, rising all the way. Finally look at the right end: at $k=M=6$ the three lines meet at the same point, $6$.
+**Caption `lec06-kp04-k-to-m`**: The horizontal axis is the window size $k$ and the vertical axis the number of weights, with the input fixed at $M=6$. First look at the red line: the fully connected layer falls as $k$ grows, because there are fewer outputs. Then the green line: one shared kernel means $k$ weights, rising all the way. Finally look at the right end: at $k=M=6$ the three lines meet at the same point, $6$.
 
 為什麼會交在一起？看兩個倍數：稀疏省 $M/k$ 倍，共享省 $P=M-k+1$ 倍。$k=M$ 時，兩個倍數都是 $1$。窗已經看到整個輸入，沒有可以省的連線；有效輸出只剩 $P=1$ 格，只有一個位置，也沒有「另一個位置」可以共用。這時卷積層就是一個只有一個輸出的全連接層。
 
@@ -210,11 +210,11 @@ When an assumption does not hold, the restriction hurts the model. If the positi
 
 **Connection to code** `[Added]`: Shared weights have a consequence in backpropagation. One weight $w[m]$ of the kernel is used at all $P$ positions, so its gradient is the sum of the contributions of all $P$ positions: $\dfrac{\partial e}{\partial w[m]}=\sum_{t=0}^{P-1}\dfrac{\partial e}{\partial s[t]}\,x[t+m]$. Every weight therefore sees many examples and is learned more stably.
 
-到這裡，我們知道卷積層省下什麼、省了多少。這種接法還有另一個性質：圖案移到哪裡，輸出就跟著移到哪裡。KP01 已用一個小例子看過，KP06 會把它說清楚：什麼叫平移等變，它在什麼條件下成立。
+到這裡，我們知道卷積層省下什麼、省了多少。這種接法還有另一個性質：圖案移到哪裡，輸出就跟著移到哪裡。KP01 已用一個小例子看過，KP05 會把它說清楚：什麼叫平移等變，它在什麼條件下成立。
 
-At this point we know what a convolutional layer saves and by how much. This way of connecting has another property: wherever a pattern moves, the output moves with it. KP01 already saw this in a small example, and KP06 makes it precise: what translation equivariance means and under what conditions it holds.
+At this point we know what a convolutional layer saves and by how much. This way of connecting has another property: wherever a pattern moves, the output moves with it. KP01 already saw this in a small example, and KP05 makes it precise: what translation equivariance means and under what conditions it holds.
 
-### 本單元重點整理（KP05 summary）
+### 本單元重點整理（KP04 summary）
 
 **一句話重點**：卷積層是權重矩陣有兩個特徵的全連接層：矩陣大部分是 $0$（稀疏連接，省下 $M/k$ 倍的權重與乘加），其餘各列是同一組權重往右挪（權重共享，只再省下 $P$ 倍的權重，乘加不變）。
 
@@ -248,21 +248,21 @@ At this point we know what a convolutional layer saves and by how much. This way
 
 **圖**：本單元有四張圖。
 
-- `lec06-kp05-weight-matrix`：三種層的權重矩陣，零與重複的顏色。
-- `lec06-kp05-three-layers`：三種層的連線圖。
-- `lec06-kp05-counts`：$28\times28$ 影像的三種權重個數。
-- `lec06-kp05-k-to-m`：窗 $k$ 變大時三種權重個數，在 $k=M$ 交會。
+- `lec06-kp04-weight-matrix`：三種層的權重矩陣，零與重複的顏色。
+- `lec06-kp04-three-layers`：三種層的連線圖。
+- `lec06-kp04-counts`：$28\times28$ 影像的三種權重個數。
+- `lec06-kp04-k-to-m`：窗 $k$ 變大時三種權重個數，在 $k=M$ 交會。
 
-四張圖與文中數字都由同一支程式產生：`lec06-kp05-figures.py`。
+四張圖與文中數字都由同一支程式產生：`lec06-kp04-figures.py`。
 
 **Figure**: Four figures in this unit.
 
-- `lec06-kp05-weight-matrix`: the weight matrices of the three layers, zeros and repeated colours.
-- `lec06-kp05-three-layers`: the connection diagrams of the three layers.
-- `lec06-kp05-counts`: the three weight counts for a $28\times28$ image.
-- `lec06-kp05-k-to-m`: the three weight counts as the window $k$ grows, meeting at $k=M$.
+- `lec06-kp04-weight-matrix`: the weight matrices of the three layers, zeros and repeated colours.
+- `lec06-kp04-three-layers`: the connection diagrams of the three layers.
+- `lec06-kp04-counts`: the three weight counts for a $28\times28$ image.
+- `lec06-kp04-k-to-m`: the three weight counts as the window $k$ grows, meeting at $k=M$.
 
-All four figures and every number in the text come from one program: `lec06-kp05-figures.py`.
+All four figures and every number in the text come from one program: `lec06-kp04-figures.py`.
 
 **想深入**（選讀）`[補充]`：把二維卷積也寫成矩陣，原理相同。$H\times W$ 的影像攤平成長 $HW$ 的向量，同尺寸輸出要一個 $HW\times HW$ 的矩陣，$k\times k$ 的核只在每列的 $k^2$ 個位置放數字，其餘為 $0$。這種「帶狀、每列重複」的矩陣在線性代數中稱為（分塊）Toeplitz 矩陣；本課不需要這個名詞。
 
@@ -335,22 +335,22 @@ All four figures and every number in the text come from one program: `lec06-kp05
 本講義依 CCC-LNS IDL_115 第4章 KP05（簡報）重新撰寫，該教材的第4章就是本課的第6週。來源的讀取日期是 2026-10-30。來源沒有的內容，都在出現的地方標示 `[補充]`。
 
 - 來源把卷積層的參數量寫成 $\mathrm{Params}_{\mathrm{Conv}}=k\times n$，並說壓縮比是 $m/k$。這個 $kn$ 其實是**沒有共享**時的權重個數，也是連線數與乘加次數；共享之後權重只剩 $k$。來源的 $m/k$ 因此是稀疏連接單獨省下的倍數。本講義把三樣東西分開數：權重、連線、乘加，並分別寫出兩個限制的倍數 $M/k$ 與 $P$。
-- 來源的例子寫「$224\times224$ 彩色輸入，$m\approx50{,}000$」，並算出 $50{,}000/9\approx5{,}555$ 倍。重算：$224\times224=50{,}176$ 是**單一通道**的畫素數，彩色是 $150{,}528$；$50{,}176/9\approx5{,}575$，用 $50{,}000$ 算是 $5{,}556$。本講義改用 $28\times28$ 的完整例子，避免通道數的混淆，通道留給 KP07。
+- 來源的例子寫「$224\times224$ 彩色輸入，$m\approx50{,}000$」，並算出 $50{,}000/9\approx5{,}555$ 倍。重算：$224\times224=50{,}176$ 是**單一通道**的畫素數，彩色是 $150{,}528$；$50{,}176/9\approx5{,}575$，用 $50{,}000$ 算是 $5{,}556$。本講義改用 $28\times28$ 的完整例子，避免通道數的混淆，通道留給 KP06。
 - 來源說「只共享、不稀疏」是核和全圖一樣大，等於一次性的全連接運算。本講義依計算寫成：窗和輸入一樣大時，有效輸出只有一格，兩個限制都沒有東西可省，三種層完全相同。
-- 來源的符號 $m$（輸入節點數）、$n$（輸出節點數）改為 $M$、$P$，避免和 KP04 中 $n$ 是訊號長度、$m$ 是核的指標混淆；一維核的記號沿用 KP04 的 $w[m]$。
+- 來源的符號 $m$（輸入節點數）、$n$（輸出節點數）改為 $M$、$P$，避免和 KP03 中 $n$ 是訊號長度、$m$ 是核的指標混淆；一維核的記號沿用 KP03 的 $w[m]$。
 - 來源有「局部連接層」的名稱與說明（只稀疏、不共享），本講義沿用，並補上「什麼時候該考慮它」的條件。
 - 來源的互動模擬器、四題測驗與「考題常客」的包裝不採用。本講義的練習題是依本單元的數字重新設計，測驗題的概念（參數量複雜度、退化邊界、共享的定義、全連接權重的使用方式）都包含在正文與練習裡。
-- 取捨：來源的連線圖是 $4\times4$ 的示意，參數量寫 $16$ 對 $2$；本講義改用 $M=6$、$k=3$，讓權重矩陣、連線圖與計數表用同一個例子，也和 KP04 的一維寫法相容。
+- 取捨：來源的連線圖是 $4\times4$ 的示意，參數量寫 $16$ 對 $2$；本講義改用 $M=6$、$k=3$，讓權重矩陣、連線圖與計數表用同一個例子，也和 KP03 的一維寫法相容。
 
 This note is rewritten from KP05 of CCC-LNS IDL_115 Chapter 4 (slides); Chapter 4 of that material is Week 6 of this course. The source was accessed on 2026-10-30. Content that the source does not contain is marked `[Added]` where it appears.
 
 - The source writes the number of parameters of a convolutional layer as $\mathrm{Params}_{\mathrm{Conv}}=k\times n$ and the compression ratio as $m/k$. That $kn$ is in fact the number of weights **without sharing**, and also the number of connections and multiply-adds; after sharing only $k$ weights remain. The source's $m/k$ is therefore the factor saved by sparse connectivity alone. This note counts three things separately: weights, connections and multiply-adds, and writes the factors of the two restrictions, $M/k$ and $P$.
-- The source's example says "a $224\times224$ colour input, $m\approx50{,}000$" and computes $50{,}000/9\approx5{,}555$ times. Recomputed: $224\times224=50{,}176$ is the number of pixels of **one channel**; a colour image has $150{,}528$; $50{,}176/9\approx5{,}575$, and using $50{,}000$ gives $5{,}556$. This note uses a complete $28\times28$ example instead to avoid confusion about channels, which are left to KP07.
+- The source's example says "a $224\times224$ colour input, $m\approx50{,}000$" and computes $50{,}000/9\approx5{,}555$ times. Recomputed: $224\times224=50{,}176$ is the number of pixels of **one channel**; a colour image has $150{,}528$; $50{,}176/9\approx5{,}575$, and using $50{,}000$ gives $5{,}556$. This note uses a complete $28\times28$ example instead to avoid confusion about channels, which are left to KP06.
 - The source says that "sharing without sparsity" means a kernel as large as the whole image, equivalent to a one-shot fully connected operation. This note writes it by computation: when the window is as large as the input, the valid output has one cell, neither restriction has anything to save, and the three layers are identical.
-- The source's symbols $m$ (number of input nodes) and $n$ (number of output nodes) are renamed $M$ and $P$ to avoid confusion with KP04, where $n$ is the signal length and $m$ the kernel index; the 1-D kernel notation $w[m]$ follows KP04.
+- The source's symbols $m$ (number of input nodes) and $n$ (number of output nodes) are renamed $M$ and $P$ to avoid confusion with KP03, where $n$ is the signal length and $m$ the kernel index; the 1-D kernel notation $w[m]$ follows KP03.
 - The source names and describes the locally connected layer (sparse, not shared); this note keeps it and adds the conditions under which it should be considered.
 - The source's interactive simulator, four-question quiz and "favourite exam question" packaging are not used. The practice questions of this note are newly designed from the numbers of this unit, and the concepts of the quiz (parameter complexity, the degenerate boundary, the definition of sharing, how weights of a fully connected layer are used) are all contained in the text and the practice.
-- Choices: the source's connection diagram is a $4\times4$ sketch with parameter counts $16$ versus $2$; this note uses $M=6$ and $k=3$, so that the weight matrix, the connection diagram and the counting table share one example and are compatible with the 1-D notation of KP04.
+- Choices: the source's connection diagram is a $4\times4$ sketch with parameter counts $16$ versus $2$; this note uses $M=6$ and $k=3$, so that the weight matrix, the connection diagram and the counting table share one example and are compatible with the 1-D notation of KP03.
 
 ### 術語對照（Terminology）
 
